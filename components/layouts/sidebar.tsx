@@ -90,7 +90,7 @@ const Sidebar = () => {
                 <div className="h-full bg-white dark:bg-black">
                     <div className="flex items-center justify-between px-4 py-3">
                         <Link href="/" className="main-logo flex shrink-0 items-center">
-                            <img className="ml-[5px] w-8 flex-none" src="/assets/images/logo.svg" alt="logo" />
+                            <img className="ml-[5px] w-8 flex-none" src="/assets/images/logo-bg.png" alt="logo" />
                             <span className="align-middle text-2xl font-semibold dark:text-white-light lg:inline ltr:ml-1.5 rtl:mr-1.5">FourTake</span>
                         </Link>
 
@@ -105,36 +105,158 @@ const Sidebar = () => {
                     <PerfectScrollbar className="relative h-[calc(100vh-80px)]">
                         <ul className="relative space-y-0.5 p-4 py-0 font-semibold">
                             <li className="menu nav-item">
-                                <button type="button" className={`${currentMenu === 'dashboard' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('dashboard')}>
+                                <button type="button" className={`${currentMenu === 'User Management' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('User Management')}>
                                     <div className="flex items-center">
-                                        <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
-                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('dashboard')}</span>
+                                        <IconMenuUsers className="shrink-0 group-hover:!text-primary" />
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('User Management')}</span>
                                     </div>
 
-                                    <div className={currentMenu !== 'dashboard' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                    <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
                                         <IconCaretDown />
                                     </div>
                                 </button>
 
-                                <AnimateHeight duration={300} height={currentMenu === 'dashboard' ? 'auto' : 0}>
+                                <AnimateHeight duration={300} height={currentMenu === 'User Management' ? 'auto' : 0}>
                                     <ul className="sub-menu text-gray-500">
                                         <li>
-                                            <Link href="/">{t('sales')}</Link>
+                                            <Link href="/">{t('User List')}</Link>
                                         </li>
                                         <li>
-                                            <Link href="/analytics">{t('analytics')}</Link>
+                                            <Link href="/User-Manage">{t('User Manage')}</Link>
                                         </li>
                                         <li>
-                                            <Link href="/finance">{t('finance')}</Link>
+                                            <Link href="/New-Password">{t('New Password')}</Link>
+                                        </li>
+                                    </ul>
+                                </AnimateHeight>
+                            </li>
+                            <li className="menu nav-item">
+                                <button type="button" className={`${currentMenu === 'Lead Management' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Lead Management')}>
+                                    <div className="flex items-center">
+                                        <IconMenuElements className="shrink-0 group-hover:!text-primary" />
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Lead Management')}</span>
+                                    </div>
+
+                                    <div className={currentMenu !== 'Lead Management' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                        <IconCaretDown />
+                                    </div>
+                                </button>
+
+                                <AnimateHeight duration={300} height={currentMenu === 'Lead Management' ? 'auto' : 0}>
+                                    <ul className="sub-menu text-gray-500">
+                                        <li>
+                                            <Link href="/lead-List">{t('lead List')}</Link>
                                         </li>
                                         <li>
-                                            <Link href="/crypto">{t('crypto')}</Link>
+                                            <Link href="/lead-Manage">{t('lead Manage')}</Link>
+                                        </li>
+                                    </ul>
+                                </AnimateHeight>
+                            </li>
+                            <li className="menu nav-item">
+                                <button type="button" className={`${currentMenu === 'Checklist' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Checklist')}>
+                                    <div className="flex items-center">
+                                        <IconMenuDatatables className="shrink-0 group-hover:!text-primary" />
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Checklist')}</span>
+                                    </div>
+
+                                    <div className={currentMenu !== 'Checklist' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                        <IconCaretDown />
+                                    </div>
+                                </button>
+
+                                <AnimateHeight duration={300} height={currentMenu === 'Checklist' ? 'auto' : 0}>
+                                    <ul className="sub-menu text-gray-500">
+                                        <li>
+                                            <Link href="/Countries-List">{t('Countries List')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="/Visa-Checklist">{t('Visa Checklist')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="/Embassy-/VFS">{t('Embassy / VFS')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="/Visa-Types">{t('Visa Types')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="/Country-Visa-Types">{t('Country Visa Types')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="/Entry-Types">{t('Entry Types')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="/Visa-Status">{t('Visa Status')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="/Country-Visa-urls">{t('Country Visa urls')}</Link>
+                                        </li>
+                                    </ul>
+                                </AnimateHeight>
+                            </li>
+                            <li className="menu nav-item">
+                                <button type="button" className={`${currentMenu === 'Visa Process' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Visa Process')}>
+                                    <div className="flex items-center">
+                                        <IconMenuPages className="shrink-0 group-hover:!text-primary" />
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Visa Process')}</span>
+                                    </div>
+
+                                    <div className={currentMenu !== 'Visa Process' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                        <IconCaretDown />
+                                    </div>
+                                </button>
+
+                                <AnimateHeight duration={300} height={currentMenu === 'Visa Process' ? 'auto' : 0}>
+                                    <ul className="sub-menu text-gray-500">
+                                        <li>
+                                            <Link href="/Manage-Visa">{t('Manage Visa ')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="/List-Visa-Applications">{t('Visa Applications')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="/Deleted-Application-List ">{t('Deleted Application')}</Link>
+                                        </li>
+                                    </ul>
+                                </AnimateHeight>
+                            </li>
+                            <li className="menu nav-item">
+                                <button type="button" className={`${currentMenu === 'Reports ' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Reports ')}>
+                                    <div className="flex items-center">
+                                        <IconMenuNotes className="shrink-0 group-hover:!text-primary" />
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Reports ')}</span>
+                                    </div>
+
+                                    <div className={currentMenu !== 'Reports ' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                        <IconCaretDown />
+                                    </div>
+                                </button>
+
+                                <AnimateHeight duration={300} height={currentMenu === 'Reports ' ? 'auto' : 0}>
+                                    <ul className="sub-menu text-gray-500">
+                                        <li>
+                                            <Link href="/Daily-Report">{t('Daily Report')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="/Finance-Report">{t('Finance Report  ')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="/Status-wise-Report">{t('Status-wise Report ')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="/Payment-Report  ">{t('Payment Report  ')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="/Out-scan-submitted-list ">{t('Out-scan submitted  ')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link href="/In-Scan-list ">{t('In-Scan')}</Link>
                                         </li>
                                     </ul>
                                 </AnimateHeight>
                             </li>
 
-                            <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                            {/* <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
                                 <IconMinus className="hidden h-5 w-4 flex-none" />
                                 <span>{t('apps')}</span>
                             </h2>
@@ -714,7 +836,7 @@ const Sidebar = () => {
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('documentation')}</span>
                                     </div>
                                 </Link>
-                            </li>
+                            </li> */}
                         </ul>
                     </PerfectScrollbar>
                 </div>
