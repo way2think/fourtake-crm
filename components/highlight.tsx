@@ -1,5 +1,4 @@
 'use client';
-
 import 'highlight.js/styles/monokai-sublime.css';
 import hightlight from 'highlight.js';
 import { PropsWithChildren, useEffect, useRef } from 'react';
