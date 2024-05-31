@@ -18,8 +18,8 @@ const ComponentsTabsJustifyCenterPills = () => {
                         <Tab as={Fragment}>
                             {({ selected }) => (
                                 <button
-                                    className={`${selected ? 'bg-info text-white !outline-none' : ''}
-                                                    -mb-[1px] block rounded p-3.5 py-2 before:inline-block hover:bg-info hover:text-white`}
+                                    className={`${selected ? ' w-40 bg-[#005fbe] text-white !outline-none ' : ''}
+                                                    -mb-[1px] block rounded p-3.5 py-2 before:inline-block hover:bg-[#005fbe] hover:text-white w-40`}
                                 >
                                     Client
                                 </button>
@@ -28,8 +28,8 @@ const ComponentsTabsJustifyCenterPills = () => {
                         <Tab as={Fragment}>
                             {({ selected }) => (
                                 <button
-                                    className={`${selected ? 'bg-info text-white !outline-none' : ''}
-                                                    -mb-[1px] block rounded p-3.5 py-2 before:inline-block hover:bg-info hover:text-white`}
+                                    className={`${selected ? 'w-40  bg-[#005fbe] text-white !outline-none' : ''}
+                                                    -mb-[1px] block rounded p-3.5 py-2 before:inline-block hover:bg-[#005fbe] hover:text-white w-40`}
                                 >
                                     Employee
                                 </button>
