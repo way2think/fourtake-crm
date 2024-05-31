@@ -25,7 +25,7 @@ import ReactApexChart from 'react-apexcharts';
 import { useSelector } from 'react-redux';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
-const ComponentsDashboardAnalytics = () => {
+const ComponentsDashboard = () => {
     const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const [isMounted, setIsMounted] = useState(false);
@@ -38,7 +38,7 @@ const ComponentsDashboardAnalytics = () => {
             <ul className="flex space-x-2 rtl:space-x-reverse">
                 <li>
                     <Link href="/" className="text-primary hover:underline">
-                        User Management
+                        Dashboard
                     </Link>
                 </li>
                 <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
@@ -49,4 +49,4 @@ const ComponentsDashboardAnalytics = () => {
     );
 };
 
-export default ComponentsDashboardAnalytics;
+export default ComponentsDashboard;

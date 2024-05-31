@@ -3,7 +3,7 @@ import IconLockDots from '@/components/icon/icon-lock-dots';
 import IconMail from '@/components/icon/icon-mail';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import Tabs from '../Reusable/Tabs/Tabs';
+// import Tabs from '../Reusable/Tabs/Tabs';
 
 const ComponentsAuthLoginForm = () => {
     const router = useRouter();
@@ -34,7 +34,7 @@ const ComponentsAuthLoginForm = () => {
                     </div>
                 </div>
                 <div>
-                    <label className="flex justify-end cursor-pointer items-center">
+                    <label className="flex cursor-pointer items-center justify-end">
                         {/* <input type="checkbox" className="form-checkbox bg-white dark:bg-black" /> */}
                         <a href="/" className="text-white-dark">
                             Forget Password ?
