@@ -163,10 +163,9 @@ const UserList = () => {
         searchContact();
     }, [search]);
 
-    const saveUser = (value:any) => {
-
-        setParams(value)
-        console.log("params",params)
+    const saveUser = (value: any) => {
+        setParams(value);
+        console.log('params', params);
         // if (!params.firstname) {
         //     showMessage('Frist Name is required.', 'error');
         //     return true;
@@ -258,7 +257,7 @@ const UserList = () => {
         <div>
             <div className="flex flex-wrap items-center justify-between gap-4">
                 <h2 className="text-xl">Users</h2>
-                <div className="flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
+                <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
                         <div>
                             <button type="button" className="btn btn-primary" onClick={() => editUser()}>
@@ -437,7 +436,7 @@ const UserList = () => {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="panel w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
+                                <Dialog.Panel className="panel w-full max-w-2xl overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
                                     <button
                                         type="button"
                                         onClick={() => setAddContactModal(false)}
@@ -447,7 +446,7 @@ const UserList = () => {
                                     </button>
                                     <div className="bg-[#fbfbfb] py-3 text-lg font-medium dark:bg-[#121c2c] ltr:pl-5 ltr:pr-[50px] rtl:pl-[50px] rtl:pr-5">{params.id ? 'Edit User' : 'Add User'}</div>
                                     <div className="p-5">
-                                    <AddUserForm  saveUser={saveUser} setParams={setParams} />
+                                        <AddUserForm saveUser={saveUser} setParams={setParams} />
                                         {/* <form>
                                             <div className="mb-5">
                                                 <label htmlFor="userid">User Id</label>
@@ -531,7 +530,6 @@ const UserList = () => {
                                                 </button>
                                             </div>
                                         </form> */}
-                                
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>

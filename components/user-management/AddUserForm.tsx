@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import * as Yup from 'yup';
 
 interface AddUserFormProps {
-    saveUser: (value:any) => void;
+    saveUser: (value: any) => void;
     setParams?: any;
 }
 const AddUserForm: React.FC<AddUserFormProps> = ({ saveUser, setParams }) => {
@@ -75,7 +75,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ saveUser, setParams }) => {
                 onSubmit={saveUser}
             >
                 {({ errors, submitCount, touched, values }) => (
-                    <Form className="space-y-5">
+                    <Form className="space-y-5 ">
                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                             <div className={submitCount ? (errors.firstname ? 'has-error' : 'has-success') : ''}>
                                 <label htmlFor="firstname">First Name </label>
@@ -210,16 +210,11 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ saveUser, setParams }) => {
                                     submitForm();
                                     console.log('values', values);
                                     // setParams(values)
-                                    
-                                }
-                                else{
+                                } else {
                                     console.log('values1', values);
                                     // setParams(values)
                                     // saveUser(values);
-                                    
                                 }
-                               
-                                
                             }}
                         >
                             Submit Form
