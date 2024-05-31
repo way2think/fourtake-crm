@@ -1,21 +1,37 @@
-import 'highlight.js/styles/monokai-sublime.css';
-// import hightlight from 'highlight.js';
-import { PropsWithChildren, useEffect, useRef } from 'react';
+'use client';
+import CodeHighlight from '@/components/highlight';
+import IconCode from '@/components/icon/icon-code';
+import React, { useState, ReactNode } from 'react';
 
-const CodeHighlight = ({ children }: PropsWithChildren) => {
-    const highlightElement = useRef<any>(null);
+interface PanelCodeHighlightProps {
+    children: ReactNode;
+    title?: string;
+    codeHighlight?: string;
+    id?: string;
+    className?: string;
+}
 
-    useEffect(() => {
-        if (highlightElement?.current) {
-            // hightlight.highlightElement(highlightElement.current.querySelector('pre'));
-        }
-    }, []);
-
+const PanelCodeHighlight = ({ children, title, codeHighlight, id, className = '' }: PanelCodeHighlightProps) => {
+    const [toggleCode, setToggleCode] = useState(false);
     return (
-        <div ref={highlightElement} className="highlight-el">
+        <div className={`panel ${className}`} id={id}>
+            <div className="mb-5 flex items-center justify-between">
+                <h5 className="text-lg font-semibold dark:text-white-light">{title}</h5>
+                <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => setToggleCode(!toggleCode)}>
+                    <span className="flex items-center">
+                        <IconCode className="me-2" />
+                        Code
+                    </span>
+                </button>
+            </div>
             {children}
+            {toggleCode && (
+                <CodeHighlight>
+                    <pre className="language-xml">{codeHighlight}</pre>
+                </CodeHighlight>
+            )}
         </div>
     );
 };
 
-export default CodeHighlight;
+export default PanelCodeHighlight;

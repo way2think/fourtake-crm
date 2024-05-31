@@ -13,6 +13,9 @@ import { Transition, Dialog } from '@headlessui/react';
 import React, { Fragment, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import Dropdown from '../dropdown';
+import ElementsDropdownsBasic from '../Reusable/elements-dropdowns-basic';
+import ComponentsFormsSelectBasic from '../Reusable/select/components-forms-select-basic';
+import AddUserForm from './AddUserForm';
 
 const UserList = () => {
     const [addContactModal, setAddContactModal] = useState<any>(false);
@@ -160,23 +163,34 @@ const UserList = () => {
         searchContact();
     }, [search]);
 
-    const saveUser = () => {
-        if (!params.name) {
-            showMessage('Name is required.', 'error');
-            return true;
-        }
-        if (!params.email) {
-            showMessage('Email is required.', 'error');
-            return true;
-        }
-        if (!params.phone) {
-            showMessage('Phone is required.', 'error');
-            return true;
-        }
-        if (!params.role) {
-            showMessage('Occupation is required.', 'error');
-            return true;
-        }
+    const saveUser = (value:any) => {
+
+        setParams(value)
+        console.log("params",params)
+        // if (!params.firstname) {
+        //     showMessage('Frist Name is required.', 'error');
+        //     return true;
+        // }
+        // if (!params.lastname) {
+        //     showMessage('Last Name is required.', 'error');
+        //     return true;
+        // }
+        // if (!params.email) {
+        //     showMessage('Email is required.', 'error');
+        //     return true;
+        // }
+        // if (!params.phone) {
+        //     showMessage('Phone is required.', 'error');
+        //     return true;
+        // }
+        // if (!params.designation) {
+        //     showMessage('Occupation is required.', 'error');
+        //     return true;
+        // }
+        // if (params.center == '') {
+        //     showMessage('Select Center', 'error');
+        //     return true;
+        // }
 
         if (params.id) {
             //update user
@@ -433,51 +447,69 @@ const UserList = () => {
                                     </button>
                                     <div className="bg-[#fbfbfb] py-3 text-lg font-medium dark:bg-[#121c2c] ltr:pl-5 ltr:pr-[50px] rtl:pl-[50px] rtl:pr-5">{params.id ? 'Edit User' : 'Add User'}</div>
                                     <div className="p-5">
-                                        <form>
+                                    <AddUserForm  saveUser={saveUser} setParams={setParams} />
+                                        {/* <form>
                                             <div className="mb-5">
-                                                <label htmlFor="name">Name</label>
-                                                <input id="name" type="text" placeholder="Enter Name" className="form-input" value={params.name} onChange={(e) => changeValue(e)} />
+                                                <label htmlFor="userid">User Id</label>
+                                                <input
+                                                    id="userid"
+                                                    type="text"
+                                                    disabled={true}
+                                                    placeholder="UserId - autofill"
+                                                    className="form-input"
+                                                    value={params.userid}
+                                                    onChange={(e) => changeValue(e)}
+                                                />
+                                            </div>
+                                            <div className="mb-5">
+                                                <label htmlFor="firstname">Frist Name</label>
+                                                <input id="firstname" type="text" placeholder="Enter Frist Name" className="form-input" value={params.firstname} onChange={(e) => changeValue(e)} />
+                                            </div>
+                                            <div className="mb-5">
+                                                <label htmlFor="lastname">Last Name</label>
+                                                <input id="lastname" type="text" placeholder="Enter Last Name" className="form-input" value={params.lastname} onChange={(e) => changeValue(e)} />
                                             </div>
                                             <div className="mb-5">
                                                 <label htmlFor="email">Email</label>
                                                 <input id="email" type="email" placeholder="Enter Email" className="form-input" value={params.email} onChange={(e) => changeValue(e)} />
                                             </div>
                                             <div className="dropdown">
-                                                <Dropdown
-                                                    // placement={`${isRtl ? 'bottom-start' : 'bottom-end'}`}
-                                                    btnClassName="btn btn-outline-primary dropdown-toggle"
-                                                    button={
-                                                        <>
-                                                            Action
-                                                            <span>
-                                                                <svg>...</svg>
-                                                            </span>
-                                                        </>
-                                                    }
-                                                >
-                                                    <ul className="!min-w-[170px]">
-                                                        <li>
-                                                            <button type="button">Action</button>
-                                                        </li>
-                                                        <li>
-                                                            <button type="button">Another action</button>
-                                                        </li>
-                                                        <li>
-                                                            <button type="button">Something else here</button>
-                                                        </li>
-                                                        <li>
-                                                            <button type="button">Separated link</button>
-                                                        </li>
-                                                    </ul>
-                                                </Dropdown>
+                                                <label htmlFor="email">Center</label>
+                                                <ComponentsFormsSelectBasic />
+                                            </div>
+                                            <div className="dropdown">
+                                                <label htmlFor="email">Status</label>
+                                                <ComponentsFormsSelectBasic />
                                             </div>
                                             <div className="mb-5">
                                                 <label htmlFor="number">Phone Number</label>
                                                 <input id="phone" type="text" placeholder="Enter Phone Number" className="form-input" value={params.phone} onChange={(e) => changeValue(e)} />
                                             </div>
                                             <div className="mb-5">
-                                                <label htmlFor="occupation">Occupation</label>
-                                                <input id="role" type="text" placeholder="Enter Occupation" className="form-input" value={params.role} onChange={(e) => changeValue(e)} />
+                                                <label htmlFor="password">Password</label>
+                                                <input id="password" type="password" placeholder="Enter Password" className="form-input" value={params.password} onChange={(e) => changeValue(e)} />
+                                            </div>
+                                            <div className="mb-5">
+                                                <label htmlFor="confirmpassowrd">Confirm Password</label>
+                                                <input
+                                                    id="confirmpassowrd"
+                                                    type="password"
+                                                    placeholder="Enter Confirm  Password"
+                                                    className="form-input"
+                                                    value={params.confirmpassword}
+                                                    onChange={(e) => changeValue(e)}
+                                                />
+                                            </div>
+                                            <div className="mb-5">
+                                                <label htmlFor="designation">Designation</label>
+                                                <input
+                                                    id="designation"
+                                                    type="text"
+                                                    placeholder="Enter Designation"
+                                                    className="form-input"
+                                                    value={params.designation}
+                                                    onChange={(e) => changeValue(e)}
+                                                />
                                             </div>
                                             <div className="mb-5">
                                                 <label htmlFor="address">Address</label>
@@ -498,7 +530,8 @@ const UserList = () => {
                                                     {params.id ? 'Update' : 'Add'}
                                                 </button>
                                             </div>
-                                        </form>
+                                        </form> */}
+                                
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>
