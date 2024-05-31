@@ -112,12 +112,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ saveUser, setParams }) => {
                             <div className={submitCount ? (errors.status ? 'has-error' : 'has-success') : ''}>
                                 <label htmlFor="fullName">Select Status </label>
                                 <Field as="select" name="status" className="form-select">
-                                    <option value="" disabled={true}>
-                                        Open this select menu
-                                    </option>
-                                    <option value="One">One</option>
-                                    <option value="Two">Two</option>
-                                    <option value="Three">Three</option>
+                                   
                                 </Field>
                                 {submitCount ? (
                                     errors.status ? (
