@@ -279,7 +279,7 @@ const UserList = () => {
         <div>
             <div className="flex flex-wrap items-center justify-between gap-4">
                 <h2 className="text-xl">Users</h2>
-                <div className="flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
+                <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
                         <div>
                             <button type="button" className="btn btn-primary" onClick={() => editUser()}>
@@ -471,7 +471,7 @@ const UserList = () => {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="panel w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
+                                <Dialog.Panel className="panel w-full max-w-2xl overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
                                     <button
                                         type="button"
                                         onClick={() => setAddContactModal(false)}
