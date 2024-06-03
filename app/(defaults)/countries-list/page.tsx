@@ -1,12 +1,19 @@
+import ComponentsDatatablesAltPagination from '../../../components/CMS/components-datatables-alt-pagination';
+import IconBell from '@/components/icon/icon-bell';
 import { Metadata } from 'next';
 import React from 'react';
 
 export const metadata: Metadata = {
-    title: 'Fourtake CRM',
+    title: 'checklist | Countries list',
+};
+ComponentsDatatablesAltPagination;
+const CountriesList = () => {
+    return (
+        <div>
+            <ComponentsDatatablesAltPagination />
+            {/* <ComponentsTablesProgress/> */}
+        </div>
+    );
 };
 
-const Checklist = () => {
-    return <div>checklist</div>;
-};
-
-export default Checklist;
+export default CountriesList;

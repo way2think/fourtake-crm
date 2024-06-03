@@ -24,7 +24,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ saveUser, setParams }) => {
         });
     };
     const phoneRegex = /^[6-9]\d{9}$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
 
     const submitForm4 = Yup.object().shape({
         firstname: Yup.string().required('Please fill the first name'),

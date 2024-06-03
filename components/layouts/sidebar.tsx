@@ -113,7 +113,7 @@ const Sidebar = () => {
                                 </Link>
                             </li>
                             <li className="menu nav-item">
-                                <button type="button" className={`${currentMenu === 'User Management' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('User Management')}>
+                                {/* <button type="button" className={`${currentMenu === 'User Management' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('User Management')}>
                                     <div className="flex items-center">
                                         <IconMenuUsers className="shrink-0 group-hover:!text-primary" />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('User Management')}</span>
@@ -122,9 +122,23 @@ const Sidebar = () => {
                                     <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
                                         <IconCaretDown />
                                     </div>
+                                </button> */}
+
+                                <button type="button" className={`${currentMenu === 'User List' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('User List')}>
+                                    {' '}
+                                    <div className="flex items-center">
+                                        <IconMenuUsers className="shrink-0 group-hover:!text-primary" />
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
+                                            <Link href="/user-list">{t('User List')}</Link>
+                                        </span>
+                                    </div>
+                                    {/* 
+                                    <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                        <IconCaretDown />
+                                    </div> */}
                                 </button>
 
-                                <AnimateHeight duration={300} height={currentMenu === 'User Management' ? 'auto' : 0}>
+                                {/* <AnimateHeight duration={300} height={currentMenu === 'User Management' ? 'auto' : 0}>
                                     <ul className="sub-menu text-gray-500">
                                         <li>
                                             <Link href="/user-list">{t('User List')}</Link>
@@ -136,7 +150,7 @@ const Sidebar = () => {
                                             <Link href="/assign-Password">{t('Assign Password')}</Link>
                                         </li>
                                     </ul>
-                                </AnimateHeight>
+                                </AnimateHeight> */}
                             </li>
                             <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'Lead Management' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Lead Management')}>
