@@ -8,8 +8,8 @@ function isValidEmail(email: string) {
 
 function isValidPassword(password: string) {
     // Password must be 6 characters or more in length
-    const passwordRegex = /^.{6,}$/;
-    // const passwordRegex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    // const passwordRegex = /^.{6,}$/;
+    const passwordRegex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
     // Test the password against the regex pattern
     return passwordRegex.test(password);

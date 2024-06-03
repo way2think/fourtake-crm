@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const Sales = () => {
     return (
         <div>
-            <ComponentsDashboardAnalytics />
+            {/* <ComponentsDashboardAnalytics /> */}
         </div>
     );
 };

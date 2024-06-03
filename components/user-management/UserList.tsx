@@ -17,25 +17,41 @@ import ElementsDropdownsBasic from '../Reusable/elements-dropdowns-basic';
 import ComponentsFormsSelectBasic from '../Reusable/select/components-forms-select-basic';
 import AddUserForm from './AddUserForm';
 import { isValidEmail, isValidName, isValidPassword, isValidPhoneNumber } from '@/utils/validator';
+import IconLockDots from '../icon/icon-lock-dots';
 
 const UserList = () => {
     const [addContactModal, setAddContactModal] = useState<any>(false);
+    const [assignPassword, setAssignPassword] = useState<boolean>(false);
 
     const [value, setValue] = useState<any>('list');
     const [defaultParams] = useState({
-        id: null,
-        name: '',
+        id: '',
+        firstname: '',
+        lastname: '',
         email: '',
-        phone: '',
         role: '',
-        location: '',
+        center: '',
+        status: false,
+        phone: '',
+        address: '',
+    });
+    const [assignPasswordValue, setAssignPasswordValue] = useState({
+        id: '',
+        password: '',
+        confirmpassword: '',
     });
 
     const [params, setParams] = useState<any>(JSON.parse(JSON.stringify(defaultParams)));
-
+    const [isChecked, setIsChecked] = useState<boolean>(params.status || false);
     const changeValue = (e: any) => {
         const { value, id } = e.target;
+        console.log('value.id', value, id);
         setParams({ ...params, [id]: value });
+    };
+
+    const handlePasswordChange = (e: any) => {
+        const { value, id } = e.target;
+        setAssignPasswordValue({ ...assignPasswordValue, [id]: value });
     };
 
     const [search, setSearch] = useState<any>('');
@@ -47,8 +63,9 @@ const UserList = () => {
             email: 'alan@mail.com',
             role: 'Web Developer',
             center: 'Bangalore',
-            status: 'Active',
+            status: false,
             phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
         },
 
         {
@@ -58,18 +75,20 @@ const UserList = () => {
             email: 'alan@mail.com',
             role: 'Web Developer',
             center: 'Bangalore',
-            status: 'Active',
+            status: false,
             phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
         },
         {
             id: 3,
-            firstname: 'Alan',
+            firstname: 'raji',
             lastname: 'green',
             email: 'alan@mail.com',
             role: 'Web Developer',
             center: 'Bangalore',
-            status: 'Active',
+            status: false,
             phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
         },
         {
             id: 4,
@@ -78,8 +97,9 @@ const UserList = () => {
             email: 'alan@mail.com',
             role: 'Web Developer',
             center: 'Bangalore',
-            status: 'Active',
+            status: false,
             phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
         },
         {
             id: 5,
@@ -88,8 +108,9 @@ const UserList = () => {
             email: 'alan@mail.com',
             role: 'Web Developer',
             center: 'Bangalore',
-            status: 'Active',
+            status: false,
             phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
         },
         {
             id: 6,
@@ -98,8 +119,9 @@ const UserList = () => {
             email: 'alan@mail.com',
             role: 'Web Developer',
             center: 'Bangalore',
-            status: 'Active',
+            status: true,
             phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
         },
         {
             id: 7,
@@ -108,8 +130,9 @@ const UserList = () => {
             email: 'alan@mail.com',
             role: 'Web Developer',
             center: 'Bangalore',
-            status: 'Active',
+            status: true,
             phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
         },
         {
             id: 8,
@@ -118,8 +141,9 @@ const UserList = () => {
             email: 'alan@mail.com',
             role: 'Web Developer',
             center: 'Bangalore',
-            status: 'Active',
+            status: true,
             phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
         },
         {
             id: 9,
@@ -128,8 +152,9 @@ const UserList = () => {
             email: 'alan@mail.com',
             role: 'Web Developer',
             center: 'Bangalore',
-            status: 'Active',
+            status: false,
             phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
         },
 
         {
@@ -139,8 +164,9 @@ const UserList = () => {
             email: 'alan@mail.com',
             role: 'Web Developer',
             center: 'Bangalore',
-            status: 'Active',
+            status: false,
             phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
         },
     ]);
 
@@ -177,26 +203,27 @@ const UserList = () => {
             showMessage('Select Center', 'error');
             return true;
         }
-        if (params.status == '') {
-            showMessage('Select Status', 'error');
-            return true;
-        }
+
         if (params.phone?.length < 0 || params.phone?.length > 10) {
             showMessage('Invalid phone number', 'error');
             return true;
         }
         if (!isValidPassword(params.password)) {
-            showMessage('Enter Valid Password - minimum 6 charater', 'error');
+            showMessage('Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
             return true;
         }
-        if (!isValidPassword(params.confirmpassowrd)) {
-            showMessage('Enter Valid confirm Password - minimum 6 charater', 'error');
+        if (!isValidPassword(params.confirmpassword)) {
+            showMessage('Confirm Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
             return true;
         }
-        if (params.designation === '') {
-            showMessage('Designation is required.', 'error');
+        if (params.password !== params.confirmpassword) {
+            showMessage('Passwords must match', 'error');
             return true;
         }
+        // if (params.designation === '') {
+        //     showMessage('Designation is required.', 'error');
+        //     return true;
+        // }
 
         if (params.address == '') {
             showMessage('Enter Address', 'error');
@@ -215,15 +242,15 @@ const UserList = () => {
             user.phone = params.phone;
             user.password = params.password;
             user.confirmpassword = params.confirmpassword;
-            user.designation = params.designation;
+            // user.designation = params.designation;
             user.address = params.address;
+            setParams(user);
         } else {
             //add user
             let maxUserId = filteredItems.length ? filteredItems.reduce((max: any, character: any) => (character.id > max ? character.id : max), filteredItems[0].id) : 0;
 
             let user = {
                 id: +maxUserId + 1,
-
                 firstname: params.firstname,
                 lastname: params.lastname,
                 email: params.email,
@@ -233,16 +260,38 @@ const UserList = () => {
                 phone: params.phone,
                 password: params.password,
                 confirmpassword: params.confirmpassword,
-                designation: params.designation,
+                // designation: params.designation,
                 address: params.address,
             };
+            setParams(user);
             filteredItems.splice(0, 0, user);
             //   searchContacts();
-            setIsEdit(false)
         }
 
         showMessage('User has been saved successfully.');
         setAddContactModal(false);
+        setIsEdit(false);
+    };
+
+    const changePassword = () => {
+        if (assignPasswordValue.id === '') {
+            showMessage('Select User', 'error');
+            return true;
+        }
+        if (!isValidPassword(assignPasswordValue.password)) {
+            showMessage('Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
+            return true;
+        }
+        if (!isValidPassword(assignPasswordValue.confirmpassword)) {
+            showMessage('Confirm Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
+            return true;
+        }
+        if (assignPasswordValue.password !== assignPasswordValue.confirmpassword) {
+            showMessage('Passwords must match', 'error');
+            return true;
+        }
+        setAssignPassword(false);
+        setAssignPasswordValue({ id: '', password: '', confirmpassword: '' });
     };
 
     const editUser = (user: any = null) => {
@@ -275,6 +324,8 @@ const UserList = () => {
         });
     };
 
+    console.log('password', assignPasswordValue);
+
     return (
         <div>
             <div className="flex flex-wrap items-center justify-between gap-4">
@@ -288,10 +339,16 @@ const UserList = () => {
                             </button>
                         </div>
                         <div>
+                            <button type="button" className="btn btn-outline-primary" onClick={() => setAssignPassword(true)}>
+                                <IconLockDots className="ltr:mr-2 rtl:ml-2" />
+                                Assign Password
+                            </button>
+                        </div>
+                        {/* <div>
                             <button type="button" className={`btn btn-outline-primary p-2 ${value === 'list' && 'bg-primary text-white'}`} onClick={() => setValue('list')}>
                                 <IconListCheck />
                             </button>
-                        </div>
+                        </div> */}
                         {/* <div>
                             <button type="button" className={`btn btn-outline-primary p-2 ${value === 'grid' && 'bg-primary text-white'}`} onClick={() => setValue('grid')}>
                                 <IconLayoutGrid />
@@ -345,7 +402,7 @@ const UserList = () => {
                                             <td>{contact.email}</td>
                                             <td className="whitespace-nowrap">{contact.role}</td>
                                             <td className="whitespace-nowrap">{contact.center}</td>
-                                            <td className="whitespace-nowrap">{contact.status}</td>
+                                            <td className="whitespace-nowrap">{contact.status ? 'Active' : 'Inactive'}</td>
                                             <td className="whitespace-nowrap">{contact.phone}</td>
                                             <td>
                                                 <div className="flex items-center justify-center gap-4">
@@ -504,13 +561,23 @@ const UserList = () => {
                                                     <label htmlFor="lastname">Last Name</label>
                                                     <input id="lastname" type="text" placeholder="Enter Last Name" className="form-input" value={params.lastname} onChange={(e) => changeValue(e)} />
                                                 </div>
+
                                                 <div className="mb-5">
                                                     <label htmlFor="email">Email</label>
-                                                    <input id="email" type="email" placeholder="Enter Email" className="form-input" value={params.email} onChange={(e) => changeValue(e)} />
+                                                    <input
+                                                        id="email"
+                                                        type="email"
+                                                        disabled={isEdit}
+                                                        placeholder="Enter Email"
+                                                        className="form-input"
+                                                        value={params.email}
+                                                        onChange={(e) => changeValue(e)}
+                                                    />
                                                 </div>
+
                                                 <div className="dropdown">
                                                     <label htmlFor="center">Center</label>
-                                                    <select className="form-input" defaultValue="">
+                                                    <select className="form-input" defaultValue={params.center} onChange={(e) => changeValue(e)} id="center">
                                                         <option value="" disabled={true}>
                                                             Open this select menu
                                                         </option>
@@ -519,9 +586,9 @@ const UserList = () => {
                                                         <option value="Three">Three</option>
                                                     </select>
                                                 </div>
-                                                <div className="dropdown">
+                                                {/* <div className="dropdown">
                                                     <label htmlFor="status">Status</label>
-                                                    <select className="form-input" defaultValue="">
+                                                    <select className="form-input" defaultValue={params.status} onChange={(e) => changeValue(e)} id="status">
                                                         <option value="" disabled={true}>
                                                             Open this select menu
                                                         </option>
@@ -529,10 +596,11 @@ const UserList = () => {
                                                         <option value="Two">Two</option>
                                                         <option value="Three">Three</option>
                                                     </select>
-                                                </div>
+                                                </div> */}
+
                                                 <div className="dropdown">
                                                     <label htmlFor="role">Role</label>
-                                                    <select className="form-input" defaultValue="">
+                                                    <select className="form-input" defaultValue={params.role} onChange={(e) => changeValue(e)} id="role">
                                                         <option value="" disabled={true}>
                                                             Open this select menu
                                                         </option>
@@ -541,7 +609,11 @@ const UserList = () => {
                                                         <option value="Three">Three</option>
                                                     </select>
                                                 </div>
-                                                
+                                                <div className="mb-5">
+                                                    <label htmlFor="phone">Phone Number</label>
+                                                    <input id="phone" type="text" placeholder="Enter Phone Number" className="form-input" value={params.phone} onChange={(e) => changeValue(e)} />
+                                                </div>
+
                                                 {!isEdit && (
                                                     <>
                                                         {' '}
@@ -557,9 +629,9 @@ const UserList = () => {
                                                             />
                                                         </div>
                                                         <div className="mb-5">
-                                                            <label htmlFor="confirmpassowrd">Confirm Password</label>
+                                                            <label htmlFor="confirmpassword">Confirm Password</label>
                                                             <input
-                                                                id="confirmpassowrd"
+                                                                id="confirmpassword"
                                                                 type="password"
                                                                 placeholder="Enter Confirm  Password"
                                                                 className="form-input"
@@ -569,11 +641,8 @@ const UserList = () => {
                                                         </div>
                                                     </>
                                                 )}
-                                                <div className="mb-5">
-                                                    <label htmlFor="phone">Phone Number</label>
-                                                    <input id="phone" type="text" placeholder="Enter Phone Number" className="form-input" value={params.phone} onChange={(e) => changeValue(e)} />
-                                                </div>
-                                                <div className="mb-5">
+
+                                                {/* <div className="mb-5">
                                                     <label htmlFor="designation">Designation</label>
                                                     <input
                                                         id="designation"
@@ -583,6 +652,22 @@ const UserList = () => {
                                                         value={params.designation}
                                                         onChange={(e) => changeValue(e)}
                                                     />
+                                                </div> */}
+                                                <div className="mb-4">
+                                                    <label className="inline-flex cursor-pointer items-center">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={isChecked}
+                                                            className="peer sr-only"
+                                                            onClick={(e) => {
+                                                                setIsChecked(!isChecked);
+                                                                setParams({ ...params, status: !isChecked });
+                                                            }}
+                                                            id="status"
+                                                        />
+                                                        <div className="peer relative h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800 rtl:peer-checked:after:-translate-x-full"></div>
+                                                        <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Status</span>
+                                                    </label>
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
@@ -593,7 +678,7 @@ const UserList = () => {
                                                         rows={3}
                                                         placeholder="Enter Address"
                                                         className="form-textarea min-h-[130px] resize-none"
-                                                        value={params.location}
+                                                        value={params.address}
                                                         onChange={(e) => changeValue(e)}
                                                     ></textarea>
                                                 </div>
@@ -611,6 +696,97 @@ const UserList = () => {
                                                 </button>
                                                 <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={saveUser}>
                                                     {params.id ? 'Update' : 'Add'}
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </Dialog.Panel>
+                            </Transition.Child>
+                        </div>
+                    </div>
+                </Dialog>
+            </Transition>
+
+            <Transition appear show={assignPassword} as={Fragment}>
+                <Dialog as="div" open={assignPassword} onClose={() => setAssignPassword(false)} className="relative z-50">
+                    <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
+                        <div className="fixed inset-0 bg-[black]/60" />
+                    </Transition.Child>
+                    <div className="fixed inset-0 overflow-y-auto">
+                        <div className="flex min-h-full items-center justify-center px-4 py-8">
+                            <Transition.Child
+                                as={Fragment}
+                                enter="ease-out duration-300"
+                                enterFrom="opacity-0 scale-95"
+                                enterTo="opacity-100 scale-100"
+                                leave="ease-in duration-200"
+                                leaveFrom="opacity-100 scale-100"
+                                leaveTo="opacity-0 scale-95"
+                            >
+                                <Dialog.Panel className="panel w-full max-w-xl overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
+                                    <button
+                                        type="button"
+                                        onClick={() => setAssignPassword(false)}
+                                        className="absolute top-4 text-gray-400 outline-none hover:text-gray-800 dark:hover:text-gray-600 ltr:right-4 rtl:left-4"
+                                    >
+                                        <IconX />
+                                    </button>
+                                    <div className="bg-[#fbfbfb] py-3 text-lg font-medium dark:bg-[#121c2c] ltr:pl-5 ltr:pr-[50px] rtl:pl-[50px] rtl:pr-5">Assign Password</div>
+                                    <div className="p-5">
+                                        {/* <AddUserForm  saveUser={saveUser} setParams={setParams} /> */}
+                                        <form>
+                                            <div className="mb-4 grid grid-cols-1 gap-5 md:grid-cols-1   ">
+                                                <div className="dropdown">
+                                                    <label htmlFor="center">Users</label>
+                                                    <select className="form-input" onChange={(e) => handlePasswordChange(e)} id="id" defaultValue={assignPasswordValue.id}>
+                                                        <option value="" disabled={true}>
+                                                            Select User
+                                                        </option>
+                                                        <option value="raji">raji </option>
+                                                        <option value="Two">sanjay</option>
+                                                        <option value="Three">jagan</option>
+                                                        <option value="Three">santhosh</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                                                <div className="mb-5">
+                                                    <label htmlFor="password">Password</label>
+                                                    <input
+                                                        id="password"
+                                                        type="password"
+                                                        placeholder="Enter Password"
+                                                        className="form-input"
+                                                        value={assignPasswordValue.password}
+                                                        onChange={(e) => handlePasswordChange(e)}
+                                                    />
+                                                </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="confirmpassword">Confirm Password</label>
+                                                    <input
+                                                        id="confirmpassword"
+                                                        type="password"
+                                                        placeholder="Enter Confirm  Password"
+                                                        className="form-input"
+                                                        value={assignPasswordValue.confirmpassword}
+                                                        onChange={(e) => handlePasswordChange(e)}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="mt-8 flex items-center justify-end">
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-outline-danger"
+                                                    onClick={() => {
+                                                        setAssignPassword(false);
+                                                        setAssignPasswordValue({ id: '', password: '', confirmpassword: '' });
+                                                    }}
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={changePassword}>
+                                                    Add
                                                 </button>
                                             </div>
                                         </form>
