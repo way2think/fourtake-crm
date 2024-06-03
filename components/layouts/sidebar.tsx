@@ -104,6 +104,14 @@ const Sidebar = () => {
                     </div>
                     <PerfectScrollbar className="relative h-[calc(100vh-80px)]">
                         <ul className="relative space-y-0.5 p-4 py-0 font-semibold">
+                            <li className="nav-item">
+                                <Link href="/" className="group">
+                                    <div className="flex items-center">
+                                        <IconMenuNotes className="shrink-0 group-hover:!text-primary" />
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Dashboard')}</span>
+                                    </div>
+                                </Link>
+                            </li>
                             <li className="menu nav-item">
                                 {/* <button type="button" className={`${currentMenu === 'User Management' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('User Management')}>
                                     <div className="flex items-center">

@@ -6,6 +6,7 @@ import React, { ReactNode, Suspense } from 'react';
 import { appWithI18Next } from 'ni18n';
 import { ni18nConfig } from 'ni18n.config.ts';
 import Loading from '@/components/layouts/loading';
+import { MantineProvider } from '@mantine/core';
 
 interface IProps {
     children?: ReactNode;
@@ -15,7 +16,9 @@ const ProviderComponent = ({ children }: IProps) => {
     return (
         <Provider store={store}>
             <Suspense fallback={<Loading />}>
-                <App>{children} </App>
+                <MantineProvider>
+                    <App>{children} </App>
+                </MantineProvider>
             </Suspense>
         </Provider>
     );
