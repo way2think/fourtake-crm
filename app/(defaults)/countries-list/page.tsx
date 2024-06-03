@@ -1,16 +1,16 @@
-import ComponentsDatatablesAltPagination from '../../../components/CMS/components-datatables-alt-pagination';
 import IconBell from '@/components/icon/icon-bell';
 import { Metadata } from 'next';
 import React from 'react';
+import CmsTablesCountriesList from '../../../components/CMS/cms-tables-countries-list';
 
 export const metadata: Metadata = {
     title: 'checklist | Countries list',
 };
-ComponentsDatatablesAltPagination;
+
 const CountriesList = () => {
     return (
         <div>
-            <ComponentsDatatablesAltPagination />
+            <CmsTablesCountriesList />
             {/* <ComponentsTablesProgress/> */}
         </div>
     );

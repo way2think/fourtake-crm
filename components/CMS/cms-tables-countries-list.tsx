@@ -6,6 +6,7 @@ import IconPencil from '@/components/icon/icon-pencil';
 import IconTrashLines from '@/components/icon/icon-trash-lines';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
+import ComponentsModalOptionalSizes from '../Reusable/Modal/components-modal-optional-sizes';
 
 const rowData = [
     {
@@ -99,7 +100,7 @@ const rowData = [
         ),
     },
 ];
-const ComponentsDatatablesAltPagination = () => {
+const CmsTablesCountriesList = () => {
     const [page, setPage] = useState(1);
     const PAGE_SIZES = [10, 20, 30, 50, 100];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
@@ -136,40 +137,43 @@ const ComponentsDatatablesAltPagination = () => {
         setPage(1);
     }, [sortStatus]);
     return (
-        <div className="panel mt-6">
-            <div className="mb-5 flex flex-col gap-5 md:flex-row md:items-center">
-                <h5 className="text-lg font-semibold dark:text-white-light">Checklist</h5>
-                <div className="ltr:ml-auto rtl:mr-auto">
-                    <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
+        <>
+            <div className="panel mt-6">
+                <div className="mb-5 flex  flex-col  gap-5 md:flex-row md:items-center">
+                    <h5 className="text-lg font-semibold dark:text-white-light">Countries</h5>
+                    <div className="mb-0 flex items-start justify-center ltr:ml-auto rtl:mr-auto">
+                        <ComponentsModalOptionalSizes />
+                        <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
+                    </div>
+                </div>
+                <div className="datatables">
+                    <DataTable
+                        // noRecordsText="No results match your search query"
+                        highlightOnHover
+                        className="table-hover whitespace-nowrap"
+                        records={recordsData}
+                        columns={[
+                            { accessor: 'id', title: 'ID' },
+                            { accessor: 'firstName', title: 'Counties List' },
+                            { accessor: 'action', title: 'Actions' },
+                            // { accessor: 'email', sortable: true },
+                            // { accessor: 'phone', sortable: true },
+                        ]}
+                        totalRecords={initialRecords.length}
+                        recordsPerPage={pageSize}
+                        page={page}
+                        onPageChange={(p) => setPage(p)}
+                        recordsPerPageOptions={PAGE_SIZES}
+                        onRecordsPerPageChange={setPageSize}
+                        sortStatus={sortStatus}
+                        onSortStatusChange={setSortStatus}
+                        minHeight={200}
+                        paginationText={({ from, to, totalRecords }) => `Showing  ${from} to ${to} of ${totalRecords} entries`}
+                    />
                 </div>
             </div>
-            <div className="datatables">
-                <DataTable
-                    // noRecordsText="No results match your search query"
-                    highlightOnHover
-                    className="table-hover whitespace-nowrap"
-                    records={recordsData}
-                    columns={[
-                        { accessor: 'id', title: 'ID' },
-                        { accessor: 'firstName', title: 'Counties List' },
-                        { accessor: 'action', title: 'Actions' },
-                        // { accessor: 'email', sortable: true },
-                        // { accessor: 'phone', sortable: true },
-                    ]}
-                    totalRecords={initialRecords.length}
-                    recordsPerPage={pageSize}
-                    page={page}
-                    onPageChange={(p) => setPage(p)}
-                    recordsPerPageOptions={PAGE_SIZES}
-                    onRecordsPerPageChange={setPageSize}
-                    sortStatus={sortStatus}
-                    onSortStatusChange={setSortStatus}
-                    minHeight={200}
-                    paginationText={({ from, to, totalRecords }) => `Showing  ${from} to ${to} of ${totalRecords} entries`}
-                />
-            </div>
-        </div>
+        </>
     );
 };
 
-export default ComponentsDatatablesAltPagination;
+export default CmsTablesCountriesList;
