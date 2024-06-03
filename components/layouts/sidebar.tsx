@@ -176,18 +176,18 @@ const Sidebar = () => {
                                 </AnimateHeight>
                             </li>
                             <li className="menu nav-item">
-                                <button type="button" className={`${currentMenu === 'Checklist' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Checklist')}>
+                                <button type="button" className={`${currentMenu === 'CMS' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('CMS')}>
                                     <div className="flex items-center">
                                         <IconMenuDatatables className="shrink-0 group-hover:!text-primary" />
-                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Checklist')}</span>
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('CMS')}</span>
                                     </div>
 
-                                    <div className={currentMenu !== 'Checklist' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                    <div className={currentMenu !== 'CMS' ? '-rotate-90 rtl:rotate-90' : ''}>
                                         <IconCaretDown />
                                     </div>
                                 </button>
 
-                                <AnimateHeight duration={300} height={currentMenu === 'Checklist' ? 'auto' : 0}>
+                                <AnimateHeight duration={300} height={currentMenu === 'CMS' ? 'auto' : 0}>
                                     <ul className="sub-menu text-gray-500">
                                         <li>
                                             <Link href="/countries-list">{t('Countries List')}</Link>
