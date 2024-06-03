@@ -45,7 +45,6 @@ const UserList = () => {
     const [isChecked, setIsChecked] = useState<boolean>(params.status || false);
     const changeValue = (e: any) => {
         const { value, id } = e.target;
-        console.log('value.id', value, id);
         setParams({ ...params, [id]: value });
     };
 
@@ -180,13 +179,12 @@ const UserList = () => {
             });
         });
     };
-
     useEffect(() => {
         searchContact();
     }, [search]);
 
     const saveUser = () => {
-        console.log('params', params);
+        // console.log('params', params);
         if (!isValidName(params.firstname)) {
             showMessage('Frist Name is required.', 'error');
             return true;
@@ -264,7 +262,7 @@ const UserList = () => {
                 address: params.address,
             };
             setParams(user);
-            filteredItems.splice(0, 0, user);
+            filteredItems.splice(filteredItems.length, 0, user);
             //   searchContacts();
         }
 
@@ -323,9 +321,6 @@ const UserList = () => {
             padding: '10px 20px',
         });
     };
-
-    console.log('password', assignPasswordValue);
-
     return (
         <div>
             <div className="flex flex-wrap items-center justify-between gap-4">
@@ -416,9 +411,9 @@ const UserList = () => {
                                                     >
                                                         Edit
                                                     </button>
-                                                    <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => deleteUser(contact)}>
+                                                    {/* <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => deleteUser(contact)}>
                                                         Delete
-                                                    </button>
+                                                    </button> */}
                                                 </div>
                                             </td>
                                         </tr>
@@ -513,7 +508,15 @@ const UserList = () => {
             )} */}
 
             <Transition appear show={addContactModal} as={Fragment}>
-                <Dialog as="div" open={addContactModal} onClose={() => setAddContactModal(false)} className="relative z-50">
+                <Dialog
+                    as="div"
+                    open={addContactModal}
+                    onClose={() => {
+                        setAddContactModal(false);
+                        setIsEdit(false);
+                    }}
+                    className="relative z-50"
+                >
                     <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
                         <div className="fixed inset-0 bg-[black]/60" />
                     </Transition.Child>
@@ -531,7 +534,10 @@ const UserList = () => {
                                 <Dialog.Panel className="panel w-full max-w-2xl overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
                                     <button
                                         type="button"
-                                        onClick={() => setAddContactModal(false)}
+                                        onClick={() => {
+                                            setAddContactModal(false);
+                                            setIsEdit(false);
+                                        }}
                                         className="absolute top-4 text-gray-400 outline-none hover:text-gray-800 dark:hover:text-gray-600 ltr:right-4 rtl:left-4"
                                     >
                                         <IconX />
@@ -659,7 +665,7 @@ const UserList = () => {
                                                             type="checkbox"
                                                             checked={isChecked}
                                                             className="peer sr-only"
-                                                            onClick={(e) => {
+                                                            onChange={(e) => {
                                                                 setIsChecked(!isChecked);
                                                                 setParams({ ...params, status: !isChecked });
                                                             }}
