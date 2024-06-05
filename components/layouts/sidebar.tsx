@@ -107,7 +107,7 @@ const Sidebar = () => {
                             <li className="nav-item">
                                 <Link href="/" className="group">
                                     <div className="flex items-center">
-                                        <IconMenuNotes className="shrink-0 group-hover:!text-primary" />
+                                        <IconMenuNotes className="shrink-0 group-hover:!text-[#005fbe]" />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Dashboard')}</span>
                                     </div>
                                 </Link>

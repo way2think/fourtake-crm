@@ -7,6 +7,7 @@ import IconTrashLines from '@/components/icon/icon-trash-lines';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import ComponentsModalOptionalSizes from '../Reusable/Modal/components-modal-optional-sizes';
+import IconMenuDocumentation from '../icon/menu/icon-menu-documentation';
 
 const rowData =
  [
@@ -101,7 +102,12 @@ const rowData =
         ),
     },
 ];
-const CmsTablesCountriesList = () => {
+
+interface CmsTablesCountriesListProps {
+    title: string;
+}
+
+const CmsTablesCountriesList = ({ title }: CmsTablesCountriesListProps) => {
     const [page, setPage] = useState(1);
     const PAGE_SIZES = [10, 20, 30, 50, 100];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
@@ -137,13 +143,17 @@ const CmsTablesCountriesList = () => {
         setInitialRecords(sortStatus.direction === 'desc' ? data.reverse() : data);
         setPage(1);
     }, [sortStatus]);
+
     return (
         <>
             <div className="panel mt-6">
-                <div className="mb-5 flex  flex-col  gap-5 md:flex-row md:items-center">
-                    <h5 className="text-lg font-semibold dark:text-white-light">Countries</h5>
+                <div className="mb-5 flex flex-col gap-5 md:flex-row md:items-center">
+                    <h5 className="text-lg font-semibold dark:text-white-light">{title}</h5>
                     <div className="mb-0 flex items-start justify-center ltr:ml-auto rtl:mr-auto">
                         <ComponentsModalOptionalSizes />
+                        <button type="button" className="btn btn-primary mr-2">
+                            <IconMenuDocumentation className="mr-2" /> Export to excell
+                        </button>
                         <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                     </div>
                 </div>

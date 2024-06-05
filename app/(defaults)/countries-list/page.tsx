@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const CountriesList = () => {
     return (
         <div>
-            {/* <CmsTablesCountriesList /> */}
+            {/* <CmsTablesCountriesList title="Countries " /> */}
             <Countries />
             {/* <PaginationTable /> */}
             {/* <PaginationTest /> */}
