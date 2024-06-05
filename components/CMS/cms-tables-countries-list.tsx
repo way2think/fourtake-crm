@@ -7,6 +7,8 @@ import IconTrashLines from '@/components/icon/icon-trash-lines';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import ComponentsModalOptionalSizes from '../Reusable/Modal/components-modal-optional-sizes';
+import IconZipFile from '../icon/icon-zip-file';
+import IconMenuDocumentation from '../icon/menu/icon-menu-documentation';
 
 const rowData = [
     {
@@ -143,6 +145,9 @@ const CmsTablesCountriesList = () => {
                     <h5 className="text-lg font-semibold dark:text-white-light">Countries</h5>
                     <div className="mb-0 flex items-start justify-center ltr:ml-auto rtl:mr-auto">
                         <ComponentsModalOptionalSizes />
+                        <button type="button" className="btn btn-primary mr-2">
+                            <IconMenuDocumentation className="mr-2" /> Export to excell
+                        </button>
                         <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                     </div>
                 </div>
