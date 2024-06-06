@@ -1,11 +1,16 @@
 import { getData } from '@/api';
 import TableLayout from '@/components/layouts/table-layout';
+import { use } from 'react';
 
-const Country = async () => {
-    // const { data, isError } = await getData({ url: 'http://localhost:5001/center' });
-    // console.log('dataaaa: ', data);
+const getServerData = async () => {
+    return await getData({ url: 'http://localhost:5001/center' });
+};
+const Country = () => {
+    // const { data, isError, error } = use(getServerData());
+    // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
+    // // console.log('dataaaa: ', data);
     // if (isError) {
-    //     console.log(data.message);
+    //     console.log(error.message);
     // }
 
     const data = [
@@ -34,7 +39,7 @@ const Country = async () => {
         },
     ];
 
-    return <TableLayout title="Country List" data={data || []} totalPages={data.length || 0} tableColumns={tableColumns} actionModal={<>Hi</>} />;
+    return <TableLayout title="Country List" data={data || []} totalPages={data?.length || 0} tableColumns={tableColumns} actionModal={<>Hi</>} />;
 };
 
 export default Country;
