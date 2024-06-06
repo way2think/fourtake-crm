@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const Sales = () => {
     return (
         <div>
-            <CmsTablesCountriesList title="Visa Types " />
+            <CmsTablesCountriesList title="Visa Types" />
         </div>
     );
 };

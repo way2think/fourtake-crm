@@ -166,9 +166,8 @@ const CmsTablesCountriesList = ({ title }: CmsTablesCountriesListProps) => {
                             { accessor: 'id', title: 'ID' },
                             { accessor: 'firstName', title: 'Counties List' },
                             { accessor: 'action', title: 'Actions' },
-                                 
                         ]}
-                        
+
                         // totalRecords={initialRecords.length}
                         // recordsPerPage={pageSize}
                         // page={page}

@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Table: React.FC<any> = ({ data, editUser, setIsEdit }) => {
     return (
         <table className="table-striped table-hover">

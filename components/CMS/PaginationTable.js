@@ -1,4 +1,5 @@
 'use client';
+
 import '@mantine/core/styles.layer.css';
 import 'mantine-datatable/styles.layer.css';
 import './paginationTable.css';
@@ -8,9 +9,15 @@ import { showNotification } from '@mantine/notifications';
 import { DataTable } from 'mantine-datatable';
 import IconPencil from '@/components/icon/icon-pencil';
 import IconTrashLines from '@/components/icon/icon-trash-lines';
+import { ActionIcon, Box, Group } from '@mantine/core';
+import IconEye from '../icon/icon-eye';
+import IconEdit from '../icon/icon-edit';
+import IconTrash from '../icon/icon-trash';
 
-export default function PaginationTable({ data }) {
+export default function PaginationTable({ data, tableColumns, handleEdit }) {
     //columns & data -props
+    const PAGE_SIZES = [10, 15, 20];
+    const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
     const [page, setPage] = useState(1);
     const recordsPerPage = 10; // Customize as needed
 
@@ -30,27 +37,36 @@ export default function PaginationTable({ data }) {
                 highlightOnHover
                 records={paginatedData}
                 columns={[
+                    ...tableColumns,
                     {
-                        accessor: 'id',
-                        // Custom title
-                        title: 'SNo',
-                        // Right-align column
-                        textAlign: 'left',
+                        accessor: 'actions',
+                        title: <Box mr={6}>Row actions</Box>,
+                        textAlign: 'right',
+                        render: (row) => (
+                            <Group gap={4} justify="right" wrap="nowrap">
+                                <ActionIcon size="sm" variant="subtle" color="green" onClick={() => showModal({ company, action: 'view' })}>
+                                    <IconEye size={16} />
+                                </ActionIcon>
+                                <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit(row)}>
+                                    <IconEdit size={16} />
+                                </ActionIcon>
+                                <ActionIcon size="sm" variant="subtle" color="red" onClick={() => showModal({ company, action: 'delete' })}>
+                                    <IconTrash size={16} />
+                                </ActionIcon>
+                            </Group>
+                        ),
                     },
-                    { accessor: 'name' },
-                    { accessor: 'action', title: 'Actions' },
                 ]}
                 // Execute this callback when a row is clicked
-                onRowClick={({ record: { name } }) =>
-                    showNotification({
-                        title: `Clicked on ${name}`,
-                        message: `You clicked on ${name} `,
-                        withBorder: true,
-                    })
-                }
+                // onRowClick={({ record }) => {
+                //     console.log('rescor: ', record);
+                // }}
                 // Pagination properties
                 totalRecords={data.length}
-                recordsPerPage={recordsPerPage}
+                paginationActiveBackgroundColor="grape"
+                recordsPerPage={pageSize}
+                recordsPerPageOptions={PAGE_SIZES}
+                onRecordsPerPageChange={setPageSize}
                 page={page}
                 onPageChange={setPage}
             />
