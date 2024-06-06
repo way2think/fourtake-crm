@@ -125,7 +125,6 @@ const Sidebar = () => {
                                 </button> */}
 
                                 <button type="button" className={`${currentMenu === 'User List' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('User List')}>
-                                    {' '}
                                     <div className="flex items-center">
                                         <IconMenuUsers className="shrink-0 group-hover:!text-primary" />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
