@@ -1,140 +1,59 @@
 'use client';
-import React, { useState, useMemo } from 'react';
-import Pagination from '../../components/CMS/pagination';
-import data from './data.json';
-import './paginationtable.css';
-import Tippy from '@tippyjs/react';
+import '@mantine/core/styles.layer.css';
+import 'mantine-datatable/styles.layer.css';
+import './paginationTable.css';
+
+import { useState } from 'react';
+import { showNotification } from '@mantine/notifications';
+import { DataTable } from 'mantine-datatable';
 import IconPencil from '@/components/icon/icon-pencil';
 import IconTrashLines from '@/components/icon/icon-trash-lines';
-import 'tippy.js/dist/tippy.css';
 
-let PageSize = 10;
+export default function PaginationTable({ data }) {
+    //columns & data -props
+    const [page, setPage] = useState(1);
+    const recordsPerPage = 10; // Customize as needed
 
-const rowData = [
-    {
-        id: 1,
-        firstName: 'Caroline',
-        action: (
-            <div>
-                <Tippy content="Edit">
-                    <button type="button">
-                        <IconPencil className="ltr:mr-2 rtl:ml-2" />
-                    </button>
-                </Tippy>
-                <Tippy content="Delete">
-                    <button type="button">
-                        <IconTrashLines />
-                    </button>
-                </Tippy>
-            </div>
-        ),
-    },
-    {
-        id: 2,
-        firstName: 'Celeste',
-        action: (
-            <div>
-                <Tippy content="Edit">
-                    <button type="button">
-                        <IconPencil className="ltr:mr-2 rtl:ml-2" />
-                    </button>
-                </Tippy>
-                <Tippy content="Delete">
-                    <button type="button">
-                        <IconTrashLines />
-                    </button>
-                </Tippy>
-            </div>
-        ),
-    },
-    {
-        id: 3,
-        firstName: 'Tillman',
-        action: (
-            <div>
-                <Tippy content="Edit">
-                    <button type="button">
-                        <IconPencil className="ltr:mr-2 rtl:ml-2" />
-                    </button>
-                </Tippy>
-                <Tippy content="Delete">
-                    <button type="button">
-                        <IconTrashLines />
-                    </button>
-                </Tippy>
-            </div>
-        ),
-    },
-    {
-        id: 4,
-        firstName: 'Daisy',
-        action: (
-            <div>
-                <Tippy content="Edit">
-                    <button type="button">
-                        <IconPencil className="ltr:mr-2 rtl:ml-2" />
-                    </button>
-                </Tippy>
-                <Tippy content="Delete">
-                    <button type="button">
-                        <IconTrashLines />
-                    </button>
-                </Tippy>
-            </div>
-        ),
-    },
-    {
-        id: 5,
-        firstName: 'Weber',
-        action: (
-            <div>
-                <Tippy content="Edit">
-                    <button type="button">
-                        <IconPencil className="ltr:mr-2 rtl:ml-2" />
-                    </button>
-                </Tippy>
-                <Tippy content="Delete">
-                    <button type="button">
-                        <IconTrashLines />
-                    </button>
-                </Tippy>
-            </div>
-        ),
-    },
-];
-
-export default function PaginationTable() {
-    const [currentPage, setCurrentPage] = useState(1);
-
-    const currentTableData = useMemo(() => {
-        const firstPageIndex = (currentPage - 1) * PageSize;
-        const lastPageIndex = firstPageIndex + PageSize;
-        return rowData.slice(firstPageIndex, lastPageIndex);
-    }, [currentPage]);
+    // Calculate the start and end index for the current page
+    const startIndex = (page - 1) * recordsPerPage;
+    const endIndex = startIndex + recordsPerPage;
+    const paginatedData = data.slice(startIndex, endIndex);
 
     return (
-        <>
-            <table>
-                <thead>
-                    <tr>
-                        <th>SNo</th>
-                        <th>Country Name</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {currentTableData.map((item, i) => {
-                        return (
-                            <tr key={i}>
-                                <td>{item.id}</td>
-                                <td>{item.firstName}</td>
-                                <td>{item.action}</td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
-            <Pagination className="pagination-bar" currentPage={currentPage} totalCount={rowData.length} pageSize={PageSize} onPageChange={(page) => setCurrentPage(page)} />
-        </>
+        <div className="datatables">
+            <DataTable
+                withTableBorder
+                borderRadius="sm"
+                withColumnBorders
+                striped
+                className="table-hover whitespace-nowrap"
+                highlightOnHover
+                records={paginatedData}
+                columns={[
+                    {
+                        accessor: 'id',
+                        // Custom title
+                        title: 'SNo',
+                        // Right-align column
+                        textAlign: 'left',
+                    },
+                    { accessor: 'name' },
+                    { accessor: 'action', title: 'Actions' },
+                ]}
+                // Execute this callback when a row is clicked
+                onRowClick={({ record: { name } }) =>
+                    showNotification({
+                        title: `Clicked on ${name}`,
+                        message: `You clicked on ${name} `,
+                        withBorder: true,
+                    })
+                }
+                // Pagination properties
+                totalRecords={data.length}
+                recordsPerPage={recordsPerPage}
+                page={page}
+                onPageChange={setPage}
+            />
+        </div>
     );
 }

@@ -167,19 +167,19 @@ const CmsTablesCountriesList = ({ title }: CmsTablesCountriesListProps) => {
                             { accessor: 'id', title: 'ID' },
                             { accessor: 'firstName', title: 'Counties List' },
                             { accessor: 'action', title: 'Actions' },
-                            // { accessor: 'email', sortable: true },
-                            // { accessor: 'phone', sortable: true },
+                                 
                         ]}
-                        totalRecords={initialRecords.length}
-                        recordsPerPage={pageSize}
-                        page={page}
-                        onPageChange={(p) => setPage(p)}
-                        recordsPerPageOptions={PAGE_SIZES}
-                        onRecordsPerPageChange={setPageSize}
-                        sortStatus={sortStatus}
-                        onSortStatusChange={setSortStatus}
-                        minHeight={200}
-                        paginationText={({ from, to, totalRecords }) => `Showing  ${from} to ${to} of ${totalRecords} entries`}
+                        
+                        // totalRecords={initialRecords.length}
+                        // recordsPerPage={pageSize}
+                        // page={page}
+                        // onPageChange={(p) => setPage(p)}
+                        // recordsPerPageOptions={PAGE_SIZES}
+                        // onRecordsPerPageChange={setPageSize}
+                        // sortStatus={sortStatus}
+                        // onSortStatusChange={setSortStatus}
+                        // minHeight={200}
+                        // paginationText={({ from, to, totalRecords }) => `Showing  ${from} to ${to} of ${totalRecords} entries`}
                     />
                 </div>
                 <div className="flex items-center gap-4">

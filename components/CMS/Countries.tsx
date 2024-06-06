@@ -18,15 +18,20 @@ import ComponentsFormsSelectBasic from '../Reusable/select/components-forms-sele
 import AddUserForm from '../user-management/AddUserForm';
 import { isValidEmail, isValidName, isValidPassword, isValidPhoneNumber } from '@/utils/validator';
 import IconLockDots from '../icon/icon-lock-dots';
-import Pagination from './pagination';
+
 import './pagination.css';
 import PaginationTable from './PaginationTable';
 import ComponentsModalOptionalSizes from '../Reusable/Modal/components-modal-optional-sizes';
+import ComponentsFormsFileUploadSingle from '../Reusable/file-upload/components-forms-file-upload-single';
+import ComponentsFormsFileUploadMulti from '../Reusable/file-upload/components-forms-file-upload-multi';
+import IconPencil from '@/components/icon/icon-pencil';
+import IconTrashLines from '@/components/icon/icon-trash-lines';
+import { exportToExcel } from '../Reusable/ExportExcel/exportToExcel';
 
 const Countries = () => {
     const [addContactModal, setAddContactModal] = useState<any>(false);
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
-
+    const [modal5, setModal5] = useState(false);
     const [value, setValue] = useState<any>('list');
     const [defaultParams] = useState({
         id: '',
@@ -58,118 +63,102 @@ const Countries = () => {
     };
 
     const [search, setSearch] = useState<any>('');
+      
     const [contactList] = useState<any>([
         {
             id: 1,
-            firstname: 'Alan',
-            lastname: 'green',
-            email: 'alan@mail.com',
-            role: 'Web Developer',
-            center: 'Bangalore',
-            status: false,
-            phone: '+1 202 555 0197',
-            address: 'No. 21 XYZ street',
-        },
+            name: 'Caroline',
+            action: (
+                <div>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setModal5(true);
+                        }}
+                    >
+                        <IconPencil className="ltr:mr-2 rtl:ml-2" />
+                    </button>
 
+                    <button type="button">
+                        <IconTrashLines />
+                    </button>
+                </div>
+            ),
+            languages: 'tamil',
+            dailing_code: '+91',
+            capital: 'Delhi',
+            cities: 'all list',
+            country_details: 'country detail give here',
+            climate: 'hot',
+            currecy: 'rupee',
+            time_zone: 'indian',
+            additional_info: 'extra info',
+            website: 'www.india.com',
+            is_popular: true,
+            enable_outsource: true,
+            enable_jurisdiction: true,
+            flag: 'url link ',
+            image: 'url link',
+        },
         {
             id: 2,
-            firstname: 'Alan',
-            lastname: 'green',
-            email: 'alan@mail.com',
-            role: 'Web Developer',
-            center: 'Bangalore',
-            status: false,
-            phone: '+1 202 555 0197',
-            address: 'No. 21 XYZ street',
+            name: 'Celeste',
+            action: (
+                <div>
+                    <button type="button">
+                        <IconPencil className="ltr:mr-2 rtl:ml-2" />
+                    </button>
+
+                    <button type="button">
+                        <IconTrashLines />
+                    </button>
+                </div>
+            ),
         },
         {
             id: 3,
-            firstname: 'raji',
-            lastname: 'green',
-            email: 'alan@mail.com',
-            role: 'Web Developer',
-            center: 'Bangalore',
-            status: false,
-            phone: '+1 202 555 0197',
-            address: 'No. 21 XYZ street',
+            name: 'Tillman',
+            action: (
+                <div>
+                    <button type="button">
+                        <IconPencil className="ltr:mr-2 rtl:ml-2" />
+                    </button>
+
+                    <button type="button">
+                        <IconTrashLines />
+                    </button>
+                </div>
+            ),
         },
         {
             id: 4,
-            firstname: 'Alan',
-            lastname: 'green',
-            email: 'alan@mail.com',
-            role: 'Web Developer',
-            center: 'Bangalore',
-            status: false,
-            phone: '+1 202 555 0197',
-            address: 'No. 21 XYZ street',
+            name: 'Daisy',
+            action: (
+                <div>
+                    <button type="button">
+                        <IconPencil className="ltr:mr-2 rtl:ml-2" />
+                    </button>
+
+                    <button type="button">
+                        <IconTrashLines />
+                    </button>
+                </div>
+            ),
         },
         {
             id: 5,
-            firstname: 'Alan',
-            lastname: 'green',
-            email: 'alan@mail.com',
-            role: 'Web Developer',
-            center: 'Bangalore',
-            status: false,
-            phone: '+1 202 555 0197',
-            address: 'No. 21 XYZ street',
-        },
-        {
-            id: 6,
-            firstname: 'Alan',
-            lastname: 'green',
-            email: 'alan@mail.com',
-            role: 'Web Developer',
-            center: 'Bangalore',
-            status: true,
-            phone: '+1 202 555 0197',
-            address: 'No. 21 XYZ street',
-        },
-        {
-            id: 7,
-            firstname: 'Alan',
-            lastname: 'green',
-            email: 'alan@mail.com',
-            role: 'Web Developer',
-            center: 'Bangalore',
-            status: true,
-            phone: '+1 202 555 0197',
-            address: 'No. 21 XYZ street',
-        },
-        {
-            id: 8,
-            firstname: 'Alan',
-            lastname: 'green',
-            email: 'alan@mail.com',
-            role: 'Web Developer',
-            center: 'Bangalore',
-            status: true,
-            phone: '+1 202 555 0197',
-            address: 'No. 21 XYZ street',
-        },
-        {
-            id: 9,
-            firstname: 'Alan',
-            lastname: 'green',
-            email: 'alan@mail.com',
-            role: 'Web Developer',
-            center: 'Bangalore',
-            status: false,
-            phone: '+1 202 555 0197',
-            address: 'No. 21 XYZ street',
-        },
+            name: 'Weber',
+            action: (
+                <div>
+                    <button type="button">
+                        <IconPencil className="ltr:mr-2 rtl:ml-2" />
+                    </button>
 
-        {
-            id: 10,
-            firstname: 'Alan',
-            lastname: 'green',
-            email: 'alan@mail.com',
-            role: 'Web Developer',
-            center: 'Bangalore',
-            status: false,
-            phone: '+1 202 555 0197',
-            address: 'No. 21 XYZ street',
+                    <button type="button">
+                        <IconTrashLines />
+                    </button>
+                </div>
+            ),
         },
     ]);
 
@@ -187,7 +176,7 @@ const Countries = () => {
     const searchContact = () => {
         setFilteredItems(() => {
             return contactList.filter((item: any) => {
-                return item.firstname.toLowerCase().includes(search.toLowerCase()) || item.lastname.toLowerCase().includes(search.toLowerCase());
+                return item.name.toLowerCase().includes(search.toLowerCase()) || item.lastname.toLowerCase().includes(search.toLowerCase());
             });
         });
     };
@@ -197,48 +186,48 @@ const Countries = () => {
 
     const saveUser = () => {
         // console.log('params', params);
-        if (!isValidName(params.firstname)) {
-            showMessage('Frist Name is required.', 'error');
-            return true;
-        }
-        if (!isValidName(params.lastname)) {
-            showMessage('Last Name is required.', 'error');
-            return true;
-        }
-        if (!isValidEmail(params.email)) {
-            showMessage('Invalid Email.', 'error');
-            return true;
-        }
-        if (params.center == '') {
-            showMessage('Select Center', 'error');
-            return true;
-        }
+        // if (!isValidName(params.firstname)) {
+        //     showMessage('Frist Name is required.', 'error');
+        //     return true;
+        // }
+        // if (!isValidName(params.lastname)) {
+        //     showMessage('Last Name is required.', 'error');
+        //     return true;
+        // }
+        // if (!isValidEmail(params.email)) {
+        //     showMessage('Invalid Email.', 'error');
+        //     return true;
+        // }
+        // if (params.center == '') {
+        //     showMessage('Select Center', 'error');
+        //     return true;
+        // }
 
-        if (params.phone?.length < 0 || params.phone?.length > 10) {
-            showMessage('Invalid phone number', 'error');
-            return true;
-        }
-        if (!isValidPassword(params.password)) {
-            showMessage('Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-            return true;
-        }
-        if (!isValidPassword(params.confirmpassword)) {
-            showMessage('Confirm Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-            return true;
-        }
-        if (params.password !== params.confirmpassword) {
-            showMessage('Passwords must match', 'error');
-            return true;
-        }
+        // if (params.phone?.length < 0 || params.phone?.length > 10) {
+        //     showMessage('Invalid phone number', 'error');
+        //     return true;
+        // }
+        // if (!isValidPassword(params.password)) {
+        //     showMessage('Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
+        //     return true;
+        // }
+        // if (!isValidPassword(params.confirmpassword)) {
+        //     showMessage('Confirm Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
+        //     return true;
+        // }
+        // if (params.password !== params.confirmpassword) {
+        //     showMessage('Passwords must match', 'error');
+        //     return true;
+        // }
         // if (params.designation === '') {
         //     showMessage('Designation is required.', 'error');
         //     return true;
         // }
 
-        if (params.address == '') {
-            showMessage('Enter Address', 'error');
-            return true;
-        }
+        // if (params.address == '') {
+        //     showMessage('Enter Address', 'error');
+        //     return true;
+        // }
 
         if (params.id) {
             //update user
@@ -311,9 +300,13 @@ const Countries = () => {
             let json1 = JSON.parse(JSON.stringify(user));
             setParams(json1);
         }
-        setAddContactModal(true);
+        setModal5(true);
     };
 
+    const handleExport = () => {
+        const columns = ['id', 'name'];
+        exportToExcel(contactList, columns);
+    };
     const deleteUser = (user: any = null) => {
         setFilteredItems(filteredItems.filter((d: any) => d.id !== user.id));
         showMessage('User has been deleted successfully.');
@@ -336,58 +329,40 @@ const Countries = () => {
     return (
         <div>
             <div className="flex flex-wrap items-center justify-between gap-4">
-                <h2 className="text-xl">Users</h2>
+                <h2 className="text-xl">Countries</h2>
                 <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
-                        {/* <div>
+                        <div>
                             <button type="button" className="btn btn-primary" onClick={() => editUser()}>
                                 <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
-                                Add User
+                                Add Country
                             </button>
-                        </div> */}
-                        {/* <div>
-                            <button type="button" className="btn btn-outline-primary" onClick={() => setAssignPassword(true)}>
+                        </div>
+                        <div>
+                            <button type="button" className="btn btn-outline-primary" onClick={handleExport}>
                                 <IconLockDots className="ltr:mr-2 rtl:ml-2" />
-                                Assign Password
+                                Export to Excel
                             </button>
-                        </div> */}
-                        {/* <div>
-                            <button type="button" className={`btn btn-outline-primary p-2 ${value === 'list' && 'bg-primary text-white'}`} onClick={() => setValue('list')}>
-                                <IconListCheck />
-                            </button>
-                        </div> */}
-                        {/* <div>
-                            <button type="button" className={`btn btn-outline-primary p-2 ${value === 'grid' && 'bg-primary text-white'}`} onClick={() => setValue('grid')}>
-                                <IconLayoutGrid />
-                            </button>
-                        </div> */}
+                        </div>
                     </div>
-                    {/* <div className="relative">
+                    <div className="relative">
                         <input type="text" placeholder="Search Contacts" className="peer form-input py-2 ltr:pr-11 rtl:pl-11" value={search} onChange={(e) => setSearch(e.target.value)} />
                         <button type="button" className="absolute top-1/2 -translate-y-1/2 peer-focus:text-primary ltr:right-[11px] rtl:left-[11px]">
                             <IconSearch className="mx-auto" />
                         </button>
-                    </div> */}
+                    </div>
                 </div>
             </div>
-            <ComponentsModalOptionalSizes />
-            <PaginationTable />
+            {/* <ComponentsModalOptionalSizes /> */}
+            <PaginationTable data={contactList} />
 
-             <Transition appear show={addContactModal} as={Fragment}>
-                <Dialog
-                    as="div"
-                    open={addContactModal}
-                    onClose={() => {
-                        setAddContactModal(false);
-                        setIsEdit(false);
-                    }}
-                    className="relative z-50"
-                >
+            <Transition appear show={addContactModal} as={Fragment}>
+                <Dialog as="div" open={addContactModal} onClose={() => addContactModal(false)}>
                     <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
-                        <div className="fixed inset-0 bg-[black]/60" />
+                        <div className="fixed inset-0 " />
                     </Transition.Child>
-                    <div className="fixed inset-0 overflow-y-auto">
-                        <div className="flex min-h-full items-center justify-center px-4 py-8">
+                    <div className="fixed inset-0 z-[999] overflow-y-auto bg-[black]/60">
+                        <div className="flex min-h-screen items-start justify-center px-4">
                             <Transition.Child
                                 as={Fragment}
                                 enter="ease-out duration-300"
@@ -397,271 +372,120 @@ const Countries = () => {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="panel w-full max-w-2xl overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            setAddContactModal(false);
-                                            setIsEdit(false);
-                                        }}
-                                        className="absolute top-4 text-gray-400 outline-none hover:text-gray-800 dark:hover:text-gray-600 ltr:right-4 rtl:left-4"
-                                    >
-                                        <IconX />
-                                    </button>
-                                    <div className="bg-[#fbfbfb] py-3 text-lg font-medium dark:bg-[#121c2c] ltr:pl-5 ltr:pr-[50px] rtl:pl-[50px] rtl:pr-5">{params.id ? 'Edit User' : 'Add User'}</div>
-                                    <div className="p-5">
-                                        {/* <AddUserForm  saveUser={saveUser} setParams={setParams} /> */}
-                                        <form>
-                                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                                                <div className="mb-5">
-                                                    <label htmlFor="userid">User Id</label>
-                                                    <input
-                                                        id="userid"
-                                                        type="text"
-                                                        disabled={true}
-                                                        placeholder="UserId - autofill"
-                                                        className="form-input"
-                                                        value={params.userid}
-                                                        onChange={(e) => changeValue(e)}
-                                                    />
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="firstname">Frist Name</label>
-                                                    <input id="firstname" type="text" placeholder="Enter Frist Name" className="form-input" value={params.firstname} onChange={(e) => changeValue(e)} />
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="lastname">Last Name</label>
-                                                    <input id="lastname" type="text" placeholder="Enter Last Name" className="form-input" value={params.lastname} onChange={(e) => changeValue(e)} />
-                                                </div>
-
-                                                <div className="mb-5">
-                                                    <label htmlFor="email">Email</label>
-                                                    <input
-                                                        id="email"
-                                                        type="email"
-                                                        disabled={isEdit}
-                                                        placeholder="Enter Email"
-                                                        className="form-input"
-                                                        value={params.email}
-                                                        onChange={(e) => changeValue(e)}
-                                                    />
-                                                </div>
-
-                                                <div className="dropdown">
-                                                    <label htmlFor="center">Center</label>
-                                                    <select className="form-input" defaultValue={params.center} onChange={(e) => changeValue(e)} id="center">
-                                                        <option value="" disabled={true}>
-                                                            Open this select menu
-                                                        </option>
-                                                        <option value="One">One</option>
-                                                        <option value="Two">Two</option>
-                                                        <option value="Three">Three</option>
-                                                    </select>
-                                                </div>
-                                                <div className="dropdown">
-                                                    <label htmlFor="status">Status</label>
-                                                    <select className="form-input" defaultValue={params.status} onChange={(e) => changeValue(e)} id="status">
-                                                        <option value="" disabled={true}>
-                                                            Open this select menu
-                                                        </option>
-                                                        <option value="One">One</option>
-                                                        <option value="Two">Two</option>
-                                                        <option value="Three">Three</option>
-                                                    </select>
-                                                </div>
-
-                                                <div className="dropdown">
-                                                    <label htmlFor="role">Role</label>
-                                                    <select className="form-input" defaultValue={params.role} onChange={(e) => changeValue(e)} id="role">
-                                                        <option value="" disabled={true}>
-                                                            Open this select menu
-                                                        </option>
-                                                        <option value="One">One</option>
-                                                        <option value="Two">Two</option>
-                                                        <option value="Three">Three</option>
-                                                    </select>
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="phone">Phone Number</label>
-                                                    <input id="phone" type="text" placeholder="Enter Phone Number" className="form-input" value={params.phone} onChange={(e) => changeValue(e)} />
-                                                </div>
-
-                                                {!isEdit && (
-                                                    <>
-                                                        {' '}
-                                                        <div className="mb-5">
-                                                            <label htmlFor="password">Password</label>
-                                                            <input
-                                                                id="password"
-                                                                type="password"
-                                                                placeholder="Enter Password"
-                                                                className="form-input"
-                                                                value={params.password}
-                                                                onChange={(e) => changeValue(e)}
-                                                            />
-                                                        </div>
-                                                        <div className="mb-5">
-                                                            <label htmlFor="confirmpassword">Confirm Password</label>
-                                                            <input
-                                                                id="confirmpassword"
-                                                                type="password"
-                                                                placeholder="Enter Confirm  Password"
-                                                                className="form-input"
-                                                                value={params.confirmpassword}
-                                                                onChange={(e) => changeValue(e)}
-                                                            />
-                                                        </div>
-                                                    </>
-                                                )}
-
-                                                <div className="mb-5">
-                                                    <label htmlFor="designation">Designation</label>
-                                                    <input
-                                                        id="designation"
-                                                        type="text"
-                                                        placeholder="Enter Designation"
-                                                        className="form-input"
-                                                        value={params.designation}
-                                                        onChange={(e) => changeValue(e)}
-                                                    />
-                                                </div>
-                                                <div className="mb-4">
-                                                    <label className="inline-flex cursor-pointer items-center">
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={isChecked}
-                                                            className="peer sr-only"
-                                                            onChange={(e) => {
-                                                                setIsChecked(!isChecked);
-                                                                setParams({ ...params, status: !isChecked });
-                                                            }}
-                                                            id="status"
-                                                        />
-                                                        <div className="peer relative h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800 rtl:peer-checked:after:-translate-x-full"></div>
-                                                        <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Status</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
-                                                <div className="mb-5">
-                                                    <label htmlFor="address">Address</label>
-                                                    <textarea
-                                                        id="address"
-                                                        rows={3}
-                                                        placeholder="Enter Address"
-                                                        className="form-textarea min-h-[130px] resize-none"
-                                                        value={params.address}
-                                                        onChange={(e) => changeValue(e)}
-                                                    ></textarea>
-                                                </div>
-                                            </div>
-                                            <div className="mt-8 flex items-center justify-end">
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-outline-danger"
-                                                    onClick={() => {
-                                                        setAddContactModal(false);
-                                                        setIsEdit(false);
-                                                    }}
-                                                >
-                                                    Cancel
-                                                </button>
-                                                <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={saveUser}>
-                                                    {params.id ? 'Update' : 'Add'}
-                                                </button>
-                                            </div>
-                                        </form>
+                                <Dialog.Panel className="panel my-8 w-full max-w-5xl overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
+                                    <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
+                                        <h5 className="text-lg font-bold">Add Country</h5>
+                                        <button onClick={() => setModal5(false)} type="button" className="text-white-dark hover:text-dark">
+                                            <IconX />
+                                        </button>
                                     </div>
-                                </Dialog.Panel>
-                            </Transition.Child>
-                        </div>
-                    </div>
-                </Dialog>
-            </Transition> 
 
-            <Transition appear show={assignPassword} as={Fragment}>
-                <Dialog as="div" open={assignPassword} onClose={() => setAssignPassword(false)} className="relative z-50">
-                    <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
-                        <div className="fixed inset-0 bg-[black]/60" />
-                    </Transition.Child>
-                    <div className="fixed inset-0 overflow-y-auto">
-                        <div className="flex min-h-full items-center justify-center px-4 py-8">
-                            <Transition.Child
-                                as={Fragment}
-                                enter="ease-out duration-300"
-                                enterFrom="opacity-0 scale-95"
-                                enterTo="opacity-100 scale-100"
-                                leave="ease-in duration-200"
-                                leaveFrom="opacity-100 scale-100"
-                                leaveTo="opacity-0 scale-95"
-                            >
-                                <Dialog.Panel className="panel w-full max-w-xl overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
-                                    <button
-                                        type="button"
-                                        onClick={() => setAssignPassword(false)}
-                                        className="absolute top-4 text-gray-400 outline-none hover:text-gray-800 dark:hover:text-gray-600 ltr:right-4 rtl:left-4"
-                                    >
-                                        <IconX />
-                                    </button>
-                                    <div className="bg-[#fbfbfb] py-3 text-lg font-medium dark:bg-[#121c2c] ltr:pl-5 ltr:pr-[50px] rtl:pl-[50px] rtl:pr-5">Assign Password</div>
                                     <div className="p-5">
-                                        {/* <AddUserForm  saveUser={saveUser} setParams={setParams} /> */}
-                                        <form>
-                                            <div className="mb-4 grid grid-cols-1 gap-5 md:grid-cols-1   ">
-                                                <div className="dropdown">
-                                                    <label htmlFor="center">Users</label>
-                                                    <select className="form-input" onChange={(e) => handlePasswordChange(e)} id="id" defaultValue={assignPasswordValue.id}>
-                                                        <option value="" disabled={true}>
-                                                            Select User
-                                                        </option>
-                                                        <option value="raji">raji </option>
-                                                        <option value="Two">sanjay</option>
-                                                        <option value="Three">jagan</option>
-                                                        <option value="Three">santhosh</option>
-                                                    </select>
-                                                </div>
+                                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                                            <div className="mb-5">
+                                                <label htmlFor="countrysname">Country Name</label>
+                                                <input id="countrysname" type="text" placeholder="Enter Country Name" className="form-input" />
                                             </div>
-                                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                                                <div className="mb-5">
-                                                    <label htmlFor="password">Password</label>
-                                                    <input
-                                                        id="password"
-                                                        type="password"
-                                                        placeholder="Enter Password"
-                                                        className="form-input"
-                                                        value={assignPasswordValue.password}
-                                                        onChange={(e) => handlePasswordChange(e)}
-                                                    />
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="confirmpassword">Confirm Password</label>
-                                                    <input
-                                                        id="confirmpassword"
-                                                        type="password"
-                                                        placeholder="Enter Confirm  Password"
-                                                        className="form-input"
-                                                        value={assignPasswordValue.confirmpassword}
-                                                        onChange={(e) => handlePasswordChange(e)}
-                                                    />
-                                                </div>
+                                            <div className="mb-5">
+                                                <label htmlFor="languages">Languages</label>
+                                                <input id="languages" type="text" placeholder="Enter Languages" className="form-input" />
                                             </div>
+                                        </div>
+                                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                                            <div className="mb-5">
+                                                <label htmlFor="dailingcode">Dailing Code</label>
+                                                <input id="dailingcode" type="tel" placeholder="Enter dailing Code" className="form-input" />
+                                            </div>
+                                            <div className="mb-5">
+                                                <label htmlFor="capital">Capital</label>
+                                                <input id="capital" type="text" placeholder="Enter Capital" className="form-input" />
+                                            </div>
+                                        </div>
+                                        <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-1 ">
+                                            <div className="dropdown">
+                                                <label htmlFor="role">Cities</label>
+                                                <select className="form-input" defaultValue="" id="role">
+                                                    <option value="" disabled={true}>
+                                                        Cities
+                                                    </option>
+                                                    <option value="Chennai">Chennai</option>
+                                                    <option value="Vellore">Vellore</option>
+                                                    <option value="Bengaluru">Bengaluru</option>
+                                                    <option value="New Delhi">New Delhi</option>
+                                                    <option value="Mangalore">Mangalore</option>
+                                                    <option value="Mumbai">Mumbai</option>
+                                                </select>
+                                            </div>
+                                        </div>
 
-                                            <div className="mt-8 flex items-center justify-end">
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-outline-danger"
-                                                    onClick={() => {
-                                                        setAssignPassword(false);
-                                                        setAssignPasswordValue({ id: '', password: '', confirmpassword: '' });
-                                                    }}
-                                                >
-                                                    Cancel
-                                                </button>
-                                                <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={changePassword}>
-                                                    Add
-                                                </button>
+                                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                                            <div className="mb-5">
+                                                <label htmlFor="countrydetails">Country Details</label>
+                                                <textarea id="countrydetails" rows={3} placeholder="Enter Country Details" className="form-textarea min-h-[80px] resize-none"></textarea>
                                             </div>
-                                        </form>
+                                            <div className="mb-5">
+                                                <label htmlFor="climate">Climate</label>
+                                                <textarea id="climate" rows={3} placeholder="Enter Climate" className="form-textarea min-h-[80px] resize-none"></textarea>
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                                            <div className="mb-5">
+                                                <label htmlFor="currency">Currency</label>
+                                                <input id="currency" type="tel" placeholder="Enter Currency" className="form-input" />
+                                            </div>
+                                            <div className="mb-5">
+                                                <label htmlFor="timezone">Time Zone</label>
+                                                <input id="timezone" type="text" placeholder="Enter Time Zone" className="form-input" />
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
+                                            <div className="mb-5">
+                                                <label htmlFor="additionalinfo">Additional Info</label>
+                                                <textarea id="additionalinfo" rows={3} placeholder="Enter Additional Info" className="form-textarea min-h-[80px] resize-none"></textarea>
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
+                                            <div className="mb-5">
+                                                <label htmlFor="website">Website</label>
+                                                <input id="website" type="text" placeholder="Enter Website" className="form-input" />
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-1 gap-5 md:grid-cols-3 ">
+                                            <div className="mb-5">
+                                                <label className="flex cursor-pointer items-center">
+                                                    <input type="checkbox" className="form-checkbox bg-white dark:bg-black" />
+                                                    <span className="text-white-dark">Is popular Country</span>
+                                                </label>
+                                            </div>
+                                            <div className="mb-5">
+                                                <label className="flex cursor-pointer items-center">
+                                                    <input type="checkbox" className="form-checkbox bg-white dark:bg-black" />
+                                                    <span className="text-white-dark">Enable outsource application center</span>
+                                                </label>
+                                            </div>
+                                            <div className="mb-5">
+                                                <label className="flex cursor-pointer items-center">
+                                                    <input type="checkbox" className="form-checkbox bg-white dark:bg-black" />
+                                                    <span className="text-white-dark">Enable Jurisdiction</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-1 gap-5 md:grid-cols-3 ">
+                                            <div className="mb-5">
+                                                <ComponentsFormsFileUploadSingle />
+                                            </div>
+                                            <div className="mb-5">
+                                                <ComponentsFormsFileUploadMulti />
+                                            </div>
+                                        </div>
+                                        <div className="mt-8 flex items-center justify-end">
+                                            <button onClick={() => setAddContactModal(false)} type="button" className="btn btn-outline-danger">
+                                                Cancel
+                                            </button>
+                                            <button onClick={saveUser} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
+                                                Save
+                                            </button>
+                                        </div>
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>

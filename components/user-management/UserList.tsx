@@ -18,6 +18,9 @@ import ComponentsFormsSelectBasic from '../Reusable/select/components-forms-sele
 import AddUserForm from './AddUserForm';
 import { isValidEmail, isValidName, isValidPassword, isValidPhoneNumber } from '@/utils/validator';
 import IconLockDots from '../icon/icon-lock-dots';
+import './UserList.css';
+import { exportToExcel } from '../Reusable/ExportExcel/exportToExcel';
+import Table from '../Reusable/Table/Table';
 
 const UserList = () => {
     const [addContactModal, setAddContactModal] = useState<any>(false);
@@ -167,11 +170,221 @@ const UserList = () => {
             phone: '+1 202 555 0197',
             address: 'No. 21 XYZ street',
         },
+        {
+            id: 11,
+            firstname: 'Alan',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: false,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
+        {
+            id: 12,
+            firstname: 'Alan',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: false,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
+        {
+            id: 13,
+            firstname: 'Alan',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: true,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
+        {
+            id: 14,
+            firstname: 'Alan',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: true,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
+        {
+            id: 15,
+            firstname: 'Alan',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: false,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
+        {
+            id: 16,
+            firstname: 'Alan',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: false,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
+        {
+            id: 17,
+            firstname: 'Alan',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: true,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
+        {
+            id: 18,
+            firstname: 'Alan',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: true,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
+        {
+            id: 19,
+            firstname: 'Alan',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: false,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
+        {
+            id: 20,
+            firstname: 'Alan',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: false,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
+        {
+            id: 21,
+            firstname: 'Alan',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: true,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
+        {
+            id: 7,
+            firstname: 'Alan',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: true,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
+        {
+            id: 4,
+            firstname: 'Alan',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: false,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
+        {
+            id: 5,
+            firstname: 'Alan',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: false,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
+        {
+            id: 6,
+            firstname: 'Alan',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: true,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
+        {
+            id: 7,
+            firstname: 'sanjay',
+            lastname: 'green',
+            email: 'alan@mail.com',
+            role: 'Web Developer',
+            center: 'Bangalore',
+            status: true,
+            phone: '+1 202 555 0197',
+            address: 'No. 21 XYZ street',
+        },
     ]);
 
     const [filteredItems, setFilteredItems] = useState<any>(contactList);
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
+    //pagination logic
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10; // Change this value to set the number of items per page
+
+    // Utility function to get unique records for each page
+    const getUniqueItemsPerPage = (contactList: any, itemsPerPage: any) => {
+        const seen = new Set();
+        const uniqueItems = [];
+
+        for (const item of contactList) {
+            if (!seen.has(item.id)) {
+                seen.add(item.id);
+                uniqueItems.push(item);
+            }
+        }
+
+        const totalUniqueItems = uniqueItems.length;
+        const totalPages = Math.ceil(totalUniqueItems / itemsPerPage);
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+
+        return {
+            uniqueItems: uniqueItems.slice(startIndex, endIndex),
+            totalPages,
+        };
+    };
+
+    const { uniqueItems, totalPages } = getUniqueItemsPerPage(contactList, itemsPerPage);
+
+    const handleClick = (pageNumber: number) => {
+        setCurrentPage(pageNumber);
+    };
+    // pagination logic -end
     const searchContact = () => {
         setFilteredItems(() => {
             return contactList.filter((item: any) => {
@@ -321,6 +534,11 @@ const UserList = () => {
             padding: '10px 20px',
         });
     };
+
+    const handleExport = () => {
+        const columns = ['id', 'firstname', 'lastname', 'email'];
+        exportToExcel(contactList, columns);
+    };
     return (
         <div>
             <div className="flex flex-wrap items-center justify-between gap-4">
@@ -339,16 +557,11 @@ const UserList = () => {
                                 Assign Password
                             </button>
                         </div>
-                        {/* <div>
-                            <button type="button" className={`btn btn-outline-primary p-2 ${value === 'list' && 'bg-primary text-white'}`} onClick={() => setValue('list')}>
-                                <IconListCheck />
+                        <div>
+                            <button type="button" className="btn btn-outline-primary" onClick={handleExport}>
+                                Export to Excel
                             </button>
-                        </div> */}
-                        {/* <div>
-                            <button type="button" className={`btn btn-outline-primary p-2 ${value === 'grid' && 'bg-primary text-white'}`} onClick={() => setValue('grid')}>
-                                <IconLayoutGrid />
-                            </button>
-                        </div> */}
+                        </div>
                     </div>
                     <div className="relative">
                         <input type="text" placeholder="Search Contacts" className="peer form-input py-2 ltr:pr-11 rtl:pl-11" value={search} onChange={(e) => setSearch(e.target.value)} />
@@ -358,154 +571,18 @@ const UserList = () => {
                     </div>
                 </div>
             </div>
-            {value === 'list' && (
-                <div className="panel mt-5 overflow-hidden border-0 p-0">
-                    <div className="table-responsive">
-                        <table className="table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>SNo</th>
-                                    <th>Frist Name</th>
-                                    <th>Last Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Center </th>
-                                    <th>Status</th>
-                                    <th>Phone</th>
-                                    <th className="!text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredItems.map((contact: any) => {
-                                    return (
-                                        <tr key={contact.id}>
-                                            <td>
-                                                <div className="flex w-max items-center">
-                                                    <div>{contact.id}</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="flex w-max items-center">
-                                                    <div>{contact.firstname}</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="flex w-max items-center">
-                                                    <div>{contact.lastname}</div>
-                                                </div>
-                                            </td>
-                                            <td>{contact.email}</td>
-                                            <td className="whitespace-nowrap">{contact.role}</td>
-                                            <td className="whitespace-nowrap">{contact.center}</td>
-                                            <td className="whitespace-nowrap">{contact.status ? 'Active' : 'Inactive'}</td>
-                                            <td className="whitespace-nowrap">{contact.phone}</td>
-                                            <td>
-                                                <div className="flex items-center justify-center gap-4">
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-sm btn-outline-primary"
-                                                        onClick={() => {
-                                                            editUser(contact);
-                                                            setIsEdit(true);
-                                                        }}
-                                                    >
-                                                        Edit
-                                                    </button>
-                                                    {/* <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => deleteUser(contact)}>
-                                                        Delete
-                                                    </button> */}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
+            <div className="panel mt-5 overflow-hidden border-0 p-0">
+                <div className="table-responsive">
+                    <Table data={uniqueItems} editUser={editUser} setIsEdit={setIsEdit} />
+                    <div className="pagination">
+                        {[...Array(totalPages)].map((_, index) => (
+                            <button key={index} onClick={() => handleClick(index + 1)} className={currentPage === index + 1 ? 'active' : ''}>
+                                {index + 1}
+                            </button>
+                        ))}
                     </div>
                 </div>
-            )}
-
-            {/* {value === 'grid' && (
-                <div className="mt-5 grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                    {filteredItems.map((contact: any) => {
-                        return (
-                            <div className="relative overflow-hidden rounded-md bg-white text-center shadow dark:bg-[#1c232f]" key={contact.id}>
-                                <div className="relative overflow-hidden rounded-md bg-white text-center shadow dark:bg-[#1c232f]">
-                                    <div className="rounded-t-md bg-white/40 bg-[url('/assets/images/notification-bg.png')] bg-cover bg-center p-6 pb-0">
-                                        <img className="mx-auto max-h-40 w-4/5 object-contain" src={`/assets/images/${contact.path}`} alt="contact_image" />
-                                    </div>
-                                    <div className="relative -mt-10 px-6 pb-24">
-                                        <div className="rounded-md bg-white px-2 py-4 shadow-md dark:bg-gray-900">
-                                            <div className="text-xl">{contact.name}</div>
-                                            <div className="text-white-dark">{contact.role}</div>
-                                            <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-                                                <div className="flex-auto">
-                                                    <div className="text-info">{contact.posts}</div>
-                                                    <div>Posts</div>
-                                                </div>
-                                                <div className="flex-auto">
-                                                    <div className="text-info">{contact.following}</div>
-                                                    <div>Following</div>
-                                                </div>
-                                                <div className="flex-auto">
-                                                    <div className="text-info">{contact.followers}</div>
-                                                    <div>Followers</div>
-                                                </div>
-                                            </div>
-                                            <div className="mt-4">
-                                                <ul className="flex items-center justify-center space-x-4 rtl:space-x-reverse">
-                                                    <li>
-                                                        <button type="button" className="btn btn-outline-primary h-7 w-7 rounded-full p-0">
-                                                            <IconFacebook />
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button type="button" className="btn btn-outline-primary h-7 w-7 rounded-full p-0">
-                                                            <IconInstagram />
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button type="button" className="btn btn-outline-primary h-7 w-7 rounded-full p-0">
-                                                            <IconLinkedin />
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button type="button" className="btn btn-outline-primary h-7 w-7 rounded-full p-0">
-                                                            <IconTwitter />
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div className="mt-6 grid grid-cols-1 gap-4 ltr:text-left rtl:text-right">
-                                            <div className="flex items-center">
-                                                <div className="flex-none ltr:mr-2 rtl:ml-2">Email :</div>
-                                                <div className="truncate text-white-dark">{contact.email}</div>
-                                            </div>
-                                            <div className="flex items-center">
-                                                <div className="flex-none ltr:mr-2 rtl:ml-2">Phone :</div>
-                                                <div className="text-white-dark">{contact.phone}</div>
-                                            </div>
-                                            <div className="flex items-center">
-                                                <div className="flex-none ltr:mr-2 rtl:ml-2">Address :</div>
-                                                <div className="text-white-dark">{contact.location}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="absolute bottom-0 mt-6 flex w-full gap-4 p-6 ltr:left-0 rtl:right-0">
-                                        <button type="button" className="btn btn-outline-primary w-1/2" onClick={() => editUser(contact)}>
-                                            Edit
-                                        </button>
-                                        <button type="button" className="btn btn-outline-danger w-1/2" onClick={() => deleteUser(contact)}>
-                                            Delete
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            )} */}
+            </div>
 
             <Transition appear show={addContactModal} as={Fragment}>
                 <Dialog
