@@ -260,7 +260,7 @@ const UserList = () => {
         },
         {
             id: 19,
-            firstname: 'Alan',
+            firstname: 'jangan',
             lastname: 'green',
             email: 'alan@mail.com',
             role: 'Web Developer',
@@ -271,7 +271,7 @@ const UserList = () => {
         },
         {
             id: 20,
-            firstname: 'Alan',
+            firstname: 'rohit',
             lastname: 'green',
             email: 'alan@mail.com',
             role: 'Web Developer',
@@ -292,7 +292,7 @@ const UserList = () => {
             address: 'No. 21 XYZ street',
         },
         {
-            id: 7,
+            id:22 ,
             firstname: 'Alan',
             lastname: 'green',
             email: 'alan@mail.com',
@@ -303,7 +303,7 @@ const UserList = () => {
             address: 'No. 21 XYZ street',
         },
         {
-            id: 4,
+            id: 23,
             firstname: 'Alan',
             lastname: 'green',
             email: 'alan@mail.com',
@@ -314,7 +314,7 @@ const UserList = () => {
             address: 'No. 21 XYZ street',
         },
         {
-            id: 5,
+            id: 24,
             firstname: 'Alan',
             lastname: 'green',
             email: 'alan@mail.com',
@@ -325,7 +325,7 @@ const UserList = () => {
             address: 'No. 21 XYZ street',
         },
         {
-            id: 6,
+            id: 25,
             firstname: 'Alan',
             lastname: 'green',
             email: 'alan@mail.com',
@@ -336,7 +336,7 @@ const UserList = () => {
             address: 'No. 21 XYZ street',
         },
         {
-            id: 7,
+            id: 26,
             firstname: 'sanjay',
             lastname: 'green',
             email: 'alan@mail.com',
@@ -356,11 +356,11 @@ const UserList = () => {
     const itemsPerPage = 10; // Change this value to set the number of items per page
 
     // Utility function to get unique records for each page
-    const getUniqueItemsPerPage = (contactList: any, itemsPerPage: any) => {
+    const getUniqueItemsPerPage = (filteredItems: any, itemsPerPage: any) => {
         const seen = new Set();
         const uniqueItems = [];
 
-        for (const item of contactList) {
+        for (const item of filteredItems) {
             if (!seen.has(item.id)) {
                 seen.add(item.id);
                 uniqueItems.push(item);
@@ -379,7 +379,7 @@ const UserList = () => {
         };
     };
 
-    const { uniqueItems, totalPages } = getUniqueItemsPerPage(contactList, itemsPerPage);
+    const { uniqueItems, totalPages } = getUniqueItemsPerPage(filteredItems , itemsPerPage);
 
     const handleClick = (pageNumber: number) => {
         setCurrentPage(pageNumber);
