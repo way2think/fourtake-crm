@@ -9,7 +9,17 @@ export const metadata: Metadata = {
 };
 
 const Sales = () => {
-    return <VisaChecklist />;
+    const data = [
+        {
+            id: 1,
+            visaChecklist: 'Business',
+        },
+        {
+            id: 2,
+            visaChecklist: 'Tourist',
+        },
+    ];
+    return <VisaChecklist data={data} />;
 };
 
 export default Sales;

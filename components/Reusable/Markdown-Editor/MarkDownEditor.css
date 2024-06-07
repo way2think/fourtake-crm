@@ -1,0 +1,8 @@
+/* styles/styles.css */
+.editor-container {
+    height: 500px; /* Adjust this value as needed */
+}
+
+.CodeMirror {
+    height: 100px !important;
+}
