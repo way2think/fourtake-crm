@@ -1,7 +1,6 @@
-import CmsTablesCountriesList from '@/components/CMS/cms-tables-countries-list';
-import VisaTypes from '@/components/CMS/visa-types/VisaTypes';
-import { Metadata } from 'next';
 import React from 'react';
+import { Metadata } from 'next';
+import VisaTypes from '@/components/CMS/visa-types/VisaTypes';
 
 export const metadata: Metadata = {
     title: 'Fourtake CRM',

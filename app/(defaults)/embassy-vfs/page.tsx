@@ -7,8 +7,7 @@ export const metadata: Metadata = {
 };
 
 const Sales = () => {
-    return;
-    <EmbassyVfs />;
+    return <EmbassyVfs />;
 };
 
 export default Sales;
