@@ -1,6 +1,11 @@
 import { getData } from '@/api';
+import ComponentsFormsFileUploadMulti from '@/components/Reusable/file-upload/components-forms-file-upload-multi';
+import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
 import TableLayout from '@/components/layouts/table-layout';
 import { use } from 'react';
+import { Transition, Dialog } from '@headlessui/react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
+import IconX from '@/components/icon/icon-x';
 
 const getServerData = async () => {
     return await getData({ url: 'http://localhost:5001/center' });
@@ -14,6 +19,14 @@ const Country = () => {
     // }
 
     const data = [
+        {
+            id: 2,
+            name: 'Bangalore',
+            phone: '8778229794',
+            email: 'blr@fourtakevisas.com',
+            address: 'brigade road, bangalore',
+            is_active: true,
+        },
         {
             id: 2,
             name: 'Bangalore',
@@ -38,8 +51,16 @@ const Country = () => {
             // },
         },
     ];
-
-    return <TableLayout title="Country List" data={data || []} totalPages={data?.length || 0} tableColumns={tableColumns} actionModal={<>Hi</>} />;
+    // const handleSave = () => {
+    //     console.log('HandleSave');
+    // };
+    return (
+        <>
+            <TableLayout title="Country List" data={data || []} totalPages={data?.length || 0} tableColumns={tableColumns} actionModal="countryActionModel" 
+            // handleSave ={handleSave}
+             />
+        </>
+    );
 };
 
 export default Country;

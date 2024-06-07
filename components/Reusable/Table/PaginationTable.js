@@ -10,9 +10,9 @@ import { DataTable } from 'mantine-datatable';
 import IconPencil from '@/components/icon/icon-pencil';
 import IconTrashLines from '@/components/icon/icon-trash-lines';
 import { ActionIcon, Box, Group } from '@mantine/core';
-import IconEye from '../icon/icon-eye';
-import IconEdit from '../icon/icon-edit';
-import IconTrash from '../icon/icon-trash';
+import IconEye from '../../icon/icon-eye';
+import IconEdit from '../../icon/icon-edit';
+import IconTrash from '../../icon/icon-trash';
 
 export default function PaginationTable({ data, tableColumns, handleEdit }) {
     //columns & data -props

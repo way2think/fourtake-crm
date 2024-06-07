@@ -20,13 +20,14 @@ import { isValidEmail, isValidName, isValidPassword, isValidPhoneNumber } from '
 import IconLockDots from '../icon/icon-lock-dots';
 
 import './pagination.css';
-import PaginationTable from './PaginationTable';
+import PaginationTable from '../Reusable/Table/PaginationTable';
 import ComponentsModalOptionalSizes from '../Reusable/Modal/components-modal-optional-sizes';
 import ComponentsFormsFileUploadSingle from '../Reusable/file-upload/components-forms-file-upload-single';
 import ComponentsFormsFileUploadMulti from '../Reusable/file-upload/components-forms-file-upload-multi';
 import IconPencil from '@/components/icon/icon-pencil';
 import IconTrashLines from '@/components/icon/icon-trash-lines';
 import { exportToExcel } from '../Reusable/ExportExcel/exportToExcel';
+import ActionModal from '../Reusable/Modal/ActionModal';
 
 const Countries = () => {
     const [addContactModal, setAddContactModal] = useState<any>(false);
@@ -355,8 +356,9 @@ const Countries = () => {
             </div>
             {/* <ComponentsModalOptionalSizes /> */}
             <PaginationTable data={contactList} />
+            {/* <ActionModal addContactModal={addContactModal} setAddContactModal={setAddContactModal} saveUser={saveUser} /> */}
 
-            <Transition appear show={addContactModal} as={Fragment}>
+            {/* <Transition appear show={addContactModal} as={Fragment}>
                 <Dialog as="div" open={addContactModal} onClose={() => addContactModal(false)}>
                     <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
                         <div className="fixed inset-0 " />
@@ -492,7 +494,7 @@ const Countries = () => {
                         </div>
                     </div>
                 </Dialog>
-            </Transition>
+            </Transition> */}
         </div>
     );
 };
