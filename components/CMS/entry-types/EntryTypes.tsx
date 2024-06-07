@@ -61,7 +61,7 @@ const EntryTypes = () => {
                 data={data || []}
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
-                actionModal="countryActionModel"
+                actionModal="entrytype"
                 // handleSave ={handleSave}
             />
         </>

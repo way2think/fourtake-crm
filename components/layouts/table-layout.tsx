@@ -12,6 +12,7 @@ import IconX from '../icon/icon-x';
 import ActionModal from '../Reusable/Modal/ActionModal';
 import CountryActionModal from '../CMS/countries/CountryActionModal';
 import VisaTypesActionModal from '../CMS/visa-types/VisaTypesActionModal';
+import EntryTypesActionModal from '../CMS/entry-types/EntryTypesActionModal';
 
 interface TableLayoutProps {
     title: string;
@@ -84,9 +85,11 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, data, totalPages, tabl
 
             {actionModal === 'countryActionModel' ? (
                 <CountryActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} />
-            ) : (
-                actionModal === 'visatype' && <VisaTypesActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} />
-            )}
+            ) : actionModal === 'visatype' ? (
+                <VisaTypesActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} />
+            ) : actionModal === 'entrytype' ? (
+                <EntryTypesActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} />
+            ) : null}
 
             {/* <Transition appear show={isOpen} as={Fragment}>
                 <Dialog as="div" open={isOpen} onClose={() => setIsOpen(false)}>
