@@ -11,6 +11,7 @@ import ComponentsFormsFileUploadMulti from '../Reusable/file-upload/components-f
 import IconX from '../icon/icon-x';
 import ActionModal from '../Reusable/Modal/ActionModal';
 import CountryActionModal from '../CMS/countries/CountryActionModal';
+import VisaTypesActionModal from '../CMS/visa-types/VisaTypesActionModal';
 
 interface TableLayoutProps {
     title: string;
@@ -19,9 +20,10 @@ interface TableLayoutProps {
     tableColumns: object[];
     actionModal: any;
     handleSave?: any;
+    exportColumns?: string[];
 }
 
-const TableLayout: React.FC<TableLayoutProps> = ({ title, data, totalPages, tableColumns, actionModal }) => {
+const TableLayout: React.FC<TableLayoutProps> = ({ title, data, totalPages, tableColumns, actionModal, exportColumns }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [editData, setEditData] = useState(null);
     const [search, setSearch] = useState('');
@@ -33,9 +35,9 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, data, totalPages, tabl
     };
 
     const handleExport = () => {
-        const columns = ['id', 'firstname', 'lastname', 'email'];
+        // const columns = ['id', 'firstname', 'lastname', 'email'];
         const fileName = `${title}.xlsx`;
-        exportToExcel(data, columns, fileName);
+        exportToExcel(data, exportColumns, fileName);
     };
 
     const handleSave = () => {
@@ -80,7 +82,11 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, data, totalPages, tabl
                 </div>
             </div>
 
-            {actionModal === 'countryActionModel' && <CountryActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} />}
+            {actionModal === 'countryActionModel' ? (
+                <CountryActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} />
+            ) : (
+                actionModal === 'visatype' && <VisaTypesActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} />
+            )}
 
             {/* <Transition appear show={isOpen} as={Fragment}>
                 <Dialog as="div" open={isOpen} onClose={() => setIsOpen(false)}>

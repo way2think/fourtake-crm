@@ -20,26 +20,18 @@ const VisaTypes = () => {
 
     const data = [
         {
-            id: 2,
-            name: 'Bangalore',
-            phone: '8778229794',
-            email: 'blr@fourtakevisas.com',
-            address: 'brigade road, bangalore',
-            is_active: true,
+            id: 1,
+            visatype: 'Business',
         },
         {
             id: 2,
-            name: 'Bangalore',
-            phone: '8778229794',
-            email: 'blr@fourtakevisas.com',
-            address: 'brigade road, bangalore',
-            is_active: true,
+            visatype: 'Tourist',
         },
     ];
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'S.NO' },
-        { accessor: 'name', textAlign: 'left' },
+        { accessor: 'visatype', textAlign: 'left',title:"Visa Type" },
         // { accessor: 'phone', textAlign: 'left' },
         // { accessor: 'email', textAlign: 'left' },
         // { accessor: 'address', textAlign: 'left' },
@@ -54,6 +46,8 @@ const VisaTypes = () => {
     // const handleSave = () => {
     //     console.log('HandleSave');
     // };
+
+    const exportColumns = ['SNo', 'Visa Types'];
     return (
         <>
             <TableLayout
@@ -61,7 +55,8 @@ const VisaTypes = () => {
                 data={data || []}
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
-                actionModal="countryActionModel"
+                actionModal="visatype"
+                exportColumns={exportColumns}
                 // handleSave ={handleSave}
             />
         </>
