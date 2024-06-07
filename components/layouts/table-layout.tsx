@@ -9,22 +9,20 @@ import React, { Fragment, useEffect, useMemo } from 'react';
 import ComponentsFormsFileUploadSingle from '../Reusable/file-upload/components-forms-file-upload-single';
 import ComponentsFormsFileUploadMulti from '../Reusable/file-upload/components-forms-file-upload-multi';
 import IconX from '../icon/icon-x';
-import ActionModal from '../Reusable/Modal/ActionModal';
+// import ActionModal from '../Reusable/Modal/ActionModal';
 import CountryActionModal from '../CMS/countries/CountryActionModal';
-import VisaTypesActionModal from '../CMS/visa-types/VisaTypesActionModal';
-import EntryTypesActionModal from '../CMS/entry-types/EntryTypesActionModal';
 
 interface TableLayoutProps {
     title: string;
     data: object[];
     totalPages: number;
     tableColumns: object[];
-    actionModal: any;
+    ActionModal: any;
     handleSave?: any;
     exportColumns?: string[];
 }
 
-const TableLayout: React.FC<TableLayoutProps> = ({ title, data, totalPages, tableColumns, actionModal, exportColumns }) => {
+const TableLayout: React.FC<TableLayoutProps> = ({ title, data, totalPages, tableColumns, ActionModal, exportColumns }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [editData, setEditData] = useState(null);
     const [search, setSearch] = useState('');
@@ -83,13 +81,18 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, data, totalPages, tabl
                 </div>
             </div>
 
-            {actionModal === 'countryActionModel' ? (
+            {/* {actionModal === 'countryActionModel' ? (
                 <CountryActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} />
-            ) : actionModal === 'visatype' ? (
-                <VisaTypesActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} />
-            ) : actionModal === 'entrytype' ? (
-                <EntryTypesActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} />
-            ) : null}
+            ) : (
+                actionModal === 'visatype' && <VisaTypesActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} />
+            )} */}
+
+            {/* {actionModal && actionModal(isOpen, setIsOpen, handleSave)} */}
+            <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} />
+
+            {/* <VisaTypesActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} /> */}
+
+            {/* {actionModal && <actionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave}/>} */}
 
             {/* <Transition appear show={isOpen} as={Fragment}>
                 <Dialog as="div" open={isOpen} onClose={() => setIsOpen(false)}>

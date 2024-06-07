@@ -1,3 +1,4 @@
+'use client';
 import { getData } from '@/api';
 import ComponentsFormsFileUploadMulti from '@/components/Reusable/file-upload/components-forms-file-upload-multi';
 import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
@@ -6,11 +7,12 @@ import { use } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import IconX from '@/components/icon/icon-x';
+import VisaTypesActionModal from './VisaTypesActionModal';
 
-const getServerData = async () => {
-    return await getData({ url: 'http://localhost:5001/center' });
-};
-const VisaTypes = () => {
+// const getServerData = async () => {
+//     return await getData({ url: 'http://localhost:5001/center' });
+// };
+const VisaTypes = ({ data }) => {
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
@@ -18,20 +20,20 @@ const VisaTypes = () => {
     //     console.log(error.message);
     // }
 
-    const data = [
-        {
-            id: 1,
-            visatype: 'Business',
-        },
-        {
-            id: 2,
-            visatype: 'Tourist',
-        },
-    ];
+    // const data = [
+    //     {
+    //         id: 1,
+    //         visatype: 'Business',
+    //     },
+    //     {
+    //         id: 2,
+    //         visatype: 'Tourist',
+    //     },
+    // ];
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'S.NO' },
-        { accessor: 'visatype', textAlign: 'left',title:"Visa Type" },
+        { accessor: 'visatype', textAlign: 'left', title: 'Visa Type' },
         // { accessor: 'phone', textAlign: 'left' },
         // { accessor: 'email', textAlign: 'left' },
         // { accessor: 'address', textAlign: 'left' },
@@ -43,11 +45,13 @@ const VisaTypes = () => {
         //     },
         // },
     ];
-    // const handleSave = () => {
-    //     console.log('HandleSave');
-    // };
+
+    const handleSave = () => {
+        console.log('HandleSave');
+    };
 
     const exportColumns = ['SNo', 'Visa Types'];
+
     return (
         <>
             <TableLayout
@@ -55,7 +59,7 @@ const VisaTypes = () => {
                 data={data || []}
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
-                actionModal="visatype"
+                ActionModal={VisaTypesActionModal}
                 exportColumns={exportColumns}
                 // handleSave ={handleSave}
             />
