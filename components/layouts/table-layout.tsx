@@ -82,11 +82,15 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, data, totalPages, tabl
                 </div>
             </div>
 
-            {actionModal === 'countryActionModel' ? (
+            {/* {actionModal === 'countryActionModel' ? (
                 <CountryActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} />
             ) : (
                 actionModal === 'visatype' && <VisaTypesActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} />
-            )}
+            )} */}
+
+            {actionModal && actionModal(isOpen, setIsOpen, handleSave)}
+
+            {/* {actionModal && <actionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave}/>} */}
 
             {/* <Transition appear show={isOpen} as={Fragment}>
                 <Dialog as="div" open={isOpen} onClose={() => setIsOpen(false)}>

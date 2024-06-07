@@ -6,6 +6,7 @@ import { use } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import IconX from '@/components/icon/icon-x';
+import VisaTypesActionModal from './VisaTypesActionModal';
 
 const getServerData = async () => {
     return await getData({ url: 'http://localhost:5001/center' });
@@ -31,7 +32,7 @@ const VisaTypes = () => {
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'S.NO' },
-        { accessor: 'visatype', textAlign: 'left',title:"Visa Type" },
+        { accessor: 'visatype', textAlign: 'left', title: 'Visa Type' },
         // { accessor: 'phone', textAlign: 'left' },
         // { accessor: 'email', textAlign: 'left' },
         // { accessor: 'address', textAlign: 'left' },
@@ -55,7 +56,7 @@ const VisaTypes = () => {
                 data={data || []}
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
-                actionModal="visatype"
+                actionModal={VisaTypesActionModal}
                 exportColumns={exportColumns}
                 // handleSave ={handleSave}
             />
