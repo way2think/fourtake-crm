@@ -9,10 +9,20 @@ export const metadata: Metadata = {
 };
 
 const CountriesList = () => {
+    const data = [
+        {
+            id: 1,
+            country: 'India',
+        },
+        {
+            id: 2,
+            country: 'America',
+        },
+    ];
     // return <Countries />;
     return (
         // <Suspense fallback={<p>Loading...</p>}>
-        <Country />
+        <Country data={data} />
         // </Suspense>
     );
 };

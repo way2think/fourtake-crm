@@ -1,3 +1,4 @@
+'use client';
 import { getData } from '@/api';
 import ComponentsFormsFileUploadMulti from '@/components/Reusable/file-upload/components-forms-file-upload-multi';
 import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
@@ -6,11 +7,13 @@ import { use } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import IconX from '@/components/icon/icon-x';
+import EntryTypesActionModal from './EntryTypesActionModal';
+import { title } from 'process';
 
 const getServerData = async () => {
     return await getData({ url: 'http://localhost:5001/center' });
 };
-const EntryTypes = () => {
+const EntryTypes: React.FC<{ data: any }> = ({ data }) => {
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
@@ -18,28 +21,28 @@ const EntryTypes = () => {
     //     console.log(error.message);
     // }
 
-    const data = [
-        {
-            id: 2,
-            name: 'Bangalore',
-            phone: '8778229794',
-            email: 'blr@fourtakevisas.com',
-            address: 'brigade road, bangalore',
-            is_active: true,
-        },
-        {
-            id: 2,
-            name: 'Bangalore',
-            phone: '8778229794',
-            email: 'blr@fourtakevisas.com',
-            address: 'brigade road, bangalore',
-            is_active: true,
-        },
-    ];
+    // const data = [
+    //     {
+    //         id: 2,
+    //         name: 'Bangalore',
+    //         phone: '8778229794',
+    //         email: 'blr@fourtakevisas.com',
+    //         address: 'brigade road, bangalore',
+    //         is_active: true,
+    //     },
+    //     {
+    //         id: 2,
+    //         name: 'Bangalore',
+    //         phone: '8778229794',
+    //         email: 'blr@fourtakevisas.com',
+    //         address: 'brigade road, bangalore',
+    //         is_active: true,
+    //     },
+    // ];
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'S.NO' },
-        { accessor: 'name', textAlign: 'left' },
+        { accessor: 'entrytype', textAlign: 'left', title: 'Entry Type' },
         // { accessor: 'phone', textAlign: 'left' },
         // { accessor: 'email', textAlign: 'left' },
         // { accessor: 'address', textAlign: 'left' },
@@ -61,7 +64,7 @@ const EntryTypes = () => {
                 data={data || []}
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
-                actionModal="entrytype"
+                ActionModal={EntryTypesActionModal}
                 // handleSave ={handleSave}
             />
         </>

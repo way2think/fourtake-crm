@@ -7,7 +7,17 @@ export const metadata: Metadata = {
 };
 
 const Sales = () => {
-    return <EntryTypes />;
+    const data = [
+        {
+            id: 1,
+            entrytype: 'Business',
+        },
+        {
+            id: 2,
+            entrytype: 'Tourist',
+        },
+    ];
+    return <EntryTypes data={data} />;
 };
 
 export default Sales;

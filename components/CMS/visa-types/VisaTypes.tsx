@@ -12,7 +12,7 @@ import VisaTypesActionModal from './VisaTypesActionModal';
 // const getServerData = async () => {
 //     return await getData({ url: 'http://localhost:5001/center' });
 // };
-const VisaTypes = ({ data }) => {
+const VisaTypes: React.FC<{ data: any }> = ({ data }) => {
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
