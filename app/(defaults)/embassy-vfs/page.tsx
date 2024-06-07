@@ -1,13 +1,14 @@
-import EntryTypes from '@/components/CMS/entry-types/EntryTypes';
-import { Metadata } from 'next';
 import React from 'react';
+import EmbassyVfs from '@/components/CMS/embassy-vfs/EmbassyVfs';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Fourtake CRM',
 };
 
 const Sales = () => {
-    return <EntryTypes />;
+    return;
+    <EmbassyVfs />;
 };
 
 export default Sales;
