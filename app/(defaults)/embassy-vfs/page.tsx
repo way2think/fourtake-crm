@@ -1,13 +1,13 @@
 import React from 'react';
+import EmbassyVfs from '@/components/CMS/embassy-vfs/EmbassyVfs';
 import { Metadata } from 'next';
-import VisaTypes from '@/components/CMS/visa-types/VisaTypes';
 
 export const metadata: Metadata = {
     title: 'Fourtake CRM',
 };
 
 const Sales = () => {
-    return <VisaTypes />;
+    return <EmbassyVfs />;
 };
 
 export default Sales;

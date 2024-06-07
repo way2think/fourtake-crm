@@ -1,4 +1,4 @@
-import CmsTablesCountriesList from '@/components/CMS/cms-tables-countries-list';
+import EntryTypes from '@/components/CMS/entry-types/EntryTypes';
 import { Metadata } from 'next';
 import React from 'react';
 
@@ -7,11 +7,7 @@ export const metadata: Metadata = {
 };
 
 const Sales = () => {
-    return (
-        <div>
-            <CmsTablesCountriesList title="Entry Types " />
-        </div>
-    );
+    return <EntryTypes />;
 };
 
 export default Sales;

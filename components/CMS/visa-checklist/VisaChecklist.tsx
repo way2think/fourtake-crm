@@ -10,7 +10,7 @@ import IconX from '@/components/icon/icon-x';
 const getServerData = async () => {
     return await getData({ url: 'http://localhost:5001/center' });
 };
-const Country = () => {
+const VisaChecklist = () => {
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
@@ -38,9 +38,9 @@ const Country = () => {
     ];
 
     const tableColumns = [
-        { accessor: 'id', textAlign: 'left', title: 'ID' },
-        { accessor: 'name', textAlign: 'left' },
-        // { accessor: 'phone', textAlign: 'left' },
+        { accessor: 'Country', textAlign: 'left', title: 'S.NO' },
+        { accessor: 'Visa Catergory', textAlign: 'left' },
+        { accessor: 'Loction', textAlign: 'left' },
         // { accessor: 'email', textAlign: 'left' },
         // { accessor: 'address', textAlign: 'left' },
         // {
@@ -57,7 +57,7 @@ const Country = () => {
     return (
         <>
             <TableLayout
-                title="Country List"
+                title="Visa Checklist"
                 data={data || []}
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
@@ -68,4 +68,4 @@ const Country = () => {
     );
 };
 
-export default Country;
+export default VisaChecklist;
