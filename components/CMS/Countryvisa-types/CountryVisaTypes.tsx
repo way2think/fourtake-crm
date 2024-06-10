@@ -1,5 +1,4 @@
 'use client';
-
 import { getData } from '@/api';
 import ComponentsFormsFileUploadMulti from '@/components/Reusable/file-upload/components-forms-file-upload-multi';
 import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
@@ -8,12 +7,13 @@ import { use } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import IconX from '@/components/icon/icon-x';
-import EmbassyActionModal from './EmbassyActionModal';
+import CountryActionModal from './CountryVisaTypesActionModal';
+import CountryVisaTypeActionModal from './CountryVisaTypesActionModal';
 
 const getServerData = async () => {
     return await getData({ url: 'http://localhost:5001/center' });
 };
-const EmbassyVfs: React.FC<{ data: any }> = ({ data }) => {
+const CountryVisaTypes: React.FC<{ data: any }> = ({ data }) => {
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
@@ -41,12 +41,8 @@ const EmbassyVfs: React.FC<{ data: any }> = ({ data }) => {
     // ];
 
     const tableColumns = [
-        { accessor: 'id', textAlign: 'left', title: 'S.NO' },
-        { accessor: 'embassy', textAlign: 'left', title: 'Type' },
-        { accessor: 'country', textAlign: 'left', title: 'Visa Country' },
-        { accessor: 'name', textAlign: 'left', title: 'Name' },
-        { accessor: 'city', textAlign: 'left', title: 'City' },
-        { accessor: 'state', textAlign: 'left', title: 'State' },
+        { accessor: 'countryvisa', textAlign: 'left', title: 'ID' },
+        { accessor: 'countryvisa', textAlign: 'left', title: 'Country Name' },
         // { accessor: 'phone', textAlign: 'left' },
         // { accessor: 'email', textAlign: 'left' },
         // { accessor: 'address', textAlign: 'left' },
@@ -64,15 +60,15 @@ const EmbassyVfs: React.FC<{ data: any }> = ({ data }) => {
     return (
         <>
             <TableLayout
-                title="Embassy/Vfs"
+                title="Country Visa Types"
                 data={data || []}
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
-                ActionModal={EmbassyActionModal}
+                ActionModal={CountryVisaTypeActionModal}
                 // handleSave ={handleSave}
             />
         </>
     );
 };
 
-export default EmbassyVfs;
+export default CountryVisaTypes;

@@ -201,7 +201,7 @@ const Sidebar = () => {
                                             <Link href="/visa-types">{t('Visa Types')}</Link>
                                         </li>
                                         <li>
-                                            <Link href="/country-visa-types">{t('Country Visa Types')}</Link>
+                                            <Link href="/country-visa-type">{t('Country Visa Types')}</Link>
                                         </li>
                                         <li>
                                             <Link href="/entry-types">{t('Entry Types')}</Link>
