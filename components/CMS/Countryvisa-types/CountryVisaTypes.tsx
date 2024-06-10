@@ -67,7 +67,7 @@ const CountryVisaTypes: React.FC<{ data: any }> = ({ data }) => {
                 tableColumns={tableColumns}
                 ActionModal={CountryVisaTypeActionModal}
                 handleDelete={undefined} // handleSave ={handleSave}
-            />
+                setData={SetData} filterby={''}            />
         </>
     );
 };
