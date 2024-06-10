@@ -37,7 +37,7 @@ const CountryVisaTypeActionModal: React.FC<CountryVisaTypeActionModalProps> = ({
                                 <option value="Mumbai">Mumbai</option>
                             </select>
                         </div> */}
-                        <ComponentsFormsSelectMultiselect />
+                        {/* <ComponentsFormsSelectMultiselect /> */}
                     </div>
 
                     <div className="mt-8 flex items-center justify-end">

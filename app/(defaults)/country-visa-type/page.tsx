@@ -23,7 +23,7 @@ const CountryVisaType = () => {
     // return <Countries />;
     return (
         // <Suspense fallback={<p>Loading...</p>}>
-        <CountryVisaTypes data={data} />
+        <CountryVisaTypes countryvisadata={data} />
         // </Suspense>
     );
 };

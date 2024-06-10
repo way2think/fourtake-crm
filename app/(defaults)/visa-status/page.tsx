@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Country from '@/components/CMS/countries/Country';
 import { Suspense } from 'react';
 import { getData } from '@/api';
+import VisaStatus from '@/components/CMS/visa_status/VisaStatus';
 
 export const metadata: Metadata = {
     title: 'checklist | Countries list',
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 const getServerData = async () => {
     return await getData({ url: 'http://localhost:5001/center' });
 };
-const VisaStatus = () => {
+const VisaStatusPage = () => {
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
@@ -36,4 +37,4 @@ const VisaStatus = () => {
     );
 };
 
-export default VisaStatus;
+export default VisaStatusPage;

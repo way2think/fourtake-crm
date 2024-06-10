@@ -4,7 +4,7 @@ import { use } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import IconX from '@/components/icon/icon-x';
-import CountryActionModal from './VisaStatusActionModal';
+
 import Swal from 'sweetalert2';
 import VisaStatusActionModal from './VisaStatusActionModal';
 
@@ -155,6 +155,8 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
                 title="Visa Status"
                 handleDelete={handleDelete}
                 data={data}
+                setData={setData}
+                filterby='visastatus'
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
                 ActionModal={VisaStatusActionModal}
