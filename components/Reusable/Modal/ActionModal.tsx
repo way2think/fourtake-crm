@@ -35,9 +35,10 @@ interface ActionModalProps {
     editData?: any;
     children: any;
     width: string;
+    height?: string;
 }
 
-const ActionModal: React.FC<ActionModalProps> = ({ isOpen, setIsOpen, handleSave, editData, children, width }) => {
+const ActionModal: React.FC<ActionModalProps> = ({ isOpen, setIsOpen, handleSave, editData, children, width, height }) => {
     return (
         <>
             <Transition appear show={isOpen} as={Fragment}>
@@ -56,7 +57,7 @@ const ActionModal: React.FC<ActionModalProps> = ({ isOpen, setIsOpen, handleSave
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className={`panel ${width} my-8 w-full overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark`}>{children}</Dialog.Panel>
+                                <Dialog.Panel className={`panel ${width} ${height} my-8 w-full overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark`}>{children}</Dialog.Panel>
                             </Transition.Child>
                         </div>
                     </div>

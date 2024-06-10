@@ -41,8 +41,9 @@ const CountryVisaTypes: React.FC<{ data: any }> = ({ data }) => {
     // ];
 
     const tableColumns = [
-        { accessor: 'countryvisa', textAlign: 'left', title: 'ID' },
-        { accessor: 'countryvisa', textAlign: 'left', title: 'Country Name' },
+        { accessor: 'id', textAlign: 'left', title: 'ID' },
+        { accessor: 'name', textAlign: 'left', title: 'Country Name' },
+        { accessor: 'countryvisa', textAlign: 'left', title: 'Visa Type' },
         // { accessor: 'phone', textAlign: 'left' },
         // { accessor: 'email', textAlign: 'left' },
         // { accessor: 'address', textAlign: 'left' },
@@ -65,7 +66,7 @@ const CountryVisaTypes: React.FC<{ data: any }> = ({ data }) => {
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
                 ActionModal={CountryVisaTypeActionModal}
-                // handleSave ={handleSave}
+                handleDelete={undefined} // handleSave ={handleSave}
             />
         </>
     );
