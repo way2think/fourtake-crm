@@ -14,8 +14,8 @@ import { showMessage } from '@/utils/notification';
 const getServerData = async () => {
     return await getData({ url: 'http://localhost:5001/center' });
 };
-const VisaChecklist: React.FC<{ VisaChecklist: any }> = ({ VisaChecklist }) => {
-    const [data, setData] = useState(VisaChecklist);
+const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata }) => {
+    const [data, setData] = useState(visachecklistdata);
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
@@ -43,9 +43,9 @@ const VisaChecklist: React.FC<{ VisaChecklist: any }> = ({ VisaChecklist }) => {
     // ];
 
     const tableColumns = [
-        { accessor: 'visaChecklist', textAlign: 'left', title: 'Country' },
-        { accessor: 'visaChecklist', textAlign: 'left', title: 'Visa Country' },
-        { accessor: 'visaChecklist', textAlign: 'left', title: 'Location' },
+        { accessor: 'country', textAlign: 'left', title: 'Country' },
+        { accessor: 'visatype', textAlign: 'left', title: 'Visa Country' },
+        { accessor: 'embassy', textAlign: 'left', title: 'Location' },
         // { accessor: 'email', textAlign: 'left' },
         // { accessor: 'address', textAlign: 'left' },
         // {
@@ -64,7 +64,7 @@ const VisaChecklist: React.FC<{ VisaChecklist: any }> = ({ VisaChecklist }) => {
         Swal.fire({
             icon: 'warning',
             title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            text: `You want to delete ${row.country}`,
             showCancelButton: true,
             confirmButtonText: 'Delete',
             padding: '2em',
@@ -79,10 +79,18 @@ const VisaChecklist: React.FC<{ VisaChecklist: any }> = ({ VisaChecklist }) => {
         console.log('delete', row);
     };
 
-    const exportColumns = ['Country', 'Visa Country', 'Location'];
-    const handleSumbit = (value: any) => {
+    const exportColumns = ['country', 'visatype', 'embassy'];
+    const handleSubmit = (value: any) => {
         if (value.country == '' || value.country == null) {
-            showMessage('Enter country name', 'error');
+            showMessage('Select country ', 'error');
+            return false;
+        }
+        if (value.visatype == '' || value.visatype == null) {
+            showMessage('Select Visa type', 'error');
+            return false;
+        }
+        if (value.embassy == '' || value.embassy == null) {
+            showMessage('Select Embassy Location', 'error');
             return false;
         }
         // if (!isValidName(params.lastname)) {
@@ -128,21 +136,12 @@ const VisaChecklist: React.FC<{ VisaChecklist: any }> = ({ VisaChecklist }) => {
             //update user
             let formData: any = data.find((d: any) => d.id === value.id);
             formData.country = value.country;
-            formData.language = value.language;
-            formData.dailingcode = value.dailingcode;
-            formData.capital = value.capital;
-            formData.cities = value.cities;
-            formData.countrydetails = value.countrydetails;
-            formData.climate = value.climate;
-            formData.currency = value.currency;
-            formData.timezone = value.timezone;
-            formData.additionalinfo = value.additionalinfo;
-            formData.website = value.website;
-            formData.ispopular = value.ispopular;
-            formData.isoutsource = value.isoutsource;
-            formData.isjurisdiction = value.isjurisdiction;
-            formData.image = value.image;
-            formData.flag = value.flag;
+            formData.visatype = value.visatype;
+            formData.embassy = value.embassy;
+            formData.checklist = value.checklist;
+            formData.fee = value.fee;
+            formData.form = value.form;
+            
 
             return formData;
         } else {
@@ -152,21 +151,12 @@ const VisaChecklist: React.FC<{ VisaChecklist: any }> = ({ VisaChecklist }) => {
             let formData = {
                 id: +maxUserId + 1,
                 country: value.country,
-                language: value.language,
-                dailingcode: value.dailingcode,
-                capital: value.capital,
-                cities: value.cities,
-                countrydetails: value.countrydetails,
-                climate: value.climate,
-                currency: value.currency,
-                timezone: value.timezone,
-                additionalinfo: value.additionalinfo,
-                website: value.website,
-                ispopular: value.ispopular,
-                isoutsource: value.isoutsource,
-                isjurisdiction: value.isjurisdiction,
-                image: value.image,
-                flag: value.flag,
+                visatype: value.visatype,
+                embassy: value.embassy,
+                checklist: value.checklist,
+                fee: value.fee,
+                form: value.form,
+                
             };
             setData([...data, formData]);
             return formData;
@@ -182,7 +172,7 @@ const VisaChecklist: React.FC<{ VisaChecklist: any }> = ({ VisaChecklist }) => {
         <>
             <TableLayout
                 title="Visa Checklist"
-                data={data || []}
+                data={data}
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
                 ActionModal={VisaChecklistActionModal}
@@ -190,7 +180,7 @@ const VisaChecklist: React.FC<{ VisaChecklist: any }> = ({ VisaChecklist }) => {
                 setData={setData}
                 exportColumns={exportColumns}
                 filterby={'country'} // handleSave ={handleSave}
-                handleSumbit={handleSumbit}
+                handleSubmit={handleSubmit}
             />
         </>
     );

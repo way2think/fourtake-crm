@@ -87,10 +87,10 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="dropdown">
-                            <label htmlFor="city">City</label>
-                            <select className="form-input" defaultValue="" id="city" onChange={(e) => handleInputChange(e)} value={addData?.city}>
+                            <label htmlFor="state">State</label>
+                            <select className="form-input" defaultValue="" id="state" onChange={(e) => handleInputChange(e)} value={addData?.state}>
                                 <option value="" disabled={true}>
-                                    City
+                                    State
                                 </option>
                                 <option value="Chennai">Chennai</option>
                                 <option value="Vellore">Vellore</option>
@@ -101,10 +101,10 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                             </select>
                         </div>
                         <div className="dropdown">
-                            <label htmlFor="state">State</label>
-                            <select className="form-input" defaultValue="" id="state" onChange={(e) => handleInputChange(e)} value={addData?.state}>
+                            <label htmlFor="city">City</label>
+                            <select className="form-input" defaultValue="" id="city" onChange={(e) => handleInputChange(e)} value={addData?.city}>
                                 <option value="" disabled={true}>
-                                    State
+                                    City
                                 </option>
                                 <option value="Chennai">Chennai</option>
                                 <option value="Vellore">Vellore</option>

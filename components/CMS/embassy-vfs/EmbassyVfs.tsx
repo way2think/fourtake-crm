@@ -28,8 +28,8 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
         { accessor: 'embassy', textAlign: 'left', title: 'Type' },
         { accessor: 'country', textAlign: 'left', title: 'Visa Country' },
         { accessor: 'name', textAlign: 'left', title: 'Name' },
-        { accessor: 'city', textAlign: 'left', title: 'City' },
         { accessor: 'state', textAlign: 'left', title: 'State' },
+        { accessor: 'city', textAlign: 'left', title: 'City' },
     ];
 
     const exportColumns = ['id', 'embassy', 'country', 'name', 'city', 'state'];
@@ -52,48 +52,26 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
         console.log('delete', row);
     };
     const handleSubmit = (value: any) => {
-        if (value.country == '' || value.country == null) {
-            showMessage('Enter country name', 'error');
+        if (value.embassy == '' || value.embassy == null) {
+            showMessage('Select type - Embassy/VFS', 'error');
             return false;
         }
-        // if (!isValidName(params.lastname)) {
-        //     showMessage('Last Name is required.', 'error');
-        //     return true;
-        // }
-        // if (!isValidEmail(params.email)) {
-        //     showMessage('Invalid Email.', 'error');
-        //     return true;
-        // }
-        // if (params.center == '') {
-        //     showMessage('Select Center', 'error');
-        //     return true;
-        // }
-
-        // if (params.phone?.length < 0 || params.phone?.length > 10) {
-        //     showMessage('Invalid phone number', 'error');
-        //     return true;
-        // }
-        // if (!isValidPassword(params.password)) {
-        //     showMessage('Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-        //     return true;
-        // }
-        // if (!isValidPassword(params.confirmpassword)) {
-        //     showMessage('Confirm Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-        //     return true;
-        // }
-        // if (params.password !== params.confirmpassword) {
-        //     showMessage('Passwords must match', 'error');
-        //     return true;
-        // }
-        // if (params.designation === '') {
-        //     showMessage('Designation is required.', 'error');
-        //     return true;
-        // }
-
-        // if (params.address == '') {
-        //     showMessage('Enter Address', 'error');
-        //     return true;
-        // }
+        if (value.country == '' || value.country == null) {
+            showMessage('Select country name', 'error');
+            return false;
+        }
+        if (value.name == '' || value.name == null) {
+            showMessage('Enter embassy name', 'error');
+            return false;
+        }
+        if (value.city == '' || value.city == null) {
+            showMessage('Slect City', 'error');
+            return false;
+        }
+        if (value.state == '' || value.state == null) {
+            showMessage('Select State', 'error');
+            return false;
+        }
 
         if (value.id) {
             //update user
@@ -111,7 +89,6 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
             formData.submissiondetails = value.submissiondetails;
             formData.collectiondetails = value.collectiondetails;
             formData.processingtime = value.processingtime;
-           
 
             return formData;
         } else {
@@ -132,8 +109,6 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
                 submissiondetails: value.submissiondetails,
                 collectiondetails: value.collectiondetails,
                 processingtime: value.processingtime,
-                
-              
             };
             setData([...data, formData]);
             return formData;
