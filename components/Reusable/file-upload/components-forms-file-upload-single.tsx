@@ -1,14 +1,34 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ImageUploading, { ImageListType } from 'react-images-uploading';
-import PanelCodeHighlight from '@/components/panel-code-highlight';
 
-const ComponentsFormsFileUploadSingle = () => {
-    const [images, setImages] = useState<any>([]);
+const ComponentsFormsFileUploadSingle: React.FC<{ setAddData: any; addData: any }> = ({ setAddData, addData }) => {
+    const [images, setImages] = useState<ImageListType>([]);
+    const [imageURL, setImageURL] = useState<string>('');
     const maxNumber = 69;
+
+    useEffect(() => {
+        if (addData.flag) {
+            const existingImage = [{ data_url: addData.flag }];
+            setImages(existingImage);
+            setImageURL(addData.flag);
+        }
+    }, [addData]);
 
     const onChange = (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
         setImages(imageList);
+        if (imageList.length > 0) {
+            setImageURL(imageList[0].data_url);
+            setAddData((prev: any) => ({ ...prev, ['flag']: imageList[0].data_url }));
+        } else {
+            setImageURL('');
+            setAddData((prev: any) => ({ ...prev, ['flag']: '' }));
+        }
+    };
+
+    const clearImages = () => {
+        setImages([]);
+        setImageURL('');
     };
 
     return (
@@ -16,22 +36,15 @@ const ComponentsFormsFileUploadSingle = () => {
             <div className="custom-file-container" data-upload-id="myFirstImage">
                 <div className="label-container flex items-center justify-between">
                     <label>Flag </label>
-                    <button
-                        type="button"
-                        className="custom-file-container__image-clear text-2xl"
-                        title="Clear Image"
-                        onClick={() => {
-                            setImages([]);
-                        }}
-                    >
+                    <button type="button" className="custom-file-container__image-clear text-2xl" title="Clear Image" onClick={clearImages}>
                         ×
                     </button>
                 </div>
                 <ImageUploading value={images} onChange={onChange} maxNumber={maxNumber} dataURLKey="data_url">
                     {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
                         <div className="upload__image-wrapper">
-                            <button className="custom-file-container__custom-file__custom-file-control mb-2 rounded bg-primary text-white p-1" onClick={onImageUpload} {...dragProps}>
-                                Uploaded
+                            <button className="custom-file-container__custom-file__custom-file-control mb-2 rounded bg-primary p-1 text-white" onClick={onImageUpload} {...dragProps}>
+                                Upload
                             </button>
                             &nbsp;
                             {imageList.map((image, index) => (

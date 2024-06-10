@@ -14,7 +14,7 @@ import IconEye from '../../icon/icon-eye';
 import IconEdit from '../../icon/icon-edit';
 import IconTrash from '../../icon/icon-trash';
 
-export default function PaginationTable({ data, tableColumns, handleEdit }) {
+export default function PaginationTable({ data, tableColumns, handleEdit ,handleDelete}) {
     //columns & data -props
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
@@ -25,6 +25,8 @@ export default function PaginationTable({ data, tableColumns, handleEdit }) {
     const startIndex = (page - 1) * recordsPerPage;
     const endIndex = startIndex + recordsPerPage;
     const paginatedData = data.slice(startIndex, endIndex);
+
+
 
     return (
         <div className="datatables">
@@ -44,13 +46,13 @@ export default function PaginationTable({ data, tableColumns, handleEdit }) {
                         textAlign: 'right',
                         render: (row) => (
                             <Group gap={4} justify="right" wrap="nowrap">
-                                <ActionIcon size="sm" variant="subtle" color="green" onClick={() => showModal({ company, action: 'view' })}>
+                                {/* <ActionIcon size="sm" variant="subtle" color="green" onClick={() => showModal({ company, action: 'view' })}>
                                     <IconEye size={16} />
-                                </ActionIcon>
+                                </ActionIcon> */}
                                 <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit(row)}>
                                     <IconEdit size={16} />
                                 </ActionIcon>
-                                <ActionIcon size="sm" variant="subtle" color="red" onClick={() => showModal({ company, action: 'delete' })}>
+                                <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete(row)}>
                                     <IconTrash size={16} />
                                 </ActionIcon>
                             </Group>
