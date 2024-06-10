@@ -10,6 +10,7 @@ import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import IconX from '@/components/icon/icon-x';
 import CountryActionModal from './CountryActionModal';
 import Swal from 'sweetalert2';
+import { showMessage } from '@/utils/notification';
 
 // const getServerData = async () => {
 //     return await getData({ url: 'http://localhost:5001/center' });
@@ -60,11 +61,10 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
     const exportColumns = ['id', 'country'];
 
     const handleSumbit = (value: any) => {
-        // console.log('params', params);
-        // if (!isValidName(params.firstname)) {
-        //     showMessage('Frist Name is required.', 'error');
-        //     return true;
-        // }
+        if (value.country == '' || value.country == null) {
+            showMessage('Enter country name', 'error');
+            return false;
+        }
         // if (!isValidName(params.lastname)) {
         //     showMessage('Last Name is required.', 'error');
         //     return true;
