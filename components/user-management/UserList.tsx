@@ -20,7 +20,7 @@ import { isValidEmail, isValidName, isValidPassword, isValidPhoneNumber } from '
 import IconLockDots from '../icon/icon-lock-dots';
 import './UserList.css';
 import { exportToExcel } from '../Reusable/ExportExcel/exportToExcel';
-import Table from '../Reusable/Table/Table';
+//import Table from '../Reusable/Table/Table';
 
 const UserList = () => {
     const [addContactModal, setAddContactModal] = useState<any>(false);
