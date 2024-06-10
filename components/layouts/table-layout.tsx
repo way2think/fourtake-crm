@@ -18,14 +18,14 @@ interface TableLayoutProps {
     totalPages: number;
     tableColumns: object[];
     ActionModal: any;
-    handleSumbit?: any;
+    handleSubmit?: any;
     exportColumns?: string[];
     handleDelete: any;
     setData: any;
     filterby: string;
 }
 
-const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setData, totalPages, handleDelete, handleSumbit, tableColumns, ActionModal, exportColumns }) => {
+const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setData, totalPages, handleDelete, handleSubmit, tableColumns, ActionModal, exportColumns }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [editData, setEditData] = useState(null);
     const [search, setSearch] = useState('');
@@ -34,7 +34,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     console.log('data', data);
     useEffect(() => {
         setFilterItem(data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase())));
-    }, [search]);
+    }, [search,data]);
 
     const handleEdit = (object: any) => {
         console.log('object: ', object);
@@ -56,7 +56,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     };
 
     const handleSave = () => {
-        if (handleSumbit(addData)) {
+        if (handleSubmit(addData)) {
             setIsOpen(false);
             setAddData({});
         }

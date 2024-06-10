@@ -13,7 +13,7 @@ interface CountryVisaTypeActionModalProps {
 const CountryVisaTypeActionModal: React.FC<CountryVisaTypeActionModalProps> = ({ isOpen, setIsOpen, handleSave, editData }) => {
     return (
         <>
-            <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-xl" height='h-50' >
+            <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-xl" height="h-50">
                 <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
                     <h5 className="text-lg font-bold">Edit Country Visa Type</h5>
                     <button onClick={() => setIsOpen(false)} type="button" className="text-white-dark hover:text-dark">
@@ -23,21 +23,7 @@ const CountryVisaTypeActionModal: React.FC<CountryVisaTypeActionModalProps> = ({
 
                 <div className="p-5">
                     <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-1 ">
-                        {/* <div className="dropdown">
-                            <label htmlFor="role">Cities</label>
-                            <select className="form-input" defaultValue="" id="role">
-                                <option value="" disabled={true}>
-                                    Cities
-                                </option>
-                                <option value="Chennai">Chennai</option>
-                                <option value="Vellore">Vellore</option>
-                                <option value="Bengaluru">Bengaluru</option>
-                                <option value="New Delhi">New Delhi</option>
-                                <option value="Mangalore">Mangalore</option>
-                                <option value="Mumbai">Mumbai</option>
-                            </select>
-                        </div> */}
-                        {/* <ComponentsFormsSelectMultiselect /> */}
+                        <ComponentsFormsSelectMultiselect />
                     </div>
 
                     <div className="mt-8 flex items-center justify-end">

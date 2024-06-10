@@ -1,18 +1,23 @@
 'use client';
+
+import { getData } from '@/api';
+import ComponentsFormsFileUploadMulti from '@/components/Reusable/file-upload/components-forms-file-upload-multi';
+import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
 import TableLayout from '@/components/layouts/table-layout';
 import { use } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import IconX from '@/components/icon/icon-x';
-
+import CountryActionModal from './CountryVisaURlActionModal';
 import Swal from 'sweetalert2';
-import VisaStatusActionModal from './VisaStatusActionModal';
+import { showMessage } from '@/utils/notification';
+import CountryVisaURlActionModal from './CountryVisaURlActionModal';
 
 // const getServerData = async () => {
 //     return await getData({ url: 'http://localhost:5001/center' });
 // };
-const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
-    const [data, setData] = useState(visastatusdata);
+const CountryVisaURl: React.FC<{ countryvisaurls: any }> = ({ countryvisaurls }) => {
+    const [data, setData] = useState(countryvisaurls);
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
@@ -22,18 +27,8 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
-        { accessor: 'visastatus', textAlign: 'left', title: 'Visa Status' },
-        { accessor: 'statustype', textAlign: 'left', title: 'Status Type' },
-        // { accessor: 'phone', textAlign: 'left' },
-        // { accessor: 'email', textAlign: 'left' },
-        // { accessor: 'address', textAlign: 'left' },
-        // {
-        //     accessor: 'is_active',
-        //     textAlign: 'left',
-        //     render: ({ is_active }: { is_active: any }) => {
-        //         return is_active;
-        //     },
-        // },
+        { accessor: 'country', textAlign: 'left', title: 'Country' },
+        { accessor: 'urls', textAlign: 'left', title: 'Url' },
     ];
 
     const handleDelete = (row: any) => {
@@ -55,12 +50,13 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
         console.log('delete', row);
     };
 
+    const exportColumns = ['id', 'country', 'urls'];
+
     const handleSumbit = (value: any) => {
-        // console.log('params', params);
-        // if (!isValidName(params.firstname)) {
-        //     showMessage('Frist Name is required.', 'error');
-        //     return true;
-        // }
+        if (value.country == '' || value.country == null) {
+            showMessage('Enter country name', 'error');
+            return false;
+        }
         // if (!isValidName(params.lastname)) {
         //     showMessage('Last Name is required.', 'error');
         //     return true;
@@ -103,17 +99,22 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
         if (value.id) {
             //update user
             let formData: any = data.find((d: any) => d.id === value.id);
-            formData.firstname = value.firstname;
-            formData.lastname = value.lastname;
-            formData.email = value.email;
-            formData.center = value.center;
-            formData.status = value.status;
-            formData.role = value.role;
-            formData.phone = value.phone;
-            formData.password = value.password;
-            formData.confirmpassword = value.confirmpassword;
-            // user.designation = params.designation;
-            formData.address = value.address;
+            formData.country = value.country;
+            formData.language = value.language;
+            formData.dailingcode = value.dailingcode;
+            formData.capital = value.capital;
+            formData.cities = value.cities;
+            formData.countrydetails = value.countrydetails;
+            formData.climate = value.climate;
+            formData.currency = value.currency;
+            formData.timezone = value.timezone;
+            formData.additionalinfo = value.additionalinfo;
+            formData.website = value.website;
+            formData.ispopular = value.ispopular;
+            formData.isoutsource = value.isoutsource;
+            formData.isjurisdiction = value.isjurisdiction;
+            formData.image = value.image;
+            formData.flag = value.flag;
 
             return formData;
         } else {
@@ -152,18 +153,19 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
     return (
         <>
             <TableLayout
-                title="Visa Status"
+                title="Country Visa Urls"
+                setData={setData}
+                filterby="country"
                 handleDelete={handleDelete}
                 data={data}
-                setData={setData}
-                filterby="visastatus"
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
-                ActionModal={VisaStatusActionModal}
+                exportColumns={exportColumns}
+                ActionModal={CountryVisaURlActionModal}
                 handleSumbit={handleSumbit}
             />
         </>
     );
 };
 
-export default VisaStatus;
+export default CountryVisaURl;

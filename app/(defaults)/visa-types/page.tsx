@@ -30,7 +30,7 @@ const Sales = () => {
         },
     ];
 
-    return <VisaTypes data={data} />;
+    return <VisaTypes visatypedata={data} />;
 };
 
 export default Sales;

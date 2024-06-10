@@ -4,17 +4,18 @@ import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
 import './MarkDownEditor.css';
 
-const VisafeeEditor = () => {
-    const [value, setValue] = useState('');
+const VisafeeEditor: React.FC<{ handleInputChange: any; addData: any; setAddData: any }> = ({ handleInputChange, addData, setAddData }) => {
+    const [value, setValue] = useState(addData?.fee || '');
 
     const handleChange = (value: React.SetStateAction<string>) => {
         setValue(value);
+        setAddData((prev: any) => ({ ...prev, ['fee']: value }));
     };
 
     return (
         <div>
             <label htmlFor="Checklist">Visa Fee information*</label>
-            <SimpleMDE value={value} onChange={handleChange} id="Checklist" />
+            <SimpleMDE onChange={handleChange} id="fee" value={value} />
         </div>
     );
 };
