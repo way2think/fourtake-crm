@@ -13,7 +13,8 @@ import CountryVisaTypeActionModal from './CountryVisaTypesActionModal';
 const getServerData = async () => {
     return await getData({ url: 'http://localhost:5001/center' });
 };
-const CountryVisaTypes: React.FC<{ data: any }> = ({ data }) => {
+const CountryVisaTypes: React.FC<{ countryvisadata: any }> = ({ countryvisadata }) => {
+    const [data, setData] = useState(countryvisadata);
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
@@ -54,18 +55,24 @@ const CountryVisaTypes: React.FC<{ data: any }> = ({ data }) => {
         //     },
         // },
     ];
-    // const handleSave = () => {
-    //     console.log('HandleSave');
-    // };
+    const handleSubmit = (value:any) => {
+  if(value.countryvisa == ){
+    
+  }
+    };
     return (
         <>
             <TableLayout
                 title="Country Visa Types"
-                data={data || []}
+                setData={setData}
+                data={data}
+                filterby="countryvisa"
                 totalPages={data?.length || 0}
+                handleDelete={handleDelete}
                 tableColumns={tableColumns}
+                exportColumns={exportColumns}
                 ActionModal={CountryVisaTypeActionModal}
-                // handleSave ={handleSave}
+                handleSumbit={handleSumbit}
             />
         </>
     );
