@@ -20,16 +20,21 @@ interface TableLayoutProps {
     ActionModal: any;
     handleSumbit?: any;
     exportColumns?: string[];
-    handleDelete:any;
+    handleDelete: any;
+    setData: any;
+    filterby: string;
 }
 
-const TableLayout: React.FC<TableLayoutProps> = ({ title, data, totalPages,handleDelete, handleSumbit, tableColumns, ActionModal, exportColumns }) => {
+const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setData, totalPages, handleDelete, handleSumbit, tableColumns, ActionModal, exportColumns }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [editData, setEditData] = useState(null);
     const [search, setSearch] = useState('');
+    const [filterItem, setFilterItem] = useState(data);
     const [addData, setAddData] = useState({});
 
-    console.log('data', data);
+    useEffect(() => {
+        setFilterItem(data.filter((item: any) => item[filterby].toLowerCase().includes(search.toLowerCase())));
+    }, [search, data]);
 
     const handleEdit = (object: any) => {
         console.log('object: ', object);
@@ -39,7 +44,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, data, totalPages,handl
 
     const handleInputChange = (e: any) => {
         const { value, id } = e.target;
-       
+
         setAddData({ ...addData, [id]: value });
         console.log('addData', addData);
     };
@@ -85,7 +90,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, data, totalPages,handl
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
                 <div className="table-responsive">
-                    <PaginationTable data={data} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} />
+                    <PaginationTable data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} />
                 </div>
             </div>
 

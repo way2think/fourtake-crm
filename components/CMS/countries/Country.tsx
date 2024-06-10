@@ -57,6 +57,8 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
         console.log('delete', row);
     };
 
+    const exportColumns = ['id', 'country'];
+
     const handleSumbit = (value: any) => {
         // console.log('params', params);
         // if (!isValidName(params.firstname)) {
@@ -105,17 +107,22 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
         if (value.id) {
             //update user
             let formData: any = data.find((d: any) => d.id === value.id);
-            formData.firstname = value.firstname;
-            formData.lastname = value.lastname;
-            formData.email = value.email;
-            formData.center = value.center;
-            formData.status = value.status;
-            formData.role = value.role;
-            formData.phone = value.phone;
-            formData.password = value.password;
-            formData.confirmpassword = value.confirmpassword;
-            // user.designation = params.designation;
-            formData.address = value.address;
+            formData.country = value.country;
+            formData.language = value.language;
+            formData.dailingcode = value.dailingcode;
+            formData.capital = value.capital;
+            formData.cities = value.cities;
+            formData.countrydetails = value.countrydetails;
+            formData.climate = value.climate;
+            formData.currency = value.currency;
+            formData.timezone = value.timezone;
+            formData.additionalinfo = value.additionalinfo;
+            formData.website = value.website;
+            formData.ispopular = value.ispopular;
+            formData.isoutsource = value.isoutsource;
+            formData.isjurisdiction = value.isjurisdiction;
+            formData.image = value.image;
+            formData.flag = value.flag;
 
             return formData;
         } else {
@@ -155,10 +162,13 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
         <>
             <TableLayout
                 title="Country List"
+                setData={setData}
+                filterby="country"
                 handleDelete={handleDelete}
                 data={data}
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
+                exportColumns={exportColumns}
                 ActionModal={CountryActionModal}
                 handleSumbit={handleSumbit}
             />
