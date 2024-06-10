@@ -10,6 +10,7 @@ import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import IconX from '@/components/icon/icon-x';
 import CountryActionModal from './CountryActionModal';
 import Swal from 'sweetalert2';
+import { showMessage } from '@/utils/notification';
 
 // const getServerData = async () => {
 //     return await getData({ url: 'http://localhost:5001/center' });
@@ -57,12 +58,13 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
         console.log('delete', row);
     };
 
+    const exportColumns = ['id', 'country'];
+
     const handleSumbit = (value: any) => {
-        // console.log('params', params);
-        // if (!isValidName(params.firstname)) {
-        //     showMessage('Frist Name is required.', 'error');
-        //     return true;
-        // }
+        if (value.country == '' || value.country == null) {
+            showMessage('Enter country name', 'error');
+            return false;
+        }
         // if (!isValidName(params.lastname)) {
         //     showMessage('Last Name is required.', 'error');
         //     return true;
@@ -105,17 +107,22 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
         if (value.id) {
             //update user
             let formData: any = data.find((d: any) => d.id === value.id);
-            formData.firstname = value.firstname;
-            formData.lastname = value.lastname;
-            formData.email = value.email;
-            formData.center = value.center;
-            formData.status = value.status;
-            formData.role = value.role;
-            formData.phone = value.phone;
-            formData.password = value.password;
-            formData.confirmpassword = value.confirmpassword;
-            // user.designation = params.designation;
-            formData.address = value.address;
+            formData.country = value.country;
+            formData.language = value.language;
+            formData.dailingcode = value.dailingcode;
+            formData.capital = value.capital;
+            formData.cities = value.cities;
+            formData.countrydetails = value.countrydetails;
+            formData.climate = value.climate;
+            formData.currency = value.currency;
+            formData.timezone = value.timezone;
+            formData.additionalinfo = value.additionalinfo;
+            formData.website = value.website;
+            formData.ispopular = value.ispopular;
+            formData.isoutsource = value.isoutsource;
+            formData.isjurisdiction = value.isjurisdiction;
+            formData.image = value.image;
+            formData.flag = value.flag;
 
             return formData;
         } else {
@@ -155,10 +162,13 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
         <>
             <TableLayout
                 title="Country List"
+                setData={setData}
+                filterby="country"
                 handleDelete={handleDelete}
                 data={data}
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
+                exportColumns={exportColumns}
                 ActionModal={CountryActionModal}
                 handleSumbit={handleSumbit}
             />
