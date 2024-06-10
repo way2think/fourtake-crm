@@ -3,7 +3,7 @@ import ComponentsFormsFileUploadMulti from '../../Reusable/file-upload/component
 import ComponentsFormsFileUploadSingle from '../../Reusable/file-upload/components-forms-file-upload-single';
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
 
-interface VisaStatusActionModalProps {
+interface CountryVisaURlActionModalProps {
     isOpen: any;
     setIsOpen: any;
     handleSave: any;
@@ -11,7 +11,7 @@ interface VisaStatusActionModalProps {
     handleInputChange: any;
     setAddData: any;
 }
-const VisaStatusActionModal: React.FC<VisaStatusActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
+const CountryVisaURlActionModal: React.FC<CountryVisaURlActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
     console.log('addData', addData);
     const handleCheckBoxChange = (e: any) => {
         const { id, checked } = e.target;
@@ -22,30 +22,37 @@ const VisaStatusActionModal: React.FC<VisaStatusActionModalProps> = ({ isOpen, s
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-xl">
                 <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                    <h5 className="text-lg font-bold">Add Visa Status</h5>
-                    <button onClick={() => setIsOpen(false)} type="button" className="text-white-dark hover:text-dark">
+                    <h5 className="text-lg font-bold">Add Country Visa Urls</h5>
+                    <button
+                        onClick={() => {
+                            setIsOpen(false);
+                            setAddData({});
+                        }}
+                        type="button"
+                        className="text-white-dark hover:text-dark"
+                    >
                         <IconX />
                     </button>
                 </div>
 
                 <div className="p-5">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
-                        <div className="mb-5">
-                            <label htmlFor="visatype">Visa Type</label>
-                            <input id="visatype" type="text" placeholder="Enter Visa Type" className="form-input" value={addData?.visatype} onChange={(e) => handleInputChange(e)} />
+                        <div className="dropdown mb-5">
+                            <label htmlFor="country">Country</label>
+                            <select className="form-input" defaultValue="" id="country">
+                                <option value="" disabled={true}>
+                                    Country
+                                </option>
+                                <option value="Canada">Canada</option>
+                                <option value="India">India</option>
+                                <option value="Usa">Usa</option>
+                            </select>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
-                        <div className="dropdown">
-                            <label htmlFor="statustype">Status Type</label>
-                            <select className="form-input" defaultValue="" id="statustype">
-                                <option value="" disabled={true}>
-                                    Status Type
-                                </option>
-                                <option value="Accounts">Accounts</option>
-                                <option value="Operation">Operation</option>
-                                <option value="News">News</option>
-                            </select>
+                        <div className="mb-5 ">
+                            <label htmlFor="url">Url</label>
+                            <input id="url" type="text" onChange={(e) => handleInputChange(e)} value={addData?.url} placeholder="Enter Url" className="form-input" />
                         </div>
                     </div>
                     <div className="mt-8 flex items-center justify-end">
@@ -69,4 +76,4 @@ const VisaStatusActionModal: React.FC<VisaStatusActionModalProps> = ({ isOpen, s
     );
 };
 
-export default VisaStatusActionModal;
+export default CountryVisaURlActionModal;
