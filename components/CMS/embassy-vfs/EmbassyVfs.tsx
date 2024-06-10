@@ -69,7 +69,7 @@ const EmbassyVfs: React.FC<{ data: any }> = ({ data }) => {
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
                 ActionModal={EmbassyActionModal}
-                // handleSave ={handleSave}
+                handleDelete={undefined} // handleSave ={handleSave}
             />
         </>
     );

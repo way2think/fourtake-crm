@@ -41,9 +41,12 @@ const CountryVisaTypes: React.FC<{ countryvisadata: any }> = ({ countryvisadata 
     //     },
     // ];
 
+    const handleDelete = () => {};
+
     const tableColumns = [
-        { accessor: 'countryvisa', textAlign: 'left', title: 'ID' },
-        { accessor: 'countryvisa', textAlign: 'left', title: 'Country Name' },
+        { accessor: 'id', textAlign: 'left', title: 'ID' },
+        { accessor: 'name', textAlign: 'left', title: 'Country Name' },
+        { accessor: 'countryvisa', textAlign: 'left', title: 'Visa Type' },
         // { accessor: 'phone', textAlign: 'left' },
         // { accessor: 'email', textAlign: 'left' },
         // { accessor: 'address', textAlign: 'left' },
@@ -55,10 +58,10 @@ const CountryVisaTypes: React.FC<{ countryvisadata: any }> = ({ countryvisadata 
         //     },
         // },
     ];
-    const handleSubmit = (value:any) => {
-  if(value.countryvisa == ){
-    
-  }
+
+    const exportColumns = ['id', 'visatypes'];
+    const handleSumbit = (value: any) => {
+        console.log('submit');
     };
     return (
         <>
