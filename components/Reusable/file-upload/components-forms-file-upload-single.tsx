@@ -8,7 +8,7 @@ const ComponentsFormsFileUploadSingle: React.FC<{ setAddData: any; addData: any 
     const maxNumber = 69;
 
     useEffect(() => {
-        if (addData.flag) {
+        if (addData?.flag) {
             const existingImage = [{ data_url: addData.flag }];
             setImages(existingImage);
             setImageURL(addData.flag);

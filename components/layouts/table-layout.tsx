@@ -31,10 +31,10 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [search, setSearch] = useState('');
     const [filterItem, setFilterItem] = useState(data);
     const [addData, setAddData] = useState({});
-
+    console.log('data', data);
     useEffect(() => {
         setFilterItem(data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase())));
-    }, [search, data]);
+    }, [search]);
 
     const handleEdit = (object: any) => {
         console.log('object: ', object);

@@ -13,7 +13,8 @@ import CountryVisaTypeActionModal from './CountryVisaTypesActionModal';
 const getServerData = async () => {
     return await getData({ url: 'http://localhost:5001/center' });
 };
-const CountryVisaTypes: React.FC<{ data: any }> = ({ data }) => {
+const CountryVisaTypes: React.FC<{ countryvisadata: any }> = ({ countryvisadata }) => {
+    const [data, setData] = useState(countryvisadata);
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
@@ -40,9 +41,12 @@ const CountryVisaTypes: React.FC<{ data: any }> = ({ data }) => {
     //     },
     // ];
 
+    const handleDelete = () => {};
+
     const tableColumns = [
-        { accessor: 'countryvisa', textAlign: 'left', title: 'ID' },
-        { accessor: 'countryvisa', textAlign: 'left', title: 'Country Name' },
+        { accessor: 'id', textAlign: 'left', title: 'ID' },
+        { accessor: 'name', textAlign: 'left', title: 'Country Name' },
+        { accessor: 'countryvisa', textAlign: 'left', title: 'Visa Type' },
         // { accessor: 'phone', textAlign: 'left' },
         // { accessor: 'email', textAlign: 'left' },
         // { accessor: 'address', textAlign: 'left' },
@@ -54,18 +58,24 @@ const CountryVisaTypes: React.FC<{ data: any }> = ({ data }) => {
         //     },
         // },
     ];
-    // const handleSave = () => {
-    //     console.log('HandleSave');
-    // };
+
+    const exportColumns = ['id', 'visatypes'];
+    const handleSumbit = (value: any) => {
+        console.log('submit');
+    };
     return (
         <>
             <TableLayout
                 title="Country Visa Types"
-                data={data || []}
+                setData={setData}
+                data={data}
+                filterby="countryvisa"
                 totalPages={data?.length || 0}
+                handleDelete={handleDelete}
                 tableColumns={tableColumns}
+                exportColumns={exportColumns}
                 ActionModal={CountryVisaTypeActionModal}
-                // handleSave ={handleSave}
+                handleSumbit={handleSumbit}
             />
         </>
     );

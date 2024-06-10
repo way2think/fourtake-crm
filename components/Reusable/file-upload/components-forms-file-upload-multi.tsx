@@ -9,7 +9,7 @@ const ComponentsFormsFileUploadMulti: React.FC<{ setAddData: any; addData: any }
     const maxNumber = 69;
 
     useEffect(() => {
-        if (addData.image) {
+        if (addData?.image) {
             const existingImages = addData.image.map((url: string) => ({ data_url: url }));
             setImages2(existingImages);
             setImageURLs(addData.image);
