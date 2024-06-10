@@ -34,7 +34,7 @@ const Sales = () => {
             state: 'Karnataka',
         },
     ];
-    return <EmbassyVfs data={data} />;
+    return <EmbassyVfs embassyvfsdata={data} />;
 };
 
 export default Sales;

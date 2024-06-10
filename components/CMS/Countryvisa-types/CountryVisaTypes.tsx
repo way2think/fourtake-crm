@@ -59,7 +59,7 @@ const CountryVisaTypes: React.FC<{ countryvisadata: any }> = ({ countryvisadata 
         // },
     ];
 
-    const exportColumns = ['id', 'visatypes'];
+    const exportColumns = ['id', 'countryvisa'];
     const handleSumbit = (value: any) => {
         console.log('submit');
     };

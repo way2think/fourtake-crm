@@ -8,11 +8,14 @@ import { Transition, Dialog } from '@headlessui/react';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import IconX from '@/components/icon/icon-x';
 import VisaTypesActionModal from './VisaTypesActionModal';
+import { showMessage } from '@/utils/notification';
+import Swal from 'sweetalert2';
 
 // const getServerData = async () => {
 //     return await getData({ url: 'http://localhost:5001/center' });
 // };
-const VisaTypes: React.FC<{ data: any }> = ({ data }) => {
+const VisaTypes: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
+    const [data, setData] = useState(visatypedata);
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
@@ -34,34 +37,69 @@ const VisaTypes: React.FC<{ data: any }> = ({ data }) => {
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'S.NO' },
         { accessor: 'visatype', textAlign: 'left', title: 'Visa Type' },
-        // { accessor: 'phone', textAlign: 'left' },
-        // { accessor: 'email', textAlign: 'left' },
-        // { accessor: 'address', textAlign: 'left' },
-        // {
-        //     accessor: 'is_active',
-        //     textAlign: 'left',
-        //     render: ({ is_active }: { is_active: any }) => {
-        //         return is_active;
-        //     },
-        // },
     ];
 
-    const handleSave = () => {
-        console.log('HandleSave');
-    };
+    const handleSubmit = (value: any) => {
+        if (value.visatype == '' || value.visatype == null) {
+            showMessage('Enter Visa Type', 'error');
+            return false;
+        }
+   
+        if (value.id) {
+            //update user
+            let formData: any = data.find((d: any) => d.id === value.id);
+            formData.visatype = value.visatype;
 
-    const exportColumns = ['SNo', 'Visa Types'];
+            return formData;
+        } else {
+            //add user
+            let maxUserId = data.length ? data.reduce((max: any, character: any) => (character.id > max ? character.id : max), data[0].id) : 0;
+
+            let formData = {
+                id: +maxUserId + 1,
+                visatype: value.visatype,
+            };
+            setData([...data, formData]);
+            return formData;
+
+            
+        }
+
+        
+    };
+    const handleDelete = (row: any) => {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            padding: '2em',
+            customClass: 'sweet-alerts',
+        }).then((result) => {
+            if (result.value) {
+                setData(data.filter((item: any) => item.id !== row.id));
+                Swal.fire({ title: 'Deleted!', text: 'Your file has been deleted.', icon: 'success', customClass: 'sweet-alerts' });
+                return true;
+            }
+        });
+        console.log('delete', row);
+    };
+    const exportColumns = ['id', 'visatype'];
 
     return (
         <>
             <TableLayout
                 title="Visa Types"
-                data={data || []}
+                setData={setData}
+                filterby="visatype"
+                data={data}
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
+                handleDelete={handleDelete}
                 ActionModal={VisaTypesActionModal}
                 exportColumns={exportColumns}
-                // handleSave ={handleSave}
+                handleSubmit={handleSubmit}
             />
         </>
     );

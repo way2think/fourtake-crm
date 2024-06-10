@@ -60,7 +60,7 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
 
     const exportColumns = ['id', 'country'];
 
-    const handleSumbit = (value: any) => {
+    const handleSubmit = (value: any) => {
         if (value.country == '' || value.country == null) {
             showMessage('Enter country name', 'error');
             return false;
@@ -170,7 +170,7 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={CountryActionModal}
-                handleSumbit={handleSumbit}
+                handleSubmit={handleSubmit}
             />
         </>
     );

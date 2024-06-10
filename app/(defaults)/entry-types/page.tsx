@@ -10,14 +10,14 @@ const Sales = () => {
     const data = [
         {
             id: 1,
-            entrytype: 'Business',
+            entrytype: 'single ',
         },
         {
             id: 2,
-            entrytype: 'Tourist',
+            entrytype: 'Double',
         },
     ];
-    return <EntryTypes data={data} />;
+    return <EntryTypes entrytypedata={data} />;
 };
 
 export default Sales;
