@@ -203,10 +203,10 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ saveUser, setParams }) => {
                             onClick={() => {
                                 if (Object.keys(touched).length !== 0 && Object.keys(errors).length === 0) {
                                     submitForm();
-                                    console.log('values', values);
+                                    
                                     // setParams(values)
                                 } else {
-                                    console.log('values1', values);
+                                    
                                     // setParams(values)
                                     // saveUser(values);
                                 }

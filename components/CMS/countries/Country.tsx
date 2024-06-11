@@ -55,7 +55,7 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
                 return true;
             }
         });
-        console.log('delete', row);
+        
     };
 
     const exportColumns = ['id', 'country'];

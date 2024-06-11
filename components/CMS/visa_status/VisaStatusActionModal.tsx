@@ -12,10 +12,10 @@ interface VisaStatusActionModalProps {
     setAddData: any;
 }
 const VisaStatusActionModal: React.FC<VisaStatusActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
-    console.log('addData', addData);
+    
     const handleCheckBoxChange = (e: any) => {
         const { id, checked } = e.target;
-        console.log('e', e);
+        
         setAddData((prev: any) => ({ ...prev, [id]: checked }));
     };
     return (

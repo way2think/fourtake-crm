@@ -76,7 +76,7 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
                 return true;
             }
         });
-        console.log('delete', row);
+        
     };
 
     const exportColumns = ['country', 'visatype', 'embassy'];

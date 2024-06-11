@@ -12,10 +12,9 @@ interface CountryVisaURlActionModalProps {
     setAddData: any;
 }
 const CountryVisaURlActionModal: React.FC<CountryVisaURlActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
-    console.log('addData', addData);
+    
     const handleCheckBoxChange = (e: any) => {
         const { id, checked } = e.target;
-        console.log('e', e);
         setAddData((prev: any) => ({ ...prev, [id]: checked }));
     };
     return (
@@ -39,7 +38,7 @@ const CountryVisaURlActionModal: React.FC<CountryVisaURlActionModalProps> = ({ i
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="dropdown mb-5">
                             <label htmlFor="country">Country</label>
-                            <select className="form-input" defaultValue="" id="country">
+                            <select className="form-input" defaultValue="" id="country" value={addData?.country} onChange={(e) => handleInputChange(e)}>
                                 <option value="" disabled={true}>
                                     Country
                                 </option>
@@ -52,7 +51,7 @@ const CountryVisaURlActionModal: React.FC<CountryVisaURlActionModalProps> = ({ i
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="mb-5 ">
                             <label htmlFor="url">Url</label>
-                            <input id="url" type="text" onChange={(e) => handleInputChange(e)} value={addData?.url} placeholder="Enter Url" className="form-input" />
+                            <input id="urls" type="text" onChange={(e) => handleInputChange(e)} value={addData?.urls} placeholder="Enter Url" className="form-input" />
                         </div>
                     </div>
                     <div className="mt-8 flex items-center justify-end">

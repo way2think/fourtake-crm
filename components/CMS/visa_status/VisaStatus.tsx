@@ -55,7 +55,7 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
                 return true;
             }
         });
-        console.log('delete', row);
+        
     };
 
     const handleSubmit = (value: any) => {
@@ -66,6 +66,8 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
         if (value.statustype == '' || value.statustype == null) {
             showMessage('Select Status Type', 'error');
             return false;
+        } else if (value.statustype == '' || value.statustype == null) {
+
         }
         // console.log('params', params);
         // if (!isValidName(params.firstname)) {
