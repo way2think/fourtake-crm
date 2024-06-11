@@ -32,7 +32,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [search1, setSearch1] = useState('');
     const [filterItem, setFilterItem] = useState(data);
     const [addData, setAddData] = useState({});
-    console.log('data', data);
+    
     useEffect(() => {
         setFilterItem(data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase())));
     }, [search, data]);
@@ -45,7 +45,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     }
 
     const handleEdit = (object: any) => {
-        console.log('object: ', object);
+        
         setIsOpen(true);
         setAddData(object);
     };
@@ -54,7 +54,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
         const { value, id } = e.target;
 
         setAddData({ ...addData, [id]: value });
-        console.log('addData', addData);
+        
     };
 
     const handleExport = () => {

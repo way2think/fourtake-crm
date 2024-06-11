@@ -59,7 +59,7 @@ const EntryTypes: React.FC<{ entrytypedata: any }> = ({ entrytypedata }) => {
                 return true;
             }
         });
-        console.log('delete', row);
+        
     };
 
     const exportColumns = ['id', 'entrytype'];

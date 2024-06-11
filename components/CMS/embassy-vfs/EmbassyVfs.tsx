@@ -49,7 +49,7 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
                 return true;
             }
         });
-        console.log('delete', row);
+        
     };
     const handleSubmit = (value: any) => {
         if (value.embassy == '' || value.embassy == null) {

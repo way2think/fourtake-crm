@@ -9,7 +9,7 @@ function isValidEmail(email: string) {
 function isValidPassword(password: string) {
     // Password must be 6 characters or more in length
     // const passwordRegex = /^.{6,}$/;
-    const passwordRegex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
     // Test the password against the regex pattern
     return passwordRegex.test(password);
@@ -76,4 +76,49 @@ function isValidDropdown(num: string) {
     return true;
 }
 
-export { isValidEmail, isValidPassword, isValidAddress, isValidPhoneNumber, isValidName, isValidNumber, isValidDropdown, isLettersAndNumbers, isCapitalLettersAndNumbers, isValidTextareaContent };
+function isValidUrl(url: string) {
+    // Test if the URL is null or an empty string, return false
+    if (url == null || url.trim() === '') {
+        return false;
+    }
+
+    // Define the regular expression for URL validation
+    const urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|(\\d{1,3}\\.){3}\\d{1,3})' + // domain name and extension
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+
+    // Test if the URL matches the pattern and has the correct domain, return true if it does
+    if (urlPattern.test(url) && /\.(com|org|in)(\/|$)/.test(url)) {
+        return true;
+    }
+
+    // If it doesn't match, return false
+    return false;
+
+    // Examples of usage
+    // console.log(isValidUrl('http://example.com')); // true
+    // console.log(isValidUrl('https://example.org')); // true
+    // console.log(isValidUrl('https://example.in/path?name=value#anchor')); // true
+    // console.log(isValidUrl('http://example.com/subpage')); // true
+    // console.log(isValidUrl('http://example.xyz')); // false
+    // console.log(isValidUrl('example.com')); // false
+    // console.log(isValidUrl('')); // false
+    // console.log(isValidUrl(null)); // false
+}
+
+
+export {
+    isValidEmail,
+    isValidPassword,
+    isValidAddress,
+    isValidPhoneNumber,
+    isValidName,
+    isValidNumber,
+    isValidDropdown,
+    isLettersAndNumbers,
+    isCapitalLettersAndNumbers,
+    isValidTextareaContent,
+    isValidUrl
+};

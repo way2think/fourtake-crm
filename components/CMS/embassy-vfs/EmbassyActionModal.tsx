@@ -12,7 +12,7 @@ interface EmbassyActionModalProps {
     setAddData: any;
 }
 const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
-    console.log('add Data', addData);
+    
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">

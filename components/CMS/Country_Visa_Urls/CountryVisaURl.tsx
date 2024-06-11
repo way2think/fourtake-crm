@@ -12,6 +12,8 @@ import CountryActionModal from './CountryVisaURlActionModal';
 import Swal from 'sweetalert2';
 import { showMessage } from '@/utils/notification';
 import CountryVisaURlActionModal from './CountryVisaURlActionModal';
+import { isValidUrl } from '@/utils/validator';
+
 
 // const getServerData = async () => {
 //     return await getData({ url: 'http://localhost:5001/center' });
@@ -47,16 +49,25 @@ const CountryVisaURl: React.FC<{ countryvisaurls: any }> = ({ countryvisaurls })
                 return true;
             }
         });
-        console.log('delete', row);
+        
     };
 
     const exportColumns = ['id', 'country', 'urls'];
 
-    const handleSumbit = (value: any) => {
+    const handleSubmit = (value: any) => {
+        debugger;
         if (value.country == '' || value.country == null) {
-            showMessage('Enter country name', 'error');
+            showMessage('Select Country', 'error');
             return false;
         }
+        if (value.urls == '' || value.urls == null) {
+            showMessage('Fill URL', 'error');
+            return false;
+        } 
+        // else if (!isValidUrl(value.urls)) {
+        //     showMessage('Fill in valid URL', 'error');
+        //     return false;
+        // }
         // if (!isValidName(params.lastname)) {
         //     showMessage('Last Name is required.', 'error');
         //     return true;
@@ -100,21 +111,21 @@ const CountryVisaURl: React.FC<{ countryvisaurls: any }> = ({ countryvisaurls })
             //update user
             let formData: any = data.find((d: any) => d.id === value.id);
             formData.country = value.country;
-            formData.language = value.language;
-            formData.dailingcode = value.dailingcode;
-            formData.capital = value.capital;
-            formData.cities = value.cities;
-            formData.countrydetails = value.countrydetails;
-            formData.climate = value.climate;
-            formData.currency = value.currency;
-            formData.timezone = value.timezone;
-            formData.additionalinfo = value.additionalinfo;
-            formData.website = value.website;
-            formData.ispopular = value.ispopular;
-            formData.isoutsource = value.isoutsource;
-            formData.isjurisdiction = value.isjurisdiction;
-            formData.image = value.image;
-            formData.flag = value.flag;
+            formData.urls = value.urls;
+            // formData.dailingcode = value.dailingcode;
+            // formData.capital = value.capital;
+            // formData.cities = value.cities;
+            // formData.countrydetails = value.countrydetails;
+            // formData.climate = value.climate;
+            // formData.currency = value.currency;
+            // formData.timezone = value.timezone;
+            // formData.additionalinfo = value.additionalinfo;
+            // formData.website = value.website;
+            // formData.ispopular = value.ispopular;
+            // formData.isoutsource = value.isoutsource;
+            // formData.isjurisdiction = value.isjurisdiction;
+            // formData.image = value.image;
+            // formData.flag = value.flag;
 
             return formData;
         } else {
@@ -124,21 +135,21 @@ const CountryVisaURl: React.FC<{ countryvisaurls: any }> = ({ countryvisaurls })
             let formData = {
                 id: +maxUserId + 1,
                 country: value.country,
-                language: value.language,
-                dailingcode: value.dailingcode,
-                capital: value.capital,
-                cities: value.cities,
-                countrydetails: value.countrydetails,
-                climate: value.climate,
-                currency: value.currency,
-                timezone: value.timezone,
-                additionalinfo: value.additionalinfo,
-                website: value.website,
-                ispopular: value.ispopular,
-                isoutsource: value.isoutsource,
-                isjurisdiction: value.isjurisdiction,
-                image: value.image,
-                flag: value.flag,
+                urls: value.urls,
+                // dailingcode: value.dailingcode,
+                // capital: value.capital,
+                // cities: value.cities,
+                // countrydetails: value.countrydetails,
+                // climate: value.climate,
+                // currency: value.currency,
+                // timezone: value.timezone,
+                // additionalinfo: value.additionalinfo,
+                // website: value.website,
+                // ispopular: value.ispopular,
+                // isoutsource: value.isoutsource,
+                // isjurisdiction: value.isjurisdiction,
+                // image: value.image,
+                // flag: value.flag,
             };
             setData([...data, formData]);
             return formData;
@@ -162,7 +173,7 @@ const CountryVisaURl: React.FC<{ countryvisaurls: any }> = ({ countryvisaurls })
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={CountryVisaURlActionModal}
-                handleSumbit={handleSumbit}
+                handleSubmit={handleSubmit}
             />
         </>
     );

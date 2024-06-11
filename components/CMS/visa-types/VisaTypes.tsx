@@ -83,7 +83,7 @@ const VisaTypes: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
                 return true;
             }
         });
-        console.log('delete', row);
+        
     };
     const exportColumns = ['id', 'visatype'];
 
