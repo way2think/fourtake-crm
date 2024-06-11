@@ -32,13 +32,13 @@ const VisaStatusActionModal: React.FC<VisaStatusActionModalProps> = ({ isOpen, s
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="mb-5">
                             <label htmlFor="visatype">Visa Type</label>
-                            <input id="visatype" type="text" placeholder="Enter Visa Type" className="form-input" value={addData?.visatype} onChange={(e) => handleInputChange(e)} />
+                            <input id="visastatus" type="text" placeholder="Enter Visa Type" className="form-input" value={addData?.visastatus} onChange={(e) => handleInputChange(e)} />
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="dropdown">
                             <label htmlFor="statustype">Status Type</label>
-                            <select className="form-input" defaultValue="" id="statustype">
+                            <select className="form-input" defaultValue="" id="statustype"  value={addData?.statustype} onChange={(e) => handleInputChange(e)}>
                                 <option value="" disabled={true}>
                                     Status Type
                                 </option>
