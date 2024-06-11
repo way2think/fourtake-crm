@@ -8,9 +8,27 @@ interface CountryVisaTypeActionModalProps {
     isOpen: any;
     setIsOpen: any;
     handleSave: any;
-    editData?: any;
+    addData?: any;
+    handleInputChange: any;
+    setAddData: any;
 }
-const CountryVisaTypeActionModal: React.FC<CountryVisaTypeActionModalProps> = ({ isOpen, setIsOpen, handleSave, editData }) => {
+
+interface OptionType {
+    value: string;
+    label: string;
+}
+const CountryVisaTypeActionModal: React.FC<CountryVisaTypeActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
+    const options: OptionType[] = [
+        { value: 'E-Visa', label: 'E-Visa' },
+        { value: 'Business Visa', label: 'Business Visa' },
+        { value: 'Tourist Visa', label: 'Tourist Visa' },
+        { value: 'Student Visa', label: 'Student Visa' },
+        { value: 'Work Visa', label: 'Work Visa' },
+        { value: 'Diplomatic Visa', label: 'Diplomatic Visa' },
+        { value: 'Transit Visa', label: 'Transit Visa' },
+        { value: 'Medical Visa', label: 'Medical Visa' },
+    ];
+    console.log('Add data', addData);
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-xl" height="h-50">
@@ -23,11 +41,18 @@ const CountryVisaTypeActionModal: React.FC<CountryVisaTypeActionModalProps> = ({
 
                 <div className="p-5">
                     <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-1 ">
-                        <ComponentsFormsSelectMultiselect />
+                        <ComponentsFormsSelectMultiselect addData={addData} options={options} setAddData={setAddData} id={'visatypes'} />
                     </div>
 
                     <div className="mt-8 flex items-center justify-end">
-                        <button onClick={() => setIsOpen(false)} type="button" className="btn btn-outline-danger">
+                        <button
+                            onClick={() => {
+                                setIsOpen(false);
+                                setAddData({});
+                            }}
+                            type="button"
+                            className="btn btn-outline-danger"
+                        >
                             Cancel
                         </button>
                         <button onClick={handleSave} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">

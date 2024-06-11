@@ -14,7 +14,7 @@ import IconEye from '../../icon/icon-eye';
 import IconEdit from '../../icon/icon-edit';
 import IconTrash from '../../icon/icon-trash';
 
-export default function PaginationTable({ data, tableColumns, handleEdit ,handleDelete}) {
+export default function PaginationTable({ data, tableColumns, handleEdit, handleDelete }) {
     //columns & data -props
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
@@ -25,8 +25,6 @@ export default function PaginationTable({ data, tableColumns, handleEdit ,handle
     const startIndex = (page - 1) * recordsPerPage;
     const endIndex = startIndex + recordsPerPage;
     const paginatedData = data.slice(startIndex, endIndex);
-
-
 
     return (
         <div className="datatables">

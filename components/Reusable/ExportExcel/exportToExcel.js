@@ -4,7 +4,12 @@ export const exportToExcel = (data, columns, fileName = 'data.xlsx') => {
     const filteredData = data.map((row) => {
         const filteredRow = {};
         columns.forEach((col) => {
-            filteredRow[col] = row[col];
+            if (Array.isArray(row[col])) {
+                // If the column value is an array, stringify it
+                filteredRow[col] = row[col].join(', ');
+            } else {
+                filteredRow[col] = row[col];
+            }
         });
         return filteredRow;
     });
