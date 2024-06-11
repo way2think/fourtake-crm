@@ -11,13 +11,13 @@ const CountryVisaType = () => {
     const data = [
         {
             id: 1,
-            countryvisa: 'Business Visa',
-            name: 'Australia',
+            country: 'France',
+            visatypes: ['E-Visa', 'Business Visa'],
         },
         {
             id: 2,
-            countryvisa: 'Vistor Visa',
-            name: 'Australia',
+            country: 'Australia',
+            visatypes: ['E-Visa', 'Business Visa'],
         },
     ];
     // return <Countries />;

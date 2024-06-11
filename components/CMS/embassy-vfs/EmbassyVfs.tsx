@@ -64,12 +64,12 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
             showMessage('Enter embassy name', 'error');
             return false;
         }
-        if (value.city == '' || value.city == null) {
-            showMessage('Slect City', 'error');
-            return false;
-        }
         if (value.state == '' || value.state == null) {
             showMessage('Select State', 'error');
+            return false;
+        }
+        if (value.city == '' || value.city == null) {
+            showMessage('Slect City', 'error');
             return false;
         }
 
@@ -126,7 +126,7 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
             <TableLayout
                 title="Embassy/Vfs"
                 setData={setData}
-                filterby="country"
+                filterby="embassy"
                 data={data}
                 handleDelete={handleDelete}
                 totalPages={data?.length || 0}
