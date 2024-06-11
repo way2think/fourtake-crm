@@ -107,6 +107,7 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
                 onChange={handleChange}
                 menuPortalTarget={document.body} // Append menu to the body to avoid clipping
                 closeMenuOnSelect={false} // Keep the menu open when selecting options
+                hideSelectedOptions={false}
             />
         </div>
     );
