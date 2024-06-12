@@ -292,7 +292,7 @@ const UserList = () => {
             address: 'No. 21 XYZ street',
         },
         {
-            id:22 ,
+            id: 22,
             firstname: 'Alan',
             lastname: 'green',
             email: 'alan@mail.com',
@@ -379,7 +379,7 @@ const UserList = () => {
         };
     };
 
-    const { uniqueItems, totalPages } = getUniqueItemsPerPage(filteredItems , itemsPerPage);
+    const { uniqueItems, totalPages } = getUniqueItemsPerPage(filteredItems, itemsPerPage);
 
     const handleClick = (pageNumber: number) => {
         setCurrentPage(pageNumber);
@@ -573,7 +573,7 @@ const UserList = () => {
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
                 <div className="table-responsive">
-                    <Table data={uniqueItems} editUser={editUser} setIsEdit={setIsEdit} />
+                    {/* <Table data={uniqueItems} editUser={editUser} setIsEdit={setIsEdit} /> */}
                     <div className="pagination">
                         {[...Array(totalPages)].map((_, index) => (
                             <button key={index} onClick={() => handleClick(index + 1)} className={currentPage === index + 1 ? 'active' : ''}>
