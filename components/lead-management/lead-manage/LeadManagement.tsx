@@ -15,8 +15,8 @@ import { showMessage } from '@/utils/notification';
 // const getServerData = async () => {
 //     return await getData({ url: 'http://localhost:5001/center' });
 // };
-const LeadManagement: React.FC<{ countrydata: any }> = ({ countrydata }) => {
-    const [data, setData] = useState(countrydata);
+const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
+    const [data, setData] = useState(leadlistdata);
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
@@ -26,7 +26,17 @@ const LeadManagement: React.FC<{ countrydata: any }> = ({ countrydata }) => {
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
-        { accessor: 'country', textAlign: 'left', title: 'Country Name' },
+        { accessor: 'leadname', textAlign: 'left', title: 'Lead Name' },
+        { accessor: 'email', textAlign: 'left', title: 'Email' },
+        { accessor: 'contact', textAlign: 'left', title: 'Contact' },
+        { accessor: 'country', textAlign: 'left', title: 'Country' },
+        { accessor: 'visatype', textAlign: 'left', title: 'Visa Type' },
+        { accessor: 'stateofresidence', textAlign: 'left', title: 'State Of Residence' },
+        { accessor: 'emailsentdate', textAlign: 'left', title: 'Email Sent Date' },
+        { accessor: 'lastfollowup', textAlign: 'left', title: 'Last Follow Up' },
+        { accessor: 'nextfollowup', textAlign: 'left', title: 'Next Follow Up' },
+        { accessor: 'status', textAlign: 'left', title: 'Status' },
+        // { accessor: 'followup', textAlign: 'left', title: 'Follow Up' },
         // { accessor: 'phone', textAlign: 'left' },
         // { accessor: 'email', textAlign: 'left' },
         // { accessor: 'address', textAlign: 'left' },
@@ -57,7 +67,7 @@ const LeadManagement: React.FC<{ countrydata: any }> = ({ countrydata }) => {
         });
     };
 
-    const exportColumns = ['id', 'country'];
+    const exportColumns = ['id', 'leadname', 'email', 'contact', 'country', 'visatype', 'stateofresidence', 'emailsentdate', 'lastfollowup', 'nextfollowup', 'status'];
 
     const handleSubmit = (value: any) => {
         if (value.country == '' || value.country == null) {

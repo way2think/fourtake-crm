@@ -20,19 +20,35 @@ const LeadList = () => {
     let data = [
         {
             id: 1,
-            country: 'India',
-            language: 'tamil,hindi,etc',
-            dailingcode: '+91',
+            leadname: 'Jagadish',
+            email: 'jagadish00198@gmail.com',
+            contact: '8015330209',
+            country: 'india',
+            visatype: 'business visa',
+            stateofresidence: 'commerical',
+            emailsentdate: '20/09/2023',
+            lastfollowup: '20/09/2023',
+            nextfollowup: '29/09/2023',
+            status:"open"
         },
         {
             id: 2,
-            country: 'America',
+            leadname: 'Balu',
+            email: 'jagadish00198@gmail.com',
+            contact: '8015330209',
+            country: 'india',
+            visatype: 'business visa',
+            stateofresidence: 'commerical',
+            emailsentdate: '20/09/2023',
+            lastfollowup: '20/09/2023',
+            nextfollowup: '29/09/2023',
+            status:"close"
         },
     ];
     // return <Countries />;
     return (
         // <Suspense fallback={<p>Loading...</p>}>
-        <LeadManagement countrydata={data} />
+        <LeadManagement leadlistdata={data} />
         // </Suspense>
     );
 };
