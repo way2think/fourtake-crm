@@ -168,9 +168,9 @@ const Sidebar = () => {
                                         <li>
                                             <Link href="/lead-List">lead List</Link>
                                         </li>
-                                        <li>
+                                        {/* <li>
                                             <Link href="/lead-Manage">lead Manage</Link>
-                                        </li>
+                                        </li> */}
                                     </ul>
                                 </AnimateHeight>
                             </li>
