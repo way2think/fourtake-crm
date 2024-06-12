@@ -9,8 +9,10 @@ import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import IconX from '@/components/icon/icon-x';
 import CountryActionModal from './CountryVisaTypesActionModal';
 import CountryVisaTypeActionModal from './CountryVisaTypesActionModal';
+
 import { showMessage } from '@/utils/notification';
 import Swal from 'sweetalert2';
+import Filter from '@/components/layouts/filtersetting';
 
 const getServerData = async () => {
     return await getData({ url: 'http://localhost:5001/center' });
@@ -134,6 +136,7 @@ const CountryVisaTypes: React.FC<{ countryvisadata: any }> = ({ countryvisadata 
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={CountryVisaTypeActionModal}
+                Filtersetting={Filter}
                 handleSubmit={handleSubmit}
             />
         </>

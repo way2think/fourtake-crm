@@ -11,6 +11,7 @@ import ComponentsFormsFileUploadMulti from '../Reusable/file-upload/components-f
 import IconX from '../icon/icon-x';
 // import ActionModal from '../Reusable/Modal/ActionModal';
 import CountryActionModal from '../CMS/countries/CountryActionModal';
+import IconFile from '../icon/icon-zip-file';
 
 interface TableLayoutProps {
     title: string;
@@ -18,6 +19,7 @@ interface TableLayoutProps {
     totalPages: number;
     tableColumns: object[];
     ActionModal: any;
+    Filtersetting?: any;
     handleSubmit?: any;
     exportColumns?: string[];
     handleDelete: any;
@@ -25,19 +27,20 @@ interface TableLayoutProps {
     filterby: string;
 }
 
-const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setData, totalPages, handleDelete, handleSubmit, tableColumns, ActionModal, exportColumns }) => {
+const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setData, totalPages, handleDelete, handleSubmit, tableColumns, ActionModal, exportColumns, Filtersetting }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [editData, setEditData] = useState(null);
     const [search, setSearch] = useState('');
     const [filterItem, setFilterItem] = useState(data);
     const [addData, setAddData] = useState({});
-    
+    const [showCustomizer, setShowCustomizer] = useState(false);
+
     useEffect(() => {
         setFilterItem(data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase())));
-    }, [search,data]);
+    }, [search, data]);
 
     const handleEdit = (object: any) => {
-        
+
         setIsOpen(true);
         setAddData(object);
     };
@@ -46,7 +49,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
         const { value, id } = e.target;
 
         setAddData({ ...addData, [id]: value });
-        
+
     };
 
     const handleExport = () => {
@@ -62,13 +65,17 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
         }
     };
 
+    const handleFilter = () => {
+        setShowCustomizer(true);
+    };
+
     return (
         <>
             <div className="flex flex-wrap items-center justify-between gap-4">
                 <h2 className="text-xl">{title}</h2>
                 <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
-                       { title !== "Country Visa Types" && <div>
+                        {title !== "Country Visa Types" && <div>
                             <button type="button" className="btn btn-primary" onClick={() => setIsOpen(true)}>
                                 <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
                                 Add {title}
@@ -86,6 +93,12 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                             <IconSearch className="mx-auto" />
                         </button>
                     </div>
+                    <div>
+                        <button type="button" className="btn btn-primary" onClick={handleFilter}>
+                            <IconFile className="ltr:mr-2 rtl:ml-2" />
+                            Filter
+                        </button>
+                    </div>
                 </div>
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
@@ -95,6 +108,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
             </div>
 
             <ActionModal isOpen={isOpen} setAddData={setAddData} handleInputChange={handleInputChange} setIsOpen={setIsOpen} handleSave={handleSave} addData={addData} />
+        
+            <Filtersetting showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer}/>
         </>
     );
 };
