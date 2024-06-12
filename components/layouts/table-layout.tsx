@@ -65,7 +65,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
         }
     };
 
-    const handleFilter = () => {
+     const handleFilter = () => {
         setShowCustomizer(true);
     };
 
@@ -110,6 +110,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
             <ActionModal isOpen={isOpen} setAddData={setAddData} handleInputChange={handleInputChange} setIsOpen={setIsOpen} handleSave={handleSave} addData={addData} />
         
             <Filtersetting showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer}/>
+
+            
         </>
     );
 };
