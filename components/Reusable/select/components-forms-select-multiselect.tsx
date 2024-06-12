@@ -26,29 +26,35 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
     //     setAddData((prev: any) => ({ ...prev, [id]: selectedOptions }));
     // }, [selectedOptions]);
 
-    console.log('selected options', selectedOptions);
+    // console.log('selected options', selectedOptions);
 
     const handleChange = (selected: any) => {
         console.log('selected options', selected);
-        if (selected && selected.length === options.length) {
+        if (selected && selected.length == options.length) {
+            console.log('1');
             const getValue = options.map((item: any) => item.value);
             setSelectedOptions(options);
             setAddData((prev: any) => ({ ...prev, [id]: getValue }));
         } else if (selected && selected.length === 0) {
             setSelectedOptions([]);
             setAddData((prev: any) => ({ ...prev, [id]: [] }));
+            console.log('2');
         } else {
             const getValue = selected.map((item: any) => item.value);
             setSelectedOptions(selected as OptionType[]);
             setAddData((prev: any) => ({ ...prev, [id]: getValue }));
+            console.log('3');
         }
     };
 
     const handleSelectAll = () => {
         if (selectedOptions.length === options.length) {
             setSelectedOptions([]);
+            setAddData((prev: any) => ({ ...prev, [id]: [] }));
         } else {
             setSelectedOptions(options);
+            const getValue = options.map((item: any) => item.value);
+            setAddData((prev: any) => ({ ...prev, [id]: getValue }));
         }
     };
 

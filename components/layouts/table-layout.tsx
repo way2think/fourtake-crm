@@ -68,12 +68,12 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 <h2 className="text-xl">{title}</h2>
                 <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
-                        <div>
+                       { title !== "Country Visa Types" && <div>
                             <button type="button" className="btn btn-primary" onClick={() => setIsOpen(true)}>
                                 <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
                                 Add {title}
                             </button>
-                        </div>
+                        </div>}
                         <div>
                             <button type="button" className="btn btn-outline-primary" onClick={handleExport}>
                                 Export to Excel
