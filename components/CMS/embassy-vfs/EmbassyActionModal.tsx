@@ -2,6 +2,7 @@ import IconX from '@/components/icon/icon-x';
 import ComponentsFormsFileUploadMulti from '../../Reusable/file-upload/components-forms-file-upload-multi';
 import ComponentsFormsFileUploadSingle from '../../Reusable/file-upload/components-forms-file-upload-single';
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
+import ComponentsFormsSelectMultiselect from '@/components/Reusable/select/components-forms-select-multiselect';
 
 interface EmbassyActionModalProps {
     isOpen: any;
@@ -11,8 +12,19 @@ interface EmbassyActionModalProps {
     handleInputChange: any;
     setAddData: any;
 }
+interface OptionType {
+    value: string;
+    label: string;
+}
 const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
-    
+    const options: OptionType[] = [
+        { value: 'Chennai', label: 'Chennai' },
+        { value: 'Vellore', label: 'Vellore' },
+        { value: 'Bengaluru', label: 'Bengaluru' },
+        { value: 'New Delhi', label: 'New Delhi' },
+        { value: 'Mangalore', label: 'Work Visa' },
+        { value: 'Mumbai', label: 'Mumbai' },
+    ];
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
@@ -52,7 +64,7 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                         </div>
                         <div className="dropdown">
                             <label htmlFor="jurisdiction">Jurisdiction</label>
-                            <select className="form-input" defaultValue="" id="jurisdiction" onChange={(e) => handleInputChange(e)} value={addData?.jurisdiction}>
+                            {/* <select className="form-input" defaultValue="" id="jurisdiction" onChange={(e) => handleInputChange(e)} value={addData?.jurisdiction}>
                                 <option value="" disabled={true}>
                                     Jurisdiction
                                 </option>
@@ -62,8 +74,12 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                                 <option value="New Delhi">New Delhi</option>
                                 <option value="Mangalore">Mangalore</option>
                                 <option value="Mumbai">Mumbai</option>
-                            </select>
+                            </select> */}
+                            <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-1 ">
+                                <ComponentsFormsSelectMultiselect addData={addData} options={options} setAddData={setAddData} id={'visatypes'} />
+                            </div>
                         </div>
+
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="mb-5 mt-4">
