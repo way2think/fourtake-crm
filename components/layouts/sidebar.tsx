@@ -166,10 +166,10 @@ const Sidebar = () => {
                                 <AnimateHeight duration={300} height={currentMenu === 'Lead Management' ? 'auto' : 0}>
                                     <ul className="sub-menu text-gray-500">
                                         <li>
-                                            <Link href="/lead-List">{t('lead List')}</Link>
+                                            <Link href="/lead-List">lead List</Link>
                                         </li>
                                         <li>
-                                            <Link href="/lead-Manage">{t('lead Manage')}</Link>
+                                            <Link href="/lead-Manage">lead Manage</Link>
                                         </li>
                                     </ul>
                                 </AnimateHeight>
@@ -189,28 +189,28 @@ const Sidebar = () => {
                                 <AnimateHeight duration={300} height={currentMenu === 'CMS' ? 'auto' : 0}>
                                     <ul className="sub-menu text-gray-500">
                                         <li>
-                                            <Link href="/countries-list">{t('Countries List')}</Link>
+                                            <Link href="/countries-list">Countries List</Link>
                                         </li>
                                         <li>
-                                            <Link href="/visa-checklist">{t('Visa Checklist')}</Link>
+                                            <Link href="/visa-checklist">Visa Checklistnk</Link>{' '}
                                         </li>
                                         <li>
-                                            <Link href="/embassy-vfs">{t('Embassy / VFS')}</Link>
+                                            <Link href="/embassy-vfs">Embassy / VFS</Link>
                                         </li>
                                         <li>
-                                            <Link href="/visa-types">{t('Visa Types')}</Link>
+                                            <Link href="/visa-types">Visa Types</Link>
                                         </li>
                                         <li>
-                                            <Link href="/country-visa-type">{t('Country Visa Types')}</Link>
+                                            <Link href="/country-visa-type">Country Visa Types</Link>
                                         </li>
                                         <li>
-                                            <Link href="/entry-types">{t('Entry Types')}</Link>
+                                            <Link href="/entry-types">Entry Types</Link>
                                         </li>
                                         <li>
-                                            <Link href="/visa-status">{t('Visa Status')}</Link>
+                                            <Link href="/visa-status">Visa Status</Link>
                                         </li>
                                         <li>
-                                            <Link href="/country-visa-urls">{t('Country Visa urls')}</Link>
+                                            <Link href="/country-visa-urls">Country Visa urls</Link>
                                         </li>
                                     </ul>
                                 </AnimateHeight>
@@ -230,13 +230,13 @@ const Sidebar = () => {
                                 <AnimateHeight duration={300} height={currentMenu === 'Visa Process' ? 'auto' : 0}>
                                     <ul className="sub-menu text-gray-500">
                                         <li>
-                                            <Link href="/manage-visa">{t('Manage Visa ')}</Link>
+                                            <Link href="/manage-visa">Manage Visa </Link>
                                         </li>
                                         <li>
-                                            <Link href="/list-visa-applications">{t('Visa Applications')}</Link>
+                                            <Link href="/list-visa-applications">Visa Applications</Link>
                                         </li>
                                         <li>
-                                            <Link href="/deleted-application-list ">{t('Deleted Application')}</Link>
+                                            <Link href="/deleted-application-list ">Deleted Application</Link>
                                         </li>
                                     </ul>
                                 </AnimateHeight>
@@ -256,22 +256,22 @@ const Sidebar = () => {
                                 <AnimateHeight duration={300} height={currentMenu === 'Reports ' ? 'auto' : 0}>
                                     <ul className="sub-menu text-gray-500">
                                         <li>
-                                            <Link href="/daily-report">{t('Daily Report')}</Link>
+                                            <Link href="/daily-report">Daily Report</Link>
                                         </li>
                                         <li>
-                                            <Link href="/finance-report">{t('Finance Report  ')}</Link>
+                                            <Link href="/finance-report">Finance Report </Link>
                                         </li>
                                         <li>
-                                            <Link href="/status-wise-report">{t('Status-wise Report ')}</Link>
+                                            <Link href="/status-wise-report">Status-wise Report </Link>
                                         </li>
                                         <li>
-                                            <Link href="/payment-report  ">{t('Payment Report  ')}</Link>
+                                            <Link href="/payment-report  ">Payment Report </Link>
                                         </li>
                                         <li>
-                                            <Link href="/out-scan-submitted-list ">{t('Out-scan submitted  ')}</Link>
+                                            <Link href="/out-scan-submitted-list ">Out-scan submitted </Link>
                                         </li>
                                         <li>
-                                            <Link href="/in-scan-list ">{t('In-Scan')}</Link>
+                                            <Link href="/in-scan-list ">In-Scan</Link>
                                         </li>
                                     </ul>
                                 </AnimateHeight>
