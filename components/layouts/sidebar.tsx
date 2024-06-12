@@ -192,7 +192,7 @@ const Sidebar = () => {
                                             <Link href="/countries-list">Countries List</Link>
                                         </li>
                                         <li>
-                                            <Link href="/visa-checklist">Visa Checklistnk</Link>{' '}
+                                            <Link href="/visa-checklist">Visa Checklist</Link>{' '}
                                         </li>
                                         <li>
                                             <Link href="/embassy-vfs">Embassy / VFS</Link>
