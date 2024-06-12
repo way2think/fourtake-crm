@@ -8,10 +8,13 @@ interface VisaChecklistActionModalProps {
     isOpen: any;
     setIsOpen: any;
     handleSave: any;
-    editData?: any;
+    addData?: any;
+    handleInputChange: any;
+    setAddData: any;
 }
 
-const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isOpen, setIsOpen, handleSave, editData }) => {
+const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
+    
     return (
         <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-4xl">
             <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
@@ -24,7 +27,7 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                     <div className="dropdown">
                         <label htmlFor="role">Countries*</label>
-                        <select className="form-input" defaultValue="" id="role">
+                        <select className="form-input" defaultValue="" id="country" value={addData?.country} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
                                 Countries
                             </option>
@@ -38,9 +41,9 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                     </div>
                     <div className="dropdown">
                         <label htmlFor="role">Visa Category*</label>
-                        <select className="form-input" defaultValue="" id="role">
+                        <select className="form-input" defaultValue="" id="visatype" value={addData?.visatype} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
-                                Visa Category
+                                Visa Type
                             </option>
                             <option value="Chennai">Business Visa</option>
                             <option value="Vellore">Visitor Visa</option>
@@ -50,22 +53,29 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                 <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-1">
                     <div className="mb-2">
                         <label htmlFor="embassy">Embassy*</label>
-                        <textarea id="embassy" rows={3} placeholder="Enter Embassy" className="form-textarea min-h-[80px] resize-none"></textarea>
+                        <textarea
+                            id="embassy"
+                            rows={3}
+                            placeholder="Enter Embassy"
+                            className="form-textarea min-h-[80px] resize-none"
+                            value={addData?.embassy}
+                            onChange={(e) => handleInputChange(e)}
+                        ></textarea>
                     </div>
                 </div>
                 <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-1">
                     <div className="mb-2">
-                        <MarkdownEditor />
+                        <MarkdownEditor handleInputChange={handleInputChange} setAddData={setAddData} addData={addData} />
                     </div>
                 </div>
                 <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-1">
                     <div className="mb-2">
-                        <VisafeeEditor />
+                        <VisafeeEditor handleInputChange={handleInputChange} setAddData={setAddData} addData={addData} />
                     </div>
                 </div>
                 <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-1">
                     <div className="mb-2">
-                        <ComponentsFormsFileUploadSingle />
+                        <ComponentsFormsFileUploadSingle setAddData={setAddData} addData={addData} />
                     </div>
                 </div>
                 <div className="mt-4 flex items-center justify-end">
