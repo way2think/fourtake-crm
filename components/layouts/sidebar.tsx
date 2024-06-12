@@ -128,7 +128,7 @@ const Sidebar = () => {
                                     <div className="flex items-center">
                                         <IconMenuUsers className="shrink-0 group-hover:!text-primary" />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
-                                            <Link href="/user-list">{t('User List')}</Link>
+                                            <Link href="/user-list">User List</Link>
                                         </span>
                                     </div>
                                     {/* 

@@ -27,17 +27,17 @@ interface TableLayoutProps {
 
 const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setData, totalPages, handleDelete, handleSubmit, tableColumns, ActionModal, exportColumns }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [editData, setEditData] = useState(null);
+    const [isEdit, setIsEdit] = useState(false);
     const [search, setSearch] = useState('');
     const [filterItem, setFilterItem] = useState(data);
     const [addData, setAddData] = useState({});
-    
+
     useEffect(() => {
         setFilterItem(data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase())));
-    }, [search,data]);
+    }, [search, data]);
 
     const handleEdit = (object: any) => {
-        
+        setIsEdit(true);
         setIsOpen(true);
         setAddData(object);
     };
@@ -46,7 +46,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
         const { value, id } = e.target;
 
         setAddData({ ...addData, [id]: value });
-        
     };
 
     const handleExport = () => {
@@ -68,12 +67,14 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 <h2 className="text-xl">{title}</h2>
                 <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
-                       { title !== "Country Visa Types" && <div>
-                            <button type="button" className="btn btn-primary" onClick={() => setIsOpen(true)}>
-                                <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
-                                Add {title}
-                            </button>
-                        </div>}
+                        {title !== 'Country Visa Types' && (
+                            <div>
+                                <button type="button" className="btn btn-primary" onClick={() => setIsOpen(true)}>
+                                    <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
+                                    Add {title}
+                                </button>
+                            </div>
+                        )}
                         <div>
                             <button type="button" className="btn btn-outline-primary" onClick={handleExport}>
                                 Export to Excel
@@ -94,7 +95,16 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 </div>
             </div>
 
-            <ActionModal isOpen={isOpen} setAddData={setAddData} handleInputChange={handleInputChange} setIsOpen={setIsOpen} handleSave={handleSave} addData={addData} />
+            <ActionModal
+                isOpen={isOpen}
+                setAddData={setAddData}
+                handleInputChange={handleInputChange}
+                setIsOpen={setIsOpen}
+                handleSave={handleSave}
+                addData={addData}
+                isEdit={isEdit}
+                setIsEdit={setIsEdit}
+            />
         </>
     );
 };
