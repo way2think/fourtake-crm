@@ -33,21 +33,14 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [search, setSearch] = useState('');
     const [filterItem, setFilterItem] = useState(data);
     const [addData, setAddData] = useState({});
-<<<<<<< HEAD
     const [showCustomizer, setShowCustomizer] = useState(false);
-=======
->>>>>>> abbc1d2b942094952720ca822a72cbbc43af2a55
 
     useEffect(() => {
         setFilterItem(data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase())));
     }, [search, data]);
 
     const handleEdit = (object: any) => {
-<<<<<<< HEAD
-
-=======
         setIsEdit(true);
->>>>>>> abbc1d2b942094952720ca822a72cbbc43af2a55
         setIsOpen(true);
         setAddData(object);
     };
@@ -56,10 +49,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
         const { value, id } = e.target;
 
         setAddData({ ...addData, [id]: value });
-<<<<<<< HEAD
-
-=======
->>>>>>> abbc1d2b942094952720ca822a72cbbc43af2a55
     };
 
     const handleExport = () => {
@@ -85,14 +74,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 <h2 className="text-xl">{title}</h2>
                 <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
-<<<<<<< HEAD
-                        {title !== "Country Visa Types" && <div>
-                            <button type="button" className="btn btn-primary" onClick={() => setIsOpen(true)}>
-                                <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
-                                Add {title}
-                            </button>
-                        </div>}
-=======
                         {title !== 'Country Visa Types' && (
                             <div>
                                 <button type="button" className="btn btn-primary" onClick={() => setIsOpen(true)}>
@@ -101,7 +82,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                                 </button>
                             </div>
                         )}
->>>>>>> abbc1d2b942094952720ca822a72cbbc43af2a55
                         <div>
                             <button type="button" className="btn btn-outline-primary" onClick={handleExport}>
                                 Export to Excel
@@ -114,12 +94,14 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                             <IconSearch className="mx-auto" />
                         </button>
                     </div>
-                    <div>
-                        <button type="button" className="btn btn-primary" onClick={handleFilter}>
-                            <IconFile className="ltr:mr-2 rtl:ml-2" />
-                            Filter
-                        </button>
-                    </div>
+                    {title === 'Lead List' && (
+                        <div>
+                            <button type="button" className="btn btn-primary" onClick={handleFilter}>
+                                <IconFile className="ltr:mr-2 rtl:ml-2" />
+                                Filter
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
@@ -128,11 +110,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 </div>
             </div>
 
-<<<<<<< HEAD
-            <ActionModal isOpen={isOpen} setAddData={setAddData} handleInputChange={handleInputChange} setIsOpen={setIsOpen} handleSave={handleSave} addData={addData} />
-        
-            <Filtersetting showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer}/>
-=======
+            {title == 'Country Visa Types' && <Filtersetting showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer} />}
             <ActionModal
                 isOpen={isOpen}
                 setAddData={setAddData}
@@ -143,7 +121,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 isEdit={isEdit}
                 setIsEdit={setIsEdit}
             />
->>>>>>> abbc1d2b942094952720ca822a72cbbc43af2a55
         </>
     );
 };

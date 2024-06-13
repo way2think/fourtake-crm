@@ -1,13 +1,11 @@
 'use client';
 
 interface FiltersettingProps {
-    showCustomizer: boolean;
-    setShowCustomizer: React.Dispatch<React.SetStateAction<boolean>>;
+    showCustomizer: any;
+    setShowCustomizer: any;
 }
 
 const Filtersetting: React.FC<FiltersettingProps> = ({ showCustomizer, setShowCustomizer }) => {
-
-
     return (
         <div>
             <div className={`${(showCustomizer && '!block') || ''} fixed inset-0 z-[51] hidden bg-[black]/60 px-4 transition-[display]`} onClick={() => setShowCustomizer(false)}></div>
@@ -15,7 +13,7 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ showCustomizer, setShowCu
             <nav
                 className={`${
                     (showCustomizer && 'ltr:!right-0 rtl:!left-0') || ''
-                } fixed bottom-0 top-0 z-[51] w-full max-w-[400px] bg-white p-4 shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] transition-[right] duration-300 ltr:-right-[400px] rtl:-left-[400px] dark:bg-black`}
+                } fixed bottom-0 top-0 z-[51] w-full max-w-[400px] bg-white p-4 shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] transition-[right] duration-300 dark:bg-black ltr:-right-[400px] rtl:-left-[400px]`}
             >
                 {/* <button
                     type="button"
@@ -26,7 +24,7 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ showCustomizer, setShowCu
                 </button> */}
 
                 <div className="perfect-scrollbar h-full overflow-y-auto overflow-x-hidden">
-                    <div className="flex justify-center items-center h-screen">Filter</div>
+                    <div className="flex h-screen items-center justify-center">Filter</div>
                 </div>
             </nav>
         </div>
