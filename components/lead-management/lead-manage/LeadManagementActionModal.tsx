@@ -2,6 +2,7 @@ import IconX from '@/components/icon/icon-x';
 import ComponentsFormsFileUploadMulti from '../../Reusable/file-upload/components-forms-file-upload-multi';
 import ComponentsFormsFileUploadSingle from '../../Reusable/file-upload/components-forms-file-upload-single';
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
+import ComponentsFormDatePickerBasic from './components-form-date-picker-basic';
 
 interface LeadManagementActionModalProps {
     isOpen: any;
@@ -20,7 +21,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
                 <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                    <h5 className="text-lg font-bold">Add Country</h5>
+                    <h5 className="text-lg font-bold">Add Lead</h5>
                     <button
                         onClick={() => {
                             setIsOpen(false);
@@ -34,30 +35,36 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                 </div>
 
                 <div className="p-5">
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="mb-5">
-                            <label htmlFor="countrysname">Country Name</label>
-                            <input id="country" type="text" placeholder="Enter Country Name" className="form-input" value={addData?.country} onChange={(e) => handleInputChange(e)} />
-                        </div>
-                        <div className="mb-5">
-                            <label htmlFor="languages">Languages</label>
-                            <input id="language" type="text" onChange={(e) => handleInputChange(e)} value={addData?.language} placeholder="Enter Languages" className="form-input" />
+                            <ComponentsFormDatePickerBasic />
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <label htmlFor="dailingcode">Dailing Code</label>
-                            <input id="dailingcode" value={addData?.dailingcode} onChange={(e) => handleInputChange(e)} type="tel" placeholder="Enter dailing Code" className="form-input" />
+                            <label htmlFor="name">Applicant Name </label>
+                            <input id="name" type="text" onChange={(e) => handleInputChange(e)} value={addData?.language} placeholder="Enter Applicant Name" className="form-input" />
                         </div>
                         <div className="mb-5">
-                            <label htmlFor="capital">Capital </label>
-                            <input id="capital" value={addData?.capital} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Capital" className="form-input" />
+                            <label htmlFor="phone">Mobile Number </label>
+                            <input id="phone" value={addData?.capital} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Mobile Number" className="form-input" />
                         </div>
                     </div>
-                    <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-1 ">
+                    <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <label htmlFor="cities">Cities</label>
-                            <input id="cities" value={addData?.cities} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Cities" className="form-input" />
+                            <label htmlFor="email">Email </label>
+                            <input id="email" value={addData?.cities} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Email" className="form-input" />
+                        </div>
+                        <div className="dropdown mb-5">
+                            <label htmlFor="country">Country</label>
+                            <select className="form-input" defaultValue="" id="country" value={addData?.country} onChange={(e) => handleInputChange(e)}>
+                                <option value="" disabled={true}>
+                                    Country
+                                </option>
+                                <option value="Canada">Canada</option>
+                                <option value="India">India</option>
+                                <option value="Usa">Usa</option>
+                            </select>
                         </div>
                     </div>
 
