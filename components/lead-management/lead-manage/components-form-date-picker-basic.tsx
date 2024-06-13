@@ -11,7 +11,7 @@ const ComponentsFormDatePickerBasic = () => {
     const [date1, setDate1] = useState<any>('2022-07-05');
 
     return (
-        <div className="mb-5">
+        <div className="">
             <label htmlFor="date">Date</label>
             <Flatpickr
                 value={date1}
