@@ -29,7 +29,7 @@ interface TableLayoutProps {
 
 const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setData, totalPages, handleDelete, handleSubmit, tableColumns, ActionModal, exportColumns, Filtersetting }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [editData, setEditData] = useState(null);
+    const [isEdit, setIsEdit] = useState(false);
     const [search, setSearch] = useState('');
     const [filterItem, setFilterItem] = useState(data);
     const [addData, setAddData] = useState({});
@@ -41,6 +41,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
 
     const handleEdit = (object: any) => {
 
+        setIsEdit(true);
         setIsOpen(true);
         setAddData(object);
     };
@@ -93,12 +94,14 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                             <IconSearch className="mx-auto" />
                         </button>
                     </div>
-                    <div>
-                        <button type="button" className="btn btn-primary" onClick={handleFilter}>
-                            <IconFile className="ltr:mr-2 rtl:ml-2" />
-                            Filter
-                        </button>
-                    </div>
+                    {title === 'Lead List' && (
+                        <div>
+                            <button type="button" className="btn btn-primary" onClick={handleFilter}>
+                                <IconFile className="ltr:mr-2 rtl:ml-2" />
+                                Filter
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
@@ -107,9 +110,17 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 </div>
             </div>
 
-            <ActionModal isOpen={isOpen} setAddData={setAddData} handleInputChange={handleInputChange} setIsOpen={setIsOpen} handleSave={handleSave} addData={addData} />
-        
-            <Filtersetting showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer}/>   
+            {title == 'Lead List' && <Filtersetting showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer} />}
+            <ActionModal
+                isOpen={isOpen}
+                setAddData={setAddData}
+                handleInputChange={handleInputChange}
+                setIsOpen={setIsOpen}
+                handleSave={handleSave}
+                addData={addData}
+                isEdit={isEdit}
+                setIsEdit={setIsEdit}
+            />
         </>
     );
 };

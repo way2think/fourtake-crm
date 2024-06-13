@@ -3,7 +3,6 @@
 import { getData } from '@/api';
 import ComponentsFormsFileUploadMulti from '@/components/Reusable/file-upload/components-forms-file-upload-multi';
 import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
-import TableLayout from '@/components/layouts/table-layout';
 import { use } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
@@ -11,6 +10,8 @@ import IconX from '@/components/icon/icon-x';
 import CountryActionModal from './LeadManagementActionModal';
 import Swal from 'sweetalert2';
 import { showMessage } from '@/utils/notification';
+import TableLayout from '@/components/layouts/table-layout';
+import Filtersetting from '@/components/layouts/filtersetting';
 
 // const getServerData = async () => {
 //     return await getData({ url: 'http://localhost:5001/center' });
@@ -179,6 +180,7 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={CountryActionModal}
+                Filtersetting={Filtersetting}
                 handleSubmit={handleSubmit}
             />
         </>
