@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import { showMessage } from '@/utils/notification';
 import TableLayout from '@/components/layouts/table-layout';
 import Filtersetting from '@/components/layouts/filtersetting';
+import LeadManagementActionModal from './LeadManagementActionModal';
 
 // const getServerData = async () => {
 //     return await getData({ url: 'http://localhost:5001/center' });
@@ -179,7 +180,7 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
-                ActionModal={CountryActionModal}
+                ActionModal={LeadManagementActionModal}
                 Filtersetting={Filtersetting}
                 handleSubmit={handleSubmit}
             />
