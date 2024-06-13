@@ -9,7 +9,7 @@ import React, { Fragment, useEffect, useMemo } from 'react';
 import ComponentsFormsFileUploadSingle from '../Reusable/file-upload/components-forms-file-upload-single';
 import ComponentsFormsFileUploadMulti from '../Reusable/file-upload/components-forms-file-upload-multi';
 import IconX from '../icon/icon-x';
-// import ActionModal from '../Reusable/Modal/ActionModal';
+//import ActionModal from '../Reusable/Modal/ActionModal';
 import CountryActionModal from '../CMS/countries/CountryActionModal';
 import IconFile from '../icon/icon-zip-file';
 
@@ -109,9 +109,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
 
             <ActionModal isOpen={isOpen} setAddData={setAddData} handleInputChange={handleInputChange} setIsOpen={setIsOpen} handleSave={handleSave} addData={addData} />
         
-            <Filtersetting showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer}/>
-
-            
+            <Filtersetting showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer}/>   
         </>
     );
 };

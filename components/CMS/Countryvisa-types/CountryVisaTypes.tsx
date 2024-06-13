@@ -136,7 +136,7 @@ const CountryVisaTypes: React.FC<{ countryvisadata: any }> = ({ countryvisadata 
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={CountryVisaTypeActionModal}
-                Filtersetting={Filter}
+                //Filtersetting={Filter}
                 handleSubmit={handleSubmit}
             />
         </>
