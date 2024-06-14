@@ -14,7 +14,6 @@ import { showMessage } from '@/utils/notification';
 import CountryVisaURlActionModal from './CountryVisaURlActionModal';
 import { isValidUrl } from '@/utils/validator';
 
-
 // const getServerData = async () => {
 //     return await getData({ url: 'http://localhost:5001/center' });
 // };
@@ -49,7 +48,6 @@ const CountryVisaURl: React.FC<{ countryvisaurls: any }> = ({ countryvisaurls })
                 return true;
             }
         });
-        
     };
 
     const exportColumns = ['id', 'country', 'urls'];
@@ -63,7 +61,7 @@ const CountryVisaURl: React.FC<{ countryvisaurls: any }> = ({ countryvisaurls })
         if (value.urls == '' || value.urls == null) {
             showMessage('Fill URL', 'error');
             return false;
-        } 
+        }
         // else if (!isValidUrl(value.urls)) {
         //     showMessage('Fill in valid URL', 'error');
         //     return false;
