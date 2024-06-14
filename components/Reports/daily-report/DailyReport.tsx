@@ -11,7 +11,6 @@ import { showMessage } from '@/utils/notification';
 import Swal from 'sweetalert2';
 import ReportTableLayout from '@/components/layouts/report-table-layout';
 
-
 const DailyReport: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
     const [data, setData] = useState(visatypedata);
     // const { data, isError, error } = use(getServerData());
@@ -34,7 +33,20 @@ const DailyReport: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'S.NO' },
-        { accessor: 'visatype', textAlign: 'left', title: 'Visa Type' },
+        { accessor: 'applydate', textAlign: 'left', title: 'Apply Date' },
+        { accessor: 'referenceno', textAlign: 'left', title: 'Reference No' },
+        { accessor: 'servicetype', textAlign: 'left', title: 'Service Type' },
+        { accessor: 'applicantname', textAlign: 'left', title: 'Applicant Name' },
+        { accessor: 'consultantname', textAlign: 'left', title: 'Consultant Name' },
+        { accessor: 'destination', textAlign: 'left', title: 'Destination ' },
+        { accessor: 'visafee', textAlign: 'left', title: 'Visa Fee' },
+        { accessor: 'vfsothers', textAlign: 'left', title: 'VFs/Others' },
+        { accessor: 'charges', textAlign: 'left', title: 'H/C - handling charges' },
+        { accessor: 'ddfee', textAlign: 'left', title: 'DD Fee' },
+        { accessor: 'deliverycharges', textAlign: 'left', title: 'Delivery charges' },
+        { accessor: 'tokencharges', textAlign: 'left', title: 'Token Charges' },
+        { accessor: 'misccharges', textAlign: 'left', title: 'Misc charges' },
+        { accessor: 'total', textAlign: 'left', title: 'Total' },
     ];
 
     const handleSubmit = (value: any) => {
@@ -42,7 +54,7 @@ const DailyReport: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
             showMessage('Enter Visa Type', 'error');
             return false;
         }
-   
+
         if (value.id) {
             //update user
             let formData: any = data.find((d: any) => d.id === value.id);
@@ -59,11 +71,7 @@ const DailyReport: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
             };
             setData([...data, formData]);
             return formData;
-
-            
         }
-
-        
     };
     const handleDelete = (row: any) => {
         Swal.fire({
@@ -81,9 +89,22 @@ const DailyReport: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
                 return true;
             }
         });
-        
     };
-    const exportColumns = ['id', 'visatype'];
+    const exportColumns = [
+        'id',
+        'applydate',
+        'referenceno',
+        'servicetype',
+        'applicantname',
+        'consultantname',
+        'destination',
+        'visafee',
+        'vfsothers',
+        'charges',
+        'ddfee',
+        'deliverycharges',
+        'tokencharges',
+    ];
 
     return (
         <>
