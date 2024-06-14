@@ -37,7 +37,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                 <div className="p-5">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="mb-5">
-                            <ComponentsFormDatePickerBasic />
+                            <ComponentsFormDatePickerBasic label="Date" />
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
@@ -69,107 +69,115 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                     </div>
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        <div className="mb-5">
-                            <label htmlFor="countrydetails">Country Details</label>
-                            <textarea
-                                id="countrydetails"
-                                rows={3}
-                                value={addData?.countrydetails}
-                                onChange={(e) => handleInputChange(e)}
-                                placeholder="Enter Country Details"
-                                className="form-textarea min-h-[80px] resize-none"
-                            ></textarea>
+                        <div className="dropdown mb-5">
+                            <label htmlFor="visatype">Visa Type</label>
+                            <select className="form-input" defaultValue="" id="visatype" value={addData?.country} onChange={(e) => handleInputChange(e)}>
+                                <option value="" disabled={true}>
+                                    Visa Type
+                                </option>
+                                <option value="Business Type">Business Visa</option>
+                                <option value="Vistor Visa">Vistor Visa</option>
+                            </select>
                         </div>
                         <div className="mb-5">
-                            <label htmlFor="climate">Climate</label>
-                            <textarea
-                                id="climate"
-                                rows={3}
-                                placeholder="Enter Climate"
-                                value={addData?.climate}
-                                onChange={(e) => handleInputChange(e)}
-                                className="form-textarea min-h-[80px] resize-none"
-                            ></textarea>
+                            <label htmlFor="applicants">No of Applicants </label>
+                            <input id="applicants" value={addData?.cities} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter No of Applicants " className="form-input" />
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <label htmlFor="currency">Currency</label>
-                            <input id="currency" type="tel" value={addData?.currency} onChange={(e) => handleInputChange(e)} placeholder="Enter Currency" className="form-input" />
+                            <ComponentsFormDatePickerBasic label="Travel Date" />
                         </div>
-                        <div className="mb-5">
-                            <label htmlFor="timezone">Time Zone</label>
-                            <input id="timezone" type="text" placeholder="Enter Time Zone" value={addData?.timezone} onChange={(e) => handleInputChange(e)} className="form-input" />
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
-                        <div className="mb-5">
-                            <label htmlFor="additionalinfo">Additional Info</label>
-                            <textarea
-                                id="additionalinfo"
-                                rows={3}
-                                value={addData?.additionalinfo}
-                                onChange={(e) => handleInputChange(e)}
-                                placeholder="Enter Additional Info"
-                                className="form-textarea min-h-[80px] resize-none"
-                            ></textarea>
+                        <div className="dropdown mb-5">
+                            <label htmlFor="leadtype">Lead Type</label>
+                            <select className="form-input" defaultValue="" id="leadtype" value={addData?.country} onChange={(e) => handleInputChange(e)}>
+                                <option value="" disabled={true}>
+                                    Lead Type
+                                </option>
+                                <option value="cold">Cold</option>
+                                <option value="warn">Warn</option>
+                                <option value="hot">Hot</option>
+                            </select>
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
-                        <div className="mb-5">
-                            <label htmlFor="website">Website</label>
-                            <input id="website" type="text" value={addData?.website} onChange={(e) => handleInputChange(e)} placeholder="Enter Website" className="form-input" />
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <div className="dropdown mb-5">
+                            <label htmlFor="leadmanage">Lead Manage</label>
+                            <select className="form-input" defaultValue="" id="leadmanage" value={addData?.country} onChange={(e) => handleInputChange(e)}>
+                                <option value="" disabled={true}>
+                                    Lead Manage
+                                </option>
+                                <option value="Sanjay">Sanjay</option>
+                                <option value="Bujji">Bujji</option>
+                                <option value="raji">raji</option>
+                                <option value="raji">Santhosh</option>
+                            </select>
+                        </div>
+                        <div className="dropdown mb-5">
+                            <label htmlFor="source">Source</label>
+                            <select className="form-input" defaultValue="" id="source" value={addData?.country} onChange={(e) => handleInputChange(e)}>
+                                <option value="" disabled={true}>
+                                    Source
+                                </option>
+                                <option value="Google">Google</option>
+                                <option value="Website">Website</option>
+                                <option value="Previous customer">Previous Customer</option>
+                                <option value="Others">Others</option>
+                            </select>
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-3 ">
-                        <div className="mb-5">
-                            <label className="flex cursor-pointer items-center">
-                                <input
-                                    type="checkbox"
-                                    id="ispopular"
-                                    // value={addData?.ispopular}
-                                    onChange={(e) => handleCheckBoxChange(e)}
-                                    checked={addData?.ispopular || false}
-                                    className="form-checkbox  bg-white dark:bg-black"
-                                />
-                                <span className="text-white-dark">Is popular Country </span>
-                            </label>
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <div className="dropdown mb-5">
+                            <label htmlFor="stage">Stage</label>
+                            <select className="form-input" defaultValue="" id="stage" value={addData?.country} onChange={(e) => handleInputChange(e)}>
+                                <option value="" disabled={true}>
+                                    Stage
+                                </option>
+                                <option value="Fresh">Fresh</option>
+                                <option value="Attempted">Attempted</option>
+                                <option value="Interested">Interested</option>
+                                <option value="Not interested">Not interested</option>
+                                <option value="Doc pick up">Doc pick up</option>
+                                <option value="Doc picked up">Doc picked up</option>
+                            </select>
                         </div>
-                        <div className="mb-5">
-                            <label className="flex cursor-pointer items-center">
-                                <input
-                                    type="checkbox"
-                                    id="isoutsource"
-                                    checked={addData?.isoutsource || false}
-                                    // value={addData?.isoutsource}
-                                    onChange={(e) => handleCheckBoxChange(e)}
-                                    className="form-checkbox bg-white dark:bg-black"
-                                />
-                                <span className="text-white-dark">Enable outsource application center</span>
-                            </label>
-                        </div>
-                        <div className="mb-5">
-                            <label className="flex cursor-pointer items-center">
-                                <input
-                                    type="checkbox"
-                                    id="isjurisdiction"
-                                    checked={addData?.isjurisdiction || false}
-                                    // value={addData?.isjurisdiction}
-                                    onChange={(e) => handleCheckBoxChange(e)}
-                                    className="form-checkbox bg-white dark:bg-black"
-                                />
-                                <span className="text-white-dark">Enable Jurisdiction</span>
-                            </label>
+                        <div className="dropdown mb-5">
+                            <label htmlFor="status">Status</label>
+                            <select className="form-input" defaultValue="" id="status" value={addData?.country} onChange={(e) => handleInputChange(e)}>
+                                <option value="Status" disabled={true}>
+                                    Status
+                                </option>
+                                <option value="Open">Open</option>
+                                <option value="In-progress">In-progress</option>
+                                <option value="Closed">Closed</option>
+                                <option value="Done ">Done </option>
+                            </select>
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-3 ">
-                        <div className="mb-5">
-                            <ComponentsFormsFileUploadSingle setAddData={setAddData} addData={addData} />
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <div className="dropdown mb-5">
+                            <label htmlFor="interaction">Type of Interaction*</label>
+                            <select className="form-input" defaultValue="" id="interaction" value={addData?.country} onChange={(e) => handleInputChange(e)}>
+                                <option value="" disabled={true}>
+                                    Type of Interaction
+                                </option>
+                                <option value="SMS">SMS</option>
+                                <option value="Call">Call</option>
+                                <option value="Email">Email</option>
+                                <option value="Whatapp">Whatapp</option>
+                            </select>
                         </div>
                         <div className="mb-5">
-                            <ComponentsFormsFileUploadMulti setAddData={setAddData} addData={addData} />
+                            <label htmlFor="mail">Email</label>
+                            <div className="flex">
+                                <input id="mail" type="text" placeholder="Enter Email" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+                                <button type="button" className="btn btn-secondary ltr:rounded-l-none rtl:rounded-r-none">
+                                    Send
+                                </button>
+                            </div>
                         </div>
                     </div>
+
                     <div className="mt-8 flex items-center justify-end">
                         <button
                             onClick={() => {
@@ -182,7 +190,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             Cancel
                         </button>
                         <button onClick={handleSave} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                            Save
+                            Create
                         </button>
                     </div>
                 </div>

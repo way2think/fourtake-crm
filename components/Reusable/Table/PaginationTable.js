@@ -40,7 +40,7 @@ export default function PaginationTable({ data, tableColumns, handleEdit, handle
                     ...tableColumns,
                     {
                         accessor: 'actions',
-                        title: <Box mr={6}>Row actions</Box>,
+                        title: <Box mr={6}>Actions</Box>,
                         textAlign: 'right',
                         render: (row) => (
                             <Group gap={4} justify="right" wrap="nowrap">
