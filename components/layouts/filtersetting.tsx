@@ -10,7 +10,6 @@ interface FiltersettingProps {
 
 const Filtersetting: React.FC<FiltersettingProps> = ({ showCustomizer, setShowCustomizer }) => {
     // State for all form fields
-    const [searchName, setSearchName] = useState('');
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [followUp, setFollowUp] = useState('');
@@ -23,7 +22,6 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ showCustomizer, setShowCu
 
     // Handler to clear all fields
     const handleClear = () => {
-        setSearchName('');
         setStartDate(null);
         setEndDate(null);
         setFollowUp('');
@@ -50,45 +48,17 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ showCustomizer, setShowCu
                                 Filter
                             </div>
                             <div className="text-right">
-                                <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                    Apply
-                                </button>
-                                <button
-                                    type="button"
-                                    className="btn btn-outline-danger ltr:ml-4 rtl:mr-4"
-                                    onClick={handleClear}
-                                >
-                                    Clear
-                                </button>
+                                
                             </div>
                         </div>
 
-                        <div>
-                            <label htmlFor="searchName">Search by Name</label>
-                            <div className="relative">
-                                <input
-                                    type="text"
-                                    id="searchName"
-                                    placeholder="Search"
-                                    className="peer form-input py-2 ltr:pr-11 rtl:pl-11"
-                                    value={searchName}
-                                    onChange={(e) => setSearchName(e.target.value)}
-                                />
-                                <button
-                                    type="button"
-                                    className="absolute top-1/2 -translate-y-1/2 peer-focus:text-primary ltr:right-[11px] rtl:left-[11px]"
-                                >
-                                    <IconSearch className="mx-auto" />
-                                </button>
-                            </div>
-                        </div>
-                        <div>
-                            {/* <label htmlFor="startDate">Start Date</label> */}
+                        {/* <div>
+                            <label htmlFor="startDate">Start Date</label>
                             <ComponentsFormDatePickerBasic  
                             />
                         </div>
                         <div>
-                            {/* <label htmlFor="endDate">End Date</label> */}
+                            <label htmlFor="endDate">End Date</label>
                             <ComponentsFormDatePickerBasic
                             />
                         </div>
@@ -118,7 +88,7 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ showCustomizer, setShowCu
                                 <option value="albania">Albania</option>
                                 <option value="bangladesh">Bangladesh</option>
                             </select>
-                        </div>
+                        </div> */}
 
                         <div className="dropdown">
                             <label htmlFor="leadStatus">Filter Lead Status</label>
@@ -185,6 +155,20 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ showCustomizer, setShowCu
                                 <option value="all">All</option>
                             </select>
                         </div>
+                        <div className="mt-8 flex items-center justify-end">
+                        
+                        <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
+                            Apply
+                        </button>
+                        <button
+                            type="button"
+                            className="btn btn-outline-danger ltr:ml-4 rtl:mr-4"
+                            onClick={handleClear}
+                        >
+                            Clear
+                        </button>
+                    </div>
+
                     </div>
                 </div>
             </nav>
