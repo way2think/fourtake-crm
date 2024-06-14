@@ -3,6 +3,8 @@ import ComponentsFormsFileUploadMulti from '../../Reusable/file-upload/component
 import ComponentsFormsFileUploadSingle from '../../Reusable/file-upload/components-forms-file-upload-single';
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import ComponentsFormDatePickerBasic from './components-form-date-picker-basic';
+import ComponentsFormDatePickerTime from './components-form-date-picker-time';
+import TableLayout from '@/components/layouts/table-layout';
 
 interface LeadManagementActionModalProps {
     isOpen: any;
@@ -155,6 +157,23 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <div className="mb-5">
+                            <ComponentsFormDatePickerBasic label="Document pickup Date" />
+                        </div>
+                        <div className="mb-5">
+                            <label htmlFor="remarks">Remarks</label>
+                            <textarea
+                                id="remarks"
+                                rows={1}
+                                value={addData?.additionalinfo}
+                                onChange={(e) => handleInputChange(e)}
+                                placeholder="Enter Remarks"
+                                className="form-textarea
+                                min-h-[10px] resize-none"
+                            ></textarea>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="dropdown mb-5">
                             <label htmlFor="interaction">Type of Interaction*</label>
                             <select className="form-input" defaultValue="" id="interaction" value={addData?.country} onChange={(e) => handleInputChange(e)}>
@@ -171,12 +190,59 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             <label htmlFor="mail">Email</label>
                             <div className="flex">
                                 <input id="mail" type="text" placeholder="Enter Email" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
-                                <button type="button" className="btn btn-secondary ltr:rounded-l-none rtl:rounded-r-none">
+                                <button type="button" className="btn btn-primary ltr:rounded-l-none rtl:rounded-r-none">
                                     Send
                                 </button>
                             </div>
                         </div>
                     </div>
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-3  ">
+                        <div className="mb-5">
+                            <ComponentsFormDatePickerBasic label="Next Follow-up Date " />
+                        </div>
+                        <div className="mb-5">
+                            <ComponentsFormDatePickerTime />
+                        </div>
+                        <div className="mb-5">
+                            <label htmlFor="remarks">Remarks</label>
+                            <textarea
+                                id="remarks"
+                                rows={1}
+                                value={addData?.additionalinfo}
+                                onChange={(e) => handleInputChange(e)}
+                                placeholder="Enter Remarks"
+                                className="form-textarea
+                                min-h-[10px] resize-none"
+                            ></textarea>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-1">
+                        <div className="mb-5">
+                            <label htmlFor="remarks">Lead Note</label>
+                            <textarea
+                                id="remarks"
+                                rows={3}
+                                value={addData?.additionalinfo}
+                                onChange={(e) => handleInputChange(e)}
+                                placeholder="Enter Lead Note"
+                                className="form-textarea
+                                min-h-[80px] resize-none"
+                            ></textarea>
+                        </div>
+                    </div>
+                    {/* <TableLayout
+                        title="Lead List"
+                        setData={setData}
+                        filterby="country"
+                        handleDelete={handleDelete}
+                        data={data}
+                        totalPages={data?.length || 0}
+                        tableColumns={tableColumns}
+                        exportColumns={exportColumns}
+                        ActionModal={LeadManagementActionModal}
+                        Filtersetting={Filtersetting}
+                        handleSubmit={handleSubmit}
+                    /> */}
 
                     <div className="mt-8 flex items-center justify-end">
                         <button
