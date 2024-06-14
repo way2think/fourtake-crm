@@ -52,15 +52,11 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ showCustomizer, setShowCu
                             </div>
                         </div>
 
-                        {/* <div>
-                            <label htmlFor="startDate">Start Date</label>
-                            <ComponentsFormDatePickerBasic  
-                            />
+                        {/* <div> 
+                            <ComponentsFormDatePickerBasic label="Start Date" nomargin="yes"/>
                         </div>
                         <div>
-                            <label htmlFor="endDate">End Date</label>
-                            <ComponentsFormDatePickerBasic
-                            />
+                           <ComponentsFormDatePickerBasic label="End Date" nomargin="yes"/>
                         </div>
 
                         <div className="dropdown">

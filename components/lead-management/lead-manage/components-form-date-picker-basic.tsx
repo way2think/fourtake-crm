@@ -8,6 +8,7 @@ import 'flatpickr/dist/flatpickr.css';
 
 const ComponentsFormDatePickerBasic = (props: {
     label: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined;
+    nomargin?: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined;
 }) => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const [date1, setDate1] = useState<any>('2022-07-05');
