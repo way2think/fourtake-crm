@@ -110,15 +110,17 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                 <div className="mt-5 ">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <div className="dropdown">
-                                <label htmlFor="leadStatus">Select User</label>
-                                <select className="form-input">
-                                    <option value="">[-Select-]</option>
-                                    <option value="hot">Hot</option>
-                                    <option value="cold">Cold</option>
-                                    <option value="warm">Warm</option>
-                                </select>
-                            </div>
+                            {title !== 'Daily Report' && (
+                                <div className="dropdown">
+                                    <label htmlFor="leadStatus">Select User</label>
+                                    <select className="form-input">
+                                        <option value="">[-Select-]</option>
+                                        <option value="hot">Hot</option>
+                                        <option value="cold">Cold</option>
+                                        <option value="warm">Warm</option>
+                                    </select>
+                                </div>
+                            )}
                         </div>
                         <div className="mb-5">
                             <div className="dropdown">
