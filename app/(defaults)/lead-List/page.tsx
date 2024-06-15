@@ -5,7 +5,7 @@ import { getData } from '@/api';
 import LeadManagement from '@/components/lead-management/lead-manage/LeadManagement';
 
 export const metadata: Metadata = {
-    title: 'checklist | Countries list',
+    title: 'Lead List',
 };
 const getServerData = async () => {
     return await getData({ url: 'http://localhost:5001/center' });
@@ -20,29 +20,55 @@ const LeadList = () => {
     let data = [
         {
             id: 1,
-            leadname: 'Jagadish',
+            name: 'Jagadish',
             email: 'jagadish00198@gmail.com',
-            contact: '8015330209',
+            phone: '8015330209',
             country: 'india',
             visatype: 'business visa',
+            numberofapplicants: '2',
             stateofresidence: 'commerical',
+            createdate: '29/09/2023',
             emailsentdate: '20/09/2023',
             lastfollowup: '20/09/2023',
-            nextfollowup: '29/09/2023',
-            status:"open"
+            nextfollowupdate: '30/09/2023',
+            interaction: 'Call',
+            followuptime: '5:05:13 PM',
+            follupremark: 'for enquiry',
+            stage: 'Fresh',
+            status: 'open',
+            traveldate: '19/06/2024',
+            docpickupdate: '21/06/2024',
+            docpickupremarks: '',
+            leadnote: 'done',
+            leadtype: 'warm',
+            assignee: 'raji',
+            source: 'Google',
         },
         {
             id: 2,
-            leadname: 'Balu',
+            name: 'Balu',
             email: 'jagadish00198@gmail.com',
-            contact: '8015330209',
+            phone: '8015330209',
             country: 'india',
             visatype: 'business visa',
             stateofresidence: 'commerical',
+            createdate: '14/09/2023',
             emailsentdate: '20/09/2023',
             lastfollowup: '20/09/2023',
-            nextfollowup: '29/09/2023',
-            status:"close"
+            nextfollowupdate: '21/09/2023',
+            interaction: 'Call',
+            followuptime: '3:05:13 PM',
+            follupremark: 'for enquiry',
+            stage: 'Attempted',
+            status: 'open',
+            traveldate: '30/6/2023',
+            numberofapplicants: '2',
+            docpickupdate: '15/6/2024',
+            docpickupremarks: 'passport need to be collected',
+            leadnote: 'done',
+            leadtype: 'cold',
+            assignee: 'buji',
+            source: 'Website',
         },
     ];
     // return <Countries />;

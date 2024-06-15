@@ -28,27 +28,16 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
-        { accessor: 'leadname', textAlign: 'left', title: 'Lead Name' },
+        { accessor: 'name', textAlign: 'left', title: 'Lead Name' },
         { accessor: 'email', textAlign: 'left', title: 'Email' },
-        { accessor: 'contact', textAlign: 'left', title: 'Contact' },
+        { accessor: 'phone', textAlign: 'left', title: 'Phone no' },
         { accessor: 'country', textAlign: 'left', title: 'Country' },
         { accessor: 'visatype', textAlign: 'left', title: 'Visa Type' },
         { accessor: 'stateofresidence', textAlign: 'left', title: 'State Of Residence' },
         { accessor: 'emailsentdate', textAlign: 'left', title: 'Email Sent Date' },
-        { accessor: 'lastfollowup', textAlign: 'left', title: 'Last Follow Up' },
-        { accessor: 'nextfollowup', textAlign: 'left', title: 'Next Follow Up' },
+        // { accessor: 'lastfollowup', textAlign: 'left', title: 'Last Follow Up' },
+        { accessor: 'nextfollowupdate', textAlign: 'left', title: 'Next Follow Up' },
         { accessor: 'status', textAlign: 'left', title: 'Status' },
-        // { accessor: 'followup', textAlign: 'left', title: 'Follow Up' },
-        // { accessor: 'phone', textAlign: 'left' },
-        // { accessor: 'email', textAlign: 'left' },
-        // { accessor: 'address', textAlign: 'left' },
-        // {
-        //     accessor: 'is_active',
-        //     textAlign: 'left',
-        //     render: ({ is_active }: { is_active: any }) => {
-        //         return is_active;
-        //     },
-        // },
     ];
 
     const handleDelete = (row: any) => {
@@ -72,8 +61,20 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
     const exportColumns = ['id', 'leadname', 'email', 'contact', 'country', 'visatype', 'stateofresidence', 'emailsentdate', 'lastfollowup', 'nextfollowup', 'status'];
 
     const handleSubmit = (value: any) => {
+        if (value.name == '' || value.name == null) {
+            showMessage('Enter name', 'error');
+            return false;
+        }
+        if (value.phone == '' || value.phone == null) {
+            showMessage('Enter Phone', 'error');
+            return false;
+        }
         if (value.country == '' || value.country == null) {
-            showMessage('Enter country name', 'error');
+            showMessage('Select Country ', 'error');
+            return false;
+        }
+        if (value.stateofresidence == '' || value.stateofresidence == null) {
+            showMessage('Select State', 'error');
             return false;
         }
         // if (!isValidName(params.lastname)) {
@@ -118,22 +119,30 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
         if (value.id) {
             //update user
             let formData: any = data.find((d: any) => d.id === value.id);
-            formData.country = value.country;
-            formData.language = value.language;
-            formData.dailingcode = value.dailingcode;
-            formData.capital = value.capital;
-            formData.cities = value.cities;
-            formData.countrydetails = value.countrydetails;
-            formData.climate = value.climate;
-            formData.currency = value.currency;
-            formData.timezone = value.timezone;
-            formData.additionalinfo = value.additionalinfo;
-            formData.website = value.website;
-            formData.ispopular = value.ispopular;
-            formData.isoutsource = value.isoutsource;
-            formData.isjurisdiction = value.isjurisdiction;
-            formData.image = value.image;
-            formData.flag = value.flag;
+
+            formData.name = value.name || "";
+            formData.email = value.email || "";
+            formData.phone = value.phone || "";
+            formData.country = value.country || "";
+            formData.visatype = value.visatype || "";
+            formData.stateofresidence = value.stateofresidence || "";
+            formData.createdDate = value.createdDate || "";
+            formData.emailsentdate = value.emailsentdate || "";
+            formData.lastfollowup = value.lastfollowup || "";
+            formData.nextfollowupdate = value.nextfollowupdate || "";
+            formData.interaction = value.interaction || "";
+            formData.followuptime = value.followuptime || "";
+            formData.follupremark = value.follupremark || "";
+            formData.stage = value.stage || "";
+            formData.status = value.status || "";
+            formData.traveldate = value.traveldate;
+            formData.numberofapplicants = value.numberofapplicants || "";
+            formData.docpickupdate = value.docpickupdate || "";
+            formData.docpickupremarks = value.docpickupremarks || "";
+            formData.leadnote = value.leadnote || "";
+            formData.leadtype = value.leadtype || "";
+            formData.assignee = value.assignee || "";
+            formData.source = value.source || "";
 
             return formData;
         } else {
@@ -142,23 +151,31 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
 
             let formData = {
                 id: +maxUserId + 1,
-                country: value.country,
-                language: value.language,
-                dailingcode: value.dailingcode,
-                capital: value.capital,
-                cities: value.cities,
-                countrydetails: value.countrydetails,
-                climate: value.climate,
-                currency: value.currency,
-                timezone: value.timezone,
-                additionalinfo: value.additionalinfo,
-                website: value.website,
-                ispopular: value.ispopular,
-                isoutsource: value.isoutsource,
-                isjurisdiction: value.isjurisdiction,
-                image: value.image,
-                flag: value.flag,
+                name: value.name || "",
+                email: value.email || "",
+                phone: value.phone || "",
+                country: value.country || "",
+                visatype: value.visatype || "",
+                stateofresidence: value.stateofresidence || "",
+                createdate: value.createdate || "",
+                emailsentdate: value.emailsentdate || "",
+                lastfollowup: value.lastfollowup || "",
+                nextfollowupdate: value.nextfollowupdate || "",
+                interaction: value.interaction || "",
+                followuptime: value.followuptime || "",
+                follupremark: value.follupremark || "",
+                stage: value.stage || "",
+                status: value.status || "",
+                traveldate: value.traveldate || "",
+                numberofapplicants: value.numberofapplicants || "",
+                docpickupdate: value.docpickupdate || "",
+                docpickupremarks: value.docpickupremarks || "",
+                leadnote: value.leadnote || "",
+                leadtype: value.leadtype || "",
+                assignee: value.assignee || "",
+                source: value.source || "",
             };
+
             setData([...data, formData]);
             return formData;
 

@@ -6,15 +6,15 @@ import { Nunito } from 'next/font/google';
 
 export const metadata: Metadata = {
     title: {
-        template: '%s | Dashboard',
+        template: '%s | Fourtake CRM',
         default: 'Fourtake CRM',
     },
 };
 const nunito = Nunito({
-    weight: ['400', '500', '600', '700', '800'],
-    subsets: ['latin'],
-    display: 'swap',
-    variable: '--font-nunito',
+    weight: ['400', '500', '600', '700', '800'], 
+    subsets: ['latin'], 
+    display: 'swap', 
+    variable: '--font-nunito', 
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -101,7 +101,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                                 Filter
                             </button>
                         </div>
-                    )}
+                    )}  
+                               
                 </div>
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
@@ -110,7 +111,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 </div>
             </div>
 
-            {title == 'Lead List' && <Filtersetting showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer} />}
+            {title == 'Lead List' && <Filtersetting data={data} setFilterItem={setFilterItem} showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer} />}
             <ActionModal
                 isOpen={isOpen}
                 setAddData={setAddData}
