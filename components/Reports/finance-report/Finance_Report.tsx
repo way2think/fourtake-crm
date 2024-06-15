@@ -11,8 +11,8 @@ import { showMessage } from '@/utils/notification';
 import Swal from 'sweetalert2';
 import ReportTableLayout from '@/components/layouts/report-table-layout';
 
-const DailyReport: React.FC<{ dailyreportdata: any }> = ({ dailyreportdata }) => {
-    const [data, setData] = useState(dailyreportdata);
+const Finance_Report: React.FC<{ financereportdata: any }> = ({ financereportdata }) => {
+    const [data, setData] = useState(financereportdata);
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
@@ -33,12 +33,8 @@ const DailyReport: React.FC<{ dailyreportdata: any }> = ({ dailyreportdata }) =>
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'S.NO' },
-        { accessor: 'applydate', textAlign: 'left', title: 'Apply Date' },
-        { accessor: 'referenceno', textAlign: 'left', title: 'Reference No' },
-        { accessor: 'servicetype', textAlign: 'left', title: 'Service Type' },
-        { accessor: 'applicantname', textAlign: 'left', title: 'Applicant Name' },
         { accessor: 'consultantname', textAlign: 'left', title: 'Consultant Name' },
-        { accessor: 'destination', textAlign: 'left', title: 'Destination ' },
+        { accessor: 'noofapplicant', textAlign: 'left', title: 'No of applicant' },
         { accessor: 'visafee', textAlign: 'left', title: 'Visa Fee' },
         { accessor: 'vfsothers', textAlign: 'left', title: 'VFs/Others' },
         { accessor: 'charges', textAlign: 'left', title: 'H/C - handling charges' },
@@ -90,26 +86,12 @@ const DailyReport: React.FC<{ dailyreportdata: any }> = ({ dailyreportdata }) =>
             }
         });
     };
-    const exportColumns = [
-        'id',
-        'applydate',
-        'referenceno',
-        'servicetype',
-        'applicantname',
-        'consultantname',
-        'destination',
-        'visafee',
-        'vfsothers',
-        'charges',
-        'ddfee',
-        'deliverycharges',
-        'tokencharges',
-    ];
+    const exportColumns = ['id', 'consultantname', 'noofapplicant', 'visafee', 'vfsothers', 'charges', 'ddfee', 'deliverycharges', 'tokencharges'];
 
     return (
         <>
             <ReportTableLayout
-                title="Daily Report"
+                title="Finance Report"
                 //setData={setData}
                 //filterby="visatype"
                 data={data}
@@ -124,4 +106,4 @@ const DailyReport: React.FC<{ dailyreportdata: any }> = ({ dailyreportdata }) =>
     );
 };
 
-export default DailyReport;
+export default Finance_Report;

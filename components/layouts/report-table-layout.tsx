@@ -108,9 +108,9 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
             </div>
             <div className="rounded-lg bg-white p-4 shadow-md">
                 <div className="mt-5 ">
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        <div className="mb-5">
-                            {title !== 'Daily Report' && (
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-3 ">
+                        {title !== 'Finance Report' && title !== 'Payment Report' && (
+                            <div className="mb-5">
                                 <div className="dropdown">
                                     <label htmlFor="leadStatus">Select User</label>
                                     <select className="form-input">
@@ -120,19 +120,36 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                                         <option value="warm">Warm</option>
                                     </select>
                                 </div>
-                            )}
-                        </div>
+                            </div>
+                        )}
                         <div className="mb-5">
                             <div className="dropdown">
                                 <label htmlFor="leadStatus">Select Center </label>
                                 <select className="form-input">
                                     <option value="">[-Select-]</option>
-                                    <option value="hot">Hot</option>
-                                    <option value="cold">Cold</option>
-                                    <option value="warm">Warm</option>
+                                    <option value="Chennai">Chennai</option>
+                                    <option value="New Delhi">New Delhi</option>
+                                    <option value="Mumbai">Mumbai</option>
+                                    <option value="Bangaluru">Bangaluru</option>
+                                    <option value="Hyderabad">Hyderabad</option>
                                 </select>
                             </div>
                         </div>
+                        {title !== 'Finance Report' && title !== 'Daily Report' && title !== 'Payment Report' && (
+                            <div className="mb-5">
+                                <div className="dropdown">
+                                    <label htmlFor="employee">Select Employee </label>
+                                    <select className="form-input">
+                                        <option value="">[-Employee-]</option>
+                                        <option value="Chennai">Sanjay</option>
+                                        <option value="New Delhi">Jagadish</option>
+                                        <option value="Mumbai">Raji</option>
+                                        <option value="Bangaluru">Akhil</option>
+                                        <option value="Hyderabad">Franklin</option>
+                                    </select>
+                                </div>
+                            </div>
+                        )}
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">

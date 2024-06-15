@@ -1,22 +1,17 @@
 import React from 'react';
 import { Metadata } from 'next';
-import Country from '@/components/CMS/countries/Country';
-import DailyReport from '@/components/Reports/daily-report/DailyReport';
+import StatusWise from '@/components/Reports/status-wise-report/StatusWise';
 
 export const metadata: Metadata = {
     title: 'Fourtake CRM',
 };
 
-const Report = () => {
+const StatusWiseReport = () => {
     const data = [
         {
             id: 1,
-            applydate: '20/09/2024',
-            referenceno: '01',
-            servicetype: 'visa type',
-            applicantname: 'jagadish',
             consultantname: 'raji',
-            destination: 'korea',
+            noofapplicant: '2',
             visafee: '40000/-',
             vfsothers: 'vfs',
             charges: '20000/-',
@@ -27,7 +22,7 @@ const Report = () => {
             total: '90000/-',
         },
     ];
-    return <DailyReport dailyreportdata={data} />;
+    return <StatusWise statuswisedata={data} />;
 };
 
-export default Report;
+export default StatusWiseReport;
