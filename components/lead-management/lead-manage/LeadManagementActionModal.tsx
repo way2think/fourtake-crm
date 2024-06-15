@@ -24,6 +24,9 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         if (addData.email) {
             setSetEmail(addData.email);
         }
+        if(addData.docpickupdate){
+            setDocPickup(true)
+        }
     }, [addData]);
     const handleCheckBoxChange = (e: any) => {
         const { id, checked } = e.target;
@@ -51,7 +54,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                 <div className="p-5">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="mb-5">
-                            <ComponentsFormDatePickerBasic label="Travel Date" id={'createdate'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                            <ComponentsFormDatePickerBasic label="Create Date" id={'createdate'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
