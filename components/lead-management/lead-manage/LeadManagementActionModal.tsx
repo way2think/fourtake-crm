@@ -5,6 +5,7 @@ import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import ComponentsFormDatePickerBasic from './components-form-date-picker-basic';
 import ComponentsFormDatePickerTime from './components-form-date-picker-time';
 import TableLayout from '@/components/layouts/table-layout';
+import { useEffect, useState } from 'react';
 
 interface LeadManagementActionModalProps {
     isOpen: any;
@@ -13,12 +14,22 @@ interface LeadManagementActionModalProps {
     addData?: any;
     handleInputChange: any;
     setAddData: any;
+    isEdit?: any;
+    setIsEdit?:any;
 }
-const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
+const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ isEdit,setIsEdit, isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
+    const [setMail, setSetEmail] = useState<string>();
+    const [docPickup, setDocPickup] = useState(false);
+    useEffect(() => {
+        if (addData.email) {
+            setSetEmail(addData.email);
+        }
+    }, [addData]);
     const handleCheckBoxChange = (e: any) => {
         const { id, checked } = e.target;
         setAddData((prev: any) => ({ ...prev, [id]: checked }));
     };
+
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
@@ -28,6 +39,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         onClick={() => {
                             setIsOpen(false);
                             setAddData({});
+                            setIsEdit(false);
                         }}
                         type="button"
                         className="text-white-dark hover:text-dark"
@@ -39,23 +51,23 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                 <div className="p-5">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="mb-5">
-                            <ComponentsFormDatePickerBasic label="Date" />
+                            <ComponentsFormDatePickerBasic label="Travel Date" id={'createdate'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
                             <label htmlFor="name">Applicant Name </label>
-                            <input id="name" type="text" onChange={(e) => handleInputChange(e)} value={addData?.language} placeholder="Enter Applicant Name" className="form-input" />
+                            <input id="name" type="text" onChange={(e) => handleInputChange(e)} value={addData?.name} placeholder="Enter Applicant Name" className="form-input" />
                         </div>
                         <div className="mb-5">
                             <label htmlFor="phone">Mobile Number </label>
-                            <input id="phone" value={addData?.capital} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Mobile Number" className="form-input" />
+                            <input id="phone" value={addData?.phone} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Mobile Number" className="form-input" />
                         </div>
                     </div>
                     <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
                             <label htmlFor="email">Email </label>
-                            <input id="email" value={addData?.cities} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Email" className="form-input" />
+                            <input id="email" value={addData?.email} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Email" className="form-input" />
                         </div>
                         <div className="dropdown mb-5">
                             <label htmlFor="country">Country</label>
@@ -72,8 +84,19 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="dropdown mb-5">
+                            <label htmlFor="stateofresidence">State of Residence</label>
+                            <select className="form-input" defaultValue="" id="stateofresidence" value={addData?.stateofresidence} onChange={(e) => handleInputChange(e)}>
+                                <option value="" disabled={true}>
+                                    Select State
+                                </option>
+                                <option value="Canada">Tamil Nadu</option>
+                                <option value="India">Kernataka</option>
+                                <option value="Usa">AP</option>
+                            </select>
+                        </div>
+                        <div className="dropdown mb-5">
                             <label htmlFor="visatype">Visa Type</label>
-                            <select className="form-input" defaultValue="" id="visatype" value={addData?.country} onChange={(e) => handleInputChange(e)}>
+                            <select className="form-input" defaultValue="" id="visatype" value={addData?.visatype} onChange={(e) => handleInputChange(e)}>
                                 <option value="" disabled={true}>
                                     Visa Type
                                 </option>
@@ -81,43 +104,39 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 <option value="Vistor Visa">Vistor Visa</option>
                             </select>
                         </div>
-                        <div className="mb-5">
-                            <label htmlFor="applicants">No of Applicants </label>
-                            <input id="applicants" value={addData?.cities} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter No of Applicants " className="form-input" />
-                        </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <ComponentsFormDatePickerBasic label="Travel Date" />
+                            <label htmlFor="numberofapplicants">No of Applicants </label>
+                            <input
+                                id="numberofapplicants"
+                                value={addData?.numberofapplicants}
+                                onChange={(e) => handleInputChange(e)}
+                                type="text"
+                                placeholder="Enter No of Applicants "
+                                className="form-input"
+                            />
                         </div>
+                        <div className="mb-5">
+                            <ComponentsFormDatePickerBasic label="Travel Date" id={'traveldate'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="dropdown mb-5">
                             <label htmlFor="leadtype">Lead Type</label>
-                            <select className="form-input" defaultValue="" id="leadtype" value={addData?.country} onChange={(e) => handleInputChange(e)}>
+                            <select className="form-input" defaultValue="" id="leadtype" value={addData?.leadtype} onChange={(e) => handleInputChange(e)}>
                                 <option value="" disabled={true}>
                                     Lead Type
                                 </option>
                                 <option value="cold">Cold</option>
-                                <option value="warn">Warn</option>
+                                <option value="warm">Warm</option>
                                 <option value="hot">Hot</option>
                             </select>
                         </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        <div className="dropdown mb-5">
-                            <label htmlFor="leadmanage">Lead Manage</label>
-                            <select className="form-input" defaultValue="" id="leadmanage" value={addData?.country} onChange={(e) => handleInputChange(e)}>
-                                <option value="" disabled={true}>
-                                    Lead Manage
-                                </option>
-                                <option value="Sanjay">Sanjay</option>
-                                <option value="Bujji">Bujji</option>
-                                <option value="raji">raji</option>
-                                <option value="raji">Santhosh</option>
-                            </select>
-                        </div>
+
                         <div className="dropdown mb-5">
                             <label htmlFor="source">Source</label>
-                            <select className="form-input" defaultValue="" id="source" value={addData?.country} onChange={(e) => handleInputChange(e)}>
+                            <select className="form-input" defaultValue="" id="source" value={addData?.source} onChange={(e) => handleInputChange(e)}>
                                 <option value="" disabled={true}>
                                     Source
                                 </option>
@@ -128,108 +147,148 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             </select>
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        <div className="dropdown mb-5">
-                            <label htmlFor="stage">Stage</label>
-                            <select className="form-input" defaultValue="" id="stage" value={addData?.country} onChange={(e) => handleInputChange(e)}>
-                                <option value="" disabled={true}>
-                                    Stage
-                                </option>
-                                <option value="Fresh">Fresh</option>
-                                <option value="Attempted">Attempted</option>
-                                <option value="Interested">Interested</option>
-                                <option value="Not interested">Not interested</option>
-                                <option value="Doc pick up">Doc pick up</option>
-                                <option value="Doc picked up">Doc picked up</option>
-                            </select>
-                        </div>
-                        <div className="dropdown mb-5">
-                            <label htmlFor="status">Status</label>
-                            <select className="form-input" defaultValue="" id="status" value={addData?.country} onChange={(e) => handleInputChange(e)}>
-                                <option value="Status" disabled={true}>
-                                    Status
-                                </option>
-                                <option value="Open">Open</option>
-                                <option value="In-progress">In-progress</option>
-                                <option value="Closed">Closed</option>
-                                <option value="Done ">Done </option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        <div className="mb-5">
-                            <ComponentsFormDatePickerBasic label="Document pickup Date" />
-                        </div>
-                        <div className="mb-5">
-                            <label htmlFor="remarks">Remarks</label>
-                            <textarea
-                                id="remarks"
-                                rows={1}
-                                value={addData?.additionalinfo}
-                                onChange={(e) => handleInputChange(e)}
-                                placeholder="Enter Remarks"
-                                className="form-textarea
-                                min-h-[10px] resize-none"
-                            ></textarea>
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        <div className="dropdown mb-5">
-                            <label htmlFor="interaction">Type of Interaction*</label>
-                            <select className="form-input" defaultValue="" id="interaction" value={addData?.country} onChange={(e) => handleInputChange(e)}>
-                                <option value="" disabled={true}>
-                                    Type of Interaction
-                                </option>
-                                <option value="SMS">SMS</option>
-                                <option value="Call">Call</option>
-                                <option value="Email">Email</option>
-                                <option value="Whatapp">Whatapp</option>
-                            </select>
-                        </div>
-                        <div className="mb-5">
-                            <label htmlFor="mail">Email</label>
-                            <div className="flex">
-                                <input id="mail" type="text" placeholder="Enter Email" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
-                                <button type="button" className="btn btn-primary ltr:rounded-l-none rtl:rounded-r-none">
-                                    Send
-                                </button>
+
+                    {isEdit && (
+                        <>
+                            {' '}
+                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                                <div className="dropdown mb-5">
+                                    <label htmlFor="stage">Stage</label>
+                                    <select
+                                        className="form-input"
+                                        defaultValue=""
+                                        id="stage"
+                                        value={addData?.stage}
+                                        onChange={(e) => {
+                                            handleInputChange(e);
+                                            if (e.target.value == 'Doc pick up') {
+                                                setDocPickup(true);
+                                            }
+                                        }}
+                                    >
+                                        <option value="" disabled={true}>
+                                            Stage
+                                        </option>
+                                        <option value="Fresh">Fresh</option>
+                                        <option value="Attempted">Attempted</option>
+                                        <option value="Interested">Interested</option>
+                                        <option value="Not interested">Not interested</option>
+                                        <option value="Doc pick up">Doc pick up</option>
+                                        <option value="Doc picked up">Doc picked up</option>
+                                    </select>
+                                </div>
+                                <div className="dropdown mb-5">
+                                    <label htmlFor="status">Status</label>
+                                    <select className="form-input" defaultValue="" id="status" value={addData?.status} onChange={(e) => handleInputChange(e)}>
+                                        <option value="Status" disabled={true}>
+                                            Status
+                                        </option>
+                                        <option value="open">Open</option>
+                                        <option value="In-progress">In-progress</option>
+                                        <option value="Closed">Closed</option>
+                                        <option value="Done ">Done </option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-3  ">
-                        <div className="mb-5">
-                            <ComponentsFormDatePickerBasic label="Next Follow-up Date " />
-                        </div>
-                        <div className="mb-5">
-                            <ComponentsFormDatePickerTime />
-                        </div>
-                        <div className="mb-5">
-                            <label htmlFor="remarks">Remarks</label>
-                            <textarea
-                                id="remarks"
-                                rows={1}
-                                value={addData?.additionalinfo}
-                                onChange={(e) => handleInputChange(e)}
-                                placeholder="Enter Remarks"
-                                className="form-textarea
+                            {docPickup && (
+                                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                                    <div className="mb-5">
+                                        <ComponentsFormDatePickerBasic label="Document pickup Date" id={'docpickupdate'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                                    </div>
+                                    <div className="mb-5">
+                                        <label htmlFor="docpickupremarks">Remarks</label>
+                                        <textarea
+                                            id="docpickupremarks"
+                                            rows={1}
+                                            value={addData?.docpickupremarks}
+                                            onChange={(e) => handleInputChange(e)}
+                                            placeholder="Enter Remarks"
+                                            className="form-textarea
                                 min-h-[10px] resize-none"
-                            ></textarea>
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-1">
-                        <div className="mb-5">
-                            <label htmlFor="remarks">Lead Note</label>
-                            <textarea
-                                id="remarks"
-                                rows={3}
-                                value={addData?.additionalinfo}
-                                onChange={(e) => handleInputChange(e)}
-                                placeholder="Enter Lead Note"
-                                className="form-textarea
+                                        ></textarea>
+                                    </div>
+                                </div>
+                            )}
+                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                                <div className="mb-5">
+                                    <label htmlFor="mail">Email</label>
+                                    <div className="flex">
+                                        <input
+                                            id="mail"
+                                            type="text"
+                                            placeholder="Enter Email"
+                                            value={setMail}
+                                            onChange={(e) => setSetEmail(e.target.value)}
+                                            className="form-input ltr:rounded-r-none rtl:rounded-l-none"
+                                        />
+                                        <button type="button" className="btn btn-primary ltr:rounded-l-none rtl:rounded-r-none">
+                                            Send
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="dropdown mb-5">
+                                    <label htmlFor="leadmanage">Lead Managed by</label>
+                                    <select className="form-input" defaultValue="" id="assignee" value={addData?.assignee} onChange={(e) => handleInputChange(e)}>
+                                        <option value="" disabled={true}>
+                                            Select Assignee
+                                        </option>
+                                        <option value="Sanjay">Sanjay</option>
+                                        <option value="Bujji">Bujji</option>
+                                        <option value="raji">raji</option>
+                                        <option value="santhosh">Santhosh</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2  ">
+                                <div className="mb-5">
+                                    <ComponentsFormDatePickerBasic label="Next Follow-up Date " id={'nextfollowupdate'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                                </div>
+                                <div className="mb-5">
+                                    <ComponentsFormDatePickerTime id={'followuptime'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                                <div className="dropdown mb-5">
+                                    <label htmlFor="interaction">Type of Interaction*</label>
+                                    <select className="form-input" defaultValue="" id="interaction" value={addData?.interaction} onChange={(e) => handleInputChange(e)}>
+                                        <option value="" disabled={true}>
+                                            Type of Interaction
+                                        </option>
+                                        <option value="SMS">SMS</option>
+                                        <option value="Call">Call</option>
+                                        <option value="Email">Email</option>
+                                        <option value="Whatapp">Whatapp</option>
+                                    </select>
+                                </div>
+                                <div className="mb-5">
+                                    <label htmlFor="follupremark">Followup Remarks</label>
+                                    <textarea
+                                        id="follupremark"
+                                        rows={1}
+                                        value={addData?.follupremark}
+                                        onChange={(e) => handleInputChange(e)}
+                                        placeholder="Enter FollowUp Remarks"
+                                        className="form-textarea
+                                min-h-[10px] resize-none"
+                                    ></textarea>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 gap-5 md:grid-cols-1">
+                                <div className="mb-5">
+                                    <label htmlFor="leadnote">Lead Note</label>
+                                    <textarea
+                                        id="leadnote"
+                                        rows={3}
+                                        value={addData?.leadnote}
+                                        onChange={(e) => handleInputChange(e)}
+                                        placeholder="Enter Lead Note"
+                                        className="form-textarea
                                 min-h-[80px] resize-none"
-                            ></textarea>
-                        </div>
-                    </div>
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </>
+                    )}
                     {/* <TableLayout
                         title="Lead List"
                         setData={setData}
@@ -249,6 +308,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             onClick={() => {
                                 setIsOpen(false);
                                 setAddData({});
+                                setIsEdit(false);
                             }}
                             type="button"
                             className="btn btn-outline-danger"
