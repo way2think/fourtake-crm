@@ -9,7 +9,7 @@ import IconX from '@/components/icon/icon-x';
 
 import { showMessage } from '@/utils/notification';
 import Swal from 'sweetalert2';
-import ReportTableLayout from '@/components/layouts/report-table-layout';
+//import ReportTableLayout from '@/components/layouts/report-table-layout';
 
 
 const DailyReport: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
@@ -85,20 +85,49 @@ const DailyReport: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
     };
     const exportColumns = ['id', 'visatype'];
 
+    const fieldgenerated = {
+        pagename: "Daily Report",
+        fields: [
+          {sectionname:"Filter Daily Report", 
+            field:[{
+                fieldname: ["input", "X3", "X5"],
+                
+            }]
+
+
+          },
+          {sectionname:"BMW", models:["320", "X3", "X5"]},
+          {sectionname:"Fiat", models:["500", "Panda"]}
+        ]
+      }
+
     return (
         <>
-            <ReportTableLayout
+            {/* <ReportTableLayout
                 title="Daily Report"
-                //setData={setData}
-                //filterby="visatype"
+
+                //setData={setData} ?
+
+                //filterby="visatype" ?
+
+                //Total Reacord
                 data={data}
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
-                handleDelete={handleDelete}
+                
+                //New Record Insert
                 //ActionModal={VisaTypesActionModal}
+
+                //?
                 exportColumns={exportColumns}
+
+                //Edit and Delete Action
                 handleSubmit={handleSubmit}
-            />
+                handleDelete={handleDelete}
+            /> */}
+
+
+
         </>
     );
 };

@@ -12,7 +12,6 @@ import IconX from '../icon/icon-x';
 //import ActionModal from '../Reusable/Modal/ActionModal';
 import CountryActionModal from '../CMS/countries/CountryActionModal';
 import IconFile from '../icon/icon-zip-file';
-import ComponentsFormDatePickerTime from '../lead-management/lead-manage/components-form-date-picker-time';
 import ComponentsFormDatePickerRange from '../lead-management/lead-manage/components-form-date-picker-range';
 
 interface ReportTableLayoutProps {
@@ -106,63 +105,60 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                     )} */}
                 </div>
             </div>
-            <div className="mt-5">
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                    <div className="mb-5">
-                        <div className="dropdown">
-                            <label htmlFor="leadStatus">Select User</label>
-                            <select
-                                className="form-input"
-                            >
-                                <option value="">[-Select-]</option>
-                                <option value="hot">Hot</option>
-                                <option value="cold">Cold</option>
-                                <option value="warm">Warm</option>
-                            </select>
+
+            <div className="rounded-lg bg-white p-4 shadow-md">
+                <div className="mt-5">
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <div className="mb-5">
+                            <div className="dropdown">
+                                <label htmlFor="leadStatus">Select User</label>
+                                <select className="form-input">
+                                    <option value="">[-Select-]</option>
+                                    <option value="hot">Hot</option>
+                                    <option value="cold">Cold</option>
+                                    <option value="warm">Warm</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="mb-5">
+                            <div className="dropdown">
+                                <label htmlFor="leadStatus">Select Center </label>
+                                <select className="form-input">
+                                    <option value="">[-Select-]</option>
+                                    <option value="hot">Hot</option>
+                                    <option value="cold">Cold</option>
+                                    <option value="warm">Warm</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div className="mb-5">
-                        <div className="dropdown">
-                            <label htmlFor="leadStatus">Select Center </label>
-                            <select
-                                className="form-input"
-                            >
-                                <option value="">[-Select-]</option>
-                                <option value="hot">Hot</option>
-                                <option value="cold">Cold</option>
-                                <option value="warm">Warm</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                    <div className="mb-5">
-                        <div className="">
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <div className="mb-5">
                             <ComponentsFormDatePickerRange />
                         </div>
+                        <div className="flex items-center">
+                            <div>
+                                <button type="button" className="btn btn-primary mr-5">
+                                    Submit
+                                </button>
+                            </div>
+                            <div>
+                                <button type="button" className="btn btn-outline-primary mr-5" onClick={handleExport}>
+                                    Export to Excel
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <div className="mt-5 flex items-center justify-center">
-                        <button type="button" className="btn btn-primary">
-                            Submit
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-
-
-            <div className="panel mt-5 overflow-hidden border-0 p-0">
-                <div className="table-responsive">
-                    {/* <PaginationTable data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} /> */}
+                <div className="panel mt-5 overflow-hidden border-0 p-0">
+                    <div className="table-responsive">{/* <PaginationTable data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} /> */}</div>
                 </div>
             </div>
 
             {title == 'Lead List' && <Filtersetting showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer} />}
-
         </>
     );
 };
 
-export default ReportTableLayout; 
+export default ReportTableLayout;
