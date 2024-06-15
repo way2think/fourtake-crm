@@ -109,7 +109,7 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
             <div className="rounded-lg bg-white p-4 shadow-md">
                 <div className="mt-5 ">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-3 ">
-                        {title !== 'Finance Report' && title !== 'Payment Report' && (
+                        {title !== 'Finance Report' && title !== 'Payment Report' && title !== 'Out Scan' && title !== 'In Scan' && (
                             <div className="mb-5">
                                 <div className="dropdown">
                                     <label htmlFor="leadStatus">Select User</label>
@@ -122,20 +122,22 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                                 </div>
                             </div>
                         )}
-                        <div className="mb-5">
-                            <div className="dropdown">
-                                <label htmlFor="leadStatus">Select Center </label>
-                                <select className="form-input">
-                                    <option value="">[-Select-]</option>
-                                    <option value="Chennai">Chennai</option>
-                                    <option value="New Delhi">New Delhi</option>
-                                    <option value="Mumbai">Mumbai</option>
-                                    <option value="Bangaluru">Bangaluru</option>
-                                    <option value="Hyderabad">Hyderabad</option>
-                                </select>
+                        {title !== 'Out Scan' && title !== 'In Scan' && (
+                            <div className="mb-5">
+                                <div className="dropdown">
+                                    <label htmlFor="leadStatus">Select Center </label>
+                                    <select className="form-input">
+                                        <option value="">[-Select-]</option>
+                                        <option value="Chennai">Chennai</option>
+                                        <option value="New Delhi">New Delhi</option>
+                                        <option value="Mumbai">Mumbai</option>
+                                        <option value="Bangaluru">Bangaluru</option>
+                                        <option value="Hyderabad">Hyderabad</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        {title !== 'Finance Report' && title !== 'Daily Report' && title !== 'Payment Report' && (
+                        )}
+                        {title !== 'Finance Report' && title !== 'Daily Report' && title !== 'Payment Report' && title !== 'Out Scan' && title !== 'In Scan' && (
                             <div className="mb-5">
                                 <div className="dropdown">
                                     <label htmlFor="employee">Select Employee </label>
@@ -151,22 +153,27 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                             </div>
                         )}
                     </div>
+
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        <div className="mb-5">
-                            <ComponentsFormDatePickerRange />
-                        </div>
-                        <div className="flex items-center">
-                            <div>
-                                <button type="button" className="btn btn-primary mr-5">
-                                    Submit
-                                </button>
-                            </div>
-                            <div>
-                                <button type="button" className="btn btn-outline-primary mr-5" onClick={handleExport}>
-                                    Export to Excel
-                                </button>
-                            </div>
-                        </div>
+                        {title !== 'Out Scan' && title !== 'In Scan' && (
+                            <>
+                                <div className="mb-5">
+                                    <ComponentsFormDatePickerRange />
+                                </div>
+                                <div className="flex items-center">
+                                    <div>
+                                        <button type="button" className="btn btn-primary mr-5">
+                                            Submit
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button type="button" className="btn btn-outline-primary mr-5" onClick={handleExport}>
+                                            Export to Excel
+                                        </button>
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
                 <div className="panel mt-5 overflow-hidden border-0 p-0">

@@ -268,10 +268,15 @@ const Sidebar = () => {
                                             <Link href="/payment-report  ">Payment Report </Link>
                                         </li>
                                         <li>
-                                            <Link href="/out-scan-submitted-list ">Out-scan submitted </Link>
+                                            <Link href="/out-scan">Out-scan </Link>
                                         </li>
                                         <li>
-                                            <Link href="/in-scan-list ">In-Scan</Link>
+                                            <Link
+                                                href="/in-scan
+                                             "
+                                            >
+                                                In-Scan
+                                            </Link>
                                         </li>
                                     </ul>
                                 </AnimateHeight>
