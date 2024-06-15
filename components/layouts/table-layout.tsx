@@ -111,7 +111,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 </div>
             </div>
 
-            {title == 'Lead List' && <Filtersetting showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer} />}
+            {title == 'Lead List' && <Filtersetting data={data} setFilterItem={setFilterItem} showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer} />}
             <ActionModal
                 isOpen={isOpen}
                 setAddData={setAddData}
