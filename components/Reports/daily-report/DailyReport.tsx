@@ -9,9 +9,16 @@ import IconX from '@/components/icon/icon-x';
 
 import { showMessage } from '@/utils/notification';
 import Swal from 'sweetalert2';
-//import ReportTableLayout from '@/components/layouts/report-table-layout';
+import ReportTableLayout from '@/components/layouts/report-table-layout';
 
 const DailyReport: React.FC<{ dailyreportdata: any }> = ({ dailyreportdata }) => {
+
+    const [formData, setFormData] = useState({
+        input1: '',
+        input2: '',
+        input3: ''
+    });
+
     const [data, setData] = useState(dailyreportdata);
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
@@ -111,20 +118,38 @@ const DailyReport: React.FC<{ dailyreportdata: any }> = ({ dailyreportdata }) =>
         fields: [
           {sectionname:"Filter Daily Report", 
             field:[{
-                fieldname: ["input", "X3", "X5"],
+                fieldname: ["input", "", ""],
                 
             }]
-
-
           },
-          {sectionname:"BMW", models:["320", "X3", "X5"]},
-          {sectionname:"Fiat", models:["500", "Panda"]}
+          {sectionname:"Filter Daily Report", 
+            field:[{
+                fieldname: ["input", "", ""],
+                
+            }]
+          },
+          {sectionname:"Filter Daily Report", 
+            field:[{
+                fieldname: ["input", "", ""],
+                
+            }]
+          }
         ]
       }
 
+      const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+
     return (
         <>
-            {/* <ReportTableLayout
+        
+            <ReportTableLayout
                 title="Daily Report"
 
                 //setData={setData} ?
@@ -145,7 +170,10 @@ const DailyReport: React.FC<{ dailyreportdata: any }> = ({ dailyreportdata }) =>
                 //Edit and Delete Action
                 handleSubmit={handleSubmit}
                 handleDelete={handleDelete}
-            /> */}
+
+                formData={formData} 
+                handleChange={handleChange}
+            />
 
 
 

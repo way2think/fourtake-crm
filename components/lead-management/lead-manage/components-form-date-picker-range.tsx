@@ -14,6 +14,7 @@ const ComponentsFormDatePickerRange = () => {
         <div className="mb-5">
             <label htmlFor="date">From Date to To Date</label>
             <Flatpickr
+                id="From_Date_to_To_Date"
                 options={{
                     mode: 'range',
                     dateFormat: 'Y-m-d',
@@ -22,6 +23,7 @@ const ComponentsFormDatePickerRange = () => {
                 defaultValue={date3}
                 className="form-input w-full"
                 onChange={(date3) => setDate3(date3)}
+                //onChange={(e) => handleInputChange(e)}
             />
         </div>
     );
