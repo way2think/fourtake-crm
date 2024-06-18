@@ -10,13 +10,13 @@ import IconX from '@/components/icon/icon-x';
 import { showMessage } from '@/utils/notification';
 import Swal from 'sweetalert2';
 import ReportTableLayout from '@/components/layouts/report-table-layout';
+import Link from 'next/link';
 
 const DailyReport: React.FC<{ dailyreportdata: any }> = ({ dailyreportdata }) => {
-
     const [formData, setFormData] = useState({
         input1: '',
         input2: '',
-        input3: ''
+        input3: '',
     });
 
     const [data, setData] = useState(dailyreportdata);
@@ -114,44 +114,58 @@ const DailyReport: React.FC<{ dailyreportdata: any }> = ({ dailyreportdata }) =>
     ];
 
     const fieldgenerated = {
-        pagename: "Daily Report",
+        pagename: 'Daily Report',
         fields: [
-          {sectionname:"Filter Daily Report", 
-            field:[{
-                fieldname: ["input", "", ""],
-                
-            }]
-          },
-          {sectionname:"Filter Daily Report", 
-            field:[{
-                fieldname: ["input", "", ""],
-                
-            }]
-          },
-          {sectionname:"Filter Daily Report", 
-            field:[{
-                fieldname: ["input", "", ""],
-                
-            }]
-          }
-        ]
-      }
+            {
+                sectionname: 'Filter Daily Report',
+                field: [
+                    {
+                        fieldname: ['input', '', ''],
+                    },
+                ],
+            },
+            {
+                sectionname: 'Filter Daily Report',
+                field: [
+                    {
+                        fieldname: ['input', '', ''],
+                    },
+                ],
+            },
+            {
+                sectionname: 'Filter Daily Report',
+                field: [
+                    {
+                        fieldname: ['input', '', ''],
+                    },
+                ],
+            },
+        ],
+    };
 
-      const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData(prevState => ({
+        setFormData((prevState) => ({
             ...prevState,
-            [name]: value
+            [name]: value,
         }));
     };
 
-
     return (
         <>
-        
+            <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
+                <li>
+                    <Link href="/" className="text-primary hover:underline">
+                        Reports
+                    </Link>
+                </li>
+                <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                    <span>Daily Report</span>
+                </li>
+            </ul>
+
             <ReportTableLayout
                 title="Daily Report"
-
                 //setData={setData} ?
 
                 //filterby="visatype" ?
@@ -160,23 +174,17 @@ const DailyReport: React.FC<{ dailyreportdata: any }> = ({ dailyreportdata }) =>
                 data={data}
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
-                
                 //New Record Insert
                 //ActionModal={VisaTypesActionModal}
 
                 //?
                 exportColumns={exportColumns}
-
                 //Edit and Delete Action
                 handleSubmit={handleSubmit}
                 handleDelete={handleDelete}
-
-                formData={formData} 
+                formData={formData}
                 handleChange={handleChange}
             />
-
-
-
         </>
     );
 };

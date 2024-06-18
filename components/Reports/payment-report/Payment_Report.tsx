@@ -10,6 +10,7 @@ import IconX from '@/components/icon/icon-x';
 import { showMessage } from '@/utils/notification';
 import Swal from 'sweetalert2';
 import ReportTableLayout from '@/components/layouts/report-table-layout';
+import Link from 'next/link';
 
 const Payment_Report: React.FC<{ paymentreportdata: any }> = ({ paymentreportdata }) => {
     const [data, setData] = useState(paymentreportdata);
@@ -86,6 +87,16 @@ const Payment_Report: React.FC<{ paymentreportdata: any }> = ({ paymentreportdat
 
     return (
         <>
+            <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
+                <li>
+                    <Link href="/" className="text-primary hover:underline">
+                        Reports
+                    </Link>
+                </li>
+                <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                    <span>Payment Report</span>
+                </li>
+            </ul>
             <ReportTableLayout
                 title="Payment Report"
                 //setData={setData}
@@ -97,6 +108,14 @@ const Payment_Report: React.FC<{ paymentreportdata: any }> = ({ paymentreportdat
                 //ActionModal={VisaTypesActionModal}
                 exportColumns={exportColumns}
                 handleSubmit={handleSubmit}
+                formData={{
+                    input1: '',
+                    input2: '',
+                    input3: '',
+                }}
+                handleChange={function (e: React.ChangeEvent<HTMLInputElement>): void {
+                    throw new Error('Function not implemented.');
+                }}
             />
         </>
     );

@@ -10,6 +10,7 @@ import IconX from '@/components/icon/icon-x';
 import VisaTypesActionModal from './VisaTypesActionModal';
 import { showMessage } from '@/utils/notification';
 import Swal from 'sweetalert2';
+import Link from 'next/link';
 
 // const getServerData = async () => {
 //     return await getData({ url: 'http://localhost:5001/center' });
@@ -44,7 +45,7 @@ const VisaTypes: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
             showMessage('Enter Visa Type', 'error');
             return false;
         }
-   
+
         if (value.id) {
             //update user
             let formData: any = data.find((d: any) => d.id === value.id);
@@ -61,11 +62,7 @@ const VisaTypes: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
             };
             setData([...data, formData]);
             return formData;
-
-            
         }
-
-        
     };
     const handleDelete = (row: any) => {
         Swal.fire({
@@ -83,12 +80,21 @@ const VisaTypes: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
                 return true;
             }
         });
-        
     };
     const exportColumns = ['id', 'visatype'];
 
     return (
         <>
+            <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
+                <li>
+                    <Link href="/" className="text-primary hover:underline">
+                        CMS
+                    </Link>
+                </li>
+                <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                    <span>Visa Types</span>
+                </li>
+            </ul>
             <TableLayout
                 title="Visa Types"
                 setData={setData}

@@ -42,7 +42,7 @@ const ComponentsDashboard = () => {
                     </Link>
                 </li>
                 <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
-                    <span>User List</span>
+                    <span>Dashboard Home</span>
                 </li>
             </ul>
         </div>
