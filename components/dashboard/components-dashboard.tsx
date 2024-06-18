@@ -24,6 +24,7 @@ import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { useSelector } from 'react-redux';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import Attendence from './Attendence';
 
 const ComponentsDashboard = () => {
     const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
@@ -35,7 +36,7 @@ const ComponentsDashboard = () => {
 
     return (
         <div>
-            <ul className="flex space-x-2 rtl:space-x-reverse">
+            <ul className="flex space-x-2 rtl:space-x-reverse mb-5">
                 <li>
                     <Link href="/" className="text-primary hover:underline">
                         Dashboard
@@ -45,6 +46,7 @@ const ComponentsDashboard = () => {
                     <span>Dashboard Home</span>
                 </li>
             </ul>
+            <Attendence/>
         </div>
     );
 };
