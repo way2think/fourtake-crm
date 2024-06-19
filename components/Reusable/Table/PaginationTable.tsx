@@ -14,7 +14,14 @@ import IconEye from '../../icon/icon-eye';
 import IconEdit from '../../icon/icon-edit';
 import IconTrash from '../../icon/icon-trash';
 
-export default function PaginationTable({ data, tableColumns, handleEdit, handleDelete }) {
+interface PaginationTableProps {
+    data: any;
+    tableColumns: any;
+    handleEdit?: any;
+    handleDelete?: any;
+    title?: any;
+}
+const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title }) => {
     //columns & data -props
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
@@ -50,9 +57,11 @@ export default function PaginationTable({ data, tableColumns, handleEdit, handle
                                 <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit(row)}>
                                     <IconEdit size={16} />
                                 </ActionIcon>
-                                <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete(row)}>
-                                    <IconTrash size={16} />
-                                </ActionIcon>
+                                {title !== "dashboard"  && (
+                                    <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete(row)}>
+                                        <IconTrash size={16} />
+                                    </ActionIcon>
+                                )}
                             </Group>
                         ),
                     },
@@ -72,4 +81,6 @@ export default function PaginationTable({ data, tableColumns, handleEdit, handle
             />
         </div>
     );
-}
+};
+
+export default PaginationTable;

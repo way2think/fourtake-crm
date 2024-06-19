@@ -28,20 +28,19 @@ import Attendence from './Attendence';
 import PaginationTable from '../Reusable/Table/PaginationTable';
 
 interface DashboardProps {
-    title: string;
-    data: object[];
-    totalPages: number;
-    tableColumns: object[];
+    data: any;
+    // totalPages: number;
+    // tableColumns: object[];
     // ActionModal: any;
     // Filtersetting?: any;
     // handleSubmit?: any;
-    exportColumns?: string[];
+    // exportColumns?: string[];
     // handleDelete: any;
     // setData: any;
     // filterby: string;
 }
 
-const ComponentsDashboard: React.FC<DashboardProps> = ({ data, tableColumns, exportColumns }) => {
+const ComponentsDashboard: React.FC<DashboardProps> = ({ data }: any) => {
     const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const [isMounted, setIsMounted] = useState(false);
@@ -56,7 +55,14 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data, tableColumns, exp
         { accessor: 'country', textAlign: 'left', title: 'Country Name' },
     ];
 
+    const tableColumnsLead = [
+        { accessor: 'id', textAlign: 'left', title: 'Lead ID' },
+        { accessor: 'country', textAlign: 'left', title: 'Country Name' },
+    ];
+
     const exportColumns = ['id', 'country'];
+
+    const handleEdit = () => {};
 
     return (
         <div>
@@ -71,7 +77,18 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data, tableColumns, exp
                 </li>
             </ul> */}
             <Attendence />
-            <PaginationTable data={filterItem} tableColumns={tableColumns} />
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                <PaginationTable data={filterItem} tableColumns={tableColumns} title={"dashboard"} />
+                <PaginationTable data={filterItem} tableColumns={tableColumns} title={"dashboard"} />
+            </div>
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                <PaginationTable data={filterItem} tableColumns={tableColumns} title={"dashboard"} />
+                <PaginationTable data={filterItem} tableColumns={tableColumns} title={"dashboard"} />
+            </div>
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                <PaginationTable data={filterItem} tableColumns={tableColumnsLead} title={"dashboard"} />
+               
+            </div>
         </div>
     );
 };
