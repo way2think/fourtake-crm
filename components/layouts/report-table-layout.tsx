@@ -44,10 +44,14 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
     const [filterItem, setFilterItem] = useState<any>(data);
     const [addData, setAddData] = useState<AddData>({});
     const [showCustomizer, setShowCustomizer] = useState(false);
+    const [dateFilter, setDateFilter] = useState<any>();
 
-    // useEffect(() => {
-    //     setFilterItem(data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase())));
-    // }, [search, data]);
+    useEffect(() => {
+        console.log('datefi', dateFilter);
+        if (dateFilter && Object.keys(addData).length === 0) {
+            setFilterItem(dateFilter);
+        }
+    }, [dateFilter]);
 
     const handleEdit = (object: any) => {
         setIsEdit(true);
@@ -79,12 +83,12 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
     const handleFilter = () => {
         setShowCustomizer(true);
     };
-    console.log('filter item', filterItem);
+    console.log('filter item', filterItem, addData);
     const handleSubmitReport = () => {
         //debugger;
 
         let requiredFields: string[] = [];
-        let dataFilter = filterItem;
+        let dataFilter = data;
 
         if (title == 'Daily Report') {
             requiredFields = ['user', 'center'];
@@ -100,22 +104,31 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
         }
 
         //const requiredFields = ['Select_User', 'Select_Center', 'Select_Employee'];
-        for (let field of requiredFields) {
-            if (!addData[field]) {
-                alert(`${field.replace(/_/g, ' ')} is Required`);
-                return;
-            }
-        }
+        // for (let field of requiredFields) {
+        //     if (!addData[field]) {
+        //         alert(`${field.replace(/_/g, ' ')} is Required`);
+        //         return;
+        //     }
+        // }
 
         if (addData?.center) {
             dataFilter = dataFilter.filter((item: any) => item.center === addData.center);
         }
 
-        if (addData.consultantname) {
-            dataFilter = dataFilter.filter((item: any) => item.consultantname === addData.consultantname);
+        if (addData?.user) {
+            dataFilter = dataFilter.filter((item: any) => item.consultantname === addData.user);
         }
 
-        console.log('dataFiler', dataFilter);
+        if (dateFilter) {
+            dataFilter = dataFilter.filter((item: any) => {
+                return dateFilter.some((dateItem: any) => dateItem.id === item.id);
+            });
+        }
+
+        console.log("dataFiler",dataFilter)
+
+        setFilterItem(dataFilter);
+
         // Proceed with form submission or other logic
         //console.log('Form data is valid:', addData);
     };
@@ -188,7 +201,7 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                                 </div>
                             </div>
                         )}
-                        {title !== 'Finance Report' && title !== 'Daily Report' && title !== 'Payment Report' && title !== 'Out Scan' && title !== 'In Scan' && (
+                        {/* {title !== 'Finance Report' && title !== 'Daily Report' && title !== 'Payment Report' && title !== 'Out Scan' && title !== 'In Scan' && (
                             <div className="mb-5">
                                 <div className="dropdown">
                                     <label htmlFor="employee">Select Employee </label>
@@ -202,14 +215,14 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                                     </select>
                                 </div>
                             </div>
-                        )}
+                        )} */}
                     </div>
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         {title !== 'Out Scan' && title !== 'In Scan' && (
                             <>
                                 <div className="mb-5">
-                                    <ComponentsFormDatePickerRange data={data} setFilterItem={setFilterItem} filterItem={filterItem} />
+                                    <ComponentsFormDatePickerRange data={data} setDateFilter={setDateFilter} dateFilter={dateFilter} />
                                 </div>
                                 <div className="flex items-center">
                                     <div>

@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 import ReportTableLayout from '@/components/layouts/report-table-layout';
 import Link from 'next/link';
 
-const Finance_Report: React.FC<{ financereportdata: any }> = ({ financereportdata }) => {
+const FinanceReport: React.FC<{ financereportdata: any }> = ({ financereportdata }) => {
     const [data, setData] = useState(financereportdata);
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
@@ -35,7 +35,7 @@ const Finance_Report: React.FC<{ financereportdata: any }> = ({ financereportdat
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'S.NO' },
         { accessor: 'consultantname', textAlign: 'left', title: 'Consultant Name' },
-        { accessor: 'noofapplicant', textAlign: 'left', title: 'No of applicant' },
+        { accessor: 'noofapplicant', textAlign: 'left', title: 'No of appl' },
         { accessor: 'visafee', textAlign: 'left', title: 'Visa Fee' },
         { accessor: 'vfsothers', textAlign: 'left', title: 'VFs/Others' },
         { accessor: 'charges', textAlign: 'left', title: 'H/C - handling charges' },
@@ -125,4 +125,4 @@ const Finance_Report: React.FC<{ financereportdata: any }> = ({ financereportdat
     );
 };
 
-export default Finance_Report;
+export default FinanceReport;

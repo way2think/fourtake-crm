@@ -34,7 +34,7 @@ const Payment_Report: React.FC<{ paymentreportdata: any }> = ({ paymentreportdat
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'S.NO' },
-        { accessor: 'date', textAlign: 'left', title: 'Date' },
+        { accessor: 'applydate', textAlign: 'left', title: 'Date' },
         { accessor: 'noofapplicant', textAlign: 'left', title: 'No of applicant' },
         { accessor: 'paymenteft ', textAlign: 'left', title: 'Payment by EFT ' },
         { accessor: 'paymentbycard ', textAlign: 'left', title: 'Payment by Card ' },

@@ -5,14 +5,24 @@ import 'flatpickr/dist/flatpickr.css';
 import { IRootState } from '@/store';
 
 interface ComponentsFormDatePickerRangeProps {
-    setFilterItem: any;
-    filterItem: any[];
-    data:any;
+    setDateFilter: any;
+    dateFilter: any[];
+    data: any;
 }
 
-const ComponentsFormDatePickerRange: React.FC<ComponentsFormDatePickerRangeProps> = ({ setFilterItem, filterItem,data }) => {
+const getTodayDateRange = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(today.getDate()).padStart(2, '0');
+
+    // Construct the date range string
+    return `${year}-${month}-${day} to ${year}-${month}-${day}`;
+};
+
+const ComponentsFormDatePickerRange: React.FC<ComponentsFormDatePickerRangeProps> = ({ setDateFilter, dateFilter, data }) => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
-    const [date3, setDate3] = useState<string>('2022-02-05 to 2022-02-30');
+    const [date3, setDate3] = useState<string>(()=>getTodayDateRange());
 
     // Update records based on date3 change
     useEffect(() => {
@@ -24,18 +34,16 @@ const ComponentsFormDatePickerRange: React.FC<ComponentsFormDatePickerRangeProps
             // Filter records based on the date range
             const filteredRecords = data.filter((record: any) => {
                 const recordDate = new Date(record.applydate);
-                console.log('recordDate1', recordDate >= startDate && recordDate <= endDate ,record );
                 return recordDate >= startDate && recordDate <= endDate;
             });
 
-            console.log('recordDate', filteredRecords);
-
-            if(filterItem !== filteredRecords){
-                setFilterItem(filteredRecords);
+            if (dateFilter !== filteredRecords) {
+                setDateFilter(filteredRecords);
             }
-          
         }
     }, [date3]);
+
+    console.log("date filter", dateFilter)
 
     const handleDateChange = (selectedDates: Date[]) => {
         if (selectedDates.length === 2) {
@@ -55,7 +63,7 @@ const ComponentsFormDatePickerRange: React.FC<ComponentsFormDatePickerRangeProps
                     dateFormat: 'Y-m-d',
                     position: isRtl ? 'auto right' : 'auto left',
                 }}
-                defaultValue={[new Date('2022-07-05'), new Date('2022-07-30')]}
+                defaultValue={date3}
                 className="form-input w-full"
                 onChange={handleDateChange}
             />
@@ -64,7 +72,7 @@ const ComponentsFormDatePickerRange: React.FC<ComponentsFormDatePickerRangeProps
 };
 
 // const FilterableTable: React.FC = () => {
-//     const [filterItem, setFilterItem] = useState([
+//     const [dateFilter, setDateFilter] = useState([
 //         { id: 1, applydate: '2022-07-06', name: 'Record 1' },
 //         { id: 2, applydate: '2022-07-15', name: 'Record 2' },
 //         { id: 3, applydate: '2022-08-01', name: 'Record 3' },
@@ -73,7 +81,7 @@ const ComponentsFormDatePickerRange: React.FC<ComponentsFormDatePickerRangeProps
 
 //     return (
 //         <div>
-//             <ComponentsFormDatePickerRange setFilterItem={setFilterItem} filterItem={filterItem} />
+//             <ComponentsFormDatePickerRange setDateFilter={setDateFilter} dateFilter={dateFilter} />
 //             <table className="table-auto w-full mt-5">
 //                 <thead>
 //                     <tr>
@@ -83,7 +91,7 @@ const ComponentsFormDatePickerRange: React.FC<ComponentsFormDatePickerRangeProps
 //                     </tr>
 //                 </thead>
 //                 <tbody>
-//                     {filterItem.map((record: any) => (
+//                     {dateFilter.map((record: any) => (
 //                         <tr key={record.id}>
 //                             <td className="border px-4 py-2">{record.id}</td>
 //                             <td className="border px-4 py-2">{record.applydate}</td>

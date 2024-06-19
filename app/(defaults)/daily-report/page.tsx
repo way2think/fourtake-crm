@@ -12,7 +12,7 @@ const Report = () => {
         {
             id: 1,
             center: 'Chennai',
-            applydate: '2023-02-06',
+            applydate: '2024-02-06',
             referenceno: '01',
             servicetype: 'visa type',
             applicantname: 'jagadish',
@@ -30,7 +30,7 @@ const Report = () => {
         {
             id: 2,
             center: 'Bangaluru',
-            applydate: '2022-08-12',
+            applydate: '2024-08-12',
             referenceno: '01',
             servicetype: 'visa type',
             applicantname: 'jagadish',
@@ -48,7 +48,7 @@ const Report = () => {
         {
             id: 3,
             center: 'Mumbai',
-            applydate: '2022-07-20',
+            applydate: '2024-07-20',
             referenceno: '01',
             servicetype: 'visa type',
             applicantname: 'jagadish',
@@ -66,11 +66,11 @@ const Report = () => {
         {
             id: 4,
             center: 'Hyderabad',
-            applydate: '2022-07-07',
+            applydate: '2024-07-07',
             referenceno: '01',
             servicetype: 'visa type',
             applicantname: 'jagadish',
-            consultantname: 'raji',
+            consultantname: 'sanjay',
             destination: 'korea',
             visafee: '40000/-',
             vfsothers: 'vfs',

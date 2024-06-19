@@ -24,7 +24,7 @@ export default function PaginationTable({ data, tableColumns, handleEdit, handle
     // Calculate the start and end index for the current page
     const startIndex = (page - 1) * recordsPerPage;
     const endIndex = startIndex + recordsPerPage;
-    const paginatedData = data.slice(startIndex, endIndex);
+    const paginatedData = data?.slice(startIndex, endIndex);
 
     return (
         <div className="datatables">
@@ -62,7 +62,7 @@ export default function PaginationTable({ data, tableColumns, handleEdit, handle
                 //     console.log('rescor: ', record);
                 // }}
                 // Pagination properties
-                totalRecords={data.length}
+                totalRecords={data?.length}
                 paginationActiveBackgroundColor="grape"
                 recordsPerPage={pageSize}
                 recordsPerPageOptions={PAGE_SIZES}

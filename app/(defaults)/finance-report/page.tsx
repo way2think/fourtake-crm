@@ -2,19 +2,35 @@ import React from 'react';
 import { Metadata } from 'next';
 import Country from '@/components/CMS/countries/Country';
 import DailyReport from '@/components/Reports/daily-report/DailyReport';
-import Finance_Report from '@/components/Reports/finance-report/Finance_Report';
+import FinanceReport from '@/components/Reports/finance-report/FinanceReport';
 
 export const metadata: Metadata = {
     title: 'Fourtake CRM',
 };
 
-const FinanceReport = () => {
+const FinanceReportPage = () => {
     const data = [
         {
             id: 1,
-            consultantname: 'raji',
+            consultantname: 'jagan',
+            center:"Mumbai",
             noofapplicant: '2',
-            
+            applydate: '2024-06-19',
+            visafee: '40000/-',
+            vfsothers: 'vfs',
+            charges: '20000/-',
+            ddfee: '3000/-',
+            deliverycharges: '350/-',
+            tokencharges: '250/-',
+            misccharges: '150/-',
+            total: '90000/-',
+        },
+        {
+            id: 2,
+            consultantname: 'sanjay',
+            center:"Chennai",
+            noofapplicant: '2',
+            applydate: '2024-07-06',
             visafee: '40000/-',
             vfsothers: 'vfs',
             charges: '20000/-',
@@ -25,7 +41,7 @@ const FinanceReport = () => {
             total: '90000/-',
         },
     ];
-    return <Finance_Report financereportdata={data} />;
+    return <FinanceReport financereportdata={data} />;
 };
 
-export default FinanceReport;
+export default FinanceReportPage;

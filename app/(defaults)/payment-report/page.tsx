@@ -11,6 +11,21 @@ const PaymentReport = () => {
     const data = [
         {
             id: 1,
+            center: 'Mumbai',
+            consultantname: 'sanjay',
+            applydate: '2024-06-19',
+            date: '20/09/2023',
+            noofapplicant: '2',
+            paymenteft: 'Gpay',
+            paymentbycard: 'Visa',
+            paymentbycash: '20000/-',
+            total: '90000/-',
+        },
+        {
+            id: 2,
+            center: 'Chennai',
+            consultantname: 'santhosh',
+            applydate: '2024-06-19',
             date: '20/09/2023',
             noofapplicant: '2',
             paymenteft: 'Gpay',
