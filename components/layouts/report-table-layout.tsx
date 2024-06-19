@@ -104,12 +104,22 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
         }
 
         //const requiredFields = ['Select_User', 'Select_Center', 'Select_Employee'];
-        // for (let field of requiredFields) {
-        //     if (!addData[field]) {
-        //         alert(`${field.replace(/_/g, ' ')} is Required`);
-        //         return;
-        //     }
-        // }
+        /*
+        let allFieldsInvalid = true;
+        for (let field of requiredFields) {
+            if (addData[field] && addData[field].length > 1) {
+                allFieldsInvalid = false;
+                break;
+
+            }
+        }
+
+        if (allFieldsInvalid) {
+            const formattedField = requiredFields.map(field => field.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase())).join(' or ');
+            alert(`${formattedField} Is Required`);
+            return;
+        }
+        */
 
         if (addData?.center) {
             dataFilter = dataFilter.filter((item: any) => item.center === addData.center);
@@ -125,9 +135,12 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
             });
         }
 
-        console.log("dataFiler",dataFilter)
+        //console.log("dataFiler", dataFilter)
 
         setFilterItem(dataFilter);
+
+
+
 
         // Proceed with form submission or other logic
         //console.log('Form data is valid:', addData);
