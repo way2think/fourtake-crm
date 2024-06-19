@@ -138,7 +138,7 @@ const UserManagement: React.FC<{ userdata: any }> = ({ userdata }) => {
                 </li>
             </ul>
             <TableLayout
-                title="User "
+                title="User"
                 setData={setData}
                 filterby="firstname"
                 handleDelete={handleDelete}

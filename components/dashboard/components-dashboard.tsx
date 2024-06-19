@@ -78,16 +78,16 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data }: any) => {
             </ul> */}
             <Attendence />
             <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-                <PaginationTable data={filterItem} tableColumns={tableColumns} title={"dashboard"} />
-                <PaginationTable data={filterItem} tableColumns={tableColumns} title={"dashboard"} />
+                <PaginationTable data={filterItem} tableColumns={tableColumns} title={'dashboard'} />
+                <PaginationTable data={filterItem} tableColumns={tableColumns} title={'dashboard'} />
             </div>
             <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-                <PaginationTable data={filterItem} tableColumns={tableColumns} title={"dashboard"} />
-                <PaginationTable data={filterItem} tableColumns={tableColumns} title={"dashboard"} />
+                <PaginationTable data={filterItem} tableColumns={tableColumns} title={'dashboard'} />
+                <PaginationTable data={filterItem} tableColumns={tableColumns} title={'dashboard'} />
             </div>
             <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-                <PaginationTable data={filterItem} tableColumns={tableColumnsLead} title={"dashboard"} />
-               
+                <h1>lead docu lead</h1>
+                <PaginationTable data={filterItem} tableColumns={tableColumnsLead} title={'dashboard'} />
             </div>
         </div>
     );

@@ -12,6 +12,7 @@ import IconX from '../icon/icon-x';
 //import ActionModal from '../Reusable/Modal/ActionModal';
 import CountryActionModal from '../CMS/countries/CountryActionModal';
 import IconFile from '../icon/icon-zip-file';
+import PasswordActionModal from '../user-management/PasswordActionModal';
 
 interface TableLayoutProps {
     title: string;
@@ -33,6 +34,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [search, setSearch] = useState('');
     const [filterItem, setFilterItem] = useState(data);
     const [addData, setAddData] = useState({});
+    const [assignPasswordValue, setAssignPasswordValue] = useState<any>();
+    const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
 
     useEffect(() => {
@@ -83,12 +86,21 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                             </div>
                         )}
 
-{title !== 'Country Visa Types' && (
+                        {title === 'User' && (
                             <div>
-                                <button type="button" className="btn btn-primary" onClick={() => setIsOpen(true)}>
+                                <button type="button" className="btn btn-primary" onClick={() => setAssignPassword(true)}>
                                     <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
-                                    Add {title}
+                                    Assign Password
                                 </button>
+
+                                {assignPassword && (
+                                    <PasswordActionModal
+                                        assignPassword={assignPassword}
+                                        setAssignPassword={setAssignPassword}
+                                        assignPasswordValue={assignPasswordValue}
+                                        setAssignPasswordValue={setAssignPasswordValue}
+                                    />
+                                )}
                             </div>
                         )}
                         <div>
@@ -110,8 +122,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                                 Filter
                             </button>
                         </div>
-                    )}  
-                               
+                    )}
                 </div>
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
