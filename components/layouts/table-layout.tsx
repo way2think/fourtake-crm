@@ -82,6 +82,15 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                                 </button>
                             </div>
                         )}
+
+{title !== 'Country Visa Types' && (
+                            <div>
+                                <button type="button" className="btn btn-primary" onClick={() => setIsOpen(true)}>
+                                    <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
+                                    Add {title}
+                                </button>
+                            </div>
+                        )}
                         <div>
                             <button type="button" className="btn btn-outline-primary" onClick={handleExport}>
                                 Export to Excel
