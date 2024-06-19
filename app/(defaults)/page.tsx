@@ -10,18 +10,21 @@ const Sales = () => {
     let data = [
         {
             id: 1,
-            country: 'India',
-            language:"tamil,hindi,etc",
-            dailingcode:"+91",
-        },
-        {
-            id: 2,
-            country: 'America',
+            applicantname: 'Jagadish',
+            destination: 'korea',
+            // visatype: 'business visa',
         },
     ];
+    let leaddata = [
+        {
+            id: 1,
+            name: 'Jagadish',
+        },
+    ];
+
     return (
         <div>
-            <ComponentsDashboard data={data}  />
+            <ComponentsDashboard data={data} leaddata={leaddata} />
         </div>
     );
 };

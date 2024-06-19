@@ -29,6 +29,7 @@ import PaginationTable from '../Reusable/Table/PaginationTable';
 
 interface DashboardProps {
     data: any;
+    leaddata: any;
     // totalPages: number;
     // tableColumns: object[];
     // ActionModal: any;
@@ -40,7 +41,7 @@ interface DashboardProps {
     // filterby: string;
 }
 
-const ComponentsDashboard: React.FC<DashboardProps> = ({ data }: any) => {
+const ComponentsDashboard: React.FC<DashboardProps> = ({ data, leaddata }) => {
     const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const [isMounted, setIsMounted] = useState(false);
@@ -51,18 +52,18 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data }: any) => {
     const [filterItem, setFilterItem] = useState(data);
 
     const tableColumns = [
-        { accessor: 'id', textAlign: 'left', title: 'ID' },
-        { accessor: 'country', textAlign: 'left', title: 'Country Name' },
+        { accessor: 'id', textAlign: 'left', title: 'Ref no' },
+        { accessor: 'applicantname', textAlign: 'left', title: 'Applicant Name' },
+        { accessor: 'destination', textAlign: 'left', title: 'Destination' },
+        // { accessor: 'visatype', textAlign: 'left', title: 'Type' },
     ];
 
     const tableColumnsLead = [
-        { accessor: 'id', textAlign: 'left', title: 'Lead ID' },
-        { accessor: 'country', textAlign: 'left', title: 'Country Name' },
+        { accessor: 'id', textAlign: 'left', title: 'Lead id' },
+        { accessor: 'name', textAlign: 'left', title: 'Name' },
     ];
 
-    const exportColumns = ['id', 'country'];
-
-    const handleEdit = () => {};
+    // const exportColumns = ['id', 'applicantname', 'destination', 'visatype'];
 
     return (
         <div>
@@ -77,17 +78,31 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data }: any) => {
                 </li>
             </ul> */}
             <Attendence />
-            <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-                <PaginationTable data={filterItem} tableColumns={tableColumns} title={"dashboard"} />
-                <PaginationTable data={filterItem} tableColumns={tableColumns} title={"dashboard"} />
+            <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
+                <div className="mb-4 mt-4">
+                    <h2 className="mb-4 mt-4">Today Submissions</h2>
+                    <PaginationTable data={filterItem} tableColumns={tableColumns} title={'dashboard'} />
+                </div>
+                <div className="mb-4 mt-4">
+                    <h2 className="mb-4 mt-4">Today Passports Collections </h2>
+                    <PaginationTable data={leaddata} tableColumns={tableColumnsLead} title={'dashboard'} />
+                </div>
             </div>
-            <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-                <PaginationTable data={filterItem} tableColumns={tableColumns} title={"dashboard"} />
-                <PaginationTable data={filterItem} tableColumns={tableColumns} title={"dashboard"} />
+            <div className="grid grid-cols-2 gap-8 xl:grid-cols-2">
+                <div className="mb-4 mt-4">
+                    <h2 className="mb-4 mt-4">Today's Documents Pickup - lead level</h2>
+                    <PaginationTable data={leaddata} tableColumns={tableColumnsLead} title={'dashboard'} />
+                </div>
+                <div className="mb-4 mt-4">
+                    <h2 className="mb-4 mt-4">Today’s Document Pickup - application level </h2>
+                    <PaginationTable data={filterItem} tableColumns={tableColumns} title={'dashboard'} />
+                </div>
             </div>
-            <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-                <PaginationTable data={filterItem} tableColumns={tableColumnsLead} title={"dashboard"} />
-               
+            <div className="grid grid-cols-2 gap-8 xl:grid-cols-2">
+                <div className="mb-4 mt-4">
+                    <h2 className="mb-4 mt-4">Today's Passport Drop Off </h2>
+                    <PaginationTable data={filterItem} tableColumns={tableColumns} title={'dashboard'} />
+                </div>
             </div>
         </div>
     );

@@ -34,13 +34,15 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
     const paginatedData = data?.slice(startIndex, endIndex);
 
     return (
-        <div className="datatables">
+        <div className="datatables bg-[#]">
             <DataTable
+                backgroundColor="#fff"
+                shadow="rgba(0, 0, 0, 0.24) 0px 3px 8px"
                 withTableBorder
                 borderRadius="sm"
                 withColumnBorders
                 striped
-                className="table-hover whitespace-nowrap"
+                className="table-hover whitespace-nowrap "
                 highlightOnHover
                 records={paginatedData}
                 columns={[
@@ -57,7 +59,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                                 <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit(row)}>
                                     <IconEdit size={16} />
                                 </ActionIcon>
-                                {title !== "dashboard"  && (
+                                {title !== 'dashboard' && (
                                     <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete(row)}>
                                         <IconTrash size={16} />
                                     </ActionIcon>
