@@ -7,9 +7,21 @@ export const metadata: Metadata = {
 };
 
 const Sales = () => {
+    let data = [
+        {
+            id: 1,
+            country: 'India',
+            language:"tamil,hindi,etc",
+            dailingcode:"+91",
+        },
+        {
+            id: 2,
+            country: 'America',
+        },
+    ];
     return (
         <div>
-            <ComponentsDashboard />
+            <ComponentsDashboard data={data}  />
         </div>
     );
 };

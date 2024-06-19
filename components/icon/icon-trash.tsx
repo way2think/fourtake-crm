@@ -2,9 +2,10 @@ import { FC } from 'react';
 
 interface IconTrashProps {
     className?: string;
+    size?: any;
 }
 
-const IconTrash: FC<IconTrashProps> = ({ className }) => {
+const IconTrash: FC<IconTrashProps> = ({ className, size }) => {
     return (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
             <path d="M20.5001 6H3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />

@@ -12,7 +12,7 @@ const Report = () => {
         {
             id: 1,
             center: 'Chennai',
-            applydate: '2024-02-06',
+            applydate: '2024-06-19',
             referenceno: '01',
             servicetype: 'visa type',
             applicantname: 'jagadish',

@@ -14,10 +14,8 @@ import React, { Children, Fragment, useEffect, useMemo, useState } from 'react';
 // import Dropdown from '../dropdown';
 // import ElementsDropdownsBasic from '../Reusable/elements-dropdowns-basic';
 // import ComponentsFormsSelectBasic from '../Reusable/select/components-forms-select-basic';
-// import AddUserForm from '../user-management/AddUserForm';
 // import { isValidEmail, isValidName, isValidPassword, isValidPhoneNumber } from '@/utils/validator';
 // import IconLockDots from '../icon/icon-lock-dots';
-
 // import './pagination.css';
 // import PaginationTable from './PaginationTable';
 // import ComponentsModalOptionalSizes from '../Reusable/Modal/components-modal-optional-sizes';
