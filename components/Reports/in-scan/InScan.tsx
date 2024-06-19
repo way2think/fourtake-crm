@@ -10,6 +10,7 @@ import IconX from '@/components/icon/icon-x';
 import { showMessage } from '@/utils/notification';
 import Swal from 'sweetalert2';
 import ReportTableLayout from '@/components/layouts/report-table-layout';
+import Link from 'next/link';
 
 const InScan: React.FC<{ inscanlistdata: any }> = ({ inscanlistdata }) => {
     const [data, setData] = useState(inscanlistdata);
@@ -90,6 +91,16 @@ const InScan: React.FC<{ inscanlistdata: any }> = ({ inscanlistdata }) => {
 
     return (
         <>
+        <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
+                <li>
+                    <Link href="/" className="text-primary hover:underline">
+                        Reports
+                    </Link>
+                </li>
+                <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                    <span>In-scan Report</span>
+                </li>
+            </ul>
             <ReportTableLayout
                 title="In Scan"
                 //setData={setData}
@@ -100,8 +111,13 @@ const InScan: React.FC<{ inscanlistdata: any }> = ({ inscanlistdata }) => {
                 handleDelete={handleDelete}
                 //ActionModal={VisaTypesActionModal}
                 exportColumns={exportColumns}
-                handleSubmit={handleSubmit}
-            />
+                handleSubmit={handleSubmit} formData={{
+                    input1: '',
+                    input2: '',
+                    input3: ''
+                }} handleChange={function (e: React.ChangeEvent<HTMLInputElement>): void {
+                    throw new Error('Function not implemented.');
+                } }            />
         </>
     );
 };

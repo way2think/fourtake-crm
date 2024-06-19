@@ -10,6 +10,7 @@ import IconX from '@/components/icon/icon-x';
 import VisaChecklistActionModal from './VisaChecklistActionModal';
 import Swal from 'sweetalert2';
 import { showMessage } from '@/utils/notification';
+import Link from 'next/link';
 
 const getServerData = async () => {
     return await getData({ url: 'http://localhost:5001/center' });
@@ -76,7 +77,6 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
                 return true;
             }
         });
-        
     };
 
     const exportColumns = ['country', 'visatype', 'embassy'];
@@ -141,7 +141,6 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
             formData.checklist = value.checklist;
             formData.fee = value.fee;
             formData.form = value.form;
-            
 
             return formData;
         } else {
@@ -156,7 +155,6 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
                 checklist: value.checklist,
                 fee: value.fee,
                 form: value.form,
-                
             };
             setData([...data, formData]);
             return formData;
@@ -170,6 +168,16 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
     };
     return (
         <>
+            <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
+                <li>
+                    <Link href="/" className="text-primary hover:underline">
+                        CMS
+                    </Link>
+                </li>
+                <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                    <span>Visa Checklist</span>
+                </li>
+            </ul>
             <TableLayout
                 title="Visa Checklist"
                 data={data}

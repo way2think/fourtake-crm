@@ -12,7 +12,7 @@ import CountryVisaTypeActionModal from './CountryVisaTypesActionModal';
 
 import { showMessage } from '@/utils/notification';
 import Swal from 'sweetalert2';
-
+import Link from 'next/link';
 
 const getServerData = async () => {
     return await getData({ url: 'http://localhost:5001/center' });
@@ -78,19 +78,18 @@ const CountryVisaTypes: React.FC<{ countryvisadata: any }> = ({ countryvisadata 
     ];
 
     const exportColumns = ['id', 'country', 'visatypes'];
-    const handleSubmit = (value:any) => {
+    const handleSubmit = (value: any) => {
         console.log('value', value);
         if (value.visatypes == '' || value.visatypes == null || value.visatypes.length === 0) {
             showMessage('Select VisaTypes', 'error');
             return false;
         }
 
-       
-            //edit
-            let formData: any = data.find((d: any) => d.id === value.id);
-            formData.visatypes = value.visatypes;
-            return true;
-    
+        //edit
+        let formData: any = data.find((d: any) => d.id === value.id);
+        formData.visatypes = value.visatypes;
+        return true;
+
         // else {
         //     //add user
         //     let maxUserId = data.length ? data.reduce((max: any, character: any) => (character.id > max ? character.id : max), data[0].id) : 0;
@@ -126,6 +125,16 @@ const CountryVisaTypes: React.FC<{ countryvisadata: any }> = ({ countryvisadata 
     };
     return (
         <>
+            <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
+                <li>
+                    <Link href="/" className="text-primary hover:underline">
+                        CMS
+                    </Link>
+                </li>
+                <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                    <span>Country Visa Types</span>
+                </li>
+            </ul>
             <TableLayout
                 title="Country Visa Types"
                 setData={setData}

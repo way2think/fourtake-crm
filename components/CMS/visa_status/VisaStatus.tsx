@@ -8,6 +8,7 @@ import IconX from '@/components/icon/icon-x';
 import Swal from 'sweetalert2';
 import VisaStatusActionModal from './VisaStatusActionModal';
 import { showMessage } from '@/utils/notification';
+import Link from 'next/link';
 
 // const getServerData = async () => {
 //     return await getData({ url: 'http://localhost:5001/center' });
@@ -21,7 +22,7 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
     //     console.log(error.message);
     // }
 
-    const exportColumns = ['id', 'visastatus','statustype'];
+    const exportColumns = ['id', 'visastatus', 'statustype'];
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
@@ -55,7 +56,6 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
                 return true;
             }
         });
-        
     };
 
     const handleSubmit = (value: any) => {
@@ -67,7 +67,6 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
             showMessage('Select Status Type', 'error');
             return false;
         } else if (value.statustype == '' || value.statustype == null) {
-
         }
         // console.log('params', params);
         // if (!isValidName(params.firstname)) {
@@ -161,11 +160,19 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
         // showMessage('User has been saved successfully.');
         // setAddContactModal(false);
         // setIsEdit(false);
-
-
     };
     return (
         <>
+            <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
+                <li>
+                    <Link href="/" className="text-primary hover:underline">
+                        CMS
+                    </Link>
+                </li>
+                <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                    <span>Visa Status</span>
+                </li>
+            </ul>
             <TableLayout
                 title="Visa Status"
                 handleDelete={handleDelete}

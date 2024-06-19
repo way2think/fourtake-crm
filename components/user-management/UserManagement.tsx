@@ -11,6 +11,7 @@ import IconX from '@/components/icon/icon-x';
 import Swal from 'sweetalert2';
 import { showMessage } from '@/utils/notification';
 import UserManagementActionModal from './UserManagementActionModal';
+import Link from 'next/link';
 
 // const getServerData = async () => {
 //     return await getData({ url: 'http://localhost:5001/center' });
@@ -126,6 +127,16 @@ const UserManagement: React.FC<{ userdata: any }> = ({ userdata }) => {
     };
     return (
         <>
+            <ul className="flex space-x-2 rtl:space-x-reverse">
+                <li>
+                    <Link href="/" className="text-primary hover:underline">
+                        User
+                    </Link>
+                </li>
+                <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                    <span>User List</span>
+                </li>
+            </ul>
             <TableLayout
                 title="User "
                 setData={setData}

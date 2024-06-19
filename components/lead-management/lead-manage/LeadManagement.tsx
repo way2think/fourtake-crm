@@ -13,6 +13,7 @@ import { showMessage } from '@/utils/notification';
 import TableLayout from '@/components/layouts/table-layout';
 import Filtersetting from '@/components/layouts/filtersetting';
 import LeadManagementActionModal from './LeadManagementActionModal';
+import Link from 'next/link';
 
 // const getServerData = async () => {
 //     return await getData({ url: 'http://localhost:5001/center' });
@@ -120,29 +121,29 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
             //update user
             let formData: any = data.find((d: any) => d.id === value.id);
 
-            formData.name = value.name || "";
-            formData.email = value.email || "";
-            formData.phone = value.phone || "";
-            formData.country = value.country || "";
-            formData.visatype = value.visatype || "";
-            formData.stateofresidence = value.stateofresidence || "";
-            formData.createdDate = value.createdDate || "";
-            formData.emailsentdate = value.emailsentdate || "";
-            formData.lastfollowup = value.lastfollowup || "";
-            formData.nextfollowupdate = value.nextfollowupdate || "";
-            formData.interaction = value.interaction || "";
-            formData.followuptime = value.followuptime || "";
-            formData.follupremark = value.follupremark || "";
-            formData.stage = value.stage || "";
-            formData.status = value.status || "";
+            formData.name = value.name || '';
+            formData.email = value.email || '';
+            formData.phone = value.phone || '';
+            formData.country = value.country || '';
+            formData.visatype = value.visatype || '';
+            formData.stateofresidence = value.stateofresidence || '';
+            formData.createdDate = value.createdDate || '';
+            formData.emailsentdate = value.emailsentdate || '';
+            formData.lastfollowup = value.lastfollowup || '';
+            formData.nextfollowupdate = value.nextfollowupdate || '';
+            formData.interaction = value.interaction || '';
+            formData.followuptime = value.followuptime || '';
+            formData.follupremark = value.follupremark || '';
+            formData.stage = value.stage || '';
+            formData.status = value.status || '';
             formData.traveldate = value.traveldate;
-            formData.numberofapplicants = value.numberofapplicants || "";
-            formData.docpickupdate = value.docpickupdate || "";
-            formData.docpickupremarks = value.docpickupremarks || "";
-            formData.leadnote = value.leadnote || "";
-            formData.leadtype = value.leadtype || "";
-            formData.assignee = value.assignee || "";
-            formData.source = value.source || "";
+            formData.numberofapplicants = value.numberofapplicants || '';
+            formData.docpickupdate = value.docpickupdate || '';
+            formData.docpickupremarks = value.docpickupremarks || '';
+            formData.leadnote = value.leadnote || '';
+            formData.leadtype = value.leadtype || '';
+            formData.assignee = value.assignee || '';
+            formData.source = value.source || '';
 
             return formData;
         } else {
@@ -151,29 +152,29 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
 
             let formData = {
                 id: +maxUserId + 1,
-                name: value.name || "",
-                email: value.email || "",
-                phone: value.phone || "",
-                country: value.country || "",
-                visatype: value.visatype || "",
-                stateofresidence: value.stateofresidence || "",
-                createdate: value.createdate || "",
-                emailsentdate: value.emailsentdate || "",
-                lastfollowup: value.lastfollowup || "",
-                nextfollowupdate: value.nextfollowupdate || "",
-                interaction: value.interaction || "",
-                followuptime: value.followuptime || "",
-                follupremark: value.follupremark || "",
-                stage: value.stage || "",
-                status: value.status || "",
-                traveldate: value.traveldate || "",
-                numberofapplicants: value.numberofapplicants || "",
-                docpickupdate: value.docpickupdate || "",
-                docpickupremarks: value.docpickupremarks || "",
-                leadnote: value.leadnote || "",
-                leadtype: value.leadtype || "",
-                assignee: value.assignee || "",
-                source: value.source || "",
+                name: value.name || '',
+                email: value.email || '',
+                phone: value.phone || '',
+                country: value.country || '',
+                visatype: value.visatype || '',
+                stateofresidence: value.stateofresidence || '',
+                createdate: value.createdate || '',
+                emailsentdate: value.emailsentdate || '',
+                lastfollowup: value.lastfollowup || '',
+                nextfollowupdate: value.nextfollowupdate || '',
+                interaction: value.interaction || '',
+                followuptime: value.followuptime || '',
+                follupremark: value.follupremark || '',
+                stage: value.stage || '',
+                status: value.status || '',
+                traveldate: value.traveldate || '',
+                numberofapplicants: value.numberofapplicants || '',
+                docpickupdate: value.docpickupdate || '',
+                docpickupremarks: value.docpickupremarks || '',
+                leadnote: value.leadnote || '',
+                leadtype: value.leadtype || '',
+                assignee: value.assignee || '',
+                source: value.source || '',
             };
 
             setData([...data, formData]);
@@ -188,6 +189,16 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
     };
     return (
         <>
+            <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
+                <li>
+                    <Link href="/" className="text-primary hover:underline">
+                        Lead Management
+                    </Link>
+                </li>
+                <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                    <span>Lead List</span>
+                </li>
+            </ul>
             <TableLayout
                 title="Lead List"
                 setData={setData}
