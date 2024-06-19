@@ -25,8 +25,23 @@ import ReactApexChart from 'react-apexcharts';
 import { useSelector } from 'react-redux';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Attendence from './Attendence';
+import PaginationTable from '../Reusable/Table/PaginationTable';
 
-const ComponentsDashboard = () => {
+interface DashboardProps {
+    title: string;
+    data: object[];
+    totalPages: number;
+    tableColumns: object[];
+    // ActionModal: any;
+    // Filtersetting?: any;
+    // handleSubmit?: any;
+    exportColumns?: string[];
+    // handleDelete: any;
+    // setData: any;
+    // filterby: string;
+}
+
+const ComponentsDashboard: React.FC<DashboardProps> = ({ data, tableColumns, exportColumns }) => {
     const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const [isMounted, setIsMounted] = useState(false);
@@ -34,9 +49,18 @@ const ComponentsDashboard = () => {
         setIsMounted(true);
     }, []);
 
+    const [filterItem, setFilterItem] = useState(data);
+
+    const tableColumns = [
+        { accessor: 'id', textAlign: 'left', title: 'ID' },
+        { accessor: 'country', textAlign: 'left', title: 'Country Name' },
+    ];
+
+    const exportColumns = ['id', 'country'];
+
     return (
         <div>
-            <ul className="flex space-x-2 rtl:space-x-reverse mb-5">
+            {/* <ul className="mb-5 flex space-x-2 rtl:space-x-reverse">
                 <li>
                     <Link href="/" className="text-primary hover:underline">
                         Dashboard
@@ -45,8 +69,9 @@ const ComponentsDashboard = () => {
                 <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
                     <span>Dashboard Home</span>
                 </li>
-            </ul>
-            <Attendence/>
+            </ul> */}
+            <Attendence />
+            <PaginationTable data={filterItem} tableColumns={tableColumns} />
         </div>
     );
 };
