@@ -41,7 +41,7 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [search, setSearch] = useState('');
-    const [filterItem, setFilterItem] = useState(data);
+    const [filterItem, setFilterItem] = useState<any>(data);
     const [addData, setAddData] = useState<AddData>({});
     const [showCustomizer, setShowCustomizer] = useState(false);
 
@@ -59,8 +59,8 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
         const { value, id } = e.target;
 
         setAddData({ ...addData, [id]: value });
-        console.log(value)
-        console.log(addData)
+        console.log(value);
+        console.log(addData);
     };
 
     const handleExport = () => {
@@ -79,26 +79,25 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
     const handleFilter = () => {
         setShowCustomizer(true);
     };
-
-    
+    console.log('filter item', filterItem);
     const handleSubmitReport = () => {
         //debugger;
 
         let requiredFields: string[] = [];
+        let dataFilter = filterItem;
 
-        if(title == 'Daily Report') {
-            requiredFields = ['Select_User', 'Select_Center'];
+        if (title == 'Daily Report') {
+            requiredFields = ['user', 'center'];
         }
-        if(title == 'Finance Report' || title == 'Payment Report') {
+        if (title == 'Finance Report' || title == 'Payment Report') {
             requiredFields = ['Select_Center'];
         }
-        if(title == 'Status Wise Report') {
+        if (title == 'Status Wise Report') {
             requiredFields = ['Select_User', 'Select_Center', 'Select_Employee'];
         }
-        if(title == 'Out Scan' || title == 'In Scan') {
+        if (title == 'Out Scan' || title == 'In Scan') {
             requiredFields = [];
         }
-
 
         //const requiredFields = ['Select_User', 'Select_Center', 'Select_Employee'];
         for (let field of requiredFields) {
@@ -107,6 +106,16 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                 return;
             }
         }
+
+        if (addData?.center) {
+            dataFilter = dataFilter.filter((item: any) => item.center === addData.center);
+        }
+
+        if (addData.consultantname) {
+            dataFilter = dataFilter.filter((item: any) => item.consultantname === addData.consultantname);
+        }
+
+        console.log('dataFiler', dataFilter);
         // Proceed with form submission or other logic
         //console.log('Form data is valid:', addData);
     };
@@ -154,11 +163,12 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                             <div className="mb-5">
                                 <div className="dropdown">
                                     <label htmlFor="leadStatus">Select User</label>
-                                    <select id="Select_User" className="form-input" onChange={(e) => handleInputChange(e)}>
-                                        <option value="">[-Select-]</option>
-                                        <option value="Kumar">Kumar</option>
-                                        <option value="Jhon">Jhon</option>
-                                        <option value="Gokul">Gokul</option>
+                                    <select id="user" className="form-input" onChange={(e) => handleInputChange(e)}>
+                                        <option value="">Select User</option>
+                                        <option value="sanjay">Sanjay</option>
+                                        <option value="jagan">Jagan</option>
+                                        <option value="raji">Raji</option>
+                                        <option value="santhosh">Santhosh</option>
                                     </select>
                                 </div>
                             </div>
@@ -167,8 +177,8 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                             <div className="mb-5">
                                 <div className="dropdown">
                                     <label htmlFor="leadStatus">Select Center </label>
-                                    <select id="Select_Center" className="form-input" onChange={handleInputChange}>
-                                        <option value="">[-Select-]</option>
+                                    <select id="center" className="form-input" onChange={handleInputChange}>
+                                        <option value="">Select Center</option>
                                         <option value="Chennai">Chennai</option>
                                         <option value="New Delhi">New Delhi</option>
                                         <option value="Mumbai">Mumbai</option>
@@ -182,13 +192,13 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                             <div className="mb-5">
                                 <div className="dropdown">
                                     <label htmlFor="employee">Select Employee </label>
-                                    <select id="Select_Employee" className="form-input" onChange={handleInputChange}>
+                                    <select id="consultantname" className="form-input" onChange={handleInputChange}>
                                         <option value="">[-Employee-]</option>
-                                        <option value="Chennai">Sanjay</option>
-                                        <option value="New Delhi">Jagadish</option>
-                                        <option value="Mumbai">Raji</option>
-                                        <option value="Bangaluru">Akhil</option>
-                                        <option value="Hyderabad">Franklin</option>
+                                        <option value="Sanjay">Sanjay</option>
+                                        <option value="Jagadish Delhi">Jagadish</option>
+                                        <option value="Raji">Raji</option>
+                                        <option value="Akhil">Akhil</option>
+                                        <option value="Franklin">Franklin</option>
                                     </select>
                                 </div>
                             </div>
@@ -199,7 +209,7 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                         {title !== 'Out Scan' && title !== 'In Scan' && (
                             <>
                                 <div className="mb-5">
-                                    <ComponentsFormDatePickerRange />
+                                    <ComponentsFormDatePickerRange data={data} setFilterItem={setFilterItem} filterItem={filterItem} />
                                 </div>
                                 <div className="flex items-center">
                                     <div>
