@@ -211,7 +211,7 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
                                 <div>
                                     <div className=" pt-5">
                                         <div className="flex-auto">
-                                            <PaginationExpand data={undefined} tableColumns={undefined} />
+                                            <PaginationExpand data={data} tableColumns={tableColumns} />
                                         </div>
                                     </div>
                                 </div>
