@@ -233,7 +233,7 @@ const Sidebar = () => {
                                             <Link href="/manage-visa">Manage Visa </Link>
                                         </li>
                                         <li>
-                                            <Link href="/list-visa-applications">Visa Applications</Link>
+                                            <Link href="/list-visa-applications">List Visa Applications</Link>
                                         </li>
                                         <li>
                                             <Link href="/deleted-application-list ">Deleted Application</Link>
