@@ -1,4 +1,3 @@
-
 import IconFile from '../icon/icon-file';
 import IconLogout from '../icon/icon-logout';
 import React, { useState } from 'react';
@@ -11,14 +10,14 @@ const Attendence = () => {
         passport: '',
         residence: '',
         country: '',
-        trip: ''
+        trip: '',
     });
 
     const [errors, setErrors] = useState({
         passport: false,
         residence: false,
         country: false,
-        trip: false
+        trip: false,
     });
 
     type FormFields = {
@@ -36,11 +35,11 @@ const Attendence = () => {
         const { id, value } = e.target;
         setFormData({
             ...formData,
-            [id]: value
+            [id]: value,
         });
         setErrors({
             ...errors,
-            [id]: false
+            [id]: false,
         });
     };
 
@@ -49,7 +48,7 @@ const Attendence = () => {
             passport: formData.passport === '',
             residence: formData.residence === '',
             country: formData.country === '',
-            trip: formData.trip === ''
+            trip: formData.trip === '',
         };
 
         setErrors(newErrors);
@@ -68,7 +67,7 @@ const Attendence = () => {
 
     return (
         <>
-            <section className="rounded-md bg-[#fff]  p-5 shadow-lg ">
+            {/* <section className="rounded-md bg-[#fff]  p-5 shadow-lg ">
                 <h1 className="mb-2 text-left text-2xl font-bold text-[#005fbe]">Attendence</h1>
 
                 <div className=" grid grid-cols-1 items-center justify-between  gap-5    md:grid-cols-2">
@@ -82,7 +81,7 @@ const Attendence = () => {
                         </button>
                     </div>
                 </div>
-            </section>
+            </section> */}
             <div>
                 <section className="mb-5 mt-5  rounded-md bg-[#fff] p-5 shadow-lg">
                     <h1 className="mb-2 text-left text-2xl font-bold text-[#005fbe]">Dashboard</h1>

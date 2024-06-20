@@ -2,8 +2,12 @@
 import CountryActionModal from '@/components/CMS/countries/CountryActionModal';
 import TableLayout from '@/components/layouts/table-layout';
 import { showMessage } from '@/utils/notification';
-import { useState } from 'react';
+
 import Swal from 'sweetalert2';
+import VisaApplicationTabs from './Visa-application-tabs';
+
+import { Tab } from '@headlessui/react';
+import React, { Fragment, useEffect, useState } from 'react';
 
 const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplication }) => {
     const [data, setData] = useState(listapplication);
@@ -47,6 +51,11 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
             }
         });
     };
+
+    const [isMounted, setIsMounted] = useState(false);
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const handleSubmit = (value: any) => {
         if (value.country == '' || value.country == null) {
@@ -146,20 +155,70 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
         // setAddContactModal(false);
         // setIsEdit(false);
     };
-    
+
     return (
-        <TableLayout
-            title="Application"
-            setData={setData}
-            filterby="country"
-            handleDelete={handleDelete}
-            data={data}
-            totalPages={data?.length || 0}
-            tableColumns={tableColumns}
-            exportColumns={exportColumns}
-            ActionModal={CountryActionModal}
-            handleSubmit={handleSubmit}
-        />
+        <>
+            <div className="mb-5">
+                {isMounted && (
+                    <Tab.Group>
+                        <Tab.List className="mt-3 flex flex-wrap">
+                            <Tab as={Fragment}>
+                                {({ selected }) => (
+                                    <button
+                                        className={`${selected ? 'bg-primary text-white !outline-none' : ''}
+                                                    ' -mb-[1px] block rounded p-3.5 py-2 hover:bg-primary hover:text-white ltr:mr-2 rtl:ml-2`}
+                                    >
+                                        All
+                                    </button>
+                                )}
+                            </Tab>
+                            <Tab as={Fragment}>
+                                {({ selected }) => (
+                                    <button
+                                        className={`${selected ? 'bg-primary text-white !outline-none' : ''} -mb-[1px] block rounded p-3.5 py-2 hover:bg-primary hover:text-white ltr:mr-2 rtl:ml-2`}
+                                    >
+                                        Group
+                                    </button>
+                                )}
+                            </Tab>
+                            {/* <Tab as={Fragment}>
+                            {({ selected }) => (
+                                <button className={`${selected ? 'bg-primary text-white !outline-none' : ''} -mb-[1px] block rounded p-3.5 py-2 hover:bg-primary hover:text-white ltr:mr-2 rtl:ml-2`}>
+                                    Contact
+                                </button>
+                            )}
+                        </Tab> */}
+                            {/* <Tab className="pointer-events-none -mb-[1px] block rounded p-3.5 py-2 text-white-light dark:text-dark">Disabled</Tab> */}
+                        </Tab.List>
+                        <Tab.Panels>
+                            <Tab.Panel>
+                                <div className="active pt-5">
+                                    <TableLayout
+                                        title="List Visa Application "
+                                        setData={setData}
+                                        filterby="country"
+                                        handleDelete={handleDelete}
+                                        data={data}
+                                        totalPages={data?.length || 0}
+                                        tableColumns={tableColumns}
+                                        exportColumns={exportColumns}
+                                        ActionModal={CountryActionModal}
+                                        handleSubmit={handleSubmit}
+                                    />
+                                </div>
+                            </Tab.Panel>
+                            <Tab.Panel>
+                                <div>
+                                    <div className=" pt-5">
+                                        <div className="flex-auto">Group</div>
+                                    </div>
+                                </div>
+                            </Tab.Panel>
+                        </Tab.Panels>
+                    </Tab.Group>
+                )}
+            </div>
+        </>
     );
 };
 

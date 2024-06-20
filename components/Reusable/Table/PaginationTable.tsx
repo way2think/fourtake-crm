@@ -73,6 +73,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                 //     console.log('rescor: ', record);
                 // }}
                 // Pagination properties
+
                 totalRecords={data?.length}
                 paginationActiveBackgroundColor="grape"
                 recordsPerPage={pageSize}
