@@ -125,16 +125,7 @@ const CountryVisaTypes: React.FC<{ countryvisadata: any }> = ({ countryvisadata 
     };
     return (
         <>
-            <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
-                <li>
-                    <Link href="/" className="text-primary hover:underline">
-                        CMS
-                    </Link>
-                </li>
-                <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
-                    <span>Country Visa Types</span>
-                </li>
-            </ul>
+           
             <TableLayout
                 title="Country Visa Types"
                 setData={setData}

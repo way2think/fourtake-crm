@@ -1,38 +1,38 @@
 'use client';
-
-import { getData } from '@/api';
-import ComponentsFormsFileUploadMulti from '@/components/Reusable/file-upload/components-forms-file-upload-multi';
-import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
+import CountryActionModal from '@/components/CMS/countries/CountryActionModal';
 import TableLayout from '@/components/layouts/table-layout';
-import { use } from 'react';
-import { Transition, Dialog } from '@headlessui/react';
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
-import IconX from '@/components/icon/icon-x';
-import CountryActionModal from './CountryVisaURlActionModal';
-import Swal from 'sweetalert2';
 import { showMessage } from '@/utils/notification';
-import CountryVisaURlActionModal from './CountryVisaURlActionModal';
-import { isValidUrl } from '@/utils/validator';
-import Link from 'next/link';
 
-// const getServerData = async () => {
-//     return await getData({ url: 'http://localhost:5001/center' });
-// };
-const CountryVisaURl: React.FC<{ countryvisaurls: any }> = ({ countryvisaurls }) => {
-    const [data, setData] = useState(countryvisaurls);
-    // const { data, isError, error } = use(getServerData());
-    // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
-    // // console.log('dataaaa: ', data);
-    // if (isError) {
-    //     console.log(error.message);
-    // }
+import Swal from 'sweetalert2';
 
+import { Tab } from '@headlessui/react';
+import React, { Fragment, useEffect, useState } from 'react';
+
+const DeletedApplication: React.FC<{ listapplication: any }> = ({ listapplication }) => {
+    const [data, setData] = useState(listapplication);
+    const exportColumns = ['id', 'applydate', 'refno', 'apptype', 'applname', 'cosultantname', 'destination', 'type', 'duration', 'entry'];
     const tableColumns = [
-        { accessor: 'id', textAlign: 'left', title: 'ID' },
-        { accessor: 'country', textAlign: 'left', title: 'Country' },
-        { accessor: 'urls', textAlign: 'left', title: 'Url' },
+        { accessor: 'id', textAlign: 'left', title: 'SNo' },
+        { accessor: 'country', textAlign: 'left', title: 'Apply Date' },
+        { accessor: 'country', textAlign: 'left', title: 'ReferenceNo' },
+        { accessor: 'country', textAlign: 'left', title: 'App Type' },
+        { accessor: 'country', textAlign: 'left', title: 'Applicant Name' },
+        { accessor: 'country', textAlign: 'left', title: 'Consultant Name' },
+        { accessor: 'country', textAlign: 'left', title: 'Destination' },
+        { accessor: 'country', textAlign: 'left', title: 'Type' },
+        { accessor: 'country', textAlign: 'left', title: 'Duration' },
+        { accessor: 'country', textAlign: 'left', title: 'Entry' },
+        // { accessor: 'phone', textAlign: 'left' },
+        // { accessor: 'email', textAlign: 'left' },
+        // { accessor: 'address', textAlign: 'left' },
+        // {
+        //     accessor: 'is_active',
+        //     textAlign: 'left',
+        //     render: ({ is_active }: { is_active: any }) => {
+        //         return is_active;
+        //     },
+        // },
     ];
-
     const handleDelete = (row: any) => {
         Swal.fire({
             icon: 'warning',
@@ -51,22 +51,16 @@ const CountryVisaURl: React.FC<{ countryvisaurls: any }> = ({ countryvisaurls })
         });
     };
 
-    const exportColumns = ['id', 'country', 'urls'];
+    const [isMounted, setIsMounted] = useState(false);
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const handleSubmit = (value: any) => {
-        debugger;
         if (value.country == '' || value.country == null) {
-            showMessage('Select Country', 'error');
+            showMessage('Enter country name', 'error');
             return false;
         }
-        if (value.urls == '' || value.urls == null) {
-            showMessage('Fill URL', 'error');
-            return false;
-        }
-        // else if (!isValidUrl(value.urls)) {
-        //     showMessage('Fill in valid URL', 'error');
-        //     return false;
-        // }
         // if (!isValidName(params.lastname)) {
         //     showMessage('Last Name is required.', 'error');
         //     return true;
@@ -110,21 +104,21 @@ const CountryVisaURl: React.FC<{ countryvisaurls: any }> = ({ countryvisaurls })
             //update user
             let formData: any = data.find((d: any) => d.id === value.id);
             formData.country = value.country;
-            formData.urls = value.urls;
-            // formData.dailingcode = value.dailingcode;
-            // formData.capital = value.capital;
-            // formData.cities = value.cities;
-            // formData.countrydetails = value.countrydetails;
-            // formData.climate = value.climate;
-            // formData.currency = value.currency;
-            // formData.timezone = value.timezone;
-            // formData.additionalinfo = value.additionalinfo;
-            // formData.website = value.website;
-            // formData.ispopular = value.ispopular;
-            // formData.isoutsource = value.isoutsource;
-            // formData.isjurisdiction = value.isjurisdiction;
-            // formData.image = value.image;
-            // formData.flag = value.flag;
+            formData.language = value.language;
+            formData.dailingcode = value.dailingcode;
+            formData.capital = value.capital;
+            formData.cities = value.cities;
+            formData.countrydetails = value.countrydetails;
+            formData.climate = value.climate;
+            formData.currency = value.currency;
+            formData.timezone = value.timezone;
+            formData.additionalinfo = value.additionalinfo;
+            formData.website = value.website;
+            formData.ispopular = value.ispopular;
+            formData.isoutsource = value.isoutsource;
+            formData.isjurisdiction = value.isjurisdiction;
+            formData.image = value.image;
+            formData.flag = value.flag;
 
             return formData;
         } else {
@@ -134,21 +128,21 @@ const CountryVisaURl: React.FC<{ countryvisaurls: any }> = ({ countryvisaurls })
             let formData = {
                 id: +maxUserId + 1,
                 country: value.country,
-                urls: value.urls,
-                // dailingcode: value.dailingcode,
-                // capital: value.capital,
-                // cities: value.cities,
-                // countrydetails: value.countrydetails,
-                // climate: value.climate,
-                // currency: value.currency,
-                // timezone: value.timezone,
-                // additionalinfo: value.additionalinfo,
-                // website: value.website,
-                // ispopular: value.ispopular,
-                // isoutsource: value.isoutsource,
-                // isjurisdiction: value.isjurisdiction,
-                // image: value.image,
-                // flag: value.flag,
+                language: value.language,
+                dailingcode: value.dailingcode,
+                capital: value.capital,
+                cities: value.cities,
+                countrydetails: value.countrydetails,
+                climate: value.climate,
+                currency: value.currency,
+                timezone: value.timezone,
+                additionalinfo: value.additionalinfo,
+                website: value.website,
+                ispopular: value.ispopular,
+                isoutsource: value.isoutsource,
+                isjurisdiction: value.isjurisdiction,
+                image: value.image,
+                flag: value.flag,
             };
             setData([...data, formData]);
             return formData;
@@ -160,11 +154,11 @@ const CountryVisaURl: React.FC<{ countryvisaurls: any }> = ({ countryvisaurls })
         // setAddContactModal(false);
         // setIsEdit(false);
     };
+
     return (
         <>
-           
             <TableLayout
-                title="Country Visa Urls"
+                title="Deleted Application "
                 setData={setData}
                 filterby="country"
                 handleDelete={handleDelete}
@@ -172,11 +166,11 @@ const CountryVisaURl: React.FC<{ countryvisaurls: any }> = ({ countryvisaurls })
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
-                ActionModal={CountryVisaURlActionModal}
+                ActionModal={CountryActionModal}
                 handleSubmit={handleSubmit}
             />
         </>
     );
 };
 
-export default CountryVisaURl;
+export default DeletedApplication;

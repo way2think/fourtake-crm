@@ -168,7 +168,7 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
     };
     return (
         <>
-            <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
+            {/* <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
                 <li>
                     <Link href="/" className="text-primary hover:underline">
                         CMS
@@ -177,7 +177,7 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
                 <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
                     <span>Visa Checklist</span>
                 </li>
-            </ul>
+            </ul> */}
             <TableLayout
                 title="Visa Checklist"
                 data={data}

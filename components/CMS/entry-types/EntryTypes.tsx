@@ -148,7 +148,7 @@ const EntryTypes: React.FC<{ entrytypedata: any }> = ({ entrytypedata }) => {
     };
     return (
         <>
-            <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
+            {/* <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
                 <li>
                     <Link href="/" className="text-primary hover:underline">
                         CMS
@@ -157,7 +157,7 @@ const EntryTypes: React.FC<{ entrytypedata: any }> = ({ entrytypedata }) => {
                 <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
                     <span>Entry Types</span>
                 </li>
-            </ul>
+            </ul> */}
             <TableLayout
                 title="Entry Types"
                 filterby="entrytype"

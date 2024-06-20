@@ -236,7 +236,7 @@ const Sidebar = () => {
                                             <Link href="/list-visa-applications">List Visa Applications</Link>
                                         </li>
                                         <li>
-                                            <Link href="/deleted-application-list ">Deleted Application</Link>
+                                            <Link href="/deleted-application-list ">Deleted Application List</Link>
                                         </li>
                                     </ul>
                                 </AnimateHeight>
