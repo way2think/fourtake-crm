@@ -1,6 +1,7 @@
 import IconFile from '../icon/icon-file';
 import IconLogout from '../icon/icon-logout';
 import React, { useState } from 'react';
+import { showMessage } from '@/utils/notification';
 
 const Attendence = () => {
     function handleInputChange(e: React.ChangeEvent<HTMLSelectElement>): void {
@@ -55,14 +56,16 @@ const Attendence = () => {
 
         for (const [field, hasError] of Object.entries(newErrors)) {
             if (hasError) {
-                alert(`Please fill out the ${field.charAt(0).toUpperCase() + field.slice(1)} field.`);
+                //alert(`Please fill out the ${field.charAt(0).toUpperCase() + field.slice(1)} field.`);
+                showMessage(`Please fill out the ${field.charAt(0).toUpperCase() + field.slice(1)} field.`, 'error');
                 return;
             }
         }
 
         // Form is valid, handle the form submission here
         console.log('Form submitted successfully with data:', formData);
-        alert('Form submitted successfully');
+        //alert('Form submitted successfully');
+        showMessage('Form submitted successfully.');
     };
 
     return (

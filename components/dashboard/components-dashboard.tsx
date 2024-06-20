@@ -26,6 +26,8 @@ import { useSelector } from 'react-redux';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Attendence from './Attendence';
 import PaginationTable from '../Reusable/Table/PaginationTable';
+import UserManagementActionModal from '../user-management/UserManagementActionModal';
+
 
 interface DashboardProps {
     data: any;
@@ -43,11 +45,17 @@ interface DashboardProps {
     // setData: any;
     // filterby: string;
 }
+interface AddData {
+    [key: string]: string;
+}
 
 const ComponentsDashboard: React.FC<DashboardProps> = ({ data, leaddata, passportsdata, applicationdata, dropdata }) => {
     const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const [isMounted, setIsMounted] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
+    const [addData, setAddData] = useState<AddData>({});
     useEffect(() => {
         setIsMounted(true);
     }, []);
@@ -85,10 +93,28 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data, leaddata, passpor
         // { accessor: 'visatype', textAlign: 'left', title: 'Type' },
     ];
 
-    // const exportColumns = ['id', 'applicantname', 'destination', 'visatype'];
+    const handleEdit = (object: any) => {
+        debugger;
+        setIsEdit(true);
+        setIsOpen(true);
+        setAddData(object);
+    };
+    const handleInputChange = (e: any) => {
+        const { value, id } = e.target;
+
+        setAddData({ ...addData, [id]: value });
+    };
+    const handleSave = () => {
+        // if (handleSubmit(addData)) {
+        //     setIsOpen(false);
+        //     setAddData({});
+        // }
+    };
+
 
     return (
-        <div>
+        <>
+            <div>
             {/* <ul className="mb-5 flex space-x-2 rtl:space-x-reverse">
                 <li>
                     <Link href="/" className="text-primary hover:underline">
@@ -133,17 +159,23 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data, leaddata, passpor
                     <PaginationTable data={applicationdata} tableColumns={tableColumnsapplication} title={'dashboard'} />
                 </div>
             </div>
-            <div className="grid grid-cols-2 gap-3 xl:grid-cols-2">
-                <div className="mb-4 mt-4">
-                    <div className="flex items-center justify-between">
-                        <h2 className="mb-4 mt-4">Today's Passport Drop Off</h2>
-                        <p className="font-extrabold">1</p>
-                    </div>
-
-                    <PaginationTable data={dropdata} tableColumns={tableColumnsdrop} title={'dashboard'} />
-                </div>
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                <PaginationTable data={filterItem} tableColumns={tableColumnsLead} title={"dashboard"} handleEdit={handleEdit}/>
+               
             </div>
         </div>
+
+        <UserManagementActionModal 
+        isOpen={isOpen}
+        setAddData={setAddData}
+        handleInputChange={handleInputChange}
+        setIsOpen={setIsOpen}
+        handleSave={handleSave}
+        addData={addData}
+        isEdit={isEdit}
+        setIsEdit={setIsEdit}
+        />
+        </>
     );
 };
 
