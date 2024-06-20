@@ -26,6 +26,8 @@ import { useSelector } from 'react-redux';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Attendence from './Attendence';
 import PaginationTable from '../Reusable/Table/PaginationTable';
+import UserManagementActionModal from '../user-management/UserManagementActionModal';
+
 
 interface DashboardProps {
     data: any;
@@ -39,11 +41,17 @@ interface DashboardProps {
     // setData: any;
     // filterby: string;
 }
+interface AddData {
+    [key: string]: string;
+}
 
 const ComponentsDashboard: React.FC<DashboardProps> = ({ data }: any) => {
     const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const [isMounted, setIsMounted] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
+    const [addData, setAddData] = useState<AddData>({});
     useEffect(() => {
         setIsMounted(true);
     }, []);
@@ -62,10 +70,28 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data }: any) => {
 
     const exportColumns = ['id', 'country'];
 
-    const handleEdit = () => {};
+    const handleEdit = (object: any) => {
+        debugger;
+        setIsEdit(true);
+        setIsOpen(true);
+        setAddData(object);
+    };
+    const handleInputChange = (e: any) => {
+        const { value, id } = e.target;
+
+        setAddData({ ...addData, [id]: value });
+    };
+    const handleSave = () => {
+        // if (handleSubmit(addData)) {
+        //     setIsOpen(false);
+        //     setAddData({});
+        // }
+    };
+
 
     return (
-        <div>
+        <>
+            <div>
             {/* <ul className="mb-5 flex space-x-2 rtl:space-x-reverse">
                 <li>
                     <Link href="/" className="text-primary hover:underline">
@@ -86,10 +112,22 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data }: any) => {
                 <PaginationTable data={filterItem} tableColumns={tableColumns} title={"dashboard"} />
             </div>
             <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-                <PaginationTable data={filterItem} tableColumns={tableColumnsLead} title={"dashboard"} />
+                <PaginationTable data={filterItem} tableColumns={tableColumnsLead} title={"dashboard"} handleEdit={handleEdit}/>
                
             </div>
         </div>
+
+        <UserManagementActionModal 
+        isOpen={isOpen}
+        setAddData={setAddData}
+        handleInputChange={handleInputChange}
+        setIsOpen={setIsOpen}
+        handleSave={handleSave}
+        addData={addData}
+        isEdit={isEdit}
+        setIsEdit={setIsEdit}
+        />
+        </>
     );
 };
 
