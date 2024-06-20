@@ -123,7 +123,7 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
 
     return (
         <>
-            <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
+            {/* <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
                 <li>
                     <Link href="/" className="text-primary hover:underline">
                         CMS
@@ -132,7 +132,7 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
                 <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
                     <span>Embassy Vfs</span>
                 </li>
-            </ul>
+            </ul> */}
             <TableLayout
                 title="Embassy/Vfs"
                 setData={setData}

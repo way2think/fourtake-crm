@@ -4,10 +4,10 @@ import TableLayout from '@/components/layouts/table-layout';
 import { showMessage } from '@/utils/notification';
 
 import Swal from 'sweetalert2';
-import VisaApplicationTabs from './Visa-application-tabs';
 
 import { Tab } from '@headlessui/react';
 import React, { Fragment, useEffect, useState } from 'react';
+import PaginationExpand from '@/components/Reusable/Table/PaginationExpand';
 
 const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplication }) => {
     const [data, setData] = useState(listapplication);
@@ -210,7 +210,9 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
                             <Tab.Panel>
                                 <div>
                                     <div className=" pt-5">
-                                        <div className="flex-auto">Group</div>
+                                        <div className="flex-auto">
+                                            <PaginationExpand data={undefined} tableColumns={undefined} />
+                                        </div>
                                     </div>
                                 </div>
                             </Tab.Panel>
