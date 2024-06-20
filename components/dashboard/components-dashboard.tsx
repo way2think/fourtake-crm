@@ -26,7 +26,7 @@ import { useSelector } from 'react-redux';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Attendence from './Attendence';
 import PaginationTable from '../Reusable/Table/PaginationTable';
-import UserManagementActionModal from '../user-management/UserManagementActionModal';
+import LeadManagementActionModal from '../lead-management/lead-manage/LeadManagementActionModal';
 
 
 interface DashboardProps {
@@ -160,12 +160,12 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data, leaddata, passpor
                 </div>
             </div>
             <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-                <PaginationTable data={filterItem} tableColumns={tableColumnsLead} title={"dashboard"} handleEdit={handleEdit}/>
+                <PaginationTable data={leaddata} tableColumns={tableColumnsLead} title={"dashboard"} handleEdit={handleEdit}/>
                
             </div>
         </div>
 
-        <UserManagementActionModal 
+        <LeadManagementActionModal 
         isOpen={isOpen}
         setAddData={setAddData}
         handleInputChange={handleInputChange}
