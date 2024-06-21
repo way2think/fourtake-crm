@@ -91,6 +91,7 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                 page={page}
                 onPageChange={setPage}
                 rowExpansion={{
+                  
                     isExpanded: (row: any) => expandedRows.includes(row.id),
                     content: ({ record }) => {
                         // const subData = getSubData ? getSubData : [];
@@ -101,9 +102,12 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                                         {getSubData?.map((subRow: any, index: number) => (
                                             <tr key={index}>
                                                 {tableColumns.map((column: any, colIndex: number) => (
-                                                    <td key={colIndex}>{subRow[column.accessor]}</td>
+                                                    <td className="p-2" key={colIndex}>
+                                                        {subRow[column.accessor]}
+                                                    </td>
                                                 ))}
-                                                <Group gap={4} justify="right" wrap="nowrap">
+
+                                                <Group gap={1} className="mt-2 flex items-center justify-center">
                                                     <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit && handleEdit(subRow)}>
                                                         <IconEdit size={16} />
                                                     </ActionIcon>
