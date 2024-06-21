@@ -14,6 +14,7 @@ import Link from 'next/link';
 
 const StatusWise: React.FC<{ statuswisedata: any }> = ({ statuswisedata }) => {
     const [data, setData] = useState(statuswisedata);
+    console.log('data', data);
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
