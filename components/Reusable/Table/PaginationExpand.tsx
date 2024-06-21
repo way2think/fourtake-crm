@@ -1,14 +1,12 @@
 'use client';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import '@mantine/core/styles.layer.css';
 import 'mantine-datatable/styles.layer.css';
 import './paginationTable.css';
 
 import { showNotification } from '@mantine/notifications';
 import { DataTable } from 'mantine-datatable';
-import IconPencil from '@/components/icon/icon-pencil';
-import IconTrashLines from '@/components/icon/icon-trash-lines';
-import { ActionIcon, Box, Group } from '@mantine/core';
+import { ActionIcon, Box, Group, Table } from '@mantine/core';
 import IconEye from '../../icon/icon-eye';
 import IconEdit from '../../icon/icon-edit';
 import IconTrash from '../../icon/icon-trash';
@@ -16,12 +14,14 @@ import IconTrash from '../../icon/icon-trash';
 interface PaginationExpandProps {
     data: any;
     tableColumns: any;
-    handleEdit?: any;
-    handleDelete?: any;
-    title?: any;
+    handleEdit?: (row: any) => void;
+    handleDelete?: (row: any) => void;
+    title?: string;
+    getSubData?: (row: any) => any; // Function to fetch sub-table data
 }
-const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns, handleEdit, handleDelete, title }) => {
-    //columns & data -props
+
+const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns, handleEdit, handleDelete, title, getSubData }) => {
+    // columns & data -props
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
     const [page, setPage] = useState(1);
@@ -47,7 +47,7 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                 borderRadius="sm"
                 withColumnBorders
                 striped
-                className="table-hover whitespace-nowrap "
+                className="table-hover whitespace-nowrap"
                 highlightOnHover
                 records={paginatedData}
                 columns={[
@@ -58,14 +58,11 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                         textAlign: 'right',
                         render: (row) => (
                             <Group gap={4} justify="right" wrap="nowrap">
-                                {/* <ActionIcon size="sm" variant="subtle" color="green" onClick={() => showModal({ company, action: 'view' })}>
-                                    <IconEye size={16} />
-                                </ActionIcon> */}
-                                <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit(row)}>
+                                <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit && handleEdit(row)}>
                                     <IconEdit size={16} />
                                 </ActionIcon>
                                 {title !== 'dashboard' && (
-                                    <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete(row)}>
+                                    <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete && handleDelete(row)}>
                                         <IconTrash size={16} />
                                     </ActionIcon>
                                 )}
@@ -73,12 +70,6 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                         ),
                     },
                 ]}
-                // Execute this callback when a row is clicked
-                // onRowClick={({ record }) => {
-                //     console.log('rescor: ', record);
-                // }}
-                // Pagination properties
-
                 totalRecords={data?.length}
                 paginationActiveBackgroundColor="grape"
                 recordsPerPage={pageSize}
@@ -87,12 +78,24 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                 page={page}
                 onPageChange={setPage}
                 rowExpansion={{
-                    content: ({ record }: { record:any }) => (
-                        <div open={expandedRows.includes(record.id)}>
-                            <p>Additional details about {record.name}</p>
-                            {/* Add more details as needed */}
-                        </div>
-                    ),
+                    content: ({ record }: { record: any }) => {
+                        const subData = getSubData ? getSubData(record) : [];
+                        return (
+                            <div>
+                                <Table>
+                                    <tbody>
+                                        {subData.map((subRow: any, index: number) => (
+                                            <tr key={index}>
+                                                {tableColumns.map((column: any, colIndex: number) => (
+                                                    <td key={colIndex}>{subRow[column.accessor]}</td>
+                                                ))}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </Table>
+                            </div>
+                        );
+                    },
                 }}
             />
         </div>
