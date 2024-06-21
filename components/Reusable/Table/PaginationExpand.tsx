@@ -19,7 +19,7 @@ interface PaginationExpandProps {
     handleEdit?: (row: any) => void;
     handleDelete?: (row: any) => void;
     title?: string;
-    getSubData?: (row: any) => any; // Function to fetch sub-table data
+    getSubData?: any; // Function to fetch sub-table data
 }
 
 const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns, handleEdit, handleDelete, title, getSubData }) => {
@@ -33,10 +33,10 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
     const endIndex = startIndex + recordsPerPage;
     const paginatedData = data?.slice(startIndex, endIndex);
 
-    const [expandedRows, setExpandedRows] = useState<number[]>([]);
+    const [expandedRows, setExpandedRows] = useState<any>([]);
 
     const toggleRow = (id: number) => {
-        setExpandedRows((prevExpandedRows) => (prevExpandedRows.includes(id) ? prevExpandedRows.filter((rowId) => rowId !== id) : [...prevExpandedRows, id]));
+        setExpandedRows((prevExpandedRows: any) => (prevExpandedRows.includes(id) ? prevExpandedRows.filter((rowId: any) => rowId !== id) : [...prevExpandedRows, id]));
     };
 
     return (
@@ -66,14 +66,10 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                         accessor: 'actions',
                         title: <Box mr={6}>Actions</Box>,
                         textAlign: 'right',
-                        render: (row) => (
+                        render: (row: any) => (
                             <Group gap={4} justify="right" wrap="nowrap">
-                                <ActionIcon size="sm" onClick={() => toggleRow(row.id)}>
-                                    {expandedRows.includes(row.id) ? (
-                                        <IconCaretDown className="-rotate-0 rtl:rotate-0" size={16} />
-                                    ) : (
-                                        <IconCaretDown className="-rotate-90 rtl:rotate-90" size={16} />
-                                    )}
+                                <ActionIcon size="sm" onClick={() => toggleRow(row?.id)}>
+                                    {expandedRows.includes(row?.id) ? <IconCaretDown className="-rotate-0 rtl:rotate-0" size={16} /> : <IconCaretDown className="-rotate-90 rtl:rotate-90" size={16} />}
                                 </ActionIcon>
                                 <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit && handleEdit(row)}>
                                     <IconEdit size={16} />
@@ -95,18 +91,28 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                 page={page}
                 onPageChange={setPage}
                 rowExpansion={{
-                    isExpanded: (row) => expandedRows.includes(row.id),
+                    isExpanded: (row: any) => expandedRows.includes(row.id),
                     content: ({ record }) => {
-                        const subData = getSubData ? getSubData(record) : [];
+                        // const subData = getSubData ? getSubData : [];
                         return (
                             <div>
                                 <Table>
                                     <tbody>
-                                        {subData.map((subRow: any, index: number) => (
+                                        {getSubData?.map((subRow: any, index: number) => (
                                             <tr key={index}>
                                                 {tableColumns.map((column: any, colIndex: number) => (
                                                     <td key={colIndex}>{subRow[column.accessor]}</td>
                                                 ))}
+                                                <Group gap={4} justify="right" wrap="nowrap">
+                                                    <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit && handleEdit(subRow)}>
+                                                        <IconEdit size={16} />
+                                                    </ActionIcon>
+                                                    {title !== 'dashboard' && (
+                                                        <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete && handleDelete(subRow)}>
+                                                            <IconTrash size={16} />
+                                                        </ActionIcon>
+                                                    )}
+                                                </Group>
                                             </tr>
                                         ))}
                                     </tbody>
