@@ -10,6 +10,8 @@ import { ActionIcon, Box, Group, Table } from '@mantine/core';
 import IconEye from '../../icon/icon-eye';
 import IconEdit from '../../icon/icon-edit';
 import IconTrash from '../../icon/icon-trash';
+import IconCaretsDown from '../../icon/icon-carets-down';
+import IconCaretDown from '../../icon/icon-caret-down';
 
 interface PaginationExpandProps {
     data: any;
@@ -21,11 +23,10 @@ interface PaginationExpandProps {
 }
 
 const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns, handleEdit, handleDelete, title, getSubData }) => {
-    // columns & data -props
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
     const [page, setPage] = useState(1);
-    const recordsPerPage = 10; // Customize as needed
+    const recordsPerPage = pageSize;
 
     // Calculate the start and end index for the current page
     const startIndex = (page - 1) * recordsPerPage;
@@ -51,6 +52,15 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                 highlightOnHover
                 records={paginatedData}
                 columns={[
+                    // {
+                    //     accessor: 'expander',
+                    //     title: '',
+                    //     render: (row) => (
+                    //         <ActionIcon size="sm" onClick={() => toggleRow(row.id)}>
+                    //             {expandedRows.includes(row.id) ? <IconArrowBackward size={16} /> : <IconArrowForward size={16} />}
+                    //         </ActionIcon>
+                    //     ),
+                    // },
                     ...tableColumns,
                     {
                         accessor: 'actions',
@@ -58,6 +68,13 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                         textAlign: 'right',
                         render: (row) => (
                             <Group gap={4} justify="right" wrap="nowrap">
+                                <ActionIcon size="sm" onClick={() => toggleRow(row.id)}>
+                                    {expandedRows.includes(row.id) ? (
+                                        <IconCaretDown className="-rotate-0 rtl:rotate-0" size={16} />
+                                    ) : (
+                                        <IconCaretDown className="-rotate-90 rtl:rotate-90" size={16} />
+                                    )}
+                                </ActionIcon>
                                 <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit && handleEdit(row)}>
                                     <IconEdit size={16} />
                                 </ActionIcon>
@@ -78,7 +95,8 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                 page={page}
                 onPageChange={setPage}
                 rowExpansion={{
-                    content: ({ record }: { record: any }) => {
+                    isExpanded: (row) => expandedRows.includes(row.id),
+                    content: ({ record }) => {
                         const subData = getSubData ? getSubData(record) : [];
                         return (
                             <div>
