@@ -34,16 +34,16 @@ const StatusWise: React.FC<{ statuswisedata: any }> = ({ statuswisedata }) => {
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'S.NO' },
-        { accessor: 'consultantname', textAlign: 'left', title: 'Consultant Name' },
-        { accessor: 'noofapplicant', textAlign: 'left', title: 'No of applicant' },
-        { accessor: 'visafee', textAlign: 'left', title: 'Visa Fee' },
-        { accessor: 'vfsothers', textAlign: 'left', title: 'VFs/Others' },
-        { accessor: 'charges', textAlign: 'left', title: 'H/C - handling charges' },
-        { accessor: 'ddfee', textAlign: 'left', title: 'DD Fee' },
-        { accessor: 'deliverycharges', textAlign: 'left', title: 'Delivery charges' },
-        { accessor: 'tokencharges', textAlign: 'left', title: 'Token Charges' },
-        { accessor: 'misccharges', textAlign: 'left', title: 'Misc charges' },
-        { accessor: 'total', textAlign: 'left', title: 'Total' },
+        { accessor: 'currentstatus', textAlign: 'left', title: 'Current Status' },
+        { accessor: 'count', textAlign: 'left', title: 'Count' },
+        // { accessor: 'visafee', textAlign: 'left', title: 'Visa Fee' },
+        // { accessor: 'vfsothers', textAlign: 'left', title: 'VFs/Others' },
+        // { accessor: 'charges', textAlign: 'left', title: 'H/C - handling charges' },
+        // { accessor: 'ddfee', textAlign: 'left', title: 'DD Fee' },
+        // { accessor: 'deliverycharges', textAlign: 'left', title: 'Delivery charges' },
+        // { accessor: 'tokencharges', textAlign: 'left', title: 'Token Charges' },
+        // { accessor: 'misccharges', textAlign: 'left', title: 'Misc charges' },
+        // { accessor: 'total', textAlign: 'left', title: 'Total' },
     ];
 
     const handleSubmit = (value: any) => {
@@ -87,11 +87,11 @@ const StatusWise: React.FC<{ statuswisedata: any }> = ({ statuswisedata }) => {
             }
         });
     };
-    const exportColumns = ['id', 'consultantname', 'noofapplicant', 'visafee', 'vfsothers', 'charges', 'ddfee', 'deliverycharges', 'tokencharges'];
+    const exportColumns = ['id', 'currentstatus', 'count'];
 
     return (
         <>
-            <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
+            {/* <ul className="mb-3 flex space-x-2 rtl:space-x-reverse">
                 <li>
                     <Link href="/" className="text-primary hover:underline">
                         Reports
@@ -100,7 +100,7 @@ const StatusWise: React.FC<{ statuswisedata: any }> = ({ statuswisedata }) => {
                 <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
                     <span>Status Wise Report</span>
                 </li>
-            </ul>
+            </ul> */}
             <ReportTableLayout
                 title="Status Wise Report"
                 //setData={setData}

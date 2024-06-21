@@ -139,9 +139,6 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
 
         setFilterItem(dataFilter);
 
-
-
-
         // Proceed with form submission or other logic
         //console.log('Form data is valid:', addData);
     };
@@ -185,7 +182,7 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
             <div className="rounded-lg bg-white p-4 shadow-md">
                 <div className="mt-5 ">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-3 ">
-                        {title !== 'Finance Report' && title !== 'Payment Report' && title !== 'Out Scan' && title !== 'In Scan' && (
+                        {title !== 'Finance Report' && title !== 'Payment Report' && title !== 'Out Scan' && title !== 'In Scan' && title !== 'Status Wise Report' && (
                             <div className="mb-5">
                                 <div className="dropdown">
                                     <label htmlFor="leadStatus">Select User</label>
@@ -199,7 +196,7 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                                 </div>
                             </div>
                         )}
-                        {title !== 'Out Scan' && title !== 'In Scan' && (
+                        {title !== 'Out Scan' && title !== 'In Scan' && title !== 'Status Wise Report' && (
                             <div className="mb-5">
                                 <div className="dropdown">
                                     <label htmlFor="leadStatus">Select Center </label>
