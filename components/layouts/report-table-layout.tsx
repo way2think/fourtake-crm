@@ -41,17 +41,20 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [search, setSearch] = useState('');
-    const [filterItem, setFilterItem] = useState<any>(data);
+    const [filterItem, setFilterItem] = useState<any>();
     const [addData, setAddData] = useState<AddData>({});
     const [showCustomizer, setShowCustomizer] = useState(false);
     const [dateFilter, setDateFilter] = useState<any>();
 
-    useEffect(() => {
-        console.log('datefi', dateFilter);
-        if (dateFilter && Object.keys(addData).length === 0) {
-            setFilterItem(dateFilter);
-        }
-    }, [dateFilter]);
+    // useEffect(() => {
+    //     // console.log('datefi', dateFilter);
+    //     // if (dateFilter && Object.keys(addData).length === 0) {
+    //     //     setFilterItem(dateFilter);
+    //     // }
+    //     if (dateFilter) {
+    //         setFilterItem(dateFilter);
+    //     }
+    // }, [dateFilter]);
 
     const handleEdit = (object: any) => {
         setIsEdit(true);
@@ -120,27 +123,52 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
             return;
         }
         */
-
-        if (addData?.center) {
-            dataFilter = dataFilter.filter((item: any) => item.center === addData.center);
+        if (!addData.center && !addData.user && !dateFilter) { 
+            setFilterItem(null);
+        } else {
+            if (addData?.center) {
+                dataFilter = dataFilter.filter((item: any) => item.center === addData.center);
+            }
+    
+            if (addData?.user) {
+                dataFilter = dataFilter.filter((item: any) => item.consultantname === addData.user);
+            }
+    
+            // if (dateFilter) {
+            //     dataFilter = dataFilter.filter((item: any) => {
+            //         return dateFilter.some((dateItem: any) => dateItem.id === item.id);
+            //     });
+            // }
+              
+            debugger;
+            if (dateFilter) {
+               
+                if (typeof dateFilter === 'string' && dateFilter.includes(' to ')) {
+                    const [startDateStr, endDateStr] = dateFilter.split(' to ');
+                    const startDate = new Date(startDateStr);
+                    const endDate = new Date(endDateStr);
+    
+                    dataFilter = dataFilter.filter((item: any) => {
+                        const itemDate = new Date(item.applydate);
+                        return itemDate >= startDate && itemDate <= endDate;
+                    });
+                } else {
+                    const selectedDate = new Date(dateFilter);
+                    dataFilter = dataFilter.filter((item: any) => {
+                        const itemDate = new Date(item.applydate);
+                        return itemDate.toISOString().split('T')[0] === selectedDate.toISOString().split('T')[0];
+                    });
+                }
+            }
+    
+            //console.log("dataFiler", dataFilter)
+    
+            setFilterItem(dataFilter);
+    
+            // Proceed with form submission or other logic
+            //console.log('Form data is valid:', addData);
         }
-
-        if (addData?.user) {
-            dataFilter = dataFilter.filter((item: any) => item.consultantname === addData.user);
-        }
-
-        if (dateFilter) {
-            dataFilter = dataFilter.filter((item: any) => {
-                return dateFilter.some((dateItem: any) => dateItem.id === item.id);
-            });
-        }
-
-        //console.log("dataFiler", dataFilter)
-
-        setFilterItem(dataFilter);
-
-        // Proceed with form submission or other logic
-        //console.log('Form data is valid:', addData);
+       
     };
 
     return (
@@ -231,9 +259,11 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         {title !== 'Out Scan' && title !== 'In Scan' && (
                             <>
+
                                 <div className="mb-5">
-                                    <ComponentsFormDatePickerRange data={data} setDateFilter={setDateFilter} dateFilter={dateFilter} />
+                                    <ComponentsFormDatePickerRange setDateFilter={setDateFilter} />
                                 </div>
+
                                 <div className="flex items-center">
                                     <div>
                                         <button type="button" className="btn btn-primary mr-5" onClick={handleSubmitReport}>
@@ -250,11 +280,17 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                         )}
                     </div>
                 </div>
-                <div className="panel mt-5 overflow-hidden border-0 p-0">
-                    <div className="table-responsive">
-                        <PaginationTable data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} />
+
+
+                {filterItem && filterItem.length > 0 && (
+                    <div className="panel mt-5 overflow-hidden border-0 p-0">
+                        <div className="table-responsive">
+                            <PaginationTable data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} />
+                        </div>
                     </div>
-                </div>
+                )}
+
+
             </div>
 
             {title == 'Lead List' && <Filtersetting showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer} />}
