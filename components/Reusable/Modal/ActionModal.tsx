@@ -29,10 +29,10 @@ import CountryActionModal from '../../CMS/countries/CountryActionModal';
 interface ActionModalProps {
     isOpen: any;
     setIsOpen: any;
-    handleSave: any;
+    handleSave?: any;
     editData?: any;
     children: any;
-    width: string;
+    width?: string;
     height?: string;
 }
 
