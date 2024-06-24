@@ -41,7 +41,7 @@ const CountryActionModal: React.FC<CountryActionModalProps> = ({ isOpen, setAddD
                             <input id="country" type="text" placeholder="Enter Country Name" className="form-input" value={addData?.country} onChange={(e) => handleInputChange(e)} />
                         </div>
                         <div className="mb-5">
-                            <label htmlFor="languages">Languages</label>
+                            <label htmlFor="languages">Languages </label>
                             <input id="language" type="text" onChange={(e) => handleInputChange(e)} value={addData?.language} placeholder="Enter Languages" className="form-input" />
                         </div>
                     </div>
