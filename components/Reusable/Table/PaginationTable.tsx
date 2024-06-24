@@ -20,8 +20,9 @@ interface PaginationTableProps {
     handleEdit?: any;
     handleDelete?: any;
     title?: any;
+    ReuseActionModalShow?: any;
 }
-const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title }) => {
+const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow }) => {
     //columns & data -props
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
@@ -32,6 +33,8 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
     const startIndex = (page - 1) * recordsPerPage;
     const endIndex = startIndex + recordsPerPage;
     const paginatedData = data?.slice(startIndex, endIndex);
+
+    //onClick={() => showModal({ company, action: 'view' })}
 
     return (
         <div className="datatables bg-[#]">
@@ -53,9 +56,11 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                         textAlign: 'right',
                         render: (row) => (
                             <Group gap={4} justify="right" wrap="nowrap">
-                                {/* <ActionIcon size="sm" variant="subtle" color="green" onClick={() => showModal({ company, action: 'view' })}>
+                                {title == 'Status Wise Report' && (
+                                <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow(row)}>
                                     <IconEye size={16} />
-                                </ActionIcon> */}
+                                </ActionIcon>
+                                )}
                                 <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit(row)}>
                                     <IconEdit size={16} />
                                 </ActionIcon>
