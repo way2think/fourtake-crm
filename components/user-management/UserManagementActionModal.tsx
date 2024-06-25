@@ -107,11 +107,11 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                                 <option value="" disabled={true}>
                                     Select Role
                                 </option>
-                                <option value="Admin">Admin</option>
-                                <option value="Employee">Employee</option>
-                                <option value="Accountant">Accountant</option>
-                                <option value="Agent">Agent</option>
-                                <option value="Corporate">Corporate</option>
+                                <option value="admin">Admin</option>
+                                <option value="employee">Employee</option>
+                                <option value="accountant">Accountant</option>
+                                <option value="agent">Agent</option>
+                                <option value="corporate">Corporate</option>
                             </select>
                         </div>
                     </div>

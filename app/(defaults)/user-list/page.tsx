@@ -34,7 +34,7 @@ const Sales = () => {
             status: false,
             phone: '9874563215',
             password: 'way2think',
-            role: 'super_admin',
+            role: 'employee',
             confirmpassword: 'way2think',
             address: 'No.21 NY Street',
         },
