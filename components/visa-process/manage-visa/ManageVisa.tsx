@@ -11,7 +11,18 @@ import Swal from 'sweetalert2';
 
 const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
     const [data, setData] = useState(managevisa);
-    const [addData, setAddData] = useState<any>({});
+    const [addData, setAddData] = useState<any>({
+        id: 1,
+        country: 'India',
+        isgroup: true,
+        visatype: 'Vistor Visa',
+        nationality: 'India',
+        stateofresidence: 'Kernataka',
+        visaduration: '15 Days',
+        entrytype: 'Single',
+        customertype: 'Walkin',
+        traveldate: '13/06/2024',
+    });
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [addUser, setAddUser] = useState<any>({});
@@ -43,7 +54,6 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
         setAddUser({ ...addUser, [id]: value });
     };
 
-    console.log('add data', addData);
     const handleCheckBoxChange = (e: any) => {
         const { id, checked } = e.target;
         setAddData((prev: any) => ({ ...prev, [id]: checked }));
@@ -126,7 +136,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
         });
     };
 
-    console.log('applicant details', data);
+   
 
     const handleSubmit = (value: any) => {
         if (addData.country == '' || addData.country == null) {
@@ -152,6 +162,11 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
         }
         if (addData.traveldate == '' || addData.traveldate == null) {
             showMessage('Select Travel Date ', 'error');
+            return false;
+        }
+
+        if(applicantDetails.length == 0){
+            showMessage('Add User Details', 'error');
             return false;
         }
 

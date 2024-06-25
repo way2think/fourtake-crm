@@ -33,8 +33,6 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
         setAddUser((prev: any) => ({ ...prev, [id]: checked }));
     };
 
-    // console.log('add user', addUser);
-
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
