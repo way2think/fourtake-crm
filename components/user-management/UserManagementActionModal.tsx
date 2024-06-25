@@ -146,6 +146,9 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                     </div>
 
                     <div className="mt-8 flex items-center justify-end">
+                        <button onClick={handleSave} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 ">
+                            Save
+                        </button>
                         <button
                             onClick={() => {
                                 setIsOpen(false);
@@ -153,12 +156,9 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                                 setIsEdit(false);
                             }}
                             type="button"
-                            className="btn btn-outline-danger"
+                            className="btn btn-outline-danger ml-3"
                         >
                             Cancel
-                        </button>
-                        <button onClick={handleSave} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                            Save
                         </button>
                     </div>
                 </div>
