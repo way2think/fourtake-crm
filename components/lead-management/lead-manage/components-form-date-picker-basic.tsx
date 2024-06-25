@@ -13,8 +13,6 @@ interface ComponentsFormDatePickerBasicProps {
     isEdit?: boolean;
 }
 
-
-
 const formatDate = (date: Date) => {
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
@@ -25,10 +23,14 @@ const formatDate = (date: Date) => {
 const ComponentsFormDatePickerBasic: React.FC<ComponentsFormDatePickerBasicProps> = ({ label, id, setAddData, isEdit, addData }) => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const [date1, setDate1] = useState<string>();
-
+    const isEmpty = (obj: object): boolean => Object.keys(obj).length === 0 && obj.constructor === Object;
+    
     useEffect(() => {
         if (isEdit && addData && id && addData[id]) {
             setDate1(addData[id]);
+        }
+        if (isEmpty(addData)) {
+            setDate1('');
         }
     }, [isEdit, addData, id]);
 
@@ -43,12 +45,11 @@ const ComponentsFormDatePickerBasic: React.FC<ComponentsFormDatePickerBasicProps
         }));
     };
 
-
     return (
         <div className="mb-5">
             <label htmlFor={id}>{label}</label>
             <Flatpickr
-                value={date1}
+                value={date1 || ''}
                 options={{
                     dateFormat: 'd-m-Y',
                     position: isRtl ? 'auto right' : 'auto left',

@@ -33,7 +33,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
         setAddUser((prev: any) => ({ ...prev, [id]: checked }));
     };
 
-    console.log('add user', addUser);
+    // console.log('add user', addUser);
 
     return (
         <>
