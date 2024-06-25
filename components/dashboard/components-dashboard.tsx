@@ -56,9 +56,9 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data, leaddata, passpor
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [addData, setAddData] = useState<AddData>({});
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+    // useEffect(() => {
+    //     setIsMounted(true);
+    // }, []);
 
     const [filterItem, setFilterItem] = useState(data);
 
