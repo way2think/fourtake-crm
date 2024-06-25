@@ -91,10 +91,8 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                 page={page}
                 onPageChange={setPage}
                 rowExpansion={{
-                  
                     isExpanded: (row: any) => expandedRows.includes(row.id),
                     content: ({ record }) => {
-                        // const subData = getSubData ? getSubData : [];
                         return (
                             <div>
                                 <Table>
