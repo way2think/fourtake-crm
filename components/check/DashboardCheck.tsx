@@ -14,9 +14,30 @@ const DashboardCheck = () => {
 
     return (
         <div className="mb-5">
-            <div className="flex items-center justify-start">
-                <img src="/assets/images/korea.png" alt="" style={{ maxWidth: '6%' }} className="mr-2" />
-                <h2 className="text-2xl font-bold">North Korea</h2>
+            <div className="flex items-center justify-between">
+                <div className="flex items-center justify-start">
+                    <img src="/assets/images/korea.png" alt="" style={{ maxWidth: '6%' }} className="mr-2" />
+                    <h2 className="text-2xl font-bold">North Korea</h2>
+                </div>
+
+                <div className="dropdown mb-5 mr-5">
+                    <label htmlFor="country">Country</label>
+                    <select className="form-input w-48" defaultValue="" id="country">
+                        <option value="" disabled={true}>
+                            Country
+                        </option>
+                        <option value="Canada">Canada</option>
+                        <option value="India">India</option>
+                        <option value="Usa">Usa</option>
+                    </select>
+                </div>
+                <div className="mb-5 mr-5">
+                    <label htmlFor="mail">Email</label>
+                    <input id="mail" type="mail" placeholder="Enter Email" className="form-input" />
+                </div>
+                <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
+                    Send
+                </button>
             </div>
             {isMounted && (
                 <Tab.Group>
@@ -47,7 +68,7 @@ const DashboardCheck = () => {
                                     className={`${selected ? 'border-b !border-secondary font-bold text-[#fff]  !outline-none' : ''}
                                                 -mb-[1px] flex items-center border-transparent p-5 py-3 before:inline-block`}
                                 >
-                                    Consulat
+                                    Consulate & VFS
                                 </button>
                             )}
                         </Tab>
