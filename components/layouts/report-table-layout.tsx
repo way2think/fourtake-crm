@@ -9,10 +9,11 @@ import React, { Fragment, useEffect, useMemo } from 'react';
 import ComponentsFormsFileUploadSingle from '../Reusable/file-upload/components-forms-file-upload-single';
 import ComponentsFormsFileUploadMulti from '../Reusable/file-upload/components-forms-file-upload-multi';
 import IconX from '../icon/icon-x';
-//import ActionModal from '../Reusable/Modal/ActionModal';
+import ReuseActionModal from '../Reusable/Modal/ActionModal';
 import CountryActionModal from '../CMS/countries/CountryActionModal';
 import IconFile from '../icon/icon-zip-file';
 import ComponentsFormDatePickerRange from '../lead-management/lead-manage/components-form-date-picker-range';
+import CountView from '../popup/StatusWiseReportCountView';
 
 interface ReportTableLayoutProps {
     title: string;
@@ -39,19 +40,103 @@ interface AddData {
 
 const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, totalPages, handleDelete, handleSubmit, tableColumns, exportColumns, Filtersetting, formData, handleChange }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isOpenAction, setIsOpenAction] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [search, setSearch] = useState('');
-    const [filterItem, setFilterItem] = useState<any>(data);
+    const [filterItem, setFilterItem] = useState<any>();
     const [addData, setAddData] = useState<AddData>({});
     const [showCustomizer, setShowCustomizer] = useState(false);
     const [dateFilter, setDateFilter] = useState<any>();
+    const [tableData, setTableData] = useState<{ name: string; value: number }[]>([]);
+    const [tableDataRight, setTableDataRight] = useState<{ 
+        ReferenceNo: string;
+        CustomerType: string;
+        ApplyDate: string;
+        Nationality: string;
+        ApplicationName: string;
+        Gender: string;
+        MobileNo: string;
+        EmailId: string;
+        PassportNo: string; 
+    }[]>([]);
+    
 
-    useEffect(() => {
-        console.log('datefi', dateFilter);
-        if (dateFilter && Object.keys(addData).length === 0) {
-            setFilterItem(dateFilter);
-        }
-    }, [dateFilter]);
+    // useEffect(() => {
+    //     // console.log('datefi', dateFilter);
+    //     // if (dateFilter && Object.keys(addData).length === 0) {
+    //     //     setFilterItem(dateFilter);
+    //     // }
+    //     if (dateFilter) {
+    //         setFilterItem(dateFilter);
+    //     }
+    // }, [dateFilter]);
+
+
+    // Function to set table data and open modal
+    const ReuseActionModalShow = (object: any) => {
+        setIsOpenAction(true);
+        const newData = [
+            { name: 'Bangladesh', value: 1 },
+            { name: 'India', value: 2 },
+            { name: 'Iran', value: 1 },
+            { name: 'Bangladesh', value: 1 },
+            { name: 'India', value: 2 },
+            { name: 'Iran', value: 1 },
+            { name: 'Bangladesh', value: 1 },
+            { name: 'Bangladesh', value: 1 },
+            { name: 'India', value: 2 },
+            { name: 'Iran', value: 1 },
+            { name: 'Bangladesh', value: 1 },
+            { name: 'India', value: 2 },
+            { name: 'Iran', value: 1 },
+            { name: 'Bangladesh', value: 1 },
+            { name: 'Bangladesh', value: 1 },
+            { name: 'India', value: 2 },
+            { name: 'Iran', value: 1 },
+            { name: 'Bangladesh', value: 1 },
+            { name: 'India', value: 2 },
+            { name: 'Iran', value: 1 },
+            { name: 'Bangladesh', value: 1 },
+            
+        ];
+        const secondTableData = [
+            {
+                ReferenceNo: '12345',
+                CustomerType: 'Type A',
+                ApplyDate: '2024-06-24',
+                Nationality: 'Country X',
+                ApplicationName: 'App Name 1',
+                Gender: 'Male',
+                MobileNo: '1234567890',
+                EmailId: 'email@example.com',
+                PassportNo: 'A1234567',
+            },
+            {
+                ReferenceNo: '12346',
+                CustomerType: 'Type B',
+                ApplyDate: '2024-06-25',
+                Nationality: 'Country Y',
+                ApplicationName: 'App Name 2',
+                Gender: 'Female',
+                MobileNo: '0987654321',
+                EmailId: 'email2@example.com',
+                PassportNo: 'B7654321',
+            },
+            {
+                ReferenceNo: '12347',
+                CustomerType: 'Type C',
+                ApplyDate: '2024-06-26',
+                Nationality: 'Country Z',
+                ApplicationName: 'App Name 3',
+                Gender: 'Other',
+                MobileNo: '1234509876',
+                EmailId: 'email3@example.com',
+                PassportNo: 'C1234098',
+            },
+        ];
+        setTableData(newData);
+        setTableDataRight(secondTableData);
+    };
 
     const handleEdit = (object: any) => {
         setIsEdit(true);
@@ -120,27 +205,52 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
             return;
         }
         */
+        if (!addData.center && !addData.user && !dateFilter) {
+            setFilterItem(null);
+        } else {
+            if (addData?.center) {
+                dataFilter = dataFilter.filter((item: any) => item.center === addData.center);
+            }
 
-        if (addData?.center) {
-            dataFilter = dataFilter.filter((item: any) => item.center === addData.center);
+            if (addData?.user) {
+                dataFilter = dataFilter.filter((item: any) => item.consultantname === addData.user);
+            }
+
+            // if (dateFilter) {
+            //     dataFilter = dataFilter.filter((item: any) => {
+            //         return dateFilter.some((dateItem: any) => dateItem.id === item.id);
+            //     });
+            // }
+
+            debugger;
+            if (dateFilter) {
+
+                if (typeof dateFilter === 'string' && dateFilter.includes(' to ')) {
+                    const [startDateStr, endDateStr] = dateFilter.split(' to ');
+                    const startDate = new Date(startDateStr);
+                    const endDate = new Date(endDateStr);
+
+                    dataFilter = dataFilter.filter((item: any) => {
+                        const itemDate = new Date(item.applydate);
+                        return itemDate >= startDate && itemDate <= endDate;
+                    });
+                } else {
+                    const selectedDate = new Date(dateFilter);
+                    dataFilter = dataFilter.filter((item: any) => {
+                        const itemDate = new Date(item.applydate);
+                        return itemDate.toISOString().split('T')[0] === selectedDate.toISOString().split('T')[0];
+                    });
+                }
+            }
+
+            //console.log("dataFiler", dataFilter)
+
+            setFilterItem(dataFilter);
+
+            // Proceed with form submission or other logic
+            //console.log('Form data is valid:', addData);
         }
 
-        if (addData?.user) {
-            dataFilter = dataFilter.filter((item: any) => item.consultantname === addData.user);
-        }
-
-        if (dateFilter) {
-            dataFilter = dataFilter.filter((item: any) => {
-                return dateFilter.some((dateItem: any) => dateItem.id === item.id);
-            });
-        }
-
-        //console.log("dataFiler", dataFilter)
-
-        setFilterItem(dataFilter);
-
-        // Proceed with form submission or other logic
-        //console.log('Form data is valid:', addData);
     };
 
     return (
@@ -231,9 +341,11 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         {title !== 'Out Scan' && title !== 'In Scan' && (
                             <>
+
                                 <div className="mb-5">
-                                    <ComponentsFormDatePickerRange data={data} setDateFilter={setDateFilter} dateFilter={dateFilter} />
+                                    <ComponentsFormDatePickerRange setDateFilter={setDateFilter} />
                                 </div>
+
                                 <div className="flex items-center">
                                     <div>
                                         <button type="button" className="btn btn-primary mr-5" onClick={handleSubmitReport}>
@@ -250,14 +362,36 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                         )}
                     </div>
                 </div>
-                <div className="panel mt-5 overflow-hidden border-0 p-0">
-                    <div className="table-responsive">
-                        <PaginationTable data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} />
+
+
+                {filterItem && filterItem.length > 0 && (
+                    <div className="panel mt-5 overflow-hidden border-0 p-0">
+                        <div className="table-responsive">
+                            <PaginationTable title={title} data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} ReuseActionModalShow={ReuseActionModalShow} />
+                        </div>
                     </div>
-                </div>
+                )}
+
+
             </div>
 
             {title == 'Lead List' && <Filtersetting showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer} />}
+
+            <ReuseActionModal
+                isOpen={isOpenAction}
+                //setAddData={setAddData}
+                //handleInputChange={handleInputChange}
+                setIsOpen={setIsOpenAction}
+                //handleSave={handleSave}
+                width=""
+                
+            //addData={addData}
+            //isEdit={isEdit}
+            //setIsEdit={setIsEdit}
+            >
+                <CountView isOpen={isOpenAction} setIsOpen={setIsOpenAction} headding="Count View" tableData={tableData} secondTableData={tableDataRight}/>
+            </ReuseActionModal>
+
         </>
     );
 };

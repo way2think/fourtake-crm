@@ -12,7 +12,7 @@ const Report = () => {
         {
             id: 1,
             center: 'Chennai',
-            applydate: '2024-06-19',
+            applydate: '2024-06-22',
             referenceno: '01',
             servicetype: 'visa type',
             applicantname: 'jagadish',
@@ -30,7 +30,7 @@ const Report = () => {
         {
             id: 2,
             center: 'Bangaluru',
-            applydate: '2024-08-12',
+            applydate: '2024-06-22',
             referenceno: '01',
             servicetype: 'visa type',
             applicantname: 'jagadish',
@@ -48,7 +48,7 @@ const Report = () => {
         {
             id: 3,
             center: 'Mumbai',
-            applydate: '2024-07-20',
+            applydate: '2024-06-22',
             referenceno: '01',
             servicetype: 'visa type',
             applicantname: 'jagadish',
@@ -66,7 +66,7 @@ const Report = () => {
         {
             id: 4,
             center: 'Hyderabad',
-            applydate: '2024-07-07',
+            applydate: '2024-06-22',
             referenceno: '01',
             servicetype: 'visa type',
             applicantname: 'jagadish',

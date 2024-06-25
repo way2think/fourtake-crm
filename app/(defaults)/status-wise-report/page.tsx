@@ -12,6 +12,13 @@ const StatusWiseReport = () => {
             id: 1,
             currentstatus: 'pending',
             count: '2',
+            applydate: '2024-06-21',
+        },
+        {
+            id: 2,
+            currentstatus: 'pending',
+            count: '2',
+            applydate: '2024-06-21',
         },
     ];
     return <StatusWise statuswisedata={data} />;
