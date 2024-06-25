@@ -11,32 +11,55 @@ import Swal from 'sweetalert2';
 
 const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
     const [data, setData] = useState(managevisa);
-    const [addData, setAddData] = useState<any>({});
+    const [addData, setAddData] = useState<any>({
+        id: 1,
+        country: 'India',
+        isgroup: true,
+        visatype: 'Vistor Visa',
+        nationality: 'India',
+        stateofresidence: 'Kernataka',
+        visaduration: '15 Days',
+        entrytype: 'Single',
+        customertype: 'Walkin',
+        traveldate: '13/06/2024',
+    });
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [addUser, setAddUser] = useState<any>({});
 
-    const [applicantDetails, setApplicantDetails] = useState<any>(data);
+    const userData = [
+        {
+            id: 1,
+            apptype: 'Google',
+            firstname: 'sam',
+            lastname: 'james',
+            email: 'alan@gmail.com',
+            gender: 'Male',
+            status: 'Received',
+            phone: '9874563215',
+            passportno: '7895dfsf58df',
+            dob: '13/06/2024',
+        },
+    ];
+
+    const [applicantDetails, setApplicantDetails] = useState<any>([]);
 
     const handleInputChange = (e: any) => {
         const { value, id } = e.target;
-
         setAddData({ ...addData, [id]: value });
     };
 
     const handleInputChangeUser = (e: any) => {
         const { value, id } = e.target;
-
         setAddUser({ ...addUser, [id]: value });
     };
+
     const handleCheckBoxChange = (e: any) => {
         const { id, checked } = e.target;
         setAddData((prev: any) => ({ ...prev, [id]: checked }));
     };
 
-
-
-    const handleSaveUser = (value: any) => {
+    const handleSaveUser = () => {
         if (addUser.firstname == '' || addUser.firstname == null) {
             showMessage('Enter First name', 'error');
             return false;
@@ -113,52 +136,59 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
         });
     };
 
-    console.log('applicant details', applicantDetails);
+   
 
     const handleSubmit = (value: any) => {
-        if (value.country == '' || value.country == null) {
-            showMessage('Enter First name', 'error');
+        if (addData.country == '' || addData.country == null) {
+            showMessage('Select Country', 'error');
             return false;
         }
 
-        if (value.visatype == '' || value.visatype == null) {
-            showMessage('Enter Last name', 'error');
+        if (addData.visatype == '' || addData.visatype == null) {
+            showMessage('Select Visa type', 'error');
             return false;
         }
-        if (value.nationality == '' || value.nationality == null) {
-            showMessage('Enter Email', 'error');
+        if (addData.nationality == '' || addData.nationality == null) {
+            showMessage('Select Nationality', 'error');
             return false;
         }
-        if (value.stateofresidence == '' || value.stateofresidence == null) {
-            showMessage('Enter Password', 'error');
+        if (addData.stateofresidence == '' || addData.stateofresidence == null) {
+            showMessage('Select State of Residence', 'error');
             return false;
         }
-        if (value.visaduration == '' || value.visaduration == null) {
-            showMessage('Enter Confirm Password ', 'error');
+        if (addData.visaduration == '' || addData.visaduration == null) {
+            showMessage('Select Visa Duration ', 'error');
             return false;
         }
-        if (value.entrytype !== value.entrytype) {
-            showMessage('Passwords should match ', 'error');
+        if (addData.traveldate == '' || addData.traveldate == null) {
+            showMessage('Select Travel Date ', 'error');
             return false;
         }
 
-        if (value.id) {
+        if(applicantDetails.length == 0){
+            showMessage('Add User Details', 'error');
+            return false;
+        }
+
+        if (addData.id) {
             //update user
-            const updatedData = data.map((d: any) => (d.id === value.id ? { ...d, ...value } : d));
+            const updatedData = data.map((d: any) => (d.id === addData.id ? { ...d, ...addData } : d));
+            // setAddData({});
             setData(updatedData);
 
-            return updatedData;
+            // return updatedData;
         } else {
             //add user
             const maxUserId = data.length ? Math.max(...data.map((d: any) => d.id)) : 0;
             const newUser = {
-                ...value,
+                ...addData,
                 id: +maxUserId + 1,
             };
-            setData([...data, newUser]);
-            return newUser;
-        }
 
+            setData([...data, newUser]);
+        }
+        setAddData({});
+        setApplicantDetails([]);
         // showMessage('User has been saved successfully.');
         // setAddContactModal(false);
         // setIsEdit(false);
@@ -200,7 +230,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                     <div className="dropdown mb-5">
                         <label htmlFor="country">Country</label>
-                        <select className="form-input" defaultValue="" id="country" value={addData?.country} onChange={(e) => handleInputChange(e)}>
+                        <select className="form-input" defaultValue="" id="country" value={addData?.country || ''} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
                                 Select Country
                             </option>
@@ -219,7 +249,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                     <div className="dropdown mb-5">
                         <label htmlFor="visatype">Visa Type</label>
-                        <select className="form-input" defaultValue="" id="visatype" value={addData?.visatype} onChange={(e) => handleInputChange(e)}>
+                        <select className="form-input" defaultValue="" id="visatype" value={addData?.visatype || ''} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
                                 Select VisaType
                             </option>
@@ -230,7 +260,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
                     </div>
                     <div className="dropdown mb-5">
                         <label htmlFor="nationality">Nationality</label>
-                        <select className="form-input" defaultValue="" id="nationality" value={addData?.nationality} onChange={(e) => handleInputChange(e)}>
+                        <select className="form-input" defaultValue="" id="nationality" value={addData?.nationality || ''} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
                                 Select Nationality
                             </option>
@@ -241,7 +271,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
                 <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                     <div className="dropdown mb-5">
                         <label htmlFor="stateofresidence">State of Residence</label>
-                        <select className="form-input" defaultValue="" id="stateofresidence" value={addData?.stateofresidence} onChange={(e) => handleInputChange(e)}>
+                        <select className="form-input" defaultValue="" id="stateofresidence" value={addData?.stateofresidence || ''} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
                                 Select Residence
                             </option>
@@ -251,7 +281,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
                     </div>
                     <div className="dropdown mb-5">
                         <label htmlFor="visaduration">Visa Duration</label>
-                        <select className="form-input" defaultValue="" id="visaduration" value={addData?.visaduration} onChange={(e) => handleInputChange(e)}>
+                        <select className="form-input" defaultValue="" id="visaduration" value={addData?.visaduration || ''} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
                                 Select VisaDuration
                             </option>
@@ -266,7 +296,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
                 <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                     <div className="dropdown mb-5">
                         <label htmlFor="entrytype">Entry Type</label>
-                        <select className="form-input" defaultValue="" id="entrytype" value={addData?.entrytype} onChange={(e) => handleInputChange(e)}>
+                        <select className="form-input" defaultValue="" id="entrytype" value={addData?.entrytype || ''} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
                                 Select Entry Type
                             </option>
@@ -281,7 +311,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
                 <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                     <div className="dropdown mb-5">
                         <label htmlFor="customertype">Customer Type</label>
-                        <select className="form-input" defaultValue="" id="customertype" value={addData?.customertype} onChange={(e) => handleInputChange(e)}>
+                        <select className="form-input" defaultValue="" id="customertype" value={addData?.customertype || ''} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
                                 Select Customer Type
                             </option>
@@ -293,7 +323,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
                     {addData?.customertype === 'Agent' && (
                         <div className="dropdown mb-5">
                             <label htmlFor="agent">Agents</label>
-                            <select className="form-input" defaultValue="" id="agent" value={addData?.agent} onChange={(e) => handleInputChange(e)}>
+                            <select className="form-input" defaultValue="" id="agent" value={addData?.agent || ''} onChange={(e) => handleInputChange(e)}>
                                 <option value="" disabled={true}>
                                     Select Agents
                                 </option>
@@ -329,7 +359,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
                             setAddData({});
                         }}
                         type="button"
-                        className="btn btn-outline-danger"
+                        className="btn btn-outline-danger ml-3"
                     >
                         Cancel
                     </button>

@@ -19,6 +19,7 @@ const Sales = () => {
             center: 'Chennai',
             status: true,
             phone: '9874563215',
+            role: 'admin',
             password: 'way2think',
             confirmpassword: 'way2think',
             address: 'No.21 NY Street',
@@ -33,12 +34,11 @@ const Sales = () => {
             status: false,
             phone: '9874563215',
             password: 'way2think',
+            role: 'employee',
             confirmpassword: 'way2think',
             address: 'No.21 NY Street',
         },
     ];
-
-    
 
     return (
         <div>

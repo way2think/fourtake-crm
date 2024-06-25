@@ -102,16 +102,16 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                             </select>
                         </div>
                         <div className="dropdown">
-                            <label htmlFor="apptype">Applicant Type</label>
-                            <select className="form-input" defaultValue="" id="apptype" onChange={(e) => handleInputChange(e)} value={addData?.apptype}>
+                            <label htmlFor="role">Role</label>
+                            <select className="form-input" defaultValue="" id="role" onChange={(e) => handleInputChange(e)} value={addData?.role}>
                                 <option value="" disabled={true}>
-                                    Select Applicant Type
+                                    Select Role
                                 </option>
-                                <option value="Google">Google</option>
-                                <option value="Walkin">Walkin</option>
-                                <option value="Thrid Party">Thrid Party</option>
-                                <option value="Previous Customer">Previous Customer</option>
-                                <option value="Others">Others</option>
+                                <option value="admin">Admin</option>
+                                <option value="employee">Employee</option>
+                                <option value="accountant">Accountant</option>
+                                <option value="agent">Agent</option>
+                                <option value="corporate">Corporate</option>
                             </select>
                         </div>
                     </div>
@@ -146,6 +146,9 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                     </div>
 
                     <div className="mt-8 flex items-center justify-end">
+                        <button onClick={handleSave} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 ">
+                            Save
+                        </button>
                         <button
                             onClick={() => {
                                 setIsOpen(false);
@@ -153,12 +156,9 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                                 setIsEdit(false);
                             }}
                             type="button"
-                            className="btn btn-outline-danger"
+                            className="btn btn-outline-danger ml-3"
                         >
                             Cancel
-                        </button>
-                        <button onClick={handleSave} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                            Save
                         </button>
                     </div>
                 </div>

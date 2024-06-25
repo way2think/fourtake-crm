@@ -12,15 +12,15 @@ const ManageVisaPage = () => {
     const data = [
         {
             id: 1,
-            apptype: 'Google',
-            firstname: 'sam',
-            lastname: 'james',
-            email: 'alan@gmail.com',
-            gender: 'Male',
-            status: "Received",
-            phone: '9874563215',
-            passportno:'7895dfsf58df',
-            dob:"13/06/2024",
+            country: 'India',
+            isgroup: true,
+            visatype: 'Vistor Visa',
+            nationality: 'India',
+            stateofresidence: 'Kernataka',
+            visaduration: "15 Days",
+            entrytype: 'Single',
+            customertype:'Walkin',
+            traveldate :"13/06/2024",
         },
     ];
     return <ManageVisa managevisa={data} />;
