@@ -21,8 +21,9 @@ interface PaginationTableProps {
     handleDelete?: any;
     title?: any;
     ReuseActionModalShow?: any;
+    showActions?: boolean;
 }
-const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow }) => {
+const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow, showActions }) => {
     //columns & data -props
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
@@ -36,6 +37,32 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
 
     //onClick={() => showModal({ company, action: 'view' })}
 
+    const columns = [
+        ...tableColumns,
+        ...(!showActions ? [{
+            accessor: 'actions',
+            title: <Box mr={6}>Actions</Box>,
+            textAlign: 'right',
+            render: (row) => (
+                <Group gap={4} justify="right" wrap="nowrap">
+                    {title === 'Status Wise Report' && (
+                        <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow(row)}>
+                            <IconEye size={16} />
+                        </ActionIcon>
+                    )}
+                    <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit(row)}>
+                        <IconEdit size={16} />
+                    </ActionIcon>
+                    {title !== 'dashboard' && (
+                        <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete(row)}>
+                            <IconTrash size={16} />
+                        </ActionIcon>
+                    )}
+                </Group>
+            ),
+        }] : []),
+    ];
+
     return (
         <div className="datatables bg-[#]">
             <DataTable
@@ -48,36 +75,38 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                 className="table-hover whitespace-nowrap "
                 highlightOnHover
                 records={paginatedData}
-                columns={[
-                    ...tableColumns,
-                    {
-                        accessor: 'actions',
-                        title: <Box mr={6}>Actions</Box>,
-                        textAlign: 'right',
-                        render: (row) => (
-                            <Group gap={4} justify="right" wrap="nowrap">
-                                {title == 'Status Wise Report' && (
-                                <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow(row)}>
-                                    <IconEye size={16} />
-                                </ActionIcon>
-                                )}
-                                <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit(row)}>
-                                    <IconEdit size={16} />
-                                </ActionIcon>
-                                {title !== 'dashboard' && (
-                                    <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete(row)}>
-                                        <IconTrash size={16} />
-                                    </ActionIcon>
-                                )}
-                            </Group>
-                        ),
-                    },
-                ]}
+                // columns={[
+                //     ...tableColumns,
+                //     {
+                //         accessor: 'actions',
+                //         title: <Box mr={6}>Actions</Box>,
+                //         textAlign: 'right',
+                //         render: (row) => (
+                //             <Group gap={4} justify="right" wrap="nowrap">
+                //                 {title == 'Status Wise Report' && (
+                //                 <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow(row)}>
+                //                     <IconEye size={16} />
+                //                 </ActionIcon>
+                //                 )}
+                //                 <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit(row)}>
+                //                     <IconEdit size={16} />
+                //                 </ActionIcon>
+                //                 {title !== 'dashboard' && (
+                //                     <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete(row)}>
+                //                         <IconTrash size={16} />
+                //                     </ActionIcon>
+                //                 )}
+                //             </Group>
+                //         ),
+                //     },
+                // ]}
                 // Execute this callback when a row is clicked
                 // onRowClick={({ record }) => {
                 //     console.log('rescor: ', record);
                 // }}
                 // Pagination properties
+
+                columns={columns}
 
                 totalRecords={data?.length}
                 paginationActiveBackgroundColor="grape"

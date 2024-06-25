@@ -1,29 +1,27 @@
 'use client';
-import React, { Fragment, useEffect, useMemo } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import IconX from '../icon/icon-x';
 import ReuseActionModal from '../Reusable/Modal/ActionModal';
+import PaginationTable from '../Reusable/Table/PaginationTable';
 
 interface CountViewProps {
     isOpen: any;
     setIsOpen: any;
     headding: string;
     tableData: { name: string; value: number }[];
-    secondTableData: {
-        ReferenceNo: string;
-        CustomerType: string;
-        ApplyDate: string;
-        Nationality: string;
-        ApplicationName: string;
-        Gender: string;
-        MobileNo: string;
-        EmailId: string;
-        PassportNo: string;
-    }[];
+    secondTableData: any;
+    tableColumns: any;
 }
 
 
-const CountView: React.FC<CountViewProps> = ({ isOpen, setIsOpen, headding, tableData, secondTableData }) => {
+const CountView: React.FC<CountViewProps> = ({ isOpen, setIsOpen, headding, tableData, tableColumns, secondTableData }) => {
 
+    console.log(secondTableData);
+    const [visibleCountryIndex, setVisibleCountryIndex] = useState<number | null>(null);
+
+    const handleRowClick = (index: number) => {
+        setVisibleCountryIndex(visibleCountryIndex === index ? null : index);
+    };
     return (
         <>
 
@@ -39,29 +37,42 @@ const CountView: React.FC<CountViewProps> = ({ isOpen, setIsOpen, headding, tabl
                     <IconX />
                 </button>
             </div>
+
             <div className="flex px-5 py-3">
                 {/* Left Table (30% Width) */}
-                <div className="w-1/5 pr-5">
+                <div className="w-1/5 pr-5" style={{ maxHeight: '613px', overflowY: 'auto' }}>
                     <table className="min-w-full bg-white dark:bg-[#121c2c]">
                         <thead>
                             <tr>
                                 <th className="py-2 px-4 border-b-2 border-gray-300">Country Names</th>
                                 <th className="py-2 px-4 border-b-2 border-gray-300">Count</th>
+                                {/* <th className="py-2 px-4 border-b-2 border-gray-300 text-right">Toggle</th> */}
                             </tr>
                         </thead>
                         <tbody>
                             {tableData.map((item, index) => (
-                                <tr key={index}>
+                                <tr key={index} className={visibleCountryIndex === index ? 'bg-gray-200' : ''}>
                                     <td className="py-2 px-4 border-b border-gray-300">{item.name}</td>
-                                    <td className="py-2 px-4 border-b border-gray-300">{item.value}</td>
+                                    <td className="py-2 px-4 border-b border-gray-300">
+                                        <div className="flex justify-between items-center">
+                                            <span>{item.value}</span>
+                                            <button onClick={() => handleRowClick(index)}>
+                                                {visibleCountryIndex === index ? '-' : '>'}
+                                            </button>
+                                        </div>
+                                    </td>
+                                    {/* <td className="py-2 px-4 border-b border-gray-300 text-right">
+                                        <button onClick={() => handleRowClick(index)}>
+                                            {visibleCountryIndex === index ? '-' : '>'}
+                                        </button>
+                                    </td> */}
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
                 {/* Right Table (70% Width) */}
-                <div className="w-4/5 px-5 py-3">
-                    <table className="min-w-full bg-white dark:bg-[#121c2c]">
+                {/* <table className="min-w-full bg-white dark:bg-[#121c2c]">
                         <thead>
                             <tr>
                                 <th className="py-2 px-4 border-b-2 border-gray-300">Reference No</th>
@@ -90,9 +101,26 @@ const CountView: React.FC<CountViewProps> = ({ isOpen, setIsOpen, headding, tabl
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </table> */}
+
+
+                <div className="w-4/5 px-5 py-3">
+                    {visibleCountryIndex !== null && (
+                        <div className="mb-5">
+                            <h5 className="text-lg font-bold mb-2">{tableData[visibleCountryIndex].name}</h5>
+                            <PaginationTable
+                                data={secondTableData}
+                                tableColumns={tableColumns}
+                                showActions={true}
+                            />
+                        </div>
+                    )}
                 </div>
+
+
             </div>
+
+
 
         </>
     );

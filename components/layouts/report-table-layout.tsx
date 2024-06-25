@@ -49,15 +49,15 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
     const [dateFilter, setDateFilter] = useState<any>();
     const [tableData, setTableData] = useState<{ name: string; value: number }[]>([]);
     const [tableDataRight, setTableDataRight] = useState<{ 
-        ReferenceNo: string;
-        CustomerType: string;
-        ApplyDate: string;
-        Nationality: string;
-        ApplicationName: string;
-        Gender: string;
-        MobileNo: string;
-        EmailId: string;
-        PassportNo: string; 
+        referenceno: string;
+        customertype: string;
+        applydate: string;
+        nationality: string;
+        applicationname: string;
+        gender: string;
+        mobileno: string;
+        emailid: string;
+        passportno: string; 
     }[]>([]);
     
 
@@ -70,7 +70,19 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
     //         setFilterItem(dateFilter);
     //     }
     // }, [dateFilter]);
-
+    
+    const tableColumnss = [
+        { accessor: 'referenceno', textAlign: 'left', title: 'ReferenceNo' },
+        { accessor: 'customertype', textAlign: 'left', title: 'CustomerType' },
+        { accessor: 'applydate', textAlign: 'left', title: 'ApplyDate' },
+        { accessor: 'nationality', textAlign: 'left', title: 'Nationality' },
+        { accessor: 'applicationname', textAlign: 'left', title: 'ApplicationName' },
+        { accessor: 'gender', textAlign: 'left', title: 'Gender' },
+        { accessor: 'mobileno', textAlign: 'left', title: 'MobileNo' },
+        { accessor: 'emailid', textAlign: 'left', title: 'EmailId' },
+        // { accessor: 'lastfollowup', textAlign: 'left', title: 'Last Follow Up' },
+        { accessor: 'passportno', textAlign: 'left', title: 'PassportNo' },
+    ];
 
     // Function to set table data and open modal
     const ReuseActionModalShow = (object: any) => {
@@ -90,49 +102,192 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
             { name: 'India', value: 2 },
             { name: 'Iran', value: 1 },
             { name: 'Bangladesh', value: 1 },
-            { name: 'Bangladesh', value: 1 },
             { name: 'India', value: 2 },
             { name: 'Iran', value: 1 },
             { name: 'Bangladesh', value: 1 },
+            { name: 'Bangladesh', value: 1 },
             { name: 'India', value: 2 },
             { name: 'Iran', value: 1 },
-            { name: 'Bangladesh', value: 1 },
             
         ];
         const secondTableData = [
             {
-                ReferenceNo: '12345',
-                CustomerType: 'Type A',
-                ApplyDate: '2024-06-24',
-                Nationality: 'Country X',
-                ApplicationName: 'App Name 1',
-                Gender: 'Male',
-                MobileNo: '1234567890',
-                EmailId: 'email@example.com',
-                PassportNo: 'A1234567',
+                referenceno: '12345',
+                customertype: 'Type A',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
             },
             {
-                ReferenceNo: '12346',
-                CustomerType: 'Type B',
-                ApplyDate: '2024-06-25',
-                Nationality: 'Country Y',
-                ApplicationName: 'App Name 2',
-                Gender: 'Female',
-                MobileNo: '0987654321',
-                EmailId: 'email2@example.com',
-                PassportNo: 'B7654321',
+                referenceno: '12345',
+                customertype: 'Type A',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
             },
             {
-                ReferenceNo: '12347',
-                CustomerType: 'Type C',
-                ApplyDate: '2024-06-26',
-                Nationality: 'Country Z',
-                ApplicationName: 'App Name 3',
-                Gender: 'Other',
-                MobileNo: '1234509876',
-                EmailId: 'email3@example.com',
-                PassportNo: 'C1234098',
+                referenceno: '12345',
+                customertype: 'Type A',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
             },
+            {
+                referenceno: '12345',
+                customertype: 'Type A',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
+            },
+            {
+                referenceno: '12345',
+                customertype: 'Type A',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
+            },
+            {
+                referenceno: '12345',
+                customertype: 'Type A',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
+            },
+            {
+                referenceno: '12345',
+                customertype: 'Type A',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
+            },
+            {
+                referenceno: '12345',
+                customertype: 'Type A',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
+            },
+            {
+                referenceno: '12345',
+                customertype: 'Type A',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
+            },
+            {
+                referenceno: '12345',
+                customertype: 'Type A',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
+            },
+            {
+                referenceno: '12345',
+                customertype: 'Type B',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
+            },
+            {
+                referenceno: '12345',
+                customertype: 'Type B',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
+            },
+            {
+                referenceno: '12345',
+                customertype: 'Type A',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
+            },
+            {
+                referenceno: '12345',
+                customertype: 'Type A',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
+            },
+            {
+                referenceno: '12345',
+                customertype: 'Type C',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
+            },
+            {
+                referenceno: '12345',
+                customertype: 'Type D',
+                applydate: '2024-06-24',
+                nationality: 'Country X',
+                applicationname: 'App Name 1',
+                gender: 'Male',
+                mobileno: '1234567890',
+                emailid: 'email@example.com',
+                passportno: 'A1234567',
+            },
+           
         ];
         setTableData(newData);
         setTableDataRight(secondTableData);
@@ -389,7 +544,7 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
             //isEdit={isEdit}
             //setIsEdit={setIsEdit}
             >
-                <CountView isOpen={isOpenAction} setIsOpen={setIsOpenAction} headding="Count View" tableData={tableData} secondTableData={tableDataRight}/>
+                <CountView isOpen={isOpenAction} setIsOpen={setIsOpenAction} headding="Count View" tableData={tableData} tableColumns={tableColumnss} secondTableData={tableDataRight}/>
             </ReuseActionModal>
 
         </>
