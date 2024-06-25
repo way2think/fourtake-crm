@@ -37,14 +37,6 @@ const StatusWise: React.FC<{ statuswisedata: any }> = ({ statuswisedata }) => {
         { accessor: 'id', textAlign: 'left', title: 'S.NO' },
         { accessor: 'currentstatus', textAlign: 'left', title: 'Current Status' },
         { accessor: 'count', textAlign: 'left', title: 'Count' },
-        // { accessor: 'visafee', textAlign: 'left', title: 'Visa Fee' },
-        // { accessor: 'vfsothers', textAlign: 'left', title: 'VFs/Others' },
-        // { accessor: 'charges', textAlign: 'left', title: 'H/C - handling charges' },
-        // { accessor: 'ddfee', textAlign: 'left', title: 'DD Fee' },
-        // { accessor: 'deliverycharges', textAlign: 'left', title: 'Delivery charges' },
-        // { accessor: 'tokencharges', textAlign: 'left', title: 'Token Charges' },
-        // { accessor: 'misccharges', textAlign: 'left', title: 'Misc charges' },
-        // { accessor: 'total', textAlign: 'left', title: 'Total' },
     ];
 
     const handleSubmit = (value: any) => {
