@@ -47,6 +47,7 @@ const UserManagement: React.FC<{ userdata: any }> = ({ userdata }) => {
         { accessor: 'center', textAlign: 'left', title: 'Center' },
         // { accessor: 'status', textAlign: 'left', title: 'status' },
         { accessor: 'phone', textAlign: 'left', title: 'phone' },
+        { accessor: 'role', textAlign: 'left', title: 'Role' },
         {
             accessor: 'status',
             textAlign: 'left',

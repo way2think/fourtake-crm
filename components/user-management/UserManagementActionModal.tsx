@@ -102,16 +102,16 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                             </select>
                         </div>
                         <div className="dropdown">
-                            <label htmlFor="apptype">Applicant Type</label>
-                            <select className="form-input" defaultValue="" id="apptype" onChange={(e) => handleInputChange(e)} value={addData?.apptype}>
+                            <label htmlFor="role">Role</label>
+                            <select className="form-input" defaultValue="" id="role" onChange={(e) => handleInputChange(e)} value={addData?.role}>
                                 <option value="" disabled={true}>
-                                    Select Applicant Type
+                                    Select Role
                                 </option>
-                                <option value="Google">Google</option>
-                                <option value="Walkin">Walkin</option>
-                                <option value="Thrid Party">Thrid Party</option>
-                                <option value="Previous Customer">Previous Customer</option>
-                                <option value="Others">Others</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Employee">Employee</option>
+                                <option value="Accountant">Accountant</option>
+                                <option value="Agent">Agent</option>
+                                <option value="Corporate">Corporate</option>
                             </select>
                         </div>
                     </div>
