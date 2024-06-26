@@ -31,8 +31,8 @@ const VisaStatusActionModal: React.FC<VisaStatusActionModalProps> = ({ isOpen, s
                 <div className="p-5">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="mb-5">
-                            <label htmlFor="visatype">Visa Type</label>
-                            <input id="visastatus" type="text" placeholder="Enter Visa Type" className="form-input" value={addData?.visastatus} onChange={(e) => handleInputChange(e)} />
+                            <label htmlFor="visatype">Visa Status</label>
+                            <input id="visastatus" type="text" placeholder="Enter Visa Status" className="form-input" value={addData?.visastatus} onChange={(e) => handleInputChange(e)} />
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
