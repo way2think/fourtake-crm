@@ -48,18 +48,19 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
     const [showCustomizer, setShowCustomizer] = useState(false);
     const [dateFilter, setDateFilter] = useState<any>();
     const [tableData, setTableData] = useState<{ name: string; value: number }[]>([]);
-    const [tableDataRight, setTableDataRight] = useState<{ 
-        referenceno: string;
-        customertype: string;
-        applydate: string;
-        nationality: string;
-        applicationname: string;
-        gender: string;
-        mobileno: string;
-        emailid: string;
-        passportno: string; 
-    }[]>([]);
-    
+    const [tableDataRight, setTableDataRight] = useState<
+        {
+            referenceno: string;
+            customertype: string;
+            applydate: string;
+            nationality: string;
+            applicationname: string;
+            gender: string;
+            mobileno: string;
+            emailid: string;
+            passportno: string;
+        }[]
+    >([]);
 
     // useEffect(() => {
     //     // console.log('datefi', dateFilter);
@@ -70,7 +71,7 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
     //         setFilterItem(dateFilter);
     //     }
     // }, [dateFilter]);
-    
+
     const tableColumnss = [
         { accessor: 'referenceno', textAlign: 'left', title: 'ReferenceNo' },
         { accessor: 'customertype', textAlign: 'left', title: 'CustomerType' },
@@ -108,7 +109,6 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
             { name: 'Bangladesh', value: 1 },
             { name: 'India', value: 2 },
             { name: 'Iran', value: 1 },
-            
         ];
         const secondTableData = [
             {
@@ -133,161 +133,6 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                 emailid: 'email@example.com',
                 passportno: 'A1234567',
             },
-            {
-                referenceno: '12345',
-                customertype: 'Type A',
-                applydate: '2024-06-24',
-                nationality: 'Country X',
-                applicationname: 'App Name 1',
-                gender: 'Male',
-                mobileno: '1234567890',
-                emailid: 'email@example.com',
-                passportno: 'A1234567',
-            },
-            {
-                referenceno: '12345',
-                customertype: 'Type A',
-                applydate: '2024-06-24',
-                nationality: 'Country X',
-                applicationname: 'App Name 1',
-                gender: 'Male',
-                mobileno: '1234567890',
-                emailid: 'email@example.com',
-                passportno: 'A1234567',
-            },
-            {
-                referenceno: '12345',
-                customertype: 'Type A',
-                applydate: '2024-06-24',
-                nationality: 'Country X',
-                applicationname: 'App Name 1',
-                gender: 'Male',
-                mobileno: '1234567890',
-                emailid: 'email@example.com',
-                passportno: 'A1234567',
-            },
-            {
-                referenceno: '12345',
-                customertype: 'Type A',
-                applydate: '2024-06-24',
-                nationality: 'Country X',
-                applicationname: 'App Name 1',
-                gender: 'Male',
-                mobileno: '1234567890',
-                emailid: 'email@example.com',
-                passportno: 'A1234567',
-            },
-            {
-                referenceno: '12345',
-                customertype: 'Type A',
-                applydate: '2024-06-24',
-                nationality: 'Country X',
-                applicationname: 'App Name 1',
-                gender: 'Male',
-                mobileno: '1234567890',
-                emailid: 'email@example.com',
-                passportno: 'A1234567',
-            },
-            {
-                referenceno: '12345',
-                customertype: 'Type A',
-                applydate: '2024-06-24',
-                nationality: 'Country X',
-                applicationname: 'App Name 1',
-                gender: 'Male',
-                mobileno: '1234567890',
-                emailid: 'email@example.com',
-                passportno: 'A1234567',
-            },
-            {
-                referenceno: '12345',
-                customertype: 'Type A',
-                applydate: '2024-06-24',
-                nationality: 'Country X',
-                applicationname: 'App Name 1',
-                gender: 'Male',
-                mobileno: '1234567890',
-                emailid: 'email@example.com',
-                passportno: 'A1234567',
-            },
-            {
-                referenceno: '12345',
-                customertype: 'Type A',
-                applydate: '2024-06-24',
-                nationality: 'Country X',
-                applicationname: 'App Name 1',
-                gender: 'Male',
-                mobileno: '1234567890',
-                emailid: 'email@example.com',
-                passportno: 'A1234567',
-            },
-            {
-                referenceno: '12345',
-                customertype: 'Type B',
-                applydate: '2024-06-24',
-                nationality: 'Country X',
-                applicationname: 'App Name 1',
-                gender: 'Male',
-                mobileno: '1234567890',
-                emailid: 'email@example.com',
-                passportno: 'A1234567',
-            },
-            {
-                referenceno: '12345',
-                customertype: 'Type B',
-                applydate: '2024-06-24',
-                nationality: 'Country X',
-                applicationname: 'App Name 1',
-                gender: 'Male',
-                mobileno: '1234567890',
-                emailid: 'email@example.com',
-                passportno: 'A1234567',
-            },
-            {
-                referenceno: '12345',
-                customertype: 'Type A',
-                applydate: '2024-06-24',
-                nationality: 'Country X',
-                applicationname: 'App Name 1',
-                gender: 'Male',
-                mobileno: '1234567890',
-                emailid: 'email@example.com',
-                passportno: 'A1234567',
-            },
-            {
-                referenceno: '12345',
-                customertype: 'Type A',
-                applydate: '2024-06-24',
-                nationality: 'Country X',
-                applicationname: 'App Name 1',
-                gender: 'Male',
-                mobileno: '1234567890',
-                emailid: 'email@example.com',
-                passportno: 'A1234567',
-            },
-            {
-                referenceno: '12345',
-                customertype: 'Type C',
-                applydate: '2024-06-24',
-                nationality: 'Country X',
-                applicationname: 'App Name 1',
-                gender: 'Male',
-                mobileno: '1234567890',
-                emailid: 'email@example.com',
-                passportno: 'A1234567',
-            },
-            {
-                referenceno: '12345',
-                customertype: 'Type D',
-                applydate: '2024-06-24',
-                nationality: 'Country X',
-                applicationname: 'App Name 1',
-                gender: 'Male',
-                mobileno: '1234567890',
-                emailid: 'email@example.com',
-                passportno: 'A1234567',
-            },
-           
         ];
         setTableData(newData);
         setTableDataRight(secondTableData);
@@ -379,7 +224,6 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
 
             debugger;
             if (dateFilter) {
-
                 if (typeof dateFilter === 'string' && dateFilter.includes(' to ')) {
                     const [startDateStr, endDateStr] = dateFilter.split(' to ');
                     const startDate = new Date(startDateStr);
@@ -405,7 +249,6 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
             // Proceed with form submission or other logic
             //console.log('Form data is valid:', addData);
         }
-
     };
 
     return (
@@ -496,7 +339,6 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         {title !== 'Out Scan' && title !== 'In Scan' && (
                             <>
-
                                 <div className="mb-5">
                                     <ComponentsFormDatePickerRange setDateFilter={setDateFilter} />
                                 </div>
@@ -518,16 +360,20 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                     </div>
                 </div>
 
-
                 {filterItem && filterItem.length > 0 && (
                     <div className="panel mt-5 overflow-hidden border-0 p-0">
                         <div className="table-responsive">
-                            <PaginationTable title={title} data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} ReuseActionModalShow={ReuseActionModalShow} />
+                            <PaginationTable
+                                title={title}
+                                data={filterItem}
+                                tableColumns={tableColumns}
+                                handleDelete={handleDelete}
+                                handleEdit={handleEdit}
+                                ReuseActionModalShow={ReuseActionModalShow}
+                            />
                         </div>
                     </div>
                 )}
-
-
             </div>
 
             {title == 'Lead List' && <Filtersetting showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer} />}
@@ -539,14 +385,13 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                 setIsOpen={setIsOpenAction}
                 //handleSave={handleSave}
                 width=""
-                
-            //addData={addData}
-            //isEdit={isEdit}
-            //setIsEdit={setIsEdit}
-            >
-                <CountView isOpen={isOpenAction} setIsOpen={setIsOpenAction} headding="Count View" tableData={tableData} tableColumns={tableColumnss} secondTableData={tableDataRight}/>
-            </ReuseActionModal>
 
+                //addData={addData}
+                //isEdit={isEdit}
+                //setIsEdit={setIsEdit}
+            >
+                <CountView isOpen={isOpenAction} setIsOpen={setIsOpenAction} headding="Count View" tableData={tableData} tableColumns={tableColumnss} secondTableData={tableDataRight} />
+            </ReuseActionModal>
         </>
     );
 };
