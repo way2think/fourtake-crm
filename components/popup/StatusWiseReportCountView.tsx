@@ -20,6 +20,7 @@ const CountView: React.FC<CountViewProps> = ({ isOpen, setIsOpen, headding, tabl
     const [visibleCountryIndex, setVisibleCountryIndex] = useState<number | null>(null);
 
     const handleRowClick = (index: number) => {
+        debugger;
         setVisibleCountryIndex(visibleCountryIndex === index ? null : index);
     };
     return (

@@ -20,6 +20,24 @@ interface LeadManagementActionModalProps {
 const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ isEdit,setIsEdit, isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
     const [setMail, setSetEmail] = useState<string>();
     const [docPickup, setDocPickup] = useState(false);
+    
+    const initialFollowUps = [
+        {
+            interactionType: 'Call',
+            status: 'Open',
+            nextFollowUp: '2024-07-01',
+            remarks: 'First follow-up call',
+            createdDate: '2024-06-01'
+        },
+        {
+            interactionType: 'Email',
+            status: 'In-progress',
+            nextFollowUp: '2024-07-05',
+            remarks: 'Sent email for document submission',
+            createdDate: '2024-06-05'
+        }
+    ];
+    const [followUps, setFollowUps] = useState(initialFollowUps); 
     useEffect(() => {
         if (addData.email) {
             setSetEmail(addData.email);
@@ -321,6 +339,37 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         <button onClick={handleSave} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
                             Create
                         </button>
+                    </div>
+
+                    
+                    {/* Add the table here */}
+                    <div className="mt-8">
+                        <h5 className="text-lg font-bold mb-4">Follow Up History</h5>
+                        <table className="min-w-full bg-white border">
+                            <thead>
+                                <tr>
+                                    <th className="py-2 px-4 border-b">Follow Up No</th>
+                                    <th className="py-2 px-4 border-b">Interaction Type</th>
+                                    <th className="py-2 px-4 border-b">Status</th>
+                                    <th className="py-2 px-4 border-b">Next Follow Up</th>
+                                    <th className="py-2 px-4 border-b">Remarks</th>
+                                    <th className="py-2 px-4 border-b">Created Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {/* Render follow-up details here */}
+                                {followUps.map((followUp, index) => (
+                                    <tr key={index}>
+                                        <td className="py-2 px-4 border-b">{index + 1}</td>
+                                        <td className="py-2 px-4 border-b">{followUp.interactionType}</td>
+                                        <td className="py-2 px-4 border-b">{followUp.status}</td>
+                                        <td className="py-2 px-4 border-b">{followUp.nextFollowUp}</td>
+                                        <td className="py-2 px-4 border-b">{followUp.remarks}</td>
+                                        <td className="py-2 px-4 border-b">{followUp.createdDate}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </ActionModal>

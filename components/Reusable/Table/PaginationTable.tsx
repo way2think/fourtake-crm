@@ -7,24 +7,28 @@ import './paginationTable.css';
 import { useState } from 'react';
 import { showNotification } from '@mantine/notifications';
 import { DataTable } from 'mantine-datatable';
+import { ActionIcon, Box, Group } from '@mantine/core';
 import IconPencil from '@/components/icon/icon-pencil';
 import IconTrashLines from '@/components/icon/icon-trash-lines';
-import { ActionIcon, Box, Group } from '@mantine/core';
 import IconEye from '../../icon/icon-eye';
 import IconEdit from '../../icon/icon-edit';
 import IconTrash from '../../icon/icon-trash';
 
 interface PaginationTableProps {
-    data: any;
-    tableColumns: any;
-    handleEdit?: any;
-    handleDelete?: any;
-    title?: any;
-    ReuseActionModalShow?: any;
+    data: any[];
+    tableColumns: any[];
+    handleEdit?: (row: any) => void;
+    handleDelete?: (row: any) => void;
+    title?: string;
+    ReuseActionModalShow?: (row: any) => void;
     showActions?: boolean;
 }
+
+interface Row {
+    [key: string]: any;
+}
+
 const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow, showActions }) => {
-    //columns & data -props
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
     const [page, setPage] = useState(1);
@@ -35,32 +39,34 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
     const endIndex = startIndex + recordsPerPage;
     const paginatedData = data?.slice(startIndex, endIndex);
 
-    //onClick={() => showModal({ company, action: 'view' })}
-
     const columns = [
         ...tableColumns,
-        ...(!showActions ? [{
-            accessor: 'actions',
-            title: <Box mr={6}>Actions</Box>,
-            textAlign: 'right',
-            render: (row) => (
-                <Group gap={4} justify="right" wrap="nowrap">
-                    {title === 'Status Wise Report' && (
-                        <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow(row)}>
-                            <IconEye size={16} />
-                        </ActionIcon>
-                    )}
-                    <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit(row)}>
-                        <IconEdit size={16} />
-                    </ActionIcon>
-                    {title !== 'dashboard' && (
-                        <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete(row)}>
-                            <IconTrash size={16} />
-                        </ActionIcon>
-                    )}
-                </Group>
-            ),
-        }] : []),
+        ...(!showActions
+            ? [
+                {
+                    accessor: 'actions',
+                    title: <Box mr={6}>Actions</Box>,
+                    textAlign: 'right',
+                    render: (row: Row) => (
+                        <Group gap={4} justify="right" wrap="nowrap">
+                            {title === 'Status Wise Report' && (
+                                <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow?.(row)}>
+                                    <IconEye size={20} />
+                                </ActionIcon>
+                            )}
+                            <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
+                                <IconEdit size={16} />
+                            </ActionIcon>
+                            {title !== 'dashboard' && (
+                                <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
+                                    <IconTrash size={16} />
+                                </ActionIcon>
+                            )}
+                        </Group>
+                    ),
+                },
+            ]
+            : []),
     ];
 
     return (
@@ -72,42 +78,10 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                 borderRadius="sm"
                 withColumnBorders
                 striped
-                className="table-hover whitespace-nowrap "
+                className="table-hover whitespace-nowrap"
                 highlightOnHover
                 records={paginatedData}
-                // columns={[
-                //     ...tableColumns,
-                //     {
-                //         accessor: 'actions',
-                //         title: <Box mr={6}>Actions</Box>,
-                //         textAlign: 'right',
-                //         render: (row) => (
-                //             <Group gap={4} justify="right" wrap="nowrap">
-                //                 {title == 'Status Wise Report' && (
-                //                 <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow(row)}>
-                //                     <IconEye size={16} />
-                //                 </ActionIcon>
-                //                 )}
-                //                 <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit(row)}>
-                //                     <IconEdit size={16} />
-                //                 </ActionIcon>
-                //                 {title !== 'dashboard' && (
-                //                     <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete(row)}>
-                //                         <IconTrash size={16} />
-                //                     </ActionIcon>
-                //                 )}
-                //             </Group>
-                //         ),
-                //     },
-                // ]}
-                // Execute this callback when a row is clicked
-                // onRowClick={({ record }) => {
-                //     console.log('rescor: ', record);
-                // }}
-                // Pagination properties
-
                 columns={columns}
-
                 totalRecords={data?.length}
                 paginationActiveBackgroundColor="grape"
                 recordsPerPage={pageSize}
