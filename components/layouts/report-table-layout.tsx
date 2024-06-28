@@ -337,7 +337,7 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                     </div>
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        {title !== 'Out Scan' && title !== 'In Scan' && (
+                        
                             <>
                                 <div className="mb-5">
                                     <ComponentsFormDatePickerRange setDateFilter={setDateFilter} />
@@ -356,7 +356,7 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                                     </div>
                                 </div>
                             </>
-                        )}
+                       
                     </div>
                 </div>
 

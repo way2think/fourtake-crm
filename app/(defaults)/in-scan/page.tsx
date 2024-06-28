@@ -15,6 +15,7 @@ const InScanList = () => {
         {
             id: 1,
             consultantname: 'raji',
+            applydate: '2024-06-22',
             noofapplicant: '2',
             visafee: '40000/-',
             vfsothers: 'vfs',
