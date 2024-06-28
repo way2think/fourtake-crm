@@ -8,6 +8,7 @@ import { getTranslation } from '@/i18n';
 
 
 function App({ children }: PropsWithChildren) {
+    debugger;
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
     const dispatch = useDispatch();
     const { initLocale } = getTranslation();
