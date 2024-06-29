@@ -8,11 +8,11 @@ export const metadata: Metadata = {
     title: 'Lead List',
 };
 const getServerData = async () => {
-    return await getData({ url: 'http://localhost:5001/center' });
+    return await getData({ endpoint: 'http://localhost:5001/center' });
 };
 const LeadList = () => {
     // const { data, isError, error } = use(getServerData());
-    // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
+    // // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
     // if (isError) {
     //     console.log(error.message);

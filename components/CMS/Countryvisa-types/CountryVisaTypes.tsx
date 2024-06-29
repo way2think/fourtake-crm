@@ -15,12 +15,12 @@ import Swal from 'sweetalert2';
 import Link from 'next/link';
 
 const getServerData = async () => {
-    return await getData({ url: 'http://localhost:5001/center' });
+    return await getData({ endpoint: 'http://localhost:5001/center' });
 };
 const CountryVisaTypes: React.FC<{ countryvisadata: any }> = ({ countryvisadata }) => {
     const [data, setData] = useState(countryvisadata);
     // const { data, isError, error } = use(getServerData());
-    // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
+    // // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
     // if (isError) {
     //     console.log(error.message);
@@ -125,7 +125,6 @@ const CountryVisaTypes: React.FC<{ countryvisadata: any }> = ({ countryvisadata 
     };
     return (
         <>
-           
             <TableLayout
                 title="Country Visa Types"
                 setData={setData}

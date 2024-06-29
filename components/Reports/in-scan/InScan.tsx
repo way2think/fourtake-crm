@@ -15,7 +15,7 @@ import Link from 'next/link';
 const InScan: React.FC<{ inscanlistdata: any }> = ({ inscanlistdata }) => {
     const [data, setData] = useState(inscanlistdata);
     // const { data, isError, error } = use(getServerData());
-    // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
+    // // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
     // if (isError) {
     //     console.log(error.message);
@@ -91,7 +91,7 @@ const InScan: React.FC<{ inscanlistdata: any }> = ({ inscanlistdata }) => {
 
     return (
         <>
-        <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
+            <ul className="mb-3 flex space-x-2 rtl:space-x-reverse">
                 <li>
                     <Link href="/" className="text-primary hover:underline">
                         Reports
@@ -111,13 +111,16 @@ const InScan: React.FC<{ inscanlistdata: any }> = ({ inscanlistdata }) => {
                 handleDelete={handleDelete}
                 //ActionModal={VisaTypesActionModal}
                 exportColumns={exportColumns}
-                handleSubmit={handleSubmit} formData={{
+                handleSubmit={handleSubmit}
+                formData={{
                     input1: '',
                     input2: '',
-                    input3: ''
-                }} handleChange={function (e: React.ChangeEvent<HTMLInputElement>): void {
+                    input3: '',
+                }}
+                handleChange={function (e: React.ChangeEvent<HTMLInputElement>): void {
                     throw new Error('Function not implemented.');
-                } }            />
+                }}
+            />
         </>
     );
 };

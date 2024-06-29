@@ -16,7 +16,7 @@ const StatusWise: React.FC<{ statuswisedata: any }> = ({ statuswisedata }) => {
     const [data, setData] = useState(statuswisedata);
     console.log('data', data);
     // const { data, isError, error } = use(getServerData());
-    // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
+    // // const { data, isError, error } = await getData({ endpoint: '/center' });
     // // console.log('dataaaa: ', data);
     // if (isError) {
     //     console.log(error.message);

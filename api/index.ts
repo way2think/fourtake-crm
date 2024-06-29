@@ -1,5 +1,9 @@
-const getData = async ({ url }) => {
-    const res = await fetch(`${url}`, {
+type ApiObject = {
+    endpoint: string;
+};
+
+const getData = async ({ endpoint }: ApiObject) => {
+    const res = await fetch(`${process.env.API_BASE_URL}/${endpoint}`, {
         method: 'GET',
         headers: {
             Authorization:
@@ -10,7 +14,6 @@ const getData = async ({ url }) => {
     });
 
     const data = await res.json();
-
 
     if (res.status >= 200 && res.status < 300) {
         return {

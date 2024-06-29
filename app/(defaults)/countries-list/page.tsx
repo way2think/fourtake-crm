@@ -7,11 +7,11 @@ export const metadata: Metadata = {
     title: 'checklist | Countries list',
 };
 const getServerData = async () => {
-    return await getData({ url: 'http://localhost:5001/center' });
+    return await getData({ endpoint: 'http://localhost:5001/center' });
 };
 const CountriesList = () => {
     // const { data, isError, error } = use(getServerData());
-    // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
+    // // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
     // if (isError) {
     //     console.log(error.message);
@@ -20,8 +20,8 @@ const CountriesList = () => {
         {
             id: 1,
             country: 'India',
-            language:"tamil,hindi,etc",
-            dailingcode:"+91",
+            language: 'tamil,hindi,etc',
+            dailingcode: '+91',
         },
         {
             id: 2,

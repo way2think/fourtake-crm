@@ -15,7 +15,7 @@ import Link from 'next/link';
 const OutScan: React.FC<{ outscanlistdata: any }> = ({ outscanlistdata }) => {
     const [data, setData] = useState(outscanlistdata);
     // const { data, isError, error } = use(getServerData());
-    // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
+    // // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
     // if (isError) {
     //     console.log(error.message);
@@ -91,7 +91,7 @@ const OutScan: React.FC<{ outscanlistdata: any }> = ({ outscanlistdata }) => {
 
     return (
         <>
-            <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
+            <ul className="mb-3 flex space-x-2 rtl:space-x-reverse">
                 <li>
                     <Link href="/" className="text-primary hover:underline">
                         Reports

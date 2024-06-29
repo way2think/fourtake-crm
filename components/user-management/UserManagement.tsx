@@ -14,12 +14,12 @@ import UserManagementActionModal from './UserManagementActionModal';
 import Link from 'next/link';
 
 // const getServerData = async () => {
-//     return await getData({ url: 'http://localhost:5001/center' });
+//     return await getData({ endpoint: 'http://localhost:5001/center' });
 // };
 const UserManagement: React.FC<{ userdata: any }> = ({ userdata }) => {
     const [data, setData] = useState(userdata);
     // const { data, isError, error } = use(getServerData());
-    // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
+    // // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
     // if (isError) {
     //     console.log(error.message);

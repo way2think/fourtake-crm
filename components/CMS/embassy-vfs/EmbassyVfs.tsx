@@ -13,12 +13,12 @@ import Swal from 'sweetalert2';
 import { showMessage } from '@/utils/notification';
 import Link from 'next/link';
 const getServerData = async () => {
-    return await getData({ url: 'http://localhost:5001/center' });
+    return await getData({ endpoint: 'http://localhost:5001/center' });
 };
 const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
     const [data, setData] = useState(embassyvfsdata);
     // const { data, isError, error } = use(getServerData());
-    // // const { data, isError, error } = await getData({ url: 'http://localhost:5001/center' });
+    // // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
     // if (isError) {
     //     console.log(error.message);
