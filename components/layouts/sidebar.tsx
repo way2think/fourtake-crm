@@ -87,11 +87,11 @@ const Sidebar = () => {
             <nav
                 className={`sidebar fixed bottom-0 top-0 z-50 h-full min-h-screen w-[260px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] transition-all duration-300 ${semidark ? 'text-white-dark' : ''}`}
             >
-                <div className="h-full bg-[#4361EE] dark:bg-black">
+                <div className="h-full bg-[#fff] dark:bg-black">
                     <div className="flex items-center justify-between px-4 py-3">
                         <Link href="/" className="main-logo flex shrink-0 items-center">
                             <img className="ml-[5px] w-8 flex-none" src="/assets/images/favicon-removebg-preview.png" alt="logo" />
-                            <span className="align-middle text-2xl font-semibold text-[#fff] dark:text-white-light lg:inline ltr:ml-1.5 rtl:mr-1.5">Fourtake</span>
+                            <span className="align-middle text-2xl font-semibold text-[#000] dark:text-white-light lg:inline ltr:ml-1.5 rtl:mr-1.5">Fourtake</span>
                         </Link>
 
                         <button
@@ -107,8 +107,8 @@ const Sidebar = () => {
                             <li className="nav-item">
                                 <Link href="/" className="group">
                                     <div className="flex items-center">
-                                        <IconMenuNotes className="shrink-0 !text-[#fff] group-hover:!text-[#fff]" />
-                                        <span className="text-white dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Dashboard')}</span>
+                                        <IconMenuNotes className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Dashboard')}</span>
                                     </div>
                                 </Link>
                             </li>
@@ -126,8 +126,8 @@ const Sidebar = () => {
 
                                 <button type="button" className={`${currentMenu === 'User List' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('User List')}>
                                     <div className="flex items-center">
-                                        <IconMenuUsers className="shrink-0 !text-[#fff] group-hover:!text-[#fff]" />
-                                        <span className="text-white dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
+                                        <IconMenuUsers className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
                                             <Link href="/user-list">User List</Link>
                                         </span>
                                     </div>
@@ -154,40 +154,32 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'Lead Management' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Lead Management')}>
                                     <div className="flex items-center">
-                                        <IconMenuElements className="shrink-0 !text-[#fff] group-hover:!text-[#fff]" />
-                                        <span className="text-white dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Lead Management')}</span>
+                                        <IconMenuElements className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
+                                            <Link href="/lead-list">Lead Management</Link>
+                                        </span>
                                     </div>
-
-                                    <div className={currentMenu !== 'Lead Management' ? '-rotate-90 rtl:rotate-90' : ''}>
-                                        <IconCaretDown className="!text-[#fff] " />
-                                    </div>
+                                    {/* 
+                                    <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                        <IconCaretDown />
+                                    </div> */}
                                 </button>
-
-                                <AnimateHeight duration={300} height={currentMenu === 'Lead Management' ? 'auto' : 0}>
-                                    <ul className="sub-menu text-white">
-                                        <li>
-                                            <Link href="/lead-list">Lead List</Link>
-                                        </li>
-                                        {/* <li>
-                                            <Link href="/lead-Manage">lead Manage</Link>
-                                        </li> */}
-                                    </ul>
-                                </AnimateHeight>
                             </li>
+
                             <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'CMS' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('CMS')}>
                                     <div className="flex items-center">
-                                        <IconMenuDatatables className="shrink-0 !text-[#fff] group-hover:!text-[#fff]" />
-                                        <span className="text-white dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('CMS')}</span>
+                                        <IconMenuDatatables className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('CMS')}</span>
                                     </div>
 
                                     <div className={currentMenu !== 'CMS' ? '-rotate-90 rtl:rotate-90' : ''}>
-                                        <IconCaretDown className="!text-[#fff] " />
+                                        <IconCaretDown className="!text-[#000] " />
                                     </div>
                                 </button>
 
                                 <AnimateHeight duration={300} height={currentMenu === 'CMS' ? 'auto' : 0}>
-                                    <ul className="sub-menu text-white">
+                                    <ul className="sub-menu text-black">
                                         <li>
                                             <Link href="/countries-list">Countries List</Link>
                                         </li>
@@ -218,17 +210,17 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'Visa Process' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Visa Process')}>
                                     <div className="flex items-center">
-                                        <IconMenuPages className="shrink-0 !text-[#fff] group-hover:!text-[#fff]" />
-                                        <span className="text-white dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Visa Process')}</span>
+                                        <IconMenuPages className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Visa Process')}</span>
                                     </div>
 
                                     <div className={currentMenu !== 'Visa Process' ? '-rotate-90 rtl:rotate-90' : ''}>
-                                        <IconCaretDown className="!text-[#fff] " />
+                                        <IconCaretDown className="!text-[#000] " />
                                     </div>
                                 </button>
 
                                 <AnimateHeight duration={300} height={currentMenu === 'Visa Process' ? 'auto' : 0}>
-                                    <ul className="sub-menu text-white">
+                                    <ul className="sub-menu text-black">
                                         <li>
                                             <Link href="/manage-visa">Manage Visa </Link>
                                         </li>
@@ -244,17 +236,17 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'Reports ' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Reports ')}>
                                     <div className="flex items-center">
-                                        <IconMenuNotes className="shrink-0 !text-[#fff]  group-hover:!text-[#fff]" />
-                                        <span className="text-white dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Reports ')}</span>
+                                        <IconMenuNotes className="shrink-0 !text-[#000]  group-hover:!text-[#005fbe]" />
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Reports ')}</span>
                                     </div>
 
                                     <div className={currentMenu !== 'Reports ' ? '-rotate-90 rtl:rotate-90' : ''}>
-                                        <IconCaretDown className="!text-[#fff] " />
+                                        <IconCaretDown className="!text-[#000] " />
                                     </div>
                                 </button>
 
                                 <AnimateHeight duration={300} height={currentMenu === 'Reports ' ? 'auto' : 0}>
-                                    <ul className="sub-menu text-white">
+                                    <ul className="sub-menu text-black">
                                         <li>
                                             <Link href="/daily-report">Daily Report</Link>
                                         </li>

@@ -43,35 +43,35 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
         ...tableColumns,
         ...(!showActions
             ? [
-                {
-                    accessor: 'actions',
-                    title: <Box mr={6}>Actions</Box>,
-                    textAlign: 'right',
-                    render: (row: Row) => (
-                        <Group gap={4} justify="right" wrap="nowrap">
-                            {title === 'Status Wise Report' && (
-                                <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow?.(row)}>
-                                    <IconEye size={20} />
-                                </ActionIcon>
-                            )}
-                            <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
-                                <IconEdit size={16} />
-                            </ActionIcon>
-                            {title !== 'dashboard' && (
-                                <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
-                                    <IconTrash size={16} />
-                                </ActionIcon>
-                            )}
-                        </Group>
-                    ),
-                },
-            ]
+                  {
+                      accessor: 'actions',
+                      title: <Box mr={6}>Actions</Box>,
+                      textAlign: 'right',
+                      render: (row: Row) => (
+                          <Group gap={4} justify="right" wrap="nowrap">
+                              {title === 'Status Wise Report' && (
+                                  <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow?.(row)}>
+                                      <IconEye size={20} />
+                                  </ActionIcon>
+                              )}
+                              <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
+                                  <IconEdit size={16} />
+                              </ActionIcon>
+                              {title !== 'dashboard' && (
+                                  <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
+                                      <IconTrash size={16} />
+                                  </ActionIcon>
+                              )}
+                          </Group>
+                      ),
+                  },
+              ]
             : []),
     ];
 
     return (
         <div className="datatables bg-[#]">
-            {/* <DataTable
+            <DataTable
                 backgroundColor="#fff"
                 shadow="rgba(0, 0, 0, 0.24) 0px 3px 8px"
                 withTableBorder
@@ -89,7 +89,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                 onRecordsPerPageChange={setPageSize}
                 page={page}
                 onPageChange={setPage}
-            /> */}
+            />
         </div>
     );
 };
