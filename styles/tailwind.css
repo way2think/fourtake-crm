@@ -71,7 +71,11 @@ hover:text-primary hover:before:!bg-primary dark:before:bg-gray-500 dark:hover:b
 
     .sidebar .nav-item a div:first-child svg,
     .sidebar .nav-item button div:first-child svg {
-        @apply h-5 w-5 !text-white text-black/50 dark:text-white/50;
+        @apply h-5 w-5 !text-black text-black/50   dark:text-white/50;
+    }
+    .sidebar .nav-item a div:first-child svg,
+    .sidebar .nav-item button div:first-child svg.active {
+        @apply h-5 w-5   text-black/50 dark:text-white/50;
     }
 
     .main-container .main-content {
