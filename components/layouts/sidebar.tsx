@@ -7,30 +7,12 @@ import AnimateHeight from 'react-animate-height';
 import { IRootState } from '@/store';
 import { useState, useEffect } from 'react';
 import IconCaretsDown from '@/components/icon/icon-carets-down';
-import IconMenuDashboard from '@/components/icon/menu/icon-menu-dashboard';
 import IconCaretDown from '@/components/icon/icon-caret-down';
-import IconMinus from '@/components/icon/icon-minus';
-import IconMenuChat from '@/components/icon/menu/icon-menu-chat';
-import IconMenuMailbox from '@/components/icon/menu/icon-menu-mailbox';
-import IconMenuTodo from '@/components/icon/menu/icon-menu-todo';
 import IconMenuNotes from '@/components/icon/menu/icon-menu-notes';
-import IconMenuScrumboard from '@/components/icon/menu/icon-menu-scrumboard';
-import IconMenuContacts from '@/components/icon/menu/icon-menu-contacts';
-import IconMenuInvoice from '@/components/icon/menu/icon-menu-invoice';
-import IconMenuCalendar from '@/components/icon/menu/icon-menu-calendar';
-import IconMenuComponents from '@/components/icon/menu/icon-menu-components';
 import IconMenuElements from '@/components/icon/menu/icon-menu-elements';
-import IconMenuCharts from '@/components/icon/menu/icon-menu-charts';
-import IconMenuWidgets from '@/components/icon/menu/icon-menu-widgets';
-import IconMenuFontIcons from '@/components/icon/menu/icon-menu-font-icons';
-import IconMenuDragAndDrop from '@/components/icon/menu/icon-menu-drag-and-drop';
-import IconMenuTables from '@/components/icon/menu/icon-menu-tables';
 import IconMenuDatatables from '@/components/icon/menu/icon-menu-datatables';
-import IconMenuForms from '@/components/icon/menu/icon-menu-forms';
 import IconMenuUsers from '@/components/icon/menu/icon-menu-users';
 import IconMenuPages from '@/components/icon/menu/icon-menu-pages';
-import IconMenuAuthentication from '@/components/icon/menu/icon-menu-authentication';
-import IconMenuDocumentation from '@/components/icon/menu/icon-menu-documentation';
 import { usePathname } from 'next/navigation';
 import { getTranslation } from '@/i18n';
 
@@ -88,7 +70,7 @@ const Sidebar = () => {
                 className={`sidebar fixed bottom-0 top-0 z-50 h-full min-h-screen w-[260px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] transition-all duration-300 ${semidark ? 'text-white-dark' : ''}`}
             >
                 <div className="h-full bg-[#fff] dark:bg-black">
-                    <div className="flex items-center justify-between px-4 py-3">
+                    <div className="flex items-center justify-between px-4 py-3 mb-5">
                         <Link href="/" className="main-logo flex shrink-0 items-center">
                             <img className="ml-[5px] w-8 flex-none" src="/assets/images/favicon-removebg-preview.png" alt="logo" />
                             <span className="align-middle text-2xl font-semibold text-[#000] dark:text-white-light lg:inline ltr:ml-1.5 rtl:mr-1.5">Fourtake</span>
@@ -105,10 +87,10 @@ const Sidebar = () => {
                     <PerfectScrollbar className="relative h-[calc(100vh-80px)]">
                         <ul className="relative space-y-0.5 p-4 py-0 font-semibold">
                             <li className="nav-item">
-                                <Link href="/" className="group">
+                                <Link href="/" className="group ">
                                     <div className="flex items-center">
                                         <IconMenuNotes className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
-                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Dashboard')}</span>
+                                        <span className="text-black dark:text-[#506690] group-hover:!text-[#005fbe]dark:group-hover:text-[#005fbe] ltr:pl-3 rtl:pr-3">{t('Dashboard')}</span>
                                     </div>
                                 </Link>
                             </li>
@@ -124,7 +106,7 @@ const Sidebar = () => {
                                     </div>
                                 </button> */}
 
-                                <button type="button" className={`${currentMenu === 'User List' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('User List')}>
+                                <button type="button" className={`${currentMenu === 'User List' ? 'active' : ''} nav-link group w-full `} onClick={() => toggleMenu('User List')}>
                                     <div className="flex items-center">
                                         <IconMenuUsers className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
