@@ -112,7 +112,7 @@ const CountView: React.FC<CountViewProps> = ({ isOpen, setIsOpen, headding, tabl
                             <PaginationTable
                                 data={secondTableData}
                                 tableColumns={tableColumns}
-                                showActions="yes"
+                                //showActions="yes"
                             />
                         </div>
                     )}
