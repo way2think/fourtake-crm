@@ -167,6 +167,21 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 <option value="Others">Others</option>
                             </select>
                         </div>
+
+                        <div className="dropdown mb-5">
+                            <label htmlFor="source">Assignee</label>
+                            <select className="form-input" defaultValue="" id="assignee" value={addData?.assignee} onChange={(e) => handleInputChange(e)}>
+                                <option value="" disabled={true}>
+                                Assignee
+                                </option>
+                                <option value="Name1">Name1</option>
+                                <option value="Name2">Name2</option>
+                                <option value="Name3">Name3</option>
+                                <option value="Name4">Name4</option>
+                            </select>
+                        </div>
+                        
+
                     </div>
 
                     {isEdit && (
@@ -308,6 +323,36 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     ></textarea>
                                 </div>
                             </div>
+
+                            {/* Add the table here */}
+                    <div className="mt-8">
+                        <h5 className="text-lg font-bold mb-4">Follow Up History</h5>
+                        <table className="min-w-full bg-white border">
+                            <thead>
+                                <tr>
+                                    <th className="py-2 px-4 border-b">Follow Up No</th>
+                                    <th className="py-2 px-4 border-b">Interaction Type</th>
+                                    <th className="py-2 px-4 border-b">Status</th>
+                                    <th className="py-2 px-4 border-b">Next Follow Up</th>
+                                    <th className="py-2 px-4 border-b">Remarks</th>
+                                    <th className="py-2 px-4 border-b">Created Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {/* Render follow-up details here */}
+                                {followUps.map((followUp, index) => (
+                                    <tr key={index}>
+                                        <td className="py-2 px-4 border-b">{index + 1}</td>
+                                        <td className="py-2 px-4 border-b">{followUp.interactionType}</td>
+                                        <td className="py-2 px-4 border-b">{followUp.status}</td>
+                                        <td className="py-2 px-4 border-b">{followUp.nextFollowUp}</td>
+                                        <td className="py-2 px-4 border-b">{followUp.remarks}</td>
+                                        <td className="py-2 px-4 border-b">{followUp.createdDate}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                         </>
                     )}
                     {/* <TableLayout
@@ -342,35 +387,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                     </div>
 
                     
-                    {/* Add the table here */}
-                    <div className="mt-8">
-                        <h5 className="text-lg font-bold mb-4">Follow Up History</h5>
-                        <table className="min-w-full bg-white border">
-                            <thead>
-                                <tr>
-                                    <th className="py-2 px-4 border-b">Follow Up No</th>
-                                    <th className="py-2 px-4 border-b">Interaction Type</th>
-                                    <th className="py-2 px-4 border-b">Status</th>
-                                    <th className="py-2 px-4 border-b">Next Follow Up</th>
-                                    <th className="py-2 px-4 border-b">Remarks</th>
-                                    <th className="py-2 px-4 border-b">Created Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {/* Render follow-up details here */}
-                                {followUps.map((followUp, index) => (
-                                    <tr key={index}>
-                                        <td className="py-2 px-4 border-b">{index + 1}</td>
-                                        <td className="py-2 px-4 border-b">{followUp.interactionType}</td>
-                                        <td className="py-2 px-4 border-b">{followUp.status}</td>
-                                        <td className="py-2 px-4 border-b">{followUp.nextFollowUp}</td>
-                                        <td className="py-2 px-4 border-b">{followUp.remarks}</td>
-                                        <td className="py-2 px-4 border-b">{followUp.createdDate}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                    
                 </div>
             </ActionModal>
         </>

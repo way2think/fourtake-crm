@@ -21,14 +21,14 @@ interface PaginationTableProps {
     handleDelete?: (row: any) => void;
     title?: string;
     ReuseActionModalShow?: (row: any) => void;
-    showActions?: string;
+    showActions?: boolean;
 }
 
 interface Row {
     [key: string]: any;
 }
 
-const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow, showActions = "no" }) => {
+const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow, showActions }) => {
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
     const [page, setPage] = useState(1);
@@ -41,7 +41,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
 
     const columns = [
         ...tableColumns,
-        ...(showActions === "yes"
+        ...(!showActions
             ? [
                   {
                       accessor: 'actions',
