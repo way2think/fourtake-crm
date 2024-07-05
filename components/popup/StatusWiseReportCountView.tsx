@@ -109,11 +109,11 @@ const CountView: React.FC<CountViewProps> = ({ isOpen, setIsOpen, headding, tabl
                     {visibleCountryIndex !== null && (
                         <div className="mb-5">
                             <h5 className="text-lg font-bold mb-2">{tableData[visibleCountryIndex].name}</h5>
-                            {/* <PaginationTable
+                            <PaginationTable
                                 data={secondTableData}
                                 tableColumns={tableColumns}
                                 showActions="yes"
-                            /> */}
+                            />
                         </div>
                     )}
                 </div>

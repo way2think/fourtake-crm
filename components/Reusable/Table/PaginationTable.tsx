@@ -21,14 +21,14 @@ interface PaginationTableProps {
     handleDelete?: (row: any) => void;
     title?: string;
     ReuseActionModalShow?: (row: any) => void;
-    showActions?: boolean;
+    showActions?: string;
 }
 
 interface Row {
     [key: string]: any;
 }
 
-const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow, showActions }) => {
+const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow, showActions = "no" }) => {
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
     const [page, setPage] = useState(1);
@@ -39,39 +39,39 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
     const endIndex = startIndex + recordsPerPage;
     const paginatedData = data?.slice(startIndex, endIndex);
 
-    // const columns = [
-    //     ...tableColumns,
-    //     ...(showActions
-    //         ? [
-    //               {
-    //                   accessor: 'actions',
-    //                   title: <Box mr={6}>Actions</Box>,
-    //                   textAlign: 'right',
-    //                   render: (row: Row) => (
-    //                       <Group gap={4} justify="right" wrap="nowrap">
-    //                           {title === 'Status Wise Report' && (
-    //                               <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow?.(row)}>
-    //                                   <IconEye size={20} />
-    //                               </ActionIcon>
-    //                           )}
-    //                           <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
-    //                               <IconEdit size={16} />
-    //                           </ActionIcon>
-    //                           {title !== 'dashboard' && (
-    //                               <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
-    //                                   <IconTrash size={16} />
-    //                               </ActionIcon>
-    //                           )}
-    //                       </Group>
-    //                   ),
-    //               },
-    //           ]
-    //         : []),
-    // ];
+    const columns = [
+        ...tableColumns,
+        ...(showActions === "yes"
+            ? [
+                  {
+                      accessor: 'actions',
+                      title: <Box mr={6}>Actions</Box>,
+                      textAlign: 'right',
+                      render: (row: Row) => (
+                          <Group gap={4} justify="right" wrap="nowrap">
+                              {title === 'Status Wise Report' && (
+                                  <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow?.(row)}>
+                                      <IconEye size={20} />
+                                  </ActionIcon>
+                              )}
+                              <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
+                                  <IconEdit size={16} />
+                              </ActionIcon>
+                              {title !== 'dashboard' && (
+                                  <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
+                                      <IconTrash size={16} />
+                                  </ActionIcon>
+                              )}
+                          </Group>
+                      ),
+                  },
+              ]
+            : []),
+    ];
 
     return (
         <div className="datatables bg-[#]">
-            {/* <DataTable
+            <DataTable
                 backgroundColor="#fff"
                 shadow="rgba(0, 0, 0, 0.24) 0px 3px 8px"
                 withTableBorder
@@ -89,7 +89,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                 onRecordsPerPageChange={setPageSize}
                 page={page}
                 onPageChange={setPage}
-            /> */}
+            />
         </div>
     );
 };
