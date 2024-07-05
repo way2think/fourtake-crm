@@ -1,3 +1,4 @@
+import { getData } from '@/api';
 import ComponentsDashboardAnalytics from '@/components/dashboard/components-dashboard';
 import UserList from '@/components/user-management/UserList';
 import UserManagement from '@/components/user-management/UserManagement';
@@ -7,6 +8,8 @@ import React from 'react';
 export const metadata: Metadata = {
     title: 'Fourtake CRM',
 };
+
+
 
 const Sales = () => {
     const data = [

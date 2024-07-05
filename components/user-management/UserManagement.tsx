@@ -37,6 +37,20 @@ const UserManagement: React.FC<{ userdata: any }> = ({ userdata }) => {
     // confirmpassword: 'way2think',
     // address: 'No.21 NY Street',
 
+    // const getUser = async () => {
+    //     try {
+    //         const response = await getData({ endpoint: 'user' });
+    //         if (!response.isError) {
+    //             console.log('User data:', response.data);
+    //         } else {
+    //             console.error('Error fetching user data:', response.error);
+    //         }
+    //     } catch (error) {
+    //         console.error('Unexpected error:', error);
+    //     }
+    // };
+
+   
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
 
@@ -126,6 +140,7 @@ const UserManagement: React.FC<{ userdata: any }> = ({ userdata }) => {
         // setAddContactModal(false);
         // setIsEdit(false);
     };
+ 
     return (
         <>
             <ul className="flex space-x-2 rtl:space-x-reverse">
