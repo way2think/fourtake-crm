@@ -1,5 +1,6 @@
 import MarkdownEditor from '@/components/Reusable/Markdown-Editor/MarkDownEditor';
 import VisafeeEditor from '@/components/Reusable/Markdown-Editor/VisafeeEditor';
+import VisafeeEditorJodit from '@/components/Reusable/Markdown-Editor/VisafeeEditorJodit';
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
 import IconX from '@/components/icon/icon-x';
@@ -65,12 +66,16 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                 </div>
                 <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-1">
                     <div className="mb-2">
-                        <MarkdownEditor handleInputChange={handleInputChange} setAddData={setAddData} addData={addData} />
+                        {/* <MarkdownEditor handleInputChange={handleInputChange} setAddData={setAddData} addData={addData} /> */}
+                        <label htmlFor="Checklist">Checklist*</label>
+                        <VisafeeEditorJodit  handleInputChange={handleInputChange} setAddData={setAddData} addData={addData}/>
                     </div>
                 </div>
                 <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-1">
                     <div className="mb-2">
-                        <VisafeeEditor handleInputChange={handleInputChange} setAddData={setAddData} addData={addData} />
+                        {/* <VisafeeEditor handleInputChange={handleInputChange} setAddData={setAddData} addData={addData} /> */}
+                        <label htmlFor="Checklist">Visa Fee information*</label>
+                        <VisafeeEditorJodit  handleInputChange={handleInputChange} setAddData={setAddData} addData={addData}/>
                     </div>
                 </div>
                 <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-1">
