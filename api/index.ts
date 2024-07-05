@@ -1,19 +1,22 @@
 type ApiObject = {
-    endpoint: string;
+    endpoint: any;
 };
 
 const getData = async ({ endpoint }: ApiObject) => {
-    const res = await fetch(`${process.env.API_BASE_URL}/${endpoint}`, {
+    console.log('env', process.env.API_BASE_URL);
+    const res = await fetch(`http://${process.env.API_BASE_URL}/${endpoint}`, {
         method: 'GET',
         headers: {
             Authorization:
                 'Bearer ' +
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI0Mjk1ZDIxLTIxOGMtNDFiNC1hOTYyLTE0MGNiOWMxMTQyOCIsImVtYWlsIjoia3NhbmpheTAwMTk3QGdtYWlsLmNvbSIsInBob25lIjoiODQyODA2NjcxMyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIiwiaWF0IjoxNzE3NjczNjg0LCJleHAiOjE3MTc2NzQ1ODQsImF1ZCI6ImZvdXJ0YWtlLXZpc2FzIiwiaXNzIjoiRm91cnRha2UgVmlzYSIsInN1YiI6IjI0Mjk1ZDIxLTIxOGMtNDFiNC1hOTYyLTE0MGNiOWMxMTQyOCJ9.09HwYysx3MjpT1bjVAQ9sSoXj8PJgZByBIfDr-CIdJI',
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNkMjY1ZjVhLWU0Y2MtNDlmOC04ZTBlLWMxMmMzMTRiYTJiZSIsImVtYWlsIjoia3NhbmpheTAwMTk3QGdtYWlsLmNvbSIsInBob25lIjoiODQyODA2NjcxMyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIiwicm9sZSI6InN1cGVyX2FkbWluIiwiY2VudGVyIjoxLCJpc19hY3RpdmUiOnRydWUsImlhdCI6MTcxOTgyNjI4OCwiZXhwIjoxNzE5ODI3MTg4LCJhdWQiOiJmb3VydGFrZS12aXNhcyIsImlzcyI6IkZvdXJ0YWtlIFZpc2EiLCJzdWIiOiIzZDI2NWY1YS1lNGNjLTQ5ZjgtOGUwZS1jMTJjMzE0YmEyYmUifQ.n2h-qFxRT5uVnzeibALkRpIk59OYura1ED6f4E16_JM',
             'Content-Type': 'application/json',
         },
     });
 
     const data = await res.json();
+
+    console.log('data', data);
 
     if (res.status >= 200 && res.status < 300) {
         return {
@@ -34,5 +37,7 @@ const getData = async ({ endpoint }: ApiObject) => {
         };
     }
 };
+
+
 
 export { getData };

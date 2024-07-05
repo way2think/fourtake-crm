@@ -34,11 +34,12 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
         { accessor: 'phone', textAlign: 'left', title: 'Phone no' },
         { accessor: 'country', textAlign: 'left', title: 'Country' },
         { accessor: 'visatype', textAlign: 'left', title: 'Visa Type' },
-        { accessor: 'stateofresidence', textAlign: 'left', title: 'State Of Residence' },
+        // { accessor: 'stateofresidence', textAlign: 'left', title: 'State Of Residence' },
         { accessor: 'emailsentdate', textAlign: 'left', title: 'Email Sent Date' },
         // { accessor: 'lastfollowup', textAlign: 'left', title: 'Last Follow Up' },
         { accessor: 'nextfollowupdate', textAlign: 'left', title: 'Next Follow Up' },
         { accessor: 'status', textAlign: 'left', title: 'Status' },
+        { accessor: 'stage', textAlign: 'left', title: 'Stage' },
     ];
 
     const handleDelete = (row: any) => {
