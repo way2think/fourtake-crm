@@ -3,6 +3,8 @@ import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import IconX from '../icon/icon-x';
 import ReuseActionModal from '../Reusable/Modal/ActionModal';
 import PaginationTable from '../Reusable/Table/PaginationTable';
+import IconCaretDown from '@/components/icon/icon-caret-down';
+
 
 interface CountViewProps {
     isOpen: any;
@@ -58,8 +60,9 @@ const CountView: React.FC<CountViewProps> = ({ isOpen, setIsOpen, headding, tabl
                                         <div className="flex justify-between items-center">
                                             <span>{item.value}</span>
                                             <button onClick={() => handleRowClick(index)}>
-                                                {visibleCountryIndex === index ? '-' : '>'}
+                                                {visibleCountryIndex === index ? <IconCaretDown size={16} /> : <IconCaretDown className="-rotate-90 rtl:rotate-90" size={16} />}
                                             </button>
+                                            
                                         </div>
                                     </td>
                                     {/* <td className="py-2 px-4 border-b border-gray-300 text-right">
@@ -112,7 +115,7 @@ const CountView: React.FC<CountViewProps> = ({ isOpen, setIsOpen, headding, tabl
                             <PaginationTable
                                 data={secondTableData}
                                 tableColumns={tableColumns}
-                                //showActions="yes"
+                            //showActions="yes"
                             />
                         </div>
                     )}
