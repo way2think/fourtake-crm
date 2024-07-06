@@ -1,2 +1,59 @@
-@layer mantine, mantine-datatable;
+.datatables {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
+/* Add your table styles here */
+.table-container-paginationtable {
+    overflow-x: auto;
+    border-radius: 8px;
+}
+
+.table-paginationtable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-paginationtable th,
+.table-paginationtable td {
+    padding: 8px 16px;
+    border-bottom: 1px solid #eee;
+    /* Light line for table rows */
+    height: 30px;
+    /* Set a fixed height for both th and td */
+}
+
+.table-paginationtable th {
+    text-align: left;
+    color: #333;
+    /* Dark color for the table heading */
+    border-bottom: 1px solid #ddd;
+    /* Slightly darker line for the heading */
+}
+
+.table-paginationtable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table-paginationtable tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+/* font-size: 0.875rem;
+  line-height: 1.25rem; */
+
+.text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.font-normal {
+    font-weight: 400;
+}
+
+.table-number-dropdwon {
+    outline: none;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 4px;
+    margin-bottom: 10px;
+}

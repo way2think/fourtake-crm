@@ -44,7 +44,7 @@ const CountView: React.FC<CountViewProps> = ({ isOpen, setIsOpen, headding, tabl
             <div className="flex px-5 py-3">
                 {/* Left Table (30% Width) */}
                 <div className="w-1/5 pr-5" style={{ maxHeight: '613px', overflowY: 'auto' }}>
-                    <table className="min-w-full bg-white dark:bg-[#121c2c]">
+                    <table className="text-sm min-w-full bg-white dark:bg-[#121c2c]">
                         <thead>
                             <tr>
                                 <th className="py-2 px-4 border-b-2 border-gray-300">Country Names</th>
@@ -110,7 +110,7 @@ const CountView: React.FC<CountViewProps> = ({ isOpen, setIsOpen, headding, tabl
 
                 <div className="w-4/5 px-5 py-3">
                     {visibleCountryIndex !== null && (
-                        <div className="mb-5">
+                        <div className="mb-5 text-sm">
                             <h5 className="text-lg font-bold mb-2">{tableData[visibleCountryIndex].name}</h5>
                             <PaginationTable
                                 data={secondTableData}
