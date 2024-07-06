@@ -15,6 +15,7 @@ import IconMenuUsers from '@/components/icon/menu/icon-menu-users';
 import IconMenuPages from '@/components/icon/menu/icon-menu-pages';
 import { usePathname } from 'next/navigation';
 import { getTranslation } from '@/i18n';
+import Image from 'next/image';
 
 const Sidebar = () => {
     const dispatch = useDispatch();
@@ -70,9 +71,9 @@ const Sidebar = () => {
                 className={`sidebar fixed bottom-0 top-0 z-50 h-full min-h-screen w-[260px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] transition-all duration-300 ${semidark ? 'text-white-dark' : ''}`}
             >
                 <div className="h-full bg-[#fff] dark:bg-black">
-                    <div className="flex items-center justify-between px-4 py-3 mb-5">
+                    <div className="mb-5 flex items-center justify-between px-4 py-3">
                         <Link href="/" className="main-logo flex shrink-0 items-center">
-                            <img className="ml-[5px] w-8 flex-none" src="/assets/images/favicon-removebg-preview.png" alt="logo" />
+                            <Image className="ml-[5px] w-8 flex-none" src="/assets/images/favicon-removebg-preview.png" alt="logo" width={100} height={100} />
                             <span className="align-middle text-2xl font-semibold text-[#000] dark:text-white-light lg:inline ltr:ml-1.5 rtl:mr-1.5">Fourtake</span>
                         </Link>
 
@@ -90,7 +91,7 @@ const Sidebar = () => {
                                 <Link href="/" className="group ">
                                     <div className="flex items-center">
                                         <IconMenuNotes className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
-                                        <span className="text-black dark:text-[#506690] group-hover:!text-[#005fbe]dark:group-hover:text-[#005fbe] ltr:pl-3 rtl:pr-3">{t('Dashboard')}</span>
+                                        <span className="group-hover:!text-[#005fbe]dark:group-hover:text-[#005fbe] text-black dark:text-[#506690] ltr:pl-3 rtl:pr-3">{t('Dashboard')}</span>
                                     </div>
                                 </Link>
                             </li>

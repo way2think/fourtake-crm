@@ -38,6 +38,4 @@ const getData = async ({ endpoint }: ApiObject) => {
     }
 };
 
-
-
 export { getData };
