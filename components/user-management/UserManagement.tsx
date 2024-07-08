@@ -19,7 +19,7 @@ import Link from 'next/link';
 const UserManagement: React.FC<{ userdata: any }> = ({ userdata }) => {
     const [data, setData] = useState(userdata);
     // const { data, isError, error } = use(getServerData());
-    // // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
+    // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
     // if (isError) {
     //     console.log(error.message);
@@ -50,7 +50,6 @@ const UserManagement: React.FC<{ userdata: any }> = ({ userdata }) => {
     //     }
     // };
 
-   
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
 
@@ -140,7 +139,7 @@ const UserManagement: React.FC<{ userdata: any }> = ({ userdata }) => {
         // setAddContactModal(false);
         // setIsEdit(false);
     };
- 
+
     return (
         <>
             <ul className="flex space-x-2 rtl:space-x-reverse">
