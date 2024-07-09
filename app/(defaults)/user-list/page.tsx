@@ -9,8 +9,6 @@ export const metadata: Metadata = {
     title: 'Fourtake CRM',
 };
 
-
-
 const Sales = () => {
     const data = [
         {
