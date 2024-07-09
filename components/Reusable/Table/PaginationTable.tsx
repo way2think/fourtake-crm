@@ -13,13 +13,14 @@ interface PaginationTableProps {
   handleDelete?: (row: any) => void;
   title?: string;
   ReuseActionModalShow?: (row: any) => void;
+  actionhide?: boolean;
 }
 
 interface Row {
   [key: string]: any;
 }
 
-const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow }) => {
+const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow, actionhide }) => {
   const PAGE_SIZES = [10, 15, 20];
   const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
   const [page, setPage] = useState(1);
@@ -29,31 +30,41 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
   const endIndex = startIndex + pageSize;
   const paginatedData = useMemo(() => data.slice(startIndex, endIndex), [data, startIndex, endIndex]);
 
-  const columns = useMemo(() => [
-    ...tableColumns,
-    {
-      accessor: 'actions',
-      title: <div style={{ marginRight: '6px' }}>Actions</div>,
-      textAlign: 'right',
-      render: (row: Row) => (
-        <td style={{ display: 'flex', justifyContent: 'flex-end', gap: '3px' }}>
-          {title === 'Status Wise Report' && (
-            <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow?.(row)}>
-              <IconEye size={20} />
-            </ActionIcon>
-          )}
-          <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
-            <IconEdit size={16} />
-          </ActionIcon>
-          {title !== 'dashboard' && (
-            <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
-              <IconTrash size={16} />
-            </ActionIcon>
-          )}
-        </td>
-      ),
-    },
-  ], [tableColumns, handleEdit, handleDelete, ReuseActionModalShow, title]);
+  const columns = useMemo(() => {
+    const baseColumns = [...tableColumns];
+
+    if (!( actionhide === true && title !== 'Status Wise Report')) {
+      baseColumns.push({
+        accessor: 'actions',
+        title: <div style={{ marginRight: '6px' }}>Actions</div>,
+        textAlign: 'right',
+        render: (row: Row) => (
+          <td style={{ display: 'flex', justifyContent: 'flex-end', gap: '3px' }}>
+            {title === 'Status Wise Report' ? (
+              <>
+                <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow?.(row)}>
+                  <IconEye size={20} />
+                </ActionIcon>
+              </>
+            ) : (
+              <>
+                <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
+                  <IconEdit size={16} />
+                </ActionIcon>
+                {title !== 'dashboard' && (
+                  <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
+                    <IconTrash size={16} />
+                  </ActionIcon>
+                )}
+              </>
+            )}
+          </td>
+        ),
+      });
+    }
+
+    return baseColumns;
+  }, [tableColumns, handleEdit, handleDelete, ReuseActionModalShow, title]);
 
   const handlePageChange = (pageNum: number) => {
     setPage(pageNum);
@@ -131,7 +142,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
         </table>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', paddingLeft: '10px' }}>
-        <select  className='table-number-dropdwon' value={pageSize} onChange={(e) => handlePageSizeChange(Number(e.target.value))}>
+        <select className='table-number-dropdwon' value={pageSize} onChange={(e) => handlePageSizeChange(Number(e.target.value))}>
           <option value={10}>10</option>
           <option value={15} disabled={data.length < 10}>15</option>
           <option value={20} disabled={data.length < 15}>20</option>

@@ -13,15 +13,15 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
     const [data, setData] = useState(managevisa);
     const [addData, setAddData] = useState<any>({
         id: 1,
-        country: 'India',
-        isgroup: true,
-        visatype: 'Vistor Visa',
-        nationality: 'India',
-        stateofresidence: 'Kernataka',
-        visaduration: '15 Days',
-        entrytype: 'Single',
-        customertype: 'Walkin',
-        traveldate: '13/06/2024',
+        country: '',
+        isgroup: false,
+        visatype: '',
+        nationality: '',
+        stateofresidence: '',
+        visaduration: '',
+        entrytype: '',
+        customertype: '',
+        traveldate: '',
     });
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);

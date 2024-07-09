@@ -15,12 +15,13 @@ interface LeadManagementActionModalProps {
     handleInputChange: any;
     setAddData: any;
     isEdit?: any;
-    setIsEdit?:any;
+    setIsEdit?: any;
 }
-const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ isEdit,setIsEdit, isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
+const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ isEdit, setIsEdit, isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
     const [setMail, setSetEmail] = useState<string>();
     const [docPickup, setDocPickup] = useState(false);
-    
+    console.log(docPickup)
+    debugger;
     const initialFollowUps = [
         {
             interactionType: 'Call',
@@ -37,13 +38,13 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
             createdDate: '2024-06-05'
         }
     ];
-    const [followUps, setFollowUps] = useState(initialFollowUps); 
+    const [followUps, setFollowUps] = useState(initialFollowUps);
     useEffect(() => {
         if (addData.email) {
             setSetEmail(addData.email);
         }
-        if(addData.docpickupdate){
-            setDocPickup(true)
+        if (addData.docpickupdate) {
+            //setDocPickup(true)
         }
     }, [addData]);
     const handleCheckBoxChange = (e: any) => {
@@ -172,15 +173,15 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             <label htmlFor="source">Assignee</label>
                             <select className="form-input" defaultValue="" id="assignee" value={addData?.assignee} onChange={(e) => handleInputChange(e)}>
                                 <option value="" disabled={true}>
-                                Assignee
+                                    Assignee
                                 </option>
-                                <option value="Name1">Name1</option>
-                                <option value="Name2">Name2</option>
-                                <option value="Name3">Name3</option>
-                                <option value="Name4">Name4</option>
+                                <option value="Sanjay">Sanjay</option>
+                                <option value="Bujji">Bujji</option>
+                                <option value="raji">raji</option>
+                                <option value="santhosh">Santhosh</option>
                             </select>
                         </div>
-                        
+
 
                     </div>
 
@@ -239,8 +240,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                             value={addData?.docpickupremarks}
                                             onChange={(e) => handleInputChange(e)}
                                             placeholder="Enter Remarks"
-                                            className="form-textarea
-                                min-h-[10px] resize-none"
+                                            className="form-textarea min-h-[10px] resize-none"
                                         ></textarea>
                                     </div>
                                 </div>
@@ -262,7 +262,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         </button>
                                     </div>
                                 </div>
-                                <div className="dropdown mb-5">
+                                {/* <div className="dropdown mb-5">
                                     <label htmlFor="leadmanage">Lead Managed by</label>
                                     <select className="form-input" defaultValue="" id="assignee" value={addData?.assignee} onChange={(e) => handleInputChange(e)}>
                                         <option value="" disabled={true}>
@@ -273,7 +273,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         <option value="raji">raji</option>
                                         <option value="santhosh">Santhosh</option>
                                     </select>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="grid grid-cols-1 gap-5 md:grid-cols-2  ">
                                 <div className="mb-5">
@@ -325,34 +325,34 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             </div>
 
                             {/* Add the table here */}
-                    <div className="mt-8">
-                        <h5 className="text-lg font-bold mb-4">Follow Up History</h5>
-                        <table className="min-w-full bg-white border">
-                            <thead>
-                                <tr>
-                                    <th className="py-2 px-4 border-b">Follow Up No</th>
-                                    <th className="py-2 px-4 border-b">Interaction Type</th>
-                                    <th className="py-2 px-4 border-b">Status</th>
-                                    <th className="py-2 px-4 border-b">Next Follow Up</th>
-                                    <th className="py-2 px-4 border-b">Remarks</th>
-                                    <th className="py-2 px-4 border-b">Created Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {/* Render follow-up details here */}
-                                {followUps.map((followUp, index) => (
-                                    <tr key={index}>
-                                        <td className="py-2 px-4 border-b">{index + 1}</td>
-                                        <td className="py-2 px-4 border-b">{followUp.interactionType}</td>
-                                        <td className="py-2 px-4 border-b">{followUp.status}</td>
-                                        <td className="py-2 px-4 border-b">{followUp.nextFollowUp}</td>
-                                        <td className="py-2 px-4 border-b">{followUp.remarks}</td>
-                                        <td className="py-2 px-4 border-b">{followUp.createdDate}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                            <div className="mt-8">
+                                <h5 className="text-lg font-bold mb-4">Follow Up History</h5>
+                                <table className="min-w-full bg-white border">
+                                    <thead>
+                                        <tr>
+                                            <th className="py-2 px-4 border-b">Follow Up No</th>
+                                            <th className="py-2 px-4 border-b">Interaction Type</th>
+                                            <th className="py-2 px-4 border-b">Status</th>
+                                            <th className="py-2 px-4 border-b">Next Follow Up</th>
+                                            <th className="py-2 px-4 border-b">Remarks</th>
+                                            <th className="py-2 px-4 border-b">Created Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {/* Render follow-up details here */}
+                                        {followUps.map((followUp, index) => (
+                                            <tr key={index}>
+                                                <td className="py-2 px-4 border-b">{index + 1}</td>
+                                                <td className="py-2 px-4 border-b">{followUp.interactionType}</td>
+                                                <td className="py-2 px-4 border-b">{followUp.status}</td>
+                                                <td className="py-2 px-4 border-b">{followUp.nextFollowUp}</td>
+                                                <td className="py-2 px-4 border-b">{followUp.remarks}</td>
+                                                <td className="py-2 px-4 border-b">{followUp.createdDate}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </>
                     )}
                     {/* <TableLayout
@@ -386,8 +386,8 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         </button>
                     </div>
 
-                    
-                    
+
+
                 </div>
             </ActionModal>
         </>

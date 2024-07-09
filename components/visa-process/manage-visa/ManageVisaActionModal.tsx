@@ -140,6 +140,15 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                         )}
                     </div>
 
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                    <div className="mt-7">
+                        <label className="flex cursor-pointer items-center">
+                            <input type="checkbox" id="isgroup"  onChange={(e) => handleCheckBoxChange(e)} className="form-checkbox bg-white dark:bg-black" />
+                            <span className="text-black">Is Primary?</span>
+                        </label>
+                    </div>
+                </div>
+
                     <div className="mt-8 flex items-center justify-end">
                         <button
                             onClick={() => {

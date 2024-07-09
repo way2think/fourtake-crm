@@ -370,6 +370,7 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                                 handleDelete={handleDelete}
                                 handleEdit={handleEdit}
                                 ReuseActionModalShow={ReuseActionModalShow}
+                                actionhide={true}
                             />
                         </div>
                     </div>

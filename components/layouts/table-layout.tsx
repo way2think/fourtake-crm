@@ -13,6 +13,7 @@ import IconX from '../icon/icon-x';
 import CountryActionModal from '../CMS/countries/CountryActionModal';
 import IconFile from '../icon/icon-zip-file';
 import PasswordActionModal from '../user-management/PasswordActionModal';
+import { useRouter } from 'next/navigation';
 
 interface TableLayoutProps {
     title: string;
@@ -38,6 +39,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
 
+    //const router = useRouter();
+
     useEffect(() => {
         setFilterItem(data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase())));
     }, [search, data]);
@@ -46,6 +49,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
         setIsEdit(true);
         setIsOpen(true);
         setAddData(object);
+        //router.push(`/manage-visa`);
     };
 
     const handleInputChange = (e: any) => {
@@ -77,7 +81,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 <h2 className="text-xl">{title}</h2>
                 <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
-                        {title !== 'Country Visa Types' && (
+                    {title !== 'Country Visa Types' && title !== 'Deleted Application' && (
                             <div>
                                 <button type="button" className="btn btn-primary" onClick={() => setIsOpen(true)}>
                                     <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
@@ -127,7 +131,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
                 <div className="table-responsive">
-                    <PaginationTable data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} />
+                    <PaginationTable title={title} data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} />
                 </div>
             </div>
 

@@ -158,7 +158,7 @@ const DeletedApplication: React.FC<{ listapplication: any }> = ({ listapplicatio
     return (
         <>
             <TableLayout
-                title="Deleted Application "
+                title="Deleted Application"
                 setData={setData}
                 filterby="country"
                 handleDelete={handleDelete}

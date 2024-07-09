@@ -115,7 +115,7 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data, leaddata, passpor
     return (
         <>
             <div>
-            {/* <ul className="mb-5 flex space-x-2 rtl:space-x-reverse">
+                {/* <ul className="mb-5 flex space-x-2 rtl:space-x-reverse">
                 <li>
                     <Link href="/" className="text-primary hover:underline">
                         Dashboard
@@ -125,56 +125,66 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data, leaddata, passpor
                     <span>Dashboard Home</span>
                 </li>
             </ul> */}
-            <Attendence />
-            <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
-                <div className="mb-4 mt-4">
-                    <div className="flex items-center justify-between">
-                        <h2 className="mb-4 mt-4">Today Submissions</h2>
-                        <p className="font-extrabold">1</p>
+                <Attendence />
+                <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
+                    <div className="mb-4 mt-4">
+                        <div className="flex items-center justify-between">
+                            <h2 className="mb-4 mt-4">Today Submissions</h2>
+                            <p className="font-extrabold">1</p>
+                        </div>
+                        <PaginationTable data={filterItem} tableColumns={tableColumns} title={'dashboard'} />
                     </div>
-                    <PaginationTable data={filterItem} tableColumns={tableColumns} title={'dashboard'} />
+                    <div className="mb-4 mt-4">
+                        <div className="flex items-center justify-between">
+                            <h2 className="mb-4 mt-4">Today Passports Collections </h2>
+                            <p className="font-extrabold">1</p>
+                        </div>
+                        <PaginationTable data={passportsdata} tableColumns={tableColumnspassports} title={'dashboard'} />
+                    </div>
                 </div>
-                <div className="mb-4 mt-4">
-                    <div className="flex items-center justify-between">
-                        <h2 className="mb-4 mt-4">Today Passports Collections </h2>
-                        <p className="font-extrabold">1</p>
-                    </div>
 
-                    <PaginationTable data={passportsdata} tableColumns={tableColumnspassports} title={'dashboard'} />
-                </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3 xl:grid-cols-2">
-                <div className="mb-4 mt-4">
-                    <div className="flex items-center justify-between">
-                        <h2 className="mb-4 mt-4">Today's Documents Pickup - lead level </h2>
-                        <p className="font-extrabold">1</p>
+                <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
+                    <div className="mb-4 mt-4">
+                        <div className="flex items-center justify-between">
+                            <h2 className="mb-4 mt-4">Today's Documents Pickup - lead level </h2>
+                            <p className="font-extrabold">1</p>
+                        </div>
+                        <PaginationTable data={leaddata} tableColumns={tableColumnsLead} title={'dashboard'} handleEdit={handleEdit} />
                     </div>
-                    <PaginationTable data={leaddata} tableColumns={tableColumnsLead} title={'dashboard'} />
-                </div>
-                <div className="mb-4 mt-4">
-                    <div className="flex items-center justify-between">
-                        <h2 className="mb-4 mt-4">Today’s Document Pickup - application level</h2>
-                        <p className="font-extrabold">1</p>
+                    <div className="mb-4 mt-4">
+                        <div className="flex items-center justify-between">
+                            <h2 className="mb-4 mt-4">Today’s Document Pickup - application level</h2>
+                            <p className="font-extrabold">1</p>
+                        </div>
+                        <PaginationTable data={applicationdata} tableColumns={tableColumnsapplication} title={'dashboard'} />
                     </div>
-                    <PaginationTable data={applicationdata} tableColumns={tableColumnsapplication} title={'dashboard'} />
                 </div>
-            </div>
-            <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-                <PaginationTable data={leaddata} tableColumns={tableColumnsLead} title={"dashboard"} handleEdit={handleEdit}/>
-               
-            </div>
-        </div>
 
-        <LeadManagementActionModal 
-        isOpen={isOpen}
-        setAddData={setAddData}
-        handleInputChange={handleInputChange}
-        setIsOpen={setIsOpen}
-        handleSave={handleSave}
-        addData={addData}
-        isEdit={isEdit}
-        setIsEdit={setIsEdit}
-        />
+                <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
+                    <div className="mb-4 mt-4">
+                        <div className="flex items-center justify-between">
+                            <h2 className="mb-4 mt-4">Today's Passport Drop Off</h2>
+                            <p className="font-extrabold">1</p>
+                        </div>
+                        <PaginationTable data={leaddata} tableColumns={tableColumnsLead} title={"dashboard"}  />
+                    </div>
+                    
+                </div>
+                
+
+
+            </div>
+
+            <LeadManagementActionModal
+                isOpen={isOpen}
+                setAddData={setAddData}
+                handleInputChange={handleInputChange}
+                setIsOpen={setIsOpen}
+                handleSave={handleSave}
+                addData={addData}
+                isEdit={isEdit}
+                setIsEdit={setIsEdit}
+            />
         </>
     );
 };
