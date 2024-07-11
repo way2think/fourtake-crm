@@ -28,7 +28,7 @@ interface TableLayoutProps {
     exportColumns?: string[];
     handleDelete: any;
     setData: any;
-    filterby: string;
+    filterby: any;
 }
 
 const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setData, totalPages, handleDelete, handleSubmit, tableColumns, ActionModal, exportColumns, Filtersetting }) => {
@@ -37,7 +37,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
 
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
     const [isEditAddNote, setIsEditAddNote] = useState(false);
-
 
     const [search, setSearch] = useState('');
     const [filterItem, setFilterItem] = useState(data);
@@ -49,8 +48,16 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const router = useRouter();
 
     useEffect(() => {
-        setFilterItem(data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase())));
-    }, [search, data]);
+        let filterItems;
+
+        if (Array.isArray(filterby)) {
+            filterItems = data.filter((item: any) => filterby.some((filter: any) => item[filter]?.toLowerCase().includes(search.toLowerCase())));
+        } else {
+            filterItems = data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase()));
+        }
+
+        setFilterItem(filterItems);
+    }, [search, data, filterby]);
 
     const handleEdit = (object: any) => {
         setIsEdit(true);
@@ -60,7 +67,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     };
 
     const handleRestore = (object: any) => {
-        alert(object)
+        alert(object);
     };
 
     const handleInputChange = (e: any) => {
@@ -158,15 +165,9 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 setIsEdit={setIsEdit}
             />
 
-            <ReuseActionModal
-                isOpen={isOpenAddNote}
-                setIsOpen={setIsOpenAddNote}
-                width=""
-            >
-                <AddNote isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote}  />
+            <ReuseActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} width="">
+                <AddNote isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} />
             </ReuseActionModal>
-
-            
         </>
     );
 };

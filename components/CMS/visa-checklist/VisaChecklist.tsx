@@ -45,8 +45,8 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
 
     const tableColumns = [
         { accessor: 'country', textAlign: 'left', title: 'Country' },
-        { accessor: 'visatype', textAlign: 'left', title: 'Visa Country' },
-        { accessor: 'embassy', textAlign: 'left', title: 'Location' },
+        { accessor: 'type', textAlign: 'left', title: 'Visa type' },
+        { accessor: 'embassy', textAlign: 'left', title: 'Embassy' },
         // { accessor: 'email', textAlign: 'left' },
         // { accessor: 'address', textAlign: 'left' },
         // {
@@ -57,9 +57,6 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
         //     },
         // },
     ];
-    // const handleSave = () => {
-    //     console.log('HandleSave');
-    // };
 
     const handleDelete = (row: any) => {
         Swal.fire({
@@ -79,13 +76,13 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
         });
     };
 
-    const exportColumns = ['country', 'visatype', 'embassy'];
+    const exportColumns = ['country', 'type', 'embassy'];
     const handleSubmit = (value: any) => {
         if (value.country == '' || value.country == null) {
             showMessage('Select country ', 'error');
             return false;
         }
-        if (value.visatype == '' || value.visatype == null) {
+        if (value.type == '' || value.type == null) {
             showMessage('Select Visa type', 'error');
             return false;
         }
@@ -93,50 +90,11 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
             showMessage('Select Embassy Location', 'error');
             return false;
         }
-        // if (!isValidName(params.lastname)) {
-        //     showMessage('Last Name is required.', 'error');
-        //     return true;
-        // }
-        // if (!isValidEmail(params.email)) {
-        //     showMessage('Invalid Email.', 'error');
-        //     return true;
-        // }
-        // if (params.center == '') {
-        //     showMessage('Select Center', 'error');
-        //     return true;
-        // }
-
-        // if (params.phone?.length < 0 || params.phone?.length > 10) {
-        //     showMessage('Invalid phone number', 'error');
-        //     return true;
-        // }
-        // if (!isValidPassword(params.password)) {
-        //     showMessage('Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-        //     return true;
-        // }
-        // if (!isValidPassword(params.confirmpassword)) {
-        //     showMessage('Confirm Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-        //     return true;
-        // }
-        // if (params.password !== params.confirmpassword) {
-        //     showMessage('Passwords must match', 'error');
-        //     return true;
-        // }
-        // if (params.designation === '') {
-        //     showMessage('Designation is required.', 'error');
-        //     return true;
-        // }
-
-        // if (params.address == '') {
-        //     showMessage('Enter Address', 'error');
-        //     return true;
-        // }
-
         if (value.id) {
             //update user
             let formData: any = data.find((d: any) => d.id === value.id);
             formData.country = value.country;
-            formData.visatype = value.visatype;
+            formData.type = value.type;
             formData.embassy = value.embassy;
             formData.checklist = value.checklist;
             formData.fee = value.fee;
@@ -150,7 +108,7 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
             let formData = {
                 id: +maxUserId + 1,
                 country: value.country,
-                visatype: value.visatype,
+                type: value.type,
                 embassy: value.embassy,
                 checklist: value.checklist,
                 fee: value.fee,
@@ -166,6 +124,7 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
         // setAddContactModal(false);
         // setIsEdit(false);
     };
+    console.log('data set', data);
     return (
         <>
             {/* <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
@@ -187,7 +146,7 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
                 handleDelete={handleDelete}
                 setData={setData}
                 exportColumns={exportColumns}
-                filterby={'country'} // handleSave ={handleSave}
+                filterby={['country', 'type', 'embassy']} // handleSave ={handleSave}
                 handleSubmit={handleSubmit}
             />
         </>
