@@ -75,6 +75,7 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                     <div className="mb-2">
                         {/* <VisafeeEditor handleInputChange={handleInputChange} setAddData={setAddData} addData={addData} /> */}
                         <label htmlFor="Checklist">Visa Fee information*</label>
+                      
                         <VisafeeEditorJodit  handleInputChange={handleInputChange} setAddData={setAddData} addData={addData}/>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 // components/MarkdownEditor.tsx
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import './MarkDownEditor.css';
 
@@ -11,7 +11,19 @@ interface VisafeeEditorProps {
 
 const VisafeeEditor: React.FC<VisafeeEditorProps> = ({ handleInputChange, addData, setAddData }) => {
     const editor = useRef(null);
-    const [value, setValue] = useState<string>(addData?.fee || '');
+    const [value, setValue] = useState<string>('');
+
+    useEffect(() => {
+        const escapeHtml = (html: any) => {
+            return html
+                .replace(/\\/g, '\\\\') // Escape backslashes
+                .replace(/"/g, '\\"') // Escape double quotes
+                .replace(/\n/g, '\\n') // Escape new lines
+                .replace(/\r/g, '\\r'); // Escape carriage returns
+        };
+        const result = escapeHtml(value);
+        console.log('value of jodit editor', result);
+    }, [value]);
 
     const config = useMemo(
         () => ({
@@ -23,19 +35,13 @@ const VisafeeEditor: React.FC<VisafeeEditorProps> = ({ handleInputChange, addDat
 
     const handleChange = (newValue: string) => {
         setValue(newValue);
-        setAddData(prev => ({ ...prev, fee: newValue }));
+        setAddData((prev) => ({ ...prev, fee: newValue }));
     };
 
     return (
         <div>
             {/* <label htmlFor="Checklist">Visa Fee information*</label> */}
-            <JoditEditor
-                ref={editor}
-                value={value}
-                config={config}
-                onBlur={(newContent) => handleChange(newContent)}
-                onChange={newContent => handleChange(newContent)}
-            />
+            <JoditEditor ref={editor} value={value} config={config} onBlur={(newContent) => handleChange(newContent)} onChange={(newContent) => handleChange(newContent)} />
         </div>
     );
 };
