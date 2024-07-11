@@ -37,16 +37,15 @@ interface ActionModalProps {
 }
 
 const ActionModal: React.FC<ActionModalProps> = ({ isOpen, setIsOpen, handleSave, editData, children, width, height }) => {
-
     const handleClose = () => {
         // Do nothing to prevent closing on outside click
         //setIsOpen(false)
         // add this Copy <DialoonClose={() => setIsOpen(false)}g as="div" open={isOpen} > if you want outside click outside click hide
-      };
+    };
 
     return (
         <>
-            <Transition appear show={isOpen} as={Fragment} >
+            <Transition appear show={isOpen} as={Fragment}>
                 <Dialog as="div" open={isOpen} onClose={handleClose}>
                     <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
                         <div className="fixed inset-0 " />
@@ -73,5 +72,3 @@ const ActionModal: React.FC<ActionModalProps> = ({ isOpen, setIsOpen, handleSave
 };
 
 export default ActionModal;
-
-
