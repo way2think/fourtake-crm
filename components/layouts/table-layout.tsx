@@ -13,7 +13,8 @@ import IconX from '../icon/icon-x';
 import CountryActionModal from '../CMS/countries/CountryActionModal';
 import IconFile from '../icon/icon-zip-file';
 import PasswordActionModal from '../user-management/PasswordActionModal';
-import { useRouter } from 'next/navigation';
+import ReuseActionModal from '../Reusable/Modal/ActionModal';
+import AddNote from '../popup/LeadListAddNote';
 
 interface TableLayoutProps {
     title: string;
@@ -32,6 +33,11 @@ interface TableLayoutProps {
 const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setData, totalPages, handleDelete, handleSubmit, tableColumns, ActionModal, exportColumns, Filtersetting }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
+
+    const [isOpenAddNote, setIsOpenAddNote] = useState(false);
+    const [isEditAddNote, setIsEditAddNote] = useState(false);
+
+
     const [search, setSearch] = useState('');
     const [filterItem, setFilterItem] = useState(data);
     const [addData, setAddData] = useState({});
@@ -50,6 +56,10 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
         setIsOpen(true);
         setAddData(object);
         //router.push(`/manage-visa`);
+    };
+
+    const handleRestore = (object: any) => {
+        alert(object)
     };
 
     const handleInputChange = (e: any) => {
@@ -81,7 +91,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 <h2 className="text-xl">{title}</h2>
                 <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
-                    {title !== 'Country Visa Types' && title !== 'Deleted Application' && (
+                        {title !== 'Country Visa Types' && title !== 'Deleted Application' && (
                             <div>
                                 <button type="button" className="btn btn-primary" onClick={() => setIsOpen(true)}>
                                     <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
@@ -131,7 +141,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
                 <div className="table-responsive">
-                    <PaginationTable title={title} data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} />
+                    <PaginationTable title={title} data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} handleRestore={handleRestore} />
                 </div>
             </div>
 
@@ -146,6 +156,16 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 isEdit={isEdit}
                 setIsEdit={setIsEdit}
             />
+
+            <ReuseActionModal
+                isOpen={isOpenAddNote}
+                setIsOpen={setIsOpenAddNote}
+                width=""
+            >
+                <AddNote isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote}  />
+            </ReuseActionModal>
+
+            
         </>
     );
 };

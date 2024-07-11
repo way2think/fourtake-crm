@@ -18,11 +18,11 @@ interface CountViewProps {
 
 const CountView: React.FC<CountViewProps> = ({ isOpen, setIsOpen, headding, tableData, tableColumns, secondTableData }) => {
 
-    console.log(secondTableData);
+    //console.log(secondTableData);
     const [visibleCountryIndex, setVisibleCountryIndex] = useState<number | null>(null);
 
     const handleRowClick = (index: number) => {
-        debugger;
+       
         setVisibleCountryIndex(visibleCountryIndex === index ? null : index);
     };
     return (

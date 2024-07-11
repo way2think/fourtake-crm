@@ -5,22 +5,24 @@ import IconEye from '../../icon/icon-eye';
 import IconEdit from '../../icon/icon-edit';
 import IconTrash from '../../icon/icon-trash';
 import IconCaretDown from '@/components/icon/icon-caret-down';
+import IconRestore from '@/components/icon/icon-restore';
 
 interface PaginationTableProps {
+  title?: string;
   data: any[];
   tableColumns: any[];
+  actionhide?: boolean;
   handleEdit?: (row: any) => void;
   handleDelete?: (row: any) => void;
-  title?: string;
   ReuseActionModalShow?: (row: any) => void;
-  actionhide?: boolean;
+  handleRestore?: (row: any) => void;
 }
 
 interface Row {
   [key: string]: any;
 }
 
-const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow, actionhide }) => {
+const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow, actionhide, handleRestore }) => {
   const PAGE_SIZES = [10, 15, 20];
   const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
   const [page, setPage] = useState(1);
@@ -33,7 +35,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
   const columns = useMemo(() => {
     const baseColumns = [...tableColumns];
 
-    if (!( actionhide === true && title !== 'Status Wise Report')) {
+    if (!(actionhide === true && title !== 'Status Wise Report')) {
       baseColumns.push({
         accessor: 'actions',
         title: <div style={{ marginRight: '6px' }}>Actions</div>,
@@ -44,6 +46,12 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
               <>
                 <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow?.(row)}>
                   <IconEye size={20} />
+                </ActionIcon>
+              </>
+            ) : title === 'Deleted Application' ? (
+              <>
+                <ActionIcon size="sm" variant="subtle" color="yellow" onClick={() => handleRestore?.(row)}>
+                  <IconRestore size={20} />
                 </ActionIcon>
               </>
             ) : (

@@ -6,6 +6,7 @@ import ComponentsFormDatePickerBasic from './components-form-date-picker-basic';
 import ComponentsFormDatePickerTime from './components-form-date-picker-time';
 import TableLayout from '@/components/layouts/table-layout';
 import { useEffect, useState } from 'react';
+import AddNote from '@/components/popup/LeadListAddNote';
 
 interface LeadManagementActionModalProps {
     isOpen: any;
@@ -18,6 +19,11 @@ interface LeadManagementActionModalProps {
     setIsEdit?: any;
 }
 const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ isEdit, setIsEdit, isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
+
+    const [isOpenAddNote, setIsOpenAddNote] = useState(false);
+    const [leadNote, setLeadNote] = useState<string>(''); // Add state for the textarea
+
+
     const [setMail, setSetEmail] = useState<string>();
     const [docPickup, setDocPickup] = useState(false);
     console.log(docPickup)
@@ -50,6 +56,15 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     const handleCheckBoxChange = (e: any) => {
         const { id, checked } = e.target;
         setAddData((prev: any) => ({ ...prev, [id]: checked }));
+    };
+
+    const handleButtonClickShowAddNote = () => {
+        // Your button click logic here
+        setIsOpenAddNote(true)
+        // You can perform additional actions here
+    };
+    const handleLeadNoteChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setLeadNote(e.target.value);
     };
 
     return (
@@ -311,7 +326,13 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             </div>
                             <div className="grid grid-cols-1 gap-5 md:grid-cols-1">
                                 <div className="mb-5">
-                                    <label htmlFor="leadnote">Lead Note</label>
+                                    <label htmlFor="leadnote" style={{ display: 'inline-block' }}>Lead Note</label>
+                                    <button className="btn btn-primary ml-5" style={{ marginLeft: '20px', borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px', display: 'inline-block' }}
+                                        onClick={handleButtonClickShowAddNote}
+                                    >
+                                        Add Note
+                                    </button>
+
                                     <textarea
                                         id="leadnote"
                                         rows={3}
@@ -388,6 +409,67 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
 
 
 
+                </div>
+            </ActionModal>
+
+            <ActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} handleSave={handleSave} width="max-w-5xl">
+                <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
+                    <h5 className="text-lg font-bold">Lead Note</h5>
+                    <button
+                        onClick={() => {
+                            setIsOpenAddNote(false);
+                            setAddData({});
+                            setIsEdit(true);
+                        }}
+                        type="button"
+                        className="text-white-dark hover:text-dark"
+                    >
+                        <IconX />
+                    </button>
+                </div>
+                <div className="p-5">
+                    <textarea
+                        id="leadnote"
+                        rows={3}
+                        value={leadNote} // Bind the textarea value to the state
+                        onChange={handleLeadNoteChange} // Add onChange handler to update the state
+                        placeholder="Enter Lead Note"
+                        className="form-textarea min-h-[150px] resize-none"
+                    ></textarea>
+                    <textarea
+                        id="leadnote"
+                        rows={3}
+                        value={addData?.leadnote}
+                        onChange={(e) => handleInputChange(e)}
+                        placeholder="Enter Lead Note"
+                        className="form-textarea
+                                min-h-[80px] resize-none"
+                    ></textarea>
+                    <input
+                                            id="mail"
+                                            type="text"
+                                            placeholder="Enter Email"
+                                            value={setMail}
+                                            onChange={(e) => setSetEmail(e.target.value)}
+                                            className="form-input ltr:rounded-r-none rtl:rounded-l-none"
+                                        />
+                    
+                    <div className="mt-8 flex items-center justify-end">
+                        <button
+                            onClick={() => {
+                                setIsOpenAddNote(false);
+                                setAddData({});
+                                setIsEdit(true);
+                            }}
+                            type="button"
+                            className="btn btn-outline-danger"
+                        >
+                            Cancel
+                        </button>
+                        <button onClick={handleSave} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
+                            Create
+                        </button>
+                    </div>
                 </div>
             </ActionModal>
         </>
