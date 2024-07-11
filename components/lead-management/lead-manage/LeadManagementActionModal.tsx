@@ -455,66 +455,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                 </div>
             </ActionModal>
 
-            <ActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} handleSave={handleSave} width="max-w-5xl">
-                <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                    <h5 className="text-lg font-bold">Lead Note</h5>
-                    <button
-                        onClick={() => {
-                            setIsOpenAddNote(false);
-                            setAddData({});
-                            setIsEdit(true);
-                        }}
-                        type="button"
-                        className="text-white-dark hover:text-dark"
-                    >
-                        <IconX />
-                    </button>
-                </div>
-                <div className="p-5">
-                    <textarea
-                        id="leadnote"
-                        rows={3}
-                        value={leadNote} // Bind the textarea value to the state
-                        onChange={handleLeadNoteChange} // Add onChange handler to update the state
-                        placeholder="Enter Lead Note"
-                        className="form-textarea min-h-[150px] resize-none"
-                    ></textarea>
-                    <textarea
-                        id="leadnote"
-                        rows={3}
-                        value={addData?.leadnote}
-                        onChange={(e) => handleInputChange(e)}
-                        placeholder="Enter Lead Note"
-                        className="form-textarea
-                                min-h-[80px] resize-none"
-                    ></textarea>
-                    <input
-                                            id="mail"
-                                            type="text"
-                                            placeholder="Enter Email"
-                                            value={setMail}
-                                            onChange={(e) => setSetEmail(e.target.value)}
-                                            className="form-input ltr:rounded-r-none rtl:rounded-l-none"
-                                        />
-                    
-                    <div className="mt-8 flex items-center justify-end">
-                        <button
-                            onClick={() => {
-                                setIsOpenAddNote(false);
-                                setAddData({});
-                                setIsEdit(true);
-                            }}
-                            type="button"
-                            className="btn btn-outline-danger"
-                        >
-                            Cancel
-                        </button>
-                        <button onClick={handleSave} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                            Create
-                        </button>
-                    </div>
-                </div>
-            </ActionModal>
+            
         </>
     );
 };
