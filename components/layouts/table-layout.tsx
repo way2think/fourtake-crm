@@ -15,6 +15,7 @@ import IconFile from '../icon/icon-zip-file';
 import PasswordActionModal from '../user-management/PasswordActionModal';
 import ReuseActionModal from '../Reusable/Modal/ActionModal';
 import AddNote from '../popup/LeadListAddNote';
+import { useRouter } from 'next/navigation';
 
 interface TableLayoutProps {
     title: string;
@@ -45,7 +46,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
 
-    //const router = useRouter();
+    const router = useRouter();
 
     useEffect(() => {
         setFilterItem(data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase())));

@@ -333,7 +333,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         Add Note
                                     </button>
 
-                                    <textarea
+                                    {/* <textarea
                                         id="leadnote"
                                         rows={3}
                                         value={addData?.leadnote}
@@ -341,7 +341,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         placeholder="Enter Lead Note"
                                         className="form-textarea
                                 min-h-[80px] resize-none"
-                                    ></textarea>
+                                    ></textarea> */}
                                 </div>
                             </div>
 
@@ -433,22 +433,13 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         rows={3}
                         value={leadNote} // Bind the textarea value to the state
                         onChange={handleLeadNoteChange} // Add onChange handler to update the state
-                        placeholder="Enter Lead Note"
+                        placeholder="It's not Edited"
                         className="form-textarea min-h-[150px] resize-none"
-                    ></textarea>
-                    <textarea
-                        id="leadnote"
-                        rows={3}
-                        value={addData?.leadnote}
-                        onChange={(e) => handleInputChange(e)}
-                        placeholder="Enter Lead Note"
-                        className="form-textarea
-                                min-h-[80px] resize-none"
                     ></textarea>
                     <input
                                             id="mail"
                                             type="text"
-                                            placeholder="Enter Email"
+                                            placeholder="It's not Edited"
                                             value={setMail}
                                             onChange={(e) => setSetEmail(e.target.value)}
                                             className="form-input ltr:rounded-r-none rtl:rounded-l-none"
