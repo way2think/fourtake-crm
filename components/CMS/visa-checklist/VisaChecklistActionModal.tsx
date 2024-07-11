@@ -2,6 +2,7 @@ import MarkdownEditor from '@/components/Reusable/Markdown-Editor/MarkDownEditor
 import VisafeeEditor from '@/components/Reusable/Markdown-Editor/VisafeeEditor';
 import VisafeeEditorJodit from '@/components/Reusable/Markdown-Editor/VisafeeEditorJodit';
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
+import NewComponentsFormsFileUploadMultiple from '@/components/Reusable/file-upload/NewComponentsFormsFileUploadSingle';
 import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
 import IconX from '@/components/icon/icon-x';
 
@@ -80,8 +81,11 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                     </div>
                 </div>
                 <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-1">
-                    <div className="mb-2">
+                    {/* <div className="mb-2">
                         <ComponentsFormsFileUploadSingle setAddData={setAddData} addData={addData} />
+                    </div> */}
+                    <div className="mb-2">
+                        <NewComponentsFormsFileUploadMultiple setAddData={setAddData} addData={addData} />
                     </div>
                 </div>
                 <div className="mt-4 flex items-center justify-end">
