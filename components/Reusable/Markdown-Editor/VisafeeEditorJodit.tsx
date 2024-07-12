@@ -7,11 +7,12 @@ interface VisafeeEditorProps {
     handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     addData: { [key: string]: any };
     setAddData: React.Dispatch<React.SetStateAction<{ [key: string]: any }>>;
+    title: string;
 }
 
-const VisafeeEditor: React.FC<VisafeeEditorProps> = ({ handleInputChange, addData, setAddData }) => {
+const VisafeeEditor: React.FC<VisafeeEditorProps> = ({ title, handleInputChange, addData, setAddData }) => {
     const editor = useRef(null);
-    const [value, setValue] = useState<string>('');
+    const [value, setValue] = useState<string>(addData[title] || '');
 
     useEffect(() => {
         const escapeHtml = (html: any) => {
@@ -35,7 +36,7 @@ const VisafeeEditor: React.FC<VisafeeEditorProps> = ({ handleInputChange, addDat
 
     const handleChange = (newValue: string) => {
         setValue(newValue);
-        setAddData((prev) => ({ ...prev, fee: newValue }));
+        setAddData((prev) => ({ ...prev, [title]: newValue }));
     };
 
     return (

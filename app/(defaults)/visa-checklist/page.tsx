@@ -12,15 +12,21 @@ const Sales = () => {
     const data = [
         {
             id: 1,
-            country:"france",
-            visatype: 'Business',
-            embassy:'delhi'
+            country: 'france',
+            type: 'Business',
+            embassy: 'delhi',
+            checklist: ' <p>test1</p>',
+            fee: ' <p>test fee1</p>',
+            form: '',
         },
         {
             id: 2,
-            country:"london",
-            visatype: 'tourist',
-            embassy:'chennai'
+            country: 'london',
+            type: 'tourist',
+            embassy: 'chennai',
+            checklist: ' <p>test2</p>',
+            fee: ' <p>test fee2</p>',
+            form: '',
         },
     ];
     return <VisaChecklist visachecklistdata={data} />;

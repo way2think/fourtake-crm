@@ -16,12 +16,18 @@ interface VisaChecklistActionModalProps {
 }
 
 const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
-    
     return (
         <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-4xl">
             <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
                 <h5 className="text-lg font-bold">Add Visa Checklist</h5>
-                <button onClick={() => setIsOpen(false)} type="button" className="text-white-dark hover:text-dark">
+                <button
+                    onClick={() => {
+                        setIsOpen(false);
+                        setAddData({});
+                    }}
+                    type="button"
+                    className="text-white-dark hover:text-dark"
+                >
                     <IconX />
                 </button>
             </div>
@@ -43,12 +49,12 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                     </div>
                     <div className="dropdown">
                         <label htmlFor="role">Visa Category*</label>
-                        <select className="form-input" defaultValue="" id="visatype" value={addData?.visatype} onChange={(e) => handleInputChange(e)}>
+                        <select className="form-input" defaultValue="" id="type" value={addData?.type} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
                                 Visa Type
                             </option>
-                            <option value="Chennai">Business Visa</option>
-                            <option value="Vellore">Visitor Visa</option>
+                            <option value="Business">Business Visa</option>
+                            <option value="Visitor">Visitor Visa</option>
                         </select>
                     </div>
                 </div>
@@ -69,15 +75,15 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                     <div className="mb-2">
                         {/* <MarkdownEditor handleInputChange={handleInputChange} setAddData={setAddData} addData={addData} /> */}
                         <label htmlFor="Checklist">Checklist*</label>
-                        <VisafeeEditorJodit  handleInputChange={handleInputChange} setAddData={setAddData} addData={addData}/>
+                        <VisafeeEditorJodit title={'checklist'} handleInputChange={handleInputChange} setAddData={setAddData} addData={addData} />
                     </div>
                 </div>
                 <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-1">
                     <div className="mb-2">
                         {/* <VisafeeEditor handleInputChange={handleInputChange} setAddData={setAddData} addData={addData} /> */}
                         <label htmlFor="Checklist">Visa Fee information*</label>
-                      
-                        <VisafeeEditorJodit  handleInputChange={handleInputChange} setAddData={setAddData} addData={addData}/>
+
+                        <VisafeeEditorJodit title={'fee'} handleInputChange={handleInputChange} setAddData={setAddData} addData={addData} />
                     </div>
                 </div>
                 <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-1">
@@ -89,7 +95,14 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                     </div>
                 </div>
                 <div className="mt-4 flex items-center justify-end">
-                    <button onClick={() => setIsOpen(false)} type="button" className="btn btn-outline-danger">
+                    <button
+                        onClick={() => {
+                            setIsOpen(false);
+                            setAddData({});
+                        }}
+                        type="button"
+                        className="btn btn-outline-danger"
+                    >
                         Cancel
                     </button>
                     <button onClick={handleSave} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
