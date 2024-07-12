@@ -188,6 +188,7 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
         // setAddContactModal(false);
         // setIsEdit(false);
     };
+    
     return (
         <>
             <ul className="mb-3 flex space-x-2 rtl:space-x-reverse">

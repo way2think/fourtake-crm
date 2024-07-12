@@ -5,7 +5,7 @@ import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import ComponentsFormDatePickerBasic from './components-form-date-picker-basic';
 import ComponentsFormDatePickerTime from './components-form-date-picker-time';
 import TableLayout from '@/components/layouts/table-layout';
-import { useEffect, useState, ChangeEvent  } from 'react';
+import { useEffect, useState, ChangeEvent } from 'react';
 import AddNote from '@/components/popup/LeadListAddNote';
 
 interface LeadManagementActionModalProps {
@@ -20,17 +20,18 @@ interface LeadManagementActionModalProps {
 }
 const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ isEdit, setIsEdit, isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
-    const [leadNote1, setLeadNote1] = useState<any>('');
     const [setMail, setSetEmail] = useState<string>();
     const [docPickup, setDocPickup] = useState(false);
 
     const [leadNote, setLeadNote] = useState<string>(''); // Add state for the textarea
-    const [leadNotes, setLeadNotes] = useState<string[]>([]); // State for storing multiple notes
+    const [leadNotes, setLeadNotes] = useState<string[]>(addData.leadnote); // State for storing multiple notes
 
+    console.log('lead note', addData, leadNotes);
 
+    useEffect(() => {
+        setLeadNotes(addData.leadnote);
+    }, [addData?.leadnote]);
 
-    //console.log(docPickup);
-    
     const initialFollowUps = [
         {
             interactionType: 'Call',
@@ -47,7 +48,9 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
             createdDate: '2024-06-05',
         },
     ];
+
     const [followUps, setFollowUps] = useState(initialFollowUps);
+
     useEffect(() => {
         if (addData.email) {
             setSetEmail(addData.email);
@@ -56,15 +59,12 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
             //setDocPickup(true)
         }
     }, [addData]);
+
     const handleCheckBoxChange = (e: any) => {
         const { id, checked } = e.target;
         setAddData((prev: any) => ({ ...prev, [id]: checked }));
     };
 
-
-
-    
-    
     const [modalTitle, setModalTitle] = useState<string>('Add Note');
     const [actionButtonText, setActionButtonText] = useState<string>('Add Note');
     const [currentIndex, setCurrentIndex] = useState<number | null>(null); // Track index for editing
@@ -113,9 +113,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         }
         handleCloseModal();
     };
-
-
-    //text ---//
 
     return (
         <>
@@ -377,29 +374,19 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     <label htmlFor="leadnote" style={{ display: 'inline-block' }}>
                                         Lead Note
                                     </label>
-                                    <button
-                                        className="btn btn-primary ml-5"
-                                        style={{ marginLeft: '20px', display: 'inline-block' }}
-                                        onClick={handleButtonClickShowAddNote}
-                                    >
+                                    <button className="btn btn-primary ml-5" style={{ marginLeft: '20px', display: 'inline-block' }} onClick={handleButtonClickShowAddNote}>
                                         Add Note
                                     </button>
 
                                     <div className="mt-3">
-                                        {leadNotes.map((note, index) => (
-                                            <div key={index} className="flex items-center justify-between border p-2 rounded mt-2">
+                                        {leadNotes?.map((note: string, index: number) => (
+                                            <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
                                                 <div>{note}</div>
                                                 <div className="flex items-center">
-                                                    <button
-                                                        className="btn btn-outline-primary btn-sm mr-2"
-                                                        onClick={() => handleEditNoteClick(index)}
-                                                    >
+                                                    <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
                                                         Edit
                                                     </button>
-                                                    <button
-                                                        className="btn btn-outline-danger btn-sm"
-                                                        onClick={() => handleDeleteNote(index)}
-                                                    >
+                                                    <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
                                                         Delete
                                                     </button>
                                                 </div>
@@ -420,7 +407,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                                 onChange={handleLeadNoteChange}
                                                 value={leadNote}
                                                 placeholder="Enter your note here"
-                                                className="w-full border rounded-lg p-2 outline-none min-h-[150px]"
+                                                className="min-h-[150px] w-full rounded-lg border p-2 outline-none"
                                             />
                                             <div className="mt-3">
                                                 <button onClick={handleNoteAction} className="btn btn-primary">
@@ -429,14 +416,9 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                             </div>
                                         </div>
                                     </ActionModal>
-
-
                                 </div>
 
-
-
-
-                                    {/* <textarea
+                                {/* <textarea
                                         id="leadnote"
                                         rows={3}
                                         value={addData?.leadnote}
@@ -446,39 +428,38 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 min-h-[80px] resize-none"
                                     ></textarea> */}
                             </div>
-
-                                {/* Add the table here */}
-                                <div className="mt-8">
-                                    <h5 className="mb-4 text-lg font-bold">Follow Up History</h5>
-                                    <table className="min-w-full border bg-white">
-                                        <thead>
-                                            <tr>
-                                                <th className="border-b px-4 py-2">Follow Up No</th>
-                                                <th className="border-b px-4 py-2">Interaction Type</th>
-                                                <th className="border-b px-4 py-2">Status</th>
-                                                <th className="border-b px-4 py-2">Next Follow Up</th>
-                                                <th className="border-b px-4 py-2">Remarks</th>
-                                                <th className="border-b px-4 py-2">Created Date</th>
+                            {/* Add the table here */}
+                            <div className="mt-8">
+                                <h5 className="mb-4 text-lg font-bold">Follow Up History</h5>
+                                <table className="min-w-full border bg-white">
+                                    <thead>
+                                        <tr>
+                                            <th className="border-b px-4 py-2">Follow Up No</th>
+                                            <th className="border-b px-4 py-2">Interaction Type</th>
+                                            <th className="border-b px-4 py-2">Status</th>
+                                            <th className="border-b px-4 py-2">Next Follow Up</th>
+                                            <th className="border-b px-4 py-2">Remarks</th>
+                                            <th className="border-b px-4 py-2">Created Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {/* Render follow-up details here */}
+                                        {followUps.map((followUp, index) => (
+                                            <tr key={index}>
+                                                <td className="border-b px-4 py-2">{index + 1}</td>
+                                                <td className="border-b px-4 py-2">{followUp.interactionType}</td>
+                                                <td className="border-b px-4 py-2">{followUp.status}</td>
+                                                <td className="border-b px-4 py-2">{followUp.nextFollowUp}</td>
+                                                <td className="border-b px-4 py-2">{followUp.remarks}</td>
+                                                <td className="border-b px-4 py-2">{followUp.createdDate}</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            {/* Render follow-up details here */}
-                                            {followUps.map((followUp, index) => (
-                                                <tr key={index}>
-                                                    <td className="border-b px-4 py-2">{index + 1}</td>
-                                                    <td className="border-b px-4 py-2">{followUp.interactionType}</td>
-                                                    <td className="border-b px-4 py-2">{followUp.status}</td>
-                                                    <td className="border-b px-4 py-2">{followUp.nextFollowUp}</td>
-                                                    <td className="border-b px-4 py-2">{followUp.remarks}</td>
-                                                    <td className="border-b px-4 py-2">{followUp.createdDate}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </>
                     )}
-                            {/* <TableLayout
+                    {/* <TableLayout
                         title="Lead List"
                         setData={setData}
                         filterby="country"
@@ -492,29 +473,24 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         handleSubmit={handleSubmit}
                     /> */}
 
-                            <div className="mt-8 flex items-center justify-end">
-                                <button
-                                    onClick={() => {
-                                        setIsOpen(false);
-                                        setAddData({});
-                                        setIsEdit(false);
-                                    }}
-                                    type="button"
-                                    className="btn btn-outline-danger"
-                                >
-                                    Cancel
-                                </button>
-                                <button onClick={handleSave} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                    Create
-                                </button>
-                            </div>
-
-
-
-                        </div>
-            </ActionModal >
-
-
+                    <div className="mt-8 flex items-center justify-end">
+                        <button
+                            onClick={() => {
+                                setIsOpen(false);
+                                setAddData({});
+                                setIsEdit(false);
+                            }}
+                            type="button"
+                            className="btn btn-outline-danger"
+                        >
+                            Cancel
+                        </button>
+                        <button onClick={handleSave} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
+                            Create
+                        </button>
+                    </div>
+                </div>
+            </ActionModal>
         </>
     );
 };
