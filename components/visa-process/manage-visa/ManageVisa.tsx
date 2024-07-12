@@ -2,7 +2,7 @@
 import IconUserPlus from '@/components/icon/icon-user-plus';
 import IconX from '@/components/icon/icon-x';
 import ComponentsFormDatePickerBasic from '@/components/lead-management/lead-manage/components-form-date-picker-basic';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ManageVisaActionModal from './ManageVisaActionModal';
 import PaginationTable from '@/components/Reusable/Table/PaginationTable';
 import { showMessage } from '@/utils/notification';
@@ -23,9 +23,27 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
         customertype: '',
         traveldate: '',
     });
+    useEffect(() => {
+
+        const editmode = sessionStorage.getItem('iseditmode');
+        debugger;
+        if (editmode == 'true') {
+            const data = sessionStorage.getItem('manageVisaData');
+            if (data) {
+                setAddData(JSON.parse(data));
+            }
+            sessionStorage.setItem('iseditmode', 'false');
+        } else {
+            
+            sessionStorage.setItem('manageVisaData', '');
+        }
+
+
+    }, []);
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [addUser, setAddUser] = useState<any>({});
+    const [manageVisaData, setManageVisaData] = useState<any>(null);
 
     const userData = [
         {
@@ -136,7 +154,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
         });
     };
 
-   
+
 
     const handleSubmit = (value: any) => {
         if (addData.country == '' || addData.country == null) {
@@ -165,7 +183,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
             return false;
         }
 
-        if(applicantDetails.length == 0){
+        if (applicantDetails.length == 0) {
             showMessage('Add User Details', 'error');
             return false;
         }
@@ -210,6 +228,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
         setIsOpen(true);
         setAddUser(object);
     };
+
     return (
         <>
             <div className="flex items-center justify-between bg-[#fff] px-5 py-3 dark:bg-[#121c2c]">

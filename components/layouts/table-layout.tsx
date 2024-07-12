@@ -62,6 +62,14 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const handleEdit = (object: any) => {
 
         if (title == "List Visa Application") {
+            //router.push(`/manage-visa`);
+            // const data = encodeURIComponent(JSON.stringify(object));
+            // const url = `/manage-visa?data=${data}`;
+            // router.push(url);
+            debugger;
+            console.log(object)
+            sessionStorage.setItem('iseditmode', 'true');
+            sessionStorage.setItem('manageVisaData', JSON.stringify(object));
             router.push(`/manage-visa`);
         } else {
             setIsEdit(true);
@@ -72,7 +80,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
 
     };
 
-    
+
 
 
     const handleRestore = (object: any) => {
@@ -178,7 +186,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 <AddNote isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} />
             </ReuseActionModal>
 
-            
+
         </>
     );
 };

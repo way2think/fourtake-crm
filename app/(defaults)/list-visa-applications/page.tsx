@@ -6,13 +6,30 @@ const VisaApplicationList = () => {
         {
             id: 1,
             country: 'India',
-            language: 'tamil,hindi,etc',
-            dailingcode: '+91',
+            isgroup: true,
+            visatype: 'Business Type',
+            nationality: 'India',
+            stateofresidence: 'Kernataka',
+            visaduration: '72 Hours',
+            entrytype: 'Single',
+            traveldate: '13/06/2024',
+            customertype: 'Postal'
+
         },
         {
             id: 2,
-            country: 'America',
+            country: 'Canada',
+            isgroup: false,
+            visatype: 'Vistor Visa',
+            nationality: 'India',
+            stateofresidence: 'Tamil Nadu',
+            visaduration: '3 Months',
+            entrytype: 'Double',
+            traveldate: '13/06/2024',
+            customertype: 'Agent'
         },
+
+
     ];
     return <ListVisaApplication listapplication={data} />;
 };
