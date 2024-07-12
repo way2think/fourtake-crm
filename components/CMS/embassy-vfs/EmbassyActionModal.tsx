@@ -76,7 +76,7 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                                 <option value="Mumbai">Mumbai</option>
                             </select> */}
                             <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-1 ">
-                                <ComponentsFormsSelectMultiselect addData={addData} options={options} setAddData={setAddData} id={'visatypes'} />
+                                <ComponentsFormsSelectMultiselect addData={addData} options={options} setAddData={setAddData} id={'jurisdiction'} />
                             </div>
                         </div>
 

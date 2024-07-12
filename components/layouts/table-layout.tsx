@@ -53,11 +53,20 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     }, [search, data]);
 
     const handleEdit = (object: any) => {
-        setIsEdit(true);
-        setIsOpen(true);
-        setAddData(object);
-        //router.push(`/manage-visa`);
+
+        if (title == "List Visa Application") {
+            router.push(`/manage-visa`);
+        } else {
+            setIsEdit(true);
+            setIsOpen(true);
+            setAddData(object);
+            //console.log(object)
+        }
+
     };
+
+    
+
 
     const handleRestore = (object: any) => {
         alert(object)
@@ -163,10 +172,10 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 setIsOpen={setIsOpenAddNote}
                 width=""
             >
-                <AddNote isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote}  />
+                <AddNote isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} />
             </ReuseActionModal>
 
-            
+
         </>
     );
 };

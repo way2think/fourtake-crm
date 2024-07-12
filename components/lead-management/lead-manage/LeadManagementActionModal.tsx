@@ -379,7 +379,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     </label>
                                     <button
                                         className="btn btn-primary ml-5"
-                                        style={{ marginLeft: '20px', borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px', display: 'inline-block' }}
+                                        style={{ marginLeft: '20px', display: 'inline-block' }}
                                         onClick={handleButtonClickShowAddNote}
                                     >
                                         Add Note

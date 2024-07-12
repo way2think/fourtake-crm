@@ -27,6 +27,7 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'S.NO' },
         { accessor: 'embassy', textAlign: 'left', title: 'Type' },
+        // { accessor: 'jurisdiction', textAlign: 'left', title: 'Jurisdiction' },
         { accessor: 'country', textAlign: 'left', title: 'Visa Country' },
         { accessor: 'name', textAlign: 'left', title: 'Name' },
         { accessor: 'state', textAlign: 'left', title: 'State' },
@@ -52,6 +53,7 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
         });
     };
     const handleSubmit = (value: any) => {
+        debugger;
         if (value.embassy == '' || value.embassy == null) {
             showMessage('Select type - Embassy/VFS', 'error');
             return false;
@@ -74,6 +76,7 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
         }
 
         if (value.id) {
+            debugger;
             //update user
             let formData: any = data.find((d: any) => d.id === value.id);
             formData.embassy = value.embassy;
@@ -89,6 +92,9 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
             formData.submissiondetails = value.submissiondetails;
             formData.collectiondetails = value.collectiondetails;
             formData.processingtime = value.processingtime;
+
+        
+            console.log(formData.jurisdiction)
 
             return formData;
         } else {
