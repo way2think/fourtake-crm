@@ -22,15 +22,24 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
     const [setMail, setSetEmail] = useState<string>();
     const [docPickup, setDocPickup] = useState(false);
-
     const [leadNote, setLeadNote] = useState<string>(''); // Add state for the textarea
-    const [leadNotes, setLeadNotes] = useState<string[]>(addData.leadnote); // State for storing multiple notes
-
-    console.log('lead note', addData, leadNotes);
+    const [leadNotes, setLeadNotes] = useState<string[]>(addData.leadnote || []); // State for storing
+    const [modalTitle, setModalTitle] = useState<string>('Add Note');
+    const [actionButtonText, setActionButtonText] = useState<string>('Add Note');
+    const [currentIndex, setCurrentIndex] = useState<number | null>(null); // Track index for editing
 
     useEffect(() => {
-        setLeadNotes(addData.leadnote);
+        setLeadNotes(addData.leadnote || []);
     }, [addData?.leadnote]);
+
+    useEffect(() => {
+        if (addData.email) {
+            setSetEmail(addData.email || '');
+        }
+        if (addData.docpickupdate) {
+            //setDocPickup(true)
+        }
+    }, [addData]);
 
     const initialFollowUps = [
         {
@@ -51,24 +60,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
 
     const [followUps, setFollowUps] = useState(initialFollowUps);
 
-    useEffect(() => {
-        if (addData.email) {
-            setSetEmail(addData.email);
-        }
-        if (addData.docpickupdate) {
-            //setDocPickup(true)
-        }
-    }, [addData]);
-
-    const handleCheckBoxChange = (e: any) => {
-        const { id, checked } = e.target;
-        setAddData((prev: any) => ({ ...prev, [id]: checked }));
-    };
-
-    const [modalTitle, setModalTitle] = useState<string>('Add Note');
-    const [actionButtonText, setActionButtonText] = useState<string>('Add Note');
-    const [currentIndex, setCurrentIndex] = useState<number | null>(null); // Track index for editing
-
     const handleLeadNoteChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setLeadNote(event.target.value);
     };
@@ -78,6 +69,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         setModalTitle('Add Note');
         setActionButtonText('Add Note');
         setLeadNote('');
+
         setCurrentIndex(null); // Reset index when adding a new note
     };
 
@@ -108,8 +100,11 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
             const updatedNotes = [...leadNotes];
             updatedNotes[currentIndex] = leadNote;
             setLeadNotes(updatedNotes);
+            setAddData({ ...addData, leadnote: updatedNotes });
         } else {
-            setLeadNotes([...leadNotes, leadNote]);
+            const updatedNotes = [...leadNotes, leadNote];
+            setLeadNotes(updatedNotes);
+            setAddData({ ...addData, leadnote: updatedNotes });
         }
         handleCloseModal();
     };
@@ -118,7 +113,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
                 <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                    <h5 className="text-lg font-bold">Add Lead</h5>
+                    <h5 className="text-lg font-bold">{isEdit ? 'Edit' : 'Add'} Lead</h5>
                     <button
                         onClick={() => {
                             setIsOpen(false);

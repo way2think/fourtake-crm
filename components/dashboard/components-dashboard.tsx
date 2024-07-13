@@ -27,7 +27,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import Attendence from './Attendence';
 import PaginationTable from '../Reusable/Table/PaginationTable';
 import LeadManagementActionModal from '../lead-management/lead-manage/LeadManagementActionModal';
-
+import { useRouter } from 'next/navigation';
 
 interface DashboardProps {
     data: any;
@@ -61,6 +61,7 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data, leaddata, passpor
     // }, []);
 
     const [filterItem, setFilterItem] = useState(data);
+    const router = useRouter();
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'Ref no' },
@@ -94,10 +95,13 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data, leaddata, passpor
     ];
 
     const handleEdit = (object: any) => {
-        debugger;
         setIsEdit(true);
         setIsOpen(true);
         setAddData(object);
+    };
+
+    const handleManageVisaEdit = (object: any) => {
+        router.push('/manage-visa');
     };
     const handleInputChange = (e: any) => {
         const { value, id } = e.target;
@@ -110,7 +114,6 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data, leaddata, passpor
         //     setAddData({});
         // }
     };
-
 
     return (
         <>
@@ -132,14 +135,14 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data, leaddata, passpor
                             <h2 className="mb-4 mt-4">Today Submissions</h2>
                             <p className="font-extrabold">1</p>
                         </div>
-                        <PaginationTable data={filterItem} tableColumns={tableColumns} title={'dashboard'} />
+                        <PaginationTable data={filterItem} tableColumns={tableColumns} title={'dashboard'} handleEdit={handleManageVisaEdit} />
                     </div>
                     <div className="mb-4 mt-4">
                         <div className="flex items-center justify-between">
                             <h2 className="mb-4 mt-4">Today Passports Collections </h2>
                             <p className="font-extrabold">1</p>
                         </div>
-                        <PaginationTable data={passportsdata} tableColumns={tableColumnspassports} title={'dashboard'} />
+                        <PaginationTable data={passportsdata} tableColumns={tableColumnspassports} title={'dashboard'} handleEdit={handleManageVisaEdit} />
                     </div>
                 </div>
 
@@ -156,7 +159,7 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data, leaddata, passpor
                             <h2 className="mb-4 mt-4">Today’s Document Pickup - application level</h2>
                             <p className="font-extrabold">1</p>
                         </div>
-                        <PaginationTable data={applicationdata} tableColumns={tableColumnsapplication} title={'dashboard'} />
+                        <PaginationTable data={applicationdata} tableColumns={tableColumnsapplication} title={'dashboard'} handleEdit={handleManageVisaEdit} />
                     </div>
                 </div>
 
@@ -166,13 +169,9 @@ const ComponentsDashboard: React.FC<DashboardProps> = ({ data, leaddata, passpor
                             <h2 className="mb-4 mt-4">Today's Passport Drop Off</h2>
                             <p className="font-extrabold">1</p>
                         </div>
-                        <PaginationTable data={leaddata} tableColumns={tableColumnsLead} title={"dashboard"}  />
+                        <PaginationTable data={leaddata} tableColumns={tableColumnsLead} handleEdit={handleManageVisaEdit} title={'dashboard'} />
                     </div>
-                    
                 </div>
-                
-
-
             </div>
 
             <LeadManagementActionModal

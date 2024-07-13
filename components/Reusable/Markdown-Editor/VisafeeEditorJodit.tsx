@@ -23,7 +23,6 @@ const VisafeeEditor: React.FC<VisafeeEditorProps> = ({ title, handleInputChange,
                 .replace(/\r/g, '\\r'); // Escape carriage returns
         };
         const result = escapeHtml(value);
-        console.log('value of jodit editor', result);
     }, [value]);
 
     const config = useMemo(

@@ -60,28 +60,23 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     }, [search, data, filterby]);
 
     const handleEdit = (object: any) => {
-
-        if (title == "List Visa Application") {
+        if (title == 'List Visa Application') {
             //router.push(`/manage-visa`);
             // const data = encodeURIComponent(JSON.stringify(object));
             // const url = `/manage-visa?data=${data}`;
             // router.push(url);
-            debugger;
-            console.log(object)
-            sessionStorage.setItem('iseditmode', 'true');
-            sessionStorage.setItem('manageVisaData', JSON.stringify(object));
+            // debugger;
+            console.log(object);
+            // sessionStorage.setItem('iseditmode', 'true');
+            // sessionStorage.setItem('manageVisaData', JSON.stringify(object));
             router.push(`/manage-visa`);
         } else {
             setIsEdit(true);
             setIsOpen(true);
             setAddData(object);
-            //console.log(object)
+           
         }
-
     };
-
-
-
 
     const handleRestore = (object: any) => {
         alert(object);
@@ -116,9 +111,24 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 <h2 className="text-xl">{title}</h2>
                 <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
-                        {title !== 'Country Visa Types' && title !== 'Deleted Application' && (
+                        {title !== 'Country Visa Types' && title !== 'Deleted Application' && title !== 'List Visa Application' && (
                             <div>
                                 <button type="button" className="btn btn-primary" onClick={() => setIsOpen(true)}>
+                                    <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
+                                    Add {title}
+                                </button>
+                            </div>
+                        )}
+
+                        {title === 'List Visa Application' && (
+                            <div>
+                                <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={() => {
+                                        router.push('/manage-visa');
+                                    }}
+                                >
                                     <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
                                     Add {title}
                                 </button>
@@ -149,7 +159,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                         </div>
                     </div>
                     <div className="relative">
-                        <input type="text" placeholder={`Search ${title}`} className="peer form-input py-2 ltr:pr-11 rtl:pl-11" value={search} onChange={(e) => setSearch(e.target.value)} />
+                        <input type="text" placeholder={`Search`} className="peer form-input py-2 ltr:pr-11 rtl:pl-11" value={search} onChange={(e) => setSearch(e.target.value)} />
                         <button type="button" className="absolute top-1/2 -translate-y-1/2 peer-focus:text-primary ltr:right-[11px] rtl:left-[11px]">
                             <IconSearch className="mx-auto" />
                         </button>
@@ -185,8 +195,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
             <ReuseActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} width="">
                 <AddNote isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} />
             </ReuseActionModal>
-
-
         </>
     );
 };

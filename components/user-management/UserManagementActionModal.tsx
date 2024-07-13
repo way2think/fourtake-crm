@@ -68,24 +68,25 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                             <input id="phone" value={addData?.phone} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Phone" className="form-input" />
                         </div>
                     </div>
-
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        <div className="mb-5">
-                            <label htmlFor="password">Password</label>
-                            <input id="password" value={addData?.password} onChange={(e) => handleInputChange(e)} type="password" placeholder="Enter Password" className="form-input" />
+                    {!isEdit && (
+                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                            <div className="mb-5">
+                                <label htmlFor="password">Password</label>
+                                <input id="password" value={addData?.password} onChange={(e) => handleInputChange(e)} type="password" placeholder="Enter Password" className="form-input" />
+                            </div>
+                            <div className="mb-5">
+                                <label htmlFor="confirmpassword">Confirm Password</label>
+                                <input
+                                    id="confirmpassword"
+                                    value={addData?.confirmpassword}
+                                    onChange={(e) => handleInputChange(e)}
+                                    type="password"
+                                    placeholder="Enter Confirm Password"
+                                    className="form-input"
+                                />
+                            </div>
                         </div>
-                        <div className="mb-5">
-                            <label htmlFor="confirmpassword">Confirm Password</label>
-                            <input
-                                id="confirmpassword"
-                                value={addData?.confirmpassword}
-                                onChange={(e) => handleInputChange(e)}
-                                type="password"
-                                placeholder="Enter Confirm Password"
-                                className="form-input"
-                            />
-                        </div>
-                    </div>
+                    )}
                     <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="dropdown">
                             <label htmlFor="center">Center</label>
