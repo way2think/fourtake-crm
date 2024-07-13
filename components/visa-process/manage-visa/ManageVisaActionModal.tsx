@@ -29,19 +29,15 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
     setApplicantDetails,
 }) => {
     const handleCheckBoxChange = (e: any) => {
-
         //Change it 13-07-2024
         // const { id, checked } = e.target;
         // setAddUser((prev: any) => ({ ...prev, [id]: checked ? "Yes" : "No"}));
 
-
         const { id, checked } = e.target;
 
-        if (checked && applicantDetails.some((applicant: { isprimary: string }) => applicant.isprimary === "Yes")) {
-            if (confirm("You already selected a Primary. Do you want to change it?")) {
-                setApplicantDetails((prevState: any[]) => prevState.map((applicant: { isprimary: string }) =>
-                    applicant.isprimary === "Yes" ? { ...applicant, isprimary: "No" } : applicant
-                ));
+        if (checked && applicantDetails.some((applicant: { isprimary: string }) => applicant.isprimary === 'Yes')) {
+            if (confirm('You already selected a Primary. Do you want to change it?')) {
+                setApplicantDetails((prevState: any[]) => prevState.map((applicant: { isprimary: string }) => (applicant.isprimary === 'Yes' ? { ...applicant, isprimary: 'No' } : applicant)));
             } else {
                 return;
             }
@@ -49,10 +45,8 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
 
         setAddUser((prevState: any) => ({
             ...prevState,
-            [id]: checked ? "Yes" : "No"
+            [id]: checked ? 'Yes' : 'No',
         }));
-
-
     };
 
     return (
@@ -163,13 +157,19 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                    <div className="mt-7">
-                        <label className="flex cursor-pointer items-center">
-                            <input type="checkbox" id="isprimary"  onChange={(e) => handleCheckBoxChange(e)}  className="form-checkbox bg-white dark:bg-black" checked={addUser.isprimary === 'Yes'}/>
-                            <span className="text-black">Is Primary?</span>
-                        </label>
+                        <div className="mt-7">
+                            <label className="flex cursor-pointer items-center">
+                                <input
+                                    type="checkbox"
+                                    id="isprimary"
+                                    onChange={(e) => handleCheckBoxChange(e)}
+                                    className="form-checkbox bg-white dark:bg-black"
+                                    checked={addUser.isprimary === 'Yes' || applicantDetails.length == 0}
+                                />
+                                <span className="text-black">Is Primary?</span>
+                            </label>
+                        </div>
                     </div>
-                </div>
 
                     <div className="mt-8 flex items-center justify-end">
                         <button

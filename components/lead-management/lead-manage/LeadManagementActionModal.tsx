@@ -27,7 +27,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     const [modalTitle, setModalTitle] = useState<string>('Add Note');
     const [actionButtonText, setActionButtonText] = useState<string>('Add Note');
     const [currentIndex, setCurrentIndex] = useState<number | null>(null); // Track index for editing
-
+    const [nextFollowUp, setNextFollowUp] = useState<any>([]);
     useEffect(() => {
         setLeadNotes(addData.leadnote || []);
     }, [addData?.leadnote]);
@@ -364,6 +364,19 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     ></textarea>
                                 </div>
                             </div>
+                            {/* { nextFollowup?.length === 0 ? (
+                    <button
+                        // onClick={handleSave}
+                        type="button"
+                        className="btn btn-primary mb-5 ltr:ml-4 rtl:mr-4"
+                        onClick={() => setIsOpen(true)}
+                    >
+                        <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
+                        Add User
+                    </button>
+                ) : null}
+
+                {applicantDetails?.length !== 0 && <PaginationTable data={applicantDetails} tableColumns={tableColumns} handleEdit={handleEdit} handleDelete={handleDelete} title="Customer Details" />} */}
                             <div className="grid grid-cols-1 gap-5 md:grid-cols-1">
                                 <div className="mb-5">
                                     <label htmlFor="leadnote" style={{ display: 'inline-block' }}>
