@@ -1,4 +1,3 @@
-'use client';
 import IconLockDots from '@/components/icon/icon-lock-dots';
 import IconMail from '@/components/icon/icon-mail';
 import { useRouter } from 'next/navigation';
@@ -7,6 +6,7 @@ import React from 'react';
 
 const ComponentsAuthLoginForm = () => {
     const router = useRouter();
+
     const submitForm = (e: any) => {
         e.preventDefault();
         router.push('/');

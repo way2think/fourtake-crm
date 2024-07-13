@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { isError } from 'lodash';
 
 type ApiObject = {
