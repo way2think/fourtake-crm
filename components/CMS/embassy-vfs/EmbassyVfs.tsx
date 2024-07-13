@@ -99,6 +99,7 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
             return formData;
         } else {
             //add user
+            debugger;
             let maxUserId = data.length ? data.reduce((max: any, character: any) => (character.id > max ? character.id : max), data[0].id) : 0;
 
             let formData = {

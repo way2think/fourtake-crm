@@ -34,7 +34,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
             }
             sessionStorage.setItem('iseditmode', 'false');
         } else {
-            
+
             sessionStorage.setItem('manageVisaData', '');
         }
 
@@ -78,6 +78,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
     };
 
     const handleSaveUser = () => {
+        debugger;
         if (addUser.firstname == '' || addUser.firstname == null) {
             showMessage('Enter First name', 'error');
             return false;
@@ -121,10 +122,13 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
             // return updatedData;
         } else {
             //add user
-            const maxUserId = data.length ? Math.max(...data.map((d: any) => d.id)) : 0;
+            debugger;
+            const maxUserId = applicantDetails.length ? Math.max(...data.map((d: any) => d.id)) : 0;
+            console.log(addUser);
             const newUser = {
                 ...addUser,
                 id: +maxUserId + 1,
+                isprimary: addUser.isprimary ? "Yes" : "No",
             };
             setApplicantDetails([...applicantDetails, newUser]);
             // return newUser;
@@ -157,6 +161,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
 
 
     const handleSubmit = (value: any) => {
+        debugger;
         if (addData.country == '' || addData.country == null) {
             showMessage('Select Country', 'error');
             return false;
@@ -188,31 +193,47 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
             return false;
         }
 
-        if (addData.id) {
-            //update user
-            const updatedData = data.map((d: any) => (d.id === addData.id ? { ...d, ...addData } : d));
-            // setAddData({});
-            setData(updatedData);
+        //Command Code 13-07-2024
+        // if (addData.id) {
+        //     //update user
+        //     const updatedData = data.map((d: any) => (d.id === addData.id ? { ...d, ...addData } : d));
+        //     // setAddData({});
+        //     setData(updatedData);
 
-            // return updatedData;
-        } else {
-            //add user
-            const maxUserId = data.length ? Math.max(...data.map((d: any) => d.id)) : 0;
-            const newUser = {
-                ...addData,
-                id: +maxUserId + 1,
-            };
+        //     // return updatedData;
+        // } else {
+        //     //add user
+        //     const maxUserId = data.length ? Math.max(...data.map((d: any) => d.id)) : 0;
+        //     const newUser = {
+        //         ...addData,
+        //         id: +maxUserId + 1,
+        //     };
 
-            setData([...data, newUser]);
-        }
-        setAddData({});
-        setApplicantDetails([]);
+        //     setData([...data, newUser]);
+        // }
+        // --------End------//
+
+        // setAddData({});
+        // setApplicantDetails([]);
         // showMessage('User has been saved successfully.');
         // setAddContactModal(false);
         // setIsEdit(false);
+
+        //console.log(applicantDetails)
+        // Check if there's more than one entry with isprimary: "Yes"
+        const primaryCount = applicantDetails.filter((applicant: { isprimary: string }) => applicant.isprimary === "Yes").length;
+
+        if (primaryCount > 1) {
+            alert("Please select only one primary applicant.");
+            return;
+        }
+        alert("Ok");
+
+
     };
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
+        { accessor: 'isprimary', textAlign: 'left', title: 'Is Primary' },
         { accessor: 'firstname', textAlign: 'left', title: 'First Name' },
         { accessor: 'lastname', textAlign: 'left', title: 'Last Name' },
         { accessor: 'email', textAlign: 'left', title: 'Email' },
@@ -376,6 +397,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
                         onClick={() => {
                             setIsOpen(false);
                             setAddData({});
+
                         }}
                         type="button"
                         className="btn btn-outline-danger ml-3"

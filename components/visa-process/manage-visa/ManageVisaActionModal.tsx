@@ -30,7 +30,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
 }) => {
     const handleCheckBoxChange = (e: any) => {
         const { id, checked } = e.target;
-        setAddUser((prev: any) => ({ ...prev, [id]: checked }));
+        setAddUser((prev: any) => ({ ...prev, [id]: checked ? "Yes" : "No"}));
     };
 
     return (
@@ -68,7 +68,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                                 <label htmlFor="email">Email</label>
                                 <input
                                     id="email"
-                                    disabled={isEdit ? true : false}
+                                    // disabled={isEdit ? true : false}
                                     value={addUser?.email}
                                     onChange={(e) => handleInputChange(e)}
                                     type="tel"
@@ -143,7 +143,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                     <div className="mt-7">
                         <label className="flex cursor-pointer items-center">
-                            <input type="checkbox" id="isgroup"  onChange={(e) => handleCheckBoxChange(e)} className="form-checkbox bg-white dark:bg-black" />
+                            <input type="checkbox" id="isprimary"  onChange={(e) => handleCheckBoxChange(e)}  className="form-checkbox bg-white dark:bg-black" checked={addUser.isprimary === "Yes"}/>
                             <span className="text-black">Is Primary?</span>
                         </label>
                     </div>

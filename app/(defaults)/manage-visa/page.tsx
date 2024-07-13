@@ -13,7 +13,7 @@ const ManageVisaPage = () => {
         {
             id: 1,
             country: 'India',
-            isgroup: true,
+            isprimary: 'yes',
             visatype: 'Vistor Visa',
             nationality: 'India',
             stateofresidence: 'Kernataka',
