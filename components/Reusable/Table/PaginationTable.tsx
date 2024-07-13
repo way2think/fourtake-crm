@@ -30,7 +30,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
   const totalPages = useMemo(() => Math.ceil(data.length / pageSize), [data.length, pageSize]);
   const startIndex = (page - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedData = useMemo(() => data.slice(startIndex, endIndex), [data, startIndex, endIndex]);
+  const paginatedData = useMemo(() => data?.slice(startIndex, endIndex), [data, startIndex, endIndex]);
 
   const columns = useMemo(() => {
     const baseColumns = [...tableColumns];
