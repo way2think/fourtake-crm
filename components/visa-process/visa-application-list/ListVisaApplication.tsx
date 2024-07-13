@@ -13,10 +13,25 @@ import PaginationTable from '@/components/Reusable/Table/PaginationTable';
 const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplication }) => {
     const [data, setData] = useState(listapplication);
     const exportColumns = ['id', 'applydate', 'refno', 'apptype', 'applname', 'cosultantname', 'destination', 'type', 'duration', 'entry'];
+    
+    // const tableColumns = [
+    //     { accessor: 'id', textAlign: 'left', title: 'SNo' },
+    //     { accessor: 'applydate', textAlign: 'left', title: 'Apply Date' },
+    //     { accessor: 'refno', textAlign: 'left', title: 'Ref No' },
+    //     { accessor: 'apptype', textAlign: 'left', title: 'Apptype' },
+    //     { accessor: 'applname', textAlign: 'left', title: 'Applname' },
+    //     { accessor: 'cosultantname', textAlign: 'left', title: 'Cosultantname' },
+    //     { accessor: 'destination', textAlign: 'left', title: 'Destination' },
+    //     { accessor: 'type', textAlign: 'left', title: 'Type' },
+    //     { accessor: 'duration', textAlign: 'left', title: 'Duration' },
+    //     { accessor: 'entry', textAlign: 'left', title: 'Entry' },
+    // ];
+
+
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'SNo' },
         { accessor: 'country', textAlign: 'left', title: 'Country' },
-        { accessor: 'isgroup', textAlign: 'left', title: 'Is Group' },
+        // { accessor: 'isgroup', textAlign: 'left', title: 'Is Group' },
         { accessor: 'visatype', textAlign: 'left', title: 'Visa Type' },
         { accessor: 'nationality', textAlign: 'left', title: 'Nationality' },
         { accessor: 'stateofresidence', textAlign: 'left', title: 'State of Residence' },

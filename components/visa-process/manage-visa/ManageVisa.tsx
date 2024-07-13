@@ -123,7 +123,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
         } else {
             //add user
             debugger;
-            const maxUserId = applicantDetails.length ? Math.max(...data.map((d: any) => d.id)) : 0;
+            const maxUserId = applicantDetails.length ? Math.max(...applicantDetails.map((d: any) => d.id)) : 0;
             console.log(addUser);
             const newUser = {
                 ...addUser,
