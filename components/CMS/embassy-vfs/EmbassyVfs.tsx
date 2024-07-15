@@ -53,7 +53,7 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
         });
     };
     const handleSubmit = (value: any) => {
-        debugger;
+        
         if (value.embassy == '' || value.embassy == null) {
             showMessage('Select type - Embassy/VFS', 'error');
             return false;
@@ -76,7 +76,7 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
         }
 
         if (value.id) {
-            debugger;
+            
             //update user
             let formData: any = data.find((d: any) => d.id === value.id);
             formData.embassy = value.embassy;
@@ -99,7 +99,7 @@ const EmbassyVfs: React.FC<{ embassyvfsdata: any }> = ({ embassyvfsdata }) => {
             return formData;
         } else {
             //add user
-            debugger;
+            
             let maxUserId = data.length ? data.reduce((max: any, character: any) => (character.id > max ? character.id : max), data[0].id) : 0;
 
             let formData = {

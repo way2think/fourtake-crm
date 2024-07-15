@@ -170,7 +170,7 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
     };
     console.log('filter item', filterItem, addData);
     const handleSubmitReport = () => {
-        //debugger;
+        
 
         let requiredFields: string[] = [];
         let dataFilter = data;
@@ -222,7 +222,7 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
             //     });
             // }
 
-            debugger;
+            
             if (dateFilter) {
                 if (typeof dateFilter === 'string' && dateFilter.includes(' to ')) {
                     const [startDateStr, endDateStr] = dateFilter.split(' to ');

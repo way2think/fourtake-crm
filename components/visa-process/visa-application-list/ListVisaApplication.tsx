@@ -16,15 +16,15 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
     
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'SNo' },
-        { accessor: 'country', textAlign: 'left', title: 'Apply Date' },
-        { accessor: 'country', textAlign: 'left', title: 'ReferenceNo' },
-        { accessor: 'country', textAlign: 'left', title: 'App Type' },
-        { accessor: 'country', textAlign: 'left', title: 'Applicant Name' },
-        { accessor: 'country', textAlign: 'left', title: 'Consultant Name' },
-        { accessor: 'country', textAlign: 'left', title: 'Destination' },
-        { accessor: 'country', textAlign: 'left', title: 'Type' },
-        { accessor: 'country', textAlign: 'left', title: 'Duration' },
-        { accessor: 'country', textAlign: 'left', title: 'Entry' },
+        { accessor: 'applydate', textAlign: 'left', title: 'Apply Date' },
+        { accessor: 'refno', textAlign: 'left', title: 'ReferenceNo' },
+        { accessor: 'apptype', textAlign: 'left', title: 'App Type' },
+        { accessor: 'applname', textAlign: 'left', title: 'Applicant Name' },
+        { accessor: 'cosultantname', textAlign: 'left', title: 'Consultant Name' },
+        { accessor: 'destination', textAlign: 'left', title: 'Destination' },
+        { accessor: 'type', textAlign: 'left', title: 'Type' },
+        { accessor: 'duration', textAlign: 'left', title: 'Duration' },
+        { accessor: 'entry', textAlign: 'left', title: 'Entry' },
     ];
 
 

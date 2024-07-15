@@ -2,12 +2,18 @@ import ListVisaApplication from '@/components/visa-process/visa-application-list
 import React from 'react';
 
 const VisaApplicationList = () => {
+    
     let data = [
         {
             id: 1,
-            country: 'India',
-            language: 'tamil,hindi,etc',
-            dailingcode: '+91',
+            applydate: 'India',
+            refno: '1234',
+            apptype: 'Walkin Test',
+            cosultantname: 'Test',
+            destination: 'Singapore',
+            type: 'Tourist',
+            duration: '60 Days',
+            entry: 'Multiple',
             // id: 1,
             // country: 'India',
             // isgroup: true,
@@ -22,9 +28,14 @@ const VisaApplicationList = () => {
         },
         {
             id: 2,
-            country: 'America',
-            language: 'tamil,hindi,etc',
-            dailingcode: '+91',
+            applydate: 'India',
+            refno: '1234',
+            apptype: 'Walkin Test',
+            cosultantname: 'Test',
+            destination: 'Singapore',
+            type: 'Tourist',
+            duration: '60 Days',
+            entry: 'Multiple',
             // id: 2,
             // country: 'Canada',
             // isgroup: false,
