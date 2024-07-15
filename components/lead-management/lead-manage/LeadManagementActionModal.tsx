@@ -358,7 +358,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         <option value="open">Open</option>
                                         <option value="In-progress">In-progress</option>
                                         <option value="Closed">Closed</option>
-                                        <option value="Done ">Done </option>
+                                        <option value="Done">Done</option>
                                     </select>
                                 </div>
                             </div>

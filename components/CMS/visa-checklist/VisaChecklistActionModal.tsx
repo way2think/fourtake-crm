@@ -60,7 +60,7 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                 </div>
                 <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-1">
                     <div className="mb-2">
-                        <label htmlFor="embassy">Embassy*</label>
+                        {/* <label htmlFor="embassy">Embassy*</label>
                         <textarea
                             id="embassy"
                             rows={3}
@@ -68,7 +68,20 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                             className="form-textarea min-h-[80px] resize-none"
                             value={addData?.embassy}
                             onChange={(e) => handleInputChange(e)}
-                        ></textarea>
+                        ></textarea> */}
+                        <label htmlFor="embassy">Embassy*</label>
+                        <select
+                            id="embassy"
+                            multiple
+                            className="form-select"
+                            value={addData?.embassy ? addData.embassy.split(', ') : []}// assuming addData.embassy is an array
+                            onChange={(e) => handleInputChange(e)}
+                        >
+                            <option value="volvo">Volvo</option>
+                            <option value="saab">Saab</option>
+                            <option value="opel">Opel</option>
+                            <option value="audi">Audi</option>
+                        </select>
                     </div>
                 </div>
                 <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-1">

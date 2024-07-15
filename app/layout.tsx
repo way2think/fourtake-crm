@@ -11,10 +11,10 @@ export const metadata: Metadata = {
     },
 };
 const nunito = Nunito({
-    weight: ['400', '500', '600', '700', '800'], 
-    subsets: ['latin'], 
-    display: 'swap', 
-    variable: '--font-nunito', 
+    weight: ['400', '500', '600', '700', '800'],
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-nunito',
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

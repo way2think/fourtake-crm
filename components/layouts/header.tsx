@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { IRootState } from '@/store';
-import { toggleTheme, toggleSidebar, toggleRTL } from '@/store/themeConfigSlice';
+import { toggleTheme, toggleSidebar, toggleRTL } from '@/store/theme.store';
 import Dropdown from '@/components/dropdown';
 import IconMenu from '@/components/icon/icon-menu';
 import IconCalendar from '@/components/icon/icon-calendar';
@@ -182,7 +182,7 @@ const Header = () => {
                             </li>
                         </ul>
                     </div> */}
-                    <div className="flex justify-end items-center space-x-1.5 dark:text-[#d0d2d6] sm:flex-1 lg:space-x-2 ltr:ml-auto ltr:sm:ml-0 rtl:mr-auto rtl:space-x-reverse sm:rtl:mr-0">
+                    <div className="flex items-center justify-end space-x-1.5 dark:text-[#d0d2d6] sm:flex-1 lg:space-x-2 ltr:ml-auto ltr:sm:ml-0 rtl:mr-auto rtl:space-x-reverse sm:rtl:mr-0">
                         {/* <div className="sm:ltr:mr-auto sm:rtl:ml-auto">
                             <form
                                 className={`${search && '!block'} absolute inset-x-0 top-1/2 z-10 mx-4 hidden -translate-y-1/2 sm:relative sm:top-0 sm:mx-0 sm:block sm:translate-y-0`}
@@ -210,7 +210,7 @@ const Header = () => {
                                 <IconSearch className="mx-auto h-4.5 w-4.5 dark:text-[#d0d2d6]" />
                             </button>
                         </div> */}
-                        <div >
+                        <div>
                             {themeConfig.theme === 'light' ? (
                                 <button
                                     className={`${
