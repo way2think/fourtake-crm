@@ -7,6 +7,11 @@ import ComponentsFormDatePickerTime from './components-form-date-picker-time';
 import TableLayout from '@/components/layouts/table-layout';
 import { useEffect, useState, ChangeEvent } from 'react';
 import AddNote from '@/components/popup/LeadListAddNote';
+import IconUserPlus from '@/components/icon/icon-user-plus';
+import PaginationTable from '@/components/Reusable/Table/PaginationTable';
+import { showMessage } from '@/utils/notification';
+import { isValidEmail, isValidPhoneNumber } from '@/utils/validator';
+import { render } from '@headlessui/react/dist/utils/render';
 
 interface LeadManagementActionModalProps {
     isOpen: any;
@@ -17,8 +22,10 @@ interface LeadManagementActionModalProps {
     setAddData: any;
     isEdit?: any;
     setIsEdit?: any;
+    followUps?: any;
+    setFollowUps?: any;
 }
-const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ isEdit, setIsEdit, isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
+const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ isEdit, followUps, setFollowUps, setIsEdit, isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
     const [setMail, setSetEmail] = useState<string>();
     const [docPickup, setDocPickup] = useState(false);
@@ -28,6 +35,17 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     const [actionButtonText, setActionButtonText] = useState<string>('Add Note');
     const [currentIndex, setCurrentIndex] = useState<number | null>(null); // Track index for editing
     const [nextFollowUp, setNextFollowUp] = useState<any>([]);
+    const [isOpenNextFollowup, setIsOpenNextFollowup] = useState(false);
+    const [addNextFollowUpData, setAddNextFollowUpData] = useState<any>({});
+
+    useEffect(() => {
+        setLeadNotes(addData.leadnote || []);
+    }, [addData?.leadnote]);
+
+    useEffect(() => {
+        setFollowUps(addData.followup || []);
+    }, [addData?.followup]);
+
     useEffect(() => {
         setLeadNotes(addData.leadnote || []);
     }, [addData?.leadnote]);
@@ -41,27 +59,89 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         }
     }, [addData]);
 
-    const initialFollowUps = [
-        {
-            interactionType: 'Call',
-            status: 'Open',
-            nextFollowUp: '2024-07-01',
-            remarks: 'First follow-up call',
-            createdDate: '2024-06-01',
-        },
-        {
-            interactionType: 'Email',
-            status: 'In-progress',
-            nextFollowUp: '2024-07-05',
-            remarks: 'Sent email for document submission',
-            createdDate: '2024-06-05',
-        },
-    ];
+    // const initialFollowUps = [
+    //     {
+    //         interactionType: 'Call',
+    //         status: 'Open',
+    //         nextFollowUp: '2024-07-01',
+    //         remarks: 'First follow-up call',
+    //         createdDate: '2024-06-01',
+    //     },
+    //     {
+    //         interactionType: 'Email',
+    //         status: 'In-progress',
+    //         nextFollowUp: '2024-07-05',
+    //         remarks: 'Sent email for document submission',
+    //         createdDate: '2024-06-05',
+    //     },
+    // ];
 
-    const [followUps, setFollowUps] = useState(initialFollowUps);
+    const tableColumnsFollowUp = [
+        { accessor: 'followup_id', textAlign: 'left', title: 'S.NO' },
+        { accessor: '', textAlign: 'left', title: 'Next FollowUp Date & Time', render: (row: any) => `${row.followupdate}, ${row.followuptime}` },
+        // { accessor: 'followuptime', textAlign: 'left', title: 'Time' },
+        { accessor: 'interaction', textAlign: 'left', title: 'Interaction Type' },
+        { accessor: 'remark', textAlign: 'left', title: 'Remark' },
+    ];
 
     const handleLeadNoteChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setLeadNote(event.target.value);
+    };
+    const handleNextFollowUpChange = (e: any) => {
+        const { value, id } = e.target;
+
+        setAddNextFollowUpData({ ...addNextFollowUpData, [id]: value });
+    };
+
+    const handleEdit = (object: any) => {
+        // setIsEdit(true);
+        setIsOpenNextFollowup(true);
+        setAddNextFollowUpData(object);
+    };
+
+    const handleFollowUpSave = (value: any) => {
+        if (addNextFollowUpData.followupdate == '' || addNextFollowUpData.followupdate == null) {
+            showMessage('Select Date  ', 'error');
+            return false;
+        }
+        if (addNextFollowUpData.followuptime == '' || addNextFollowUpData.followuptime == null) {
+            showMessage('Select Time ', 'error');
+            return false;
+        }
+        if (addNextFollowUpData.interaction == '' || addNextFollowUpData.interaction == null) {
+            showMessage('Select Interation ', 'error');
+            return false;
+        }
+
+        if (addNextFollowUpData.followup_id) {
+            //update user
+            const updatedData = followUps.map((d: any) => (d.followup_id === addNextFollowUpData.followup_id ? { ...d, ...addNextFollowUpData } : d));
+            setFollowUps(updatedData);
+            setAddData({ ...addData, followup: updatedData });
+            setIsOpenNextFollowup(false);
+            setAddNextFollowUpData({});
+            // return updatedData;
+        } else {
+            const maxUserId = followUps.length ? Math.max(...followUps.map((d: any) => d.followup_id)) : 0;
+        
+            const newFollowup = 
+                {
+                    ...addNextFollowUpData,
+                    followup_id: +maxUserId + 1,
+                }
+            ;
+            setFollowUps([...followUps, newFollowup]);
+            setAddData({
+                ...addData,
+                followup: [...addData.followup, newFollowup], 
+            });
+            setIsOpenNextFollowup(false);
+            setAddNextFollowUpData({});
+        }
+
+        // setAddData({ ...addData });
+        // setAddContactModal(false);
+        // setIsEdit(false);
     };
 
     const handleButtonClickShowAddNote = () => {
@@ -330,54 +410,121 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     </select>
                                 </div> */}
                             </div>
-                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2  ">
-                                <div className="mb-5">
-                                    <ComponentsFormDatePickerBasic label="Next Follow-up Date " id={'nextfollowupdate'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                            <button
+                                // onClick={handleSave}
+                                type="button"
+                                className="btn btn-primary mb-5 ltr:ml-4 rtl:mr-4"
+                                onClick={() => setIsOpenNextFollowup(true)}
+                            >
+                                <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
+                                Create Next Follow Up
+                            </button>
+                            <ActionModal isOpen={isOpenNextFollowup} setIsOpen={setIsOpenNextFollowup} handleSave={handleSave} width="max-w-2xl">
+                                <div className="flex  items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
+                                    <h5 className="text-lg font-bold">Add Next FollowUp</h5>
+                                    <button
+                                        onClick={() => {
+                                            setIsOpenNextFollowup(false);
+                                            setAddNextFollowUpData({});
+                                            // setIsEdit(false);
+                                        }}
+                                        type="button"
+                                        className="text-white-dark hover:text-dark"
+                                    >
+                                        <IconX />
+                                    </button>
                                 </div>
-                                <div className="mb-5">
-                                    <ComponentsFormDatePickerTime id={'followuptime'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                                <div className="m-5 grid grid-cols-1 gap-5  md:grid-cols-2 ">
+                                    <div className=" ">
+                                        <ComponentsFormDatePickerBasic
+                                            label="Next Follow-up Date "
+                                            id={'followupdate'}
+                                            isEdit={isEdit}
+                                            setAddData={setAddNextFollowUpData}
+                                            addData={addNextFollowUpData}
+                                        />
+                                    </div>
+                                    <div className="">
+                                        <ComponentsFormDatePickerTime id={'followuptime'} isEdit={isEdit} setAddData={setAddNextFollowUpData} addData={addNextFollowUpData} />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                                <div className="dropdown mb-5">
-                                    <label htmlFor="interaction">Type of Interaction*</label>
-                                    <select className="form-input" defaultValue="" id="interaction" value={addData?.interaction} onChange={(e) => handleInputChange(e)}>
-                                        <option value="" disabled={true}>
-                                            Type of Interaction
-                                        </option>
-                                        <option value="SMS">SMS</option>
-                                        <option value="Call">Call</option>
-                                        <option value="Email">Email</option>
-                                        <option value="Whatapp">Whatapp</option>
-                                    </select>
-                                </div>
-                                <div className="mb-5">
-                                    <label htmlFor="follupremark">Followup Remarks</label>
-                                    <textarea
-                                        id="follupremark"
-                                        rows={1}
-                                        value={addData?.follupremark}
-                                        onChange={(e) => handleInputChange(e)}
-                                        placeholder="Enter FollowUp Remarks"
-                                        className="form-textarea
+                                <div className="m-5 grid grid-cols-1 gap-5 md:grid-cols-2">
+                                    <div className="dropdown mb-5">
+                                        <label htmlFor="interaction">Type of Interaction*</label>
+                                        <select className="form-input" defaultValue="" id="interaction" value={addNextFollowUpData?.interaction} onChange={(e) => handleNextFollowUpChange(e)}>
+                                            <option value="" disabled={true}>
+                                                Type of Interaction
+                                            </option>
+                                            <option value="SMS">SMS</option>
+                                            <option value="Call">Call</option>
+                                            <option value="Email">Email</option>
+                                            <option value="Whatapp">Whatapp</option>
+                                        </select>
+                                    </div>
+                                    <div className="mb-5">
+                                        <label htmlFor="followupremark">Followup Remarks</label>
+                                        <textarea
+                                            id="remark"
+                                            rows={1}
+                                            value={addNextFollowUpData?.remark}
+                                            onChange={(e) => handleNextFollowUpChange(e)}
+                                            placeholder="Enter FollowUp Remarks"
+                                            className="form-textarea
                                 min-h-[10px] resize-none"
-                                    ></textarea>
+                                        ></textarea>
+                                    </div>
                                 </div>
-                            </div>
-                            {/* { nextFollowup?.length === 0 ? (
-                    <button
-                        // onClick={handleSave}
-                        type="button"
-                        className="btn btn-primary mb-5 ltr:ml-4 rtl:mr-4"
-                        onClick={() => setIsOpen(true)}
-                    >
-                        <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
-                        Add User
-                    </button>
-                ) : null}
-
-                {applicantDetails?.length !== 0 && <PaginationTable data={applicantDetails} tableColumns={tableColumns} handleEdit={handleEdit} handleDelete={handleDelete} title="Customer Details" />} */}
-                            <div className="grid grid-cols-1 gap-5 md:grid-cols-1">
+                                <div className=" float-end m-3 flex items-center justify-end">
+                                    <button
+                                        onClick={() => {
+                                            setIsOpenNextFollowup(false);
+                                            setAddNextFollowUpData({});
+                                            // setIsEdit(false);
+                                        }}
+                                        type="button"
+                                        className="btn btn-outline-danger"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={handleFollowUpSave}>
+                                        Save
+                                    </button>
+                                </div>
+                            </ActionModal>
+                            {followUps?.length !== 0 && (
+                                <PaginationTable data={followUps} tableColumns={tableColumnsFollowUp} handleEdit={handleEdit} handleDelete={handleDeleteNote} title="Customer Details" />
+                            )}
+                            {/* Add the table here */}
+                            {/* <div className="mt-8">
+                                <h5 className="mb-4 text-lg font-bold">Follow Up History</h5>
+                                <table className="min-w-full border bg-white">
+                                    <thead>
+                                        <tr>
+                                            <th className="border-b px-4 py-2">Follow Up No</th>
+                                            <th className="border-b px-4 py-2">Interaction Type</th>
+                                            <th className="border-b px-4 py-2">Status</th>
+                                            <th className="border-b px-4 py-2">Next Follow Up</th>
+                                            <th className="border-b px-4 py-2">Remarks</th>
+                                            <th className="border-b px-4 py-2">Created Date</th>
+                                            <th className="border-b px-4 py-2">Assignee</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        Render follow-up details here
+                                        {followUps.map((followUp, index) => (
+                                            <tr key={index}>
+                                                <td className="border-b px-4 py-2">{index + 1}</td>
+                                                <td className="border-b px-4 py-2">{followUp.interactionType}</td>
+                                                <td className="border-b px-4 py-2">{followUp.status}</td>
+                                                <td className="border-b px-4 py-2">{followUp.nextFollowUp}</td>
+                                                <td className="border-b px-4 py-2">{followUp.remarks}</td>
+                                                <td className="border-b px-4 py-2">{followUp.createdDate}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div> */}
+                            <div className="mt-4 grid grid-cols-1 gap-5 md:grid-cols-1">
                                 <div className="mb-5">
                                     <label htmlFor="leadnote" style={{ display: 'inline-block' }}>
                                         Lead Note
@@ -403,24 +550,26 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     </div>
 
                                     <ActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} handleSave={handleNoteAction} width="max-w-2xl">
-                                        <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                                            <h5 className="text-lg font-bold">{modalTitle}</h5>
-                                            <button onClick={handleCloseModal} type="button" className="text-white-dark hover:text-dark">
-                                                <IconX />
-                                            </button>
-                                        </div>
-                                        <div className="p-5">
-                                            <textarea
-                                                id="leadNote"
-                                                onChange={handleLeadNoteChange}
-                                                value={leadNote}
-                                                placeholder="Enter your note here"
-                                                className="min-h-[150px] w-full rounded-lg border p-2 outline-none"
-                                            />
-                                            <div className="mt-3">
-                                                <button onClick={handleNoteAction} className="btn btn-primary">
-                                                    {actionButtonText}
+                                        <div>
+                                            <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
+                                                <h5 className="text-lg font-bold">{modalTitle}</h5>
+                                                <button onClick={handleCloseModal} type="button" className="text-white-dark hover:text-dark">
+                                                    <IconX />
                                                 </button>
+                                            </div>
+                                            <div className="p-5">
+                                                <textarea
+                                                    id="leadNote"
+                                                    onChange={handleLeadNoteChange}
+                                                    value={leadNote}
+                                                    placeholder="Enter your note here"
+                                                    className="min-h-[150px] w-full rounded-lg border p-2 outline-none"
+                                                />
+                                                <div className="mt-3">
+                                                    <button onClick={handleNoteAction} className="btn btn-primary">
+                                                        {actionButtonText}
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </ActionModal>
@@ -436,51 +585,8 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 min-h-[80px] resize-none"
                                     ></textarea> */}
                             </div>
-                            {/* Add the table here */}
-                            <div className="mt-8">
-                                <h5 className="mb-4 text-lg font-bold">Follow Up History</h5>
-                                <table className="min-w-full border bg-white">
-                                    <thead>
-                                        <tr>
-                                            <th className="border-b px-4 py-2">Follow Up No</th>
-                                            <th className="border-b px-4 py-2">Interaction Type</th>
-                                            <th className="border-b px-4 py-2">Status</th>
-                                            <th className="border-b px-4 py-2">Next Follow Up</th>
-                                            <th className="border-b px-4 py-2">Remarks</th>
-                                            <th className="border-b px-4 py-2">Created Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {/* Render follow-up details here */}
-                                        {followUps.map((followUp, index) => (
-                                            <tr key={index}>
-                                                <td className="border-b px-4 py-2">{index + 1}</td>
-                                                <td className="border-b px-4 py-2">{followUp.interactionType}</td>
-                                                <td className="border-b px-4 py-2">{followUp.status}</td>
-                                                <td className="border-b px-4 py-2">{followUp.nextFollowUp}</td>
-                                                <td className="border-b px-4 py-2">{followUp.remarks}</td>
-                                                <td className="border-b px-4 py-2">{followUp.createdDate}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
                         </>
                     )}
-                    {/* <TableLayout
-                        title="Lead List"
-                        setData={setData}
-                        filterby="country"
-                        handleDelete={handleDelete}
-                        data={data}
-                        totalPages={data?.length || 0}
-                        tableColumns={tableColumns}
-                        exportColumns={exportColumns}
-                        ActionModal={LeadManagementActionModal}
-                        Filtersetting={Filtersetting}
-                        handleSubmit={handleSubmit}
-                    /> */}
-
                     <div className="mt-8 flex items-center justify-end">
                         <button
                             onClick={() => {
@@ -494,7 +600,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             Cancel
                         </button>
                         <button onClick={handleSave} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                            Create
+                            Save
                         </button>
                     </div>
                 </div>
