@@ -74,7 +74,7 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                             id="embassy"
                             multiple
                             className="form-select"
-                            value={addData?.embassy ? addData.embassy.split(', ') : []}// assuming addData.embassy is an array
+                            value={addData?.embassy ? addData.embassy.split(', ') : []} // assuming addData.embassy is an array
                             onChange={(e) => handleInputChange(e)}
                         >
                             <option value="volvo">Volvo</option>

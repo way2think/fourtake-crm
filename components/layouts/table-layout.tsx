@@ -44,12 +44,10 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [assignPasswordValue, setAssignPasswordValue] = useState<any>();
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
-    const [filterTitle,setFilterTitle]=useState("Filter")
+    const [filterTitle, setFilterTitle] = useState('Filter');
 
-    
- 
-   
     const router = useRouter();
+
 
     useEffect(() => {
         let filterItems;
@@ -78,7 +76,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
             setIsEdit(true);
             setIsOpen(true);
             setAddData(object);
-
         }
     };
 
@@ -87,9 +84,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     };
 
     const handleInputChange = (e: any) => {
-        // const { value, id } = e.target;
-        // setAddData({ ...addData, [id]: value });
-
         const { value, id, options } = e.target;
 
         if (options) {
@@ -106,11 +100,9 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
         } else {
             setAddData({ ...addData, [id]: value });
         }
-
     };
 
     const handleExport = () => {
-        // const columns = ['id', 'firstname', 'lastname', 'email'];
         const fileName = `${title}.xlsx`;
         exportToExcel(data, exportColumns, fileName);
     };
@@ -129,16 +121,13 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 if ((addData as { status: string }).status === 'Done') {
                     router.push(`/manage-visa`);
                 }
-
             }
         }
-
-
     };
 
     const handleFilter = () => {
         setShowCustomizer(true);
-setFilterTitle("Filter Applied")
+        setFilterTitle('Filter Applied');
     };
 
     return (
