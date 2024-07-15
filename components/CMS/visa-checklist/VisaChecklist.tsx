@@ -24,24 +24,7 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
     //     console.log(error.message);
     // }
 
-    // const data = [
-    //     {
-    //         id: 2,
-    //         name: 'Bangalore',
-    //         phone: '8778229794',
-    //         email: 'blr@fourtakevisas.com',
-    //         address: 'brigade road, bangalore',
-    //         is_active: true,
-    //     },
-    //     {
-    //         id: 2,
-    //         name: 'Bangalore',
-    //         phone: '8778229794',
-    //         email: 'blr@fourtakevisas.com',
-    //         address: 'brigade road, bangalore',
-    //         is_active: true,
-    //     },
-    // ];
+
 
     const tableColumns = [
         { accessor: 'country', textAlign: 'left', title: 'Country' },

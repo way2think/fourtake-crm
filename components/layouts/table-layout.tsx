@@ -16,6 +16,7 @@ import PasswordActionModal from '../user-management/PasswordActionModal';
 import ReuseActionModal from '../Reusable/Modal/ActionModal';
 import AddNote from '../popup/LeadListAddNote';
 import { useRouter } from 'next/navigation';
+import IconTxtFile from '../icon/icon-txt-file';
 
 interface TableLayoutProps {
     title: string;
@@ -47,7 +48,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [filterTitle, setFilterTitle] = useState('Filter');
 
     const router = useRouter();
-
 
     useEffect(() => {
         let filterItems;
@@ -197,6 +197,15 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                             </button>
                         </div>
                     )}
+
+                    
+                        <div>
+                            <button type="button" className="btn btn-primary" onClick={handleFilter}>
+                                <IconTxtFile className="ltr:mr-2 rtl:ml-2" />
+                                {filterTitle}
+                            </button>
+                        </div>
+                    
                 </div>
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
