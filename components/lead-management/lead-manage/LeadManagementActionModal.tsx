@@ -43,12 +43,10 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     }, [addData?.leadnote]);
 
     useEffect(() => {
-        setFollowUps(addData.followup || []);
+        //setFollowUps(addData.followup || []);
     }, [addData?.followup]);
 
-    useEffect(() => {
-        setLeadNotes(addData.leadnote || []);
-    }, [addData?.leadnote]);
+    
 
     useEffect(() => {
         if (addData.email) {

@@ -23,6 +23,8 @@ const VisaApplicationList = () => {
         {
             id: 2,
             country: 'America',
+            language: 'tamil,hindi,etc',
+            dailingcode: '+91',
             // id: 2,
             // country: 'Canada',
             // isgroup: false,
