@@ -14,42 +14,42 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
     const [data, setData] = useState(listapplication);
     const exportColumns = ['id', 'applydate', 'refno', 'apptype', 'applname', 'cosultantname', 'destination', 'type', 'duration', 'entry'];
     
-    // const tableColumns = [
-    //     { accessor: 'id', textAlign: 'left', title: 'SNo' },
-    //     { accessor: 'applydate', textAlign: 'left', title: 'Apply Date' },
-    //     { accessor: 'refno', textAlign: 'left', title: 'Ref No' },
-    //     { accessor: 'apptype', textAlign: 'left', title: 'Apptype' },
-    //     { accessor: 'applname', textAlign: 'left', title: 'Applname' },
-    //     { accessor: 'cosultantname', textAlign: 'left', title: 'Cosultantname' },
-    //     { accessor: 'destination', textAlign: 'left', title: 'Destination' },
-    //     { accessor: 'type', textAlign: 'left', title: 'Type' },
-    //     { accessor: 'duration', textAlign: 'left', title: 'Duration' },
-    //     { accessor: 'entry', textAlign: 'left', title: 'Entry' },
-    // ];
-
-
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'SNo' },
-        { accessor: 'country', textAlign: 'left', title: 'Country' },
-        // { accessor: 'isgroup', textAlign: 'left', title: 'Is Group' },
-        { accessor: 'visatype', textAlign: 'left', title: 'Visa Type' },
-        { accessor: 'nationality', textAlign: 'left', title: 'Nationality' },
-        { accessor: 'stateofresidence', textAlign: 'left', title: 'State of Residence' },
-        { accessor: 'visaduration', textAlign: 'left', title: 'Visa Duration' },
-        { accessor: 'entrytype', textAlign: 'left', title: 'Entry Type' },
-        { accessor: 'traveldate', textAlign: 'left', title: 'Travel Date' },
-        { accessor: 'customertype', textAlign: 'left', title: 'Customer Type' },
-        // { accessor: 'phone', textAlign: 'left' },
-        // { accessor: 'email', textAlign: 'left' },
-        // { accessor: 'address', textAlign: 'left' },
-        // {
-        //     accessor: 'is_active',
-        //     textAlign: 'left',
-        //     render: ({ is_active }: { is_active: any }) => {
-        //         return is_active;
-        //     },
-        // },
+        { accessor: 'country', textAlign: 'left', title: 'Apply Date' },
+        { accessor: 'country', textAlign: 'left', title: 'ReferenceNo' },
+        { accessor: 'country', textAlign: 'left', title: 'App Type' },
+        { accessor: 'country', textAlign: 'left', title: 'Applicant Name' },
+        { accessor: 'country', textAlign: 'left', title: 'Consultant Name' },
+        { accessor: 'country', textAlign: 'left', title: 'Destination' },
+        { accessor: 'country', textAlign: 'left', title: 'Type' },
+        { accessor: 'country', textAlign: 'left', title: 'Duration' },
+        { accessor: 'country', textAlign: 'left', title: 'Entry' },
     ];
+
+
+    // const tableColumns = [
+    //     { accessor: 'id', textAlign: 'left', title: 'SNo' },
+    //     { accessor: 'country', textAlign: 'left', title: 'Country' },
+    //     // { accessor: 'isgroup', textAlign: 'left', title: 'Is Group' },
+    //     { accessor: 'visatype', textAlign: 'left', title: 'Visa Type' },
+    //     { accessor: 'nationality', textAlign: 'left', title: 'Nationality' },
+    //     { accessor: 'stateofresidence', textAlign: 'left', title: 'State of Residence' },
+    //     { accessor: 'visaduration', textAlign: 'left', title: 'Visa Duration' },
+    //     { accessor: 'entrytype', textAlign: 'left', title: 'Entry Type' },
+    //     { accessor: 'traveldate', textAlign: 'left', title: 'Travel Date' },
+    //     { accessor: 'customertype', textAlign: 'left', title: 'Customer Type' },
+    //     // { accessor: 'phone', textAlign: 'left' },
+    //     // { accessor: 'email', textAlign: 'left' },
+    //     // { accessor: 'address', textAlign: 'left' },
+    //     // {
+    //     //     accessor: 'is_active',
+    //     //     textAlign: 'left',
+    //     //     render: ({ is_active }: { is_active: any }) => {
+    //     //         return is_active;
+    //     //     },
+    //     // },
+    // ];
     const handleDelete = (row: any) => {
         Swal.fire({
             icon: 'warning',
