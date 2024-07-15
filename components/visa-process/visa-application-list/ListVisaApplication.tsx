@@ -9,6 +9,7 @@ import { Tab } from '@headlessui/react';
 import React, { Fragment, useEffect, useState } from 'react';
 import PaginationExpand from '@/components/Reusable/Table/PaginationExpand';
 import PaginationTable from '@/components/Reusable/Table/PaginationTable';
+import ListVisaApplicationListLine from './ListVisaApplicationListLine';
 
 const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplication }) => {
     const [data, setData] = useState(listapplication);
@@ -154,6 +155,7 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
                                         tableColumns={tableColumns}
                                         exportColumns={exportColumns}
                                         ActionModal={CountryActionModal}
+                                        ActionModalListLine={ListVisaApplicationListLine}
                                         handleSubmit={handleSubmit}
                                     />
                                 </div>

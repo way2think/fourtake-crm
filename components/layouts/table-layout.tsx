@@ -30,14 +30,21 @@ interface TableLayoutProps {
     handleDelete: any;
     setData: any;
     filterby: any;
+    ActionModalListLine?: any;
 }
 
-const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setData, totalPages, handleDelete, handleSubmit, tableColumns, ActionModal, exportColumns, Filtersetting }) => {
+const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setData, totalPages, handleDelete, handleSubmit, tableColumns, ActionModal, exportColumns, Filtersetting, ActionModalListLine }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
 
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
     const [isEditAddNote, setIsEditAddNote] = useState(false);
+
+    //List Visa Application Page ListLine Action
+    const [isOpenListLine, setIsOpenListLine] = useState(false);
+    //const [isEditAddNote, setIsEditAddNote] = useState(false);
+
+    
 
     const [search, setSearch] = useState('');
     const [filterItem, setFilterItem] = useState(data);
@@ -132,6 +139,14 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
         setFilterTitle('Filter Applied');
     };
 
+    const handleListLine = (object: any) => {
+        // Implement the logic to handle the deletion of the row
+        console.log('Deleting row:', object);
+        //alert("Welcome");
+        setIsOpenListLine(true);
+        // You can add your deletion logic here, e.g., updating the state, making an API call, etc.
+    };
+
     return (
         <>
             <div className="flex flex-wrap items-center justify-between gap-4">
@@ -210,7 +225,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
                 <div className="table-responsive">
-                    <PaginationTable title={title} data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} handleRestore={handleRestore} />
+                    <PaginationTable title={title} data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} handleRestore={handleRestore} handleListLine={handleListLine} />
                 </div>
             </div>
 
@@ -226,6 +241,12 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 setIsEdit={setIsEdit}
                 // followUps={followUps}
                 // setFollowUps={setFollowUps}
+            />
+
+            <ActionModalListLine 
+                isOpen={isOpenListLine}
+                setIsOpen={setIsOpenListLine}
+                
             />
 
             <ReuseActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} width="">

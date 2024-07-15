@@ -21,16 +21,24 @@ interface PaginationTableProps {
     handleDelete?: (row: any) => void;
     ReuseActionModalShow?: (row: any) => void;
     handleRestore?: (row: any) => void;
+    handleListLine?: (row: any) => void;
 }
 
 interface Row {
     [key: string]: any;
 }
 
-const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow, actionhide, handleRestore }) => {
+const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow, actionhide, handleRestore, handleListLine }) => {
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
     const [page, setPage] = useState(1);
+
+    // const handleListLine = (row: any) => {
+    //     // Implement the logic to handle the deletion of the row
+    //     console.log('Deleting row:', row);
+    //     alert("Welcome");
+    //     // You can add your deletion logic here, e.g., updating the state, making an API call, etc.
+    // };
 
 
     const totalPages = useMemo(() => Math.ceil(data.length / pageSize), [data.length, pageSize]);
@@ -101,7 +109,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                                             size="sm"
                                             variant="subtle"
                                             color="red"
-                                            //  onClick={() => handleDelete?.(row)}
+                                            onClick={() => handleListLine?.(row)}
                                         >
                                             <IconList />
                                         </ActionIcon>
@@ -115,7 +123,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
         }
 
         return baseColumns;
-    }, [tableColumns, handleEdit, handleDelete, ReuseActionModalShow, title]);
+    }, [title, tableColumns, handleEdit, handleDelete, ReuseActionModalShow, handleListLine]);
 
     const handlePageChange = (pageNum: number) => {
         setPage(pageNum);
