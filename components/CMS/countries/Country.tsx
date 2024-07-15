@@ -23,21 +23,13 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
     // // console.log('dataaaa: ', data);
     // if (isError) {
     //     console.log(error.message);
-    // }
+    // }.
+
+    console.log('country', data);
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
         { accessor: 'country', textAlign: 'left', title: 'Country Name' },
-        // { accessor: 'phone', textAlign: 'left' },
-        // { accessor: 'email', textAlign: 'left' },
-        // { accessor: 'address', textAlign: 'left' },
-        // {
-        //     accessor: 'is_active',
-        //     textAlign: 'left',
-        //     render: ({ is_active }: { is_active: any }) => {
-        //         return is_active;
-        //     },
-        // },
     ];
 
     const handleDelete = (row: any) => {
@@ -65,44 +57,7 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
             showMessage('Enter country name', 'error');
             return false;
         }
-        // if (!isValidName(params.lastname)) {
-        //     showMessage('Last Name is required.', 'error');
-        //     return true;
-        // }
-        // if (!isValidEmail(params.email)) {
-        //     showMessage('Invalid Email.', 'error');
-        //     return true;
-        // }
-        // if (params.center == '') {
-        //     showMessage('Select Center', 'error');
-        //     return true;
-        // }
-
-        // if (params.phone?.length < 0 || params.phone?.length > 10) {
-        //     showMessage('Invalid phone number', 'error');
-        //     return true;
-        // }
-        // if (!isValidPassword(params.password)) {
-        //     showMessage('Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-        //     return true;
-        // }
-        // if (!isValidPassword(params.confirmpassword)) {
-        //     showMessage('Confirm Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-        //     return true;
-        // }
-        // if (params.password !== params.confirmpassword) {
-        //     showMessage('Passwords must match', 'error');
-        //     return true;
-        // }
-        // if (params.designation === '') {
-        //     showMessage('Designation is required.', 'error');
-        //     return true;
-        // }
-
-        // if (params.address == '') {
-        //     showMessage('Enter Address', 'error');
-        //     return true;
-        // }
+    
 
         if (value.id) {
             //update user

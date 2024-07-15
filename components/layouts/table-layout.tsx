@@ -44,9 +44,14 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [assignPasswordValue, setAssignPasswordValue] = useState<any>();
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
+<<<<<<< HEAD
 
+=======
+    const [filterTitle, setFilterTitle] = useState('Filter');
+>>>>>>> 098c9aedc374dbf8795766b6660ae6e0e9e9f67f
 
     const router = useRouter();
+
 
     useEffect(() => {
         let filterItems;
@@ -75,7 +80,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
             setIsEdit(true);
             setIsOpen(true);
             setAddData(object);
-
         }
     };
 
@@ -84,9 +88,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     };
 
     const handleInputChange = (e: any) => {
-        // const { value, id } = e.target;
-        // setAddData({ ...addData, [id]: value });
-
         const { value, id, options } = e.target;
 
         if (options) {
@@ -103,11 +104,9 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
         } else {
             setAddData({ ...addData, [id]: value });
         }
-
     };
 
     const handleExport = () => {
-        // const columns = ['id', 'firstname', 'lastname', 'email'];
         const fileName = `${title}.xlsx`;
         exportToExcel(data, exportColumns, fileName);
     };
@@ -126,15 +125,13 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 if ((addData as { status: string }).status === 'Done') {
                     router.push(`/manage-visa`);
                 }
-
             }
         }
-
-
     };
 
     const handleFilter = () => {
         setShowCustomizer(true);
+        setFilterTitle('Filter Applied');
     };
 
     return (
@@ -200,7 +197,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                         <div>
                             <button type="button" className="btn btn-primary" onClick={handleFilter}>
                                 <IconFile className="ltr:mr-2 rtl:ml-2" />
-                                Filter
+                                {filterTitle}
                             </button>
                         </div>
                     )}
@@ -212,7 +209,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 </div>
             </div>
 
-            {title == 'Lead List' && <Filtersetting data={data} setFilterItem={setFilterItem} showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer} />}
+            {title == 'Lead List' && <Filtersetting data={data} setFilterItem={setFilterItem} showCustomizer={showCustomizer} setFilterTitle={setFilterTitle} setShowCustomizer={setShowCustomizer} />}
             <ActionModal
                 isOpen={isOpen}
                 setAddData={setAddData}

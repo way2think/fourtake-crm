@@ -8,9 +8,10 @@ interface FiltersettingProps {
     setShowCustomizer: any;
     setFilterItem: any;
     data: any;
+    setFilterTitle?:any;
 }
 
-const Filtersetting: React.FC<FiltersettingProps> = ({ data, showCustomizer, setFilterItem, setShowCustomizer }) => {
+const Filtersetting: React.FC<FiltersettingProps> = ({ data, showCustomizer, setFilterTitle,setFilterItem, setShowCustomizer }) => {
     // State for all form fields
     // const [startDate, setStartDate] = useState(null);
     // const [endDate, setEndDate] = useState(null);
@@ -35,6 +36,7 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ data, showCustomizer, set
         setSource('');
         setFilterItem(data);
         setShowCustomizer(false);
+        setFilterTitle("Filter")
     };
 
     const handleFilter = () => {
@@ -76,40 +78,6 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ data, showCustomizer, set
                             <div className="text-left">Filter</div>
                             <div className="text-right"></div>
                         </div>
-
-                        {/* <div> 
-                            <ComponentsFormDatePickerBasic label="Start Date" nomargin="yes"/>
-                        </div>
-                        <div>
-                           <ComponentsFormDatePickerBasic label="End Date" nomargin="yes"/>
-                        </div>
-
-                        <div className="dropdown">
-                            <label htmlFor="followUp">Follow Up</label>
-                            <select
-                                className="form-input"
-                                value={followUp}
-                                onChange={(e) => setFollowUp(e.target.value)}
-                            >
-                                <option value="">[-Select-]</option>
-                                <option value="all">All</option>
-                                <option value="vfs">VFS</option>
-                            </select>
-                        </div>
-
-                        <div className="dropdown">
-                            <label htmlFor="country">Country</label>
-                            <select
-                                className="form-input"
-                                value={country}
-                                onChange={(e) => setCountry(e.target.value)}
-                            >
-                                <option value="">[-Select-]</option>
-                                <option value="andorra">Andorra</option>
-                                <option value="albania">Albania</option>
-                                <option value="bangladesh">Bangladesh</option>
-                            </select>
-                        </div> */}
 
                         <div className="dropdown">
                             <label htmlFor="leadStatus">Filter Lead Status</label>

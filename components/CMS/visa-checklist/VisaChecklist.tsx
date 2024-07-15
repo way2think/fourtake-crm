@@ -47,15 +47,6 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
         { accessor: 'country', textAlign: 'left', title: 'Country' },
         { accessor: 'type', textAlign: 'left', title: 'Visa type' },
         { accessor: 'embassy', textAlign: 'left', title: 'Embassy' },
-        // { accessor: 'email', textAlign: 'left' },
-        // { accessor: 'address', textAlign: 'left' },
-        // {
-        //     accessor: 'is_active',
-        //     textAlign: 'left',
-        //     render: ({ is_active }: { is_active: any }) => {
-        //         return is_active;
-        //     },
-        // },
     ];
 
     const handleDelete = (row: any) => {
@@ -124,19 +115,8 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
         // setAddContactModal(false);
         // setIsEdit(false);
     };
-    console.log('data set', data);
     return (
         <>
-            {/* <ul className="flex space-x-2 rtl:space-x-reverse mb-3">
-                <li>
-                    <Link href="/" className="text-primary hover:underline">
-                        CMS
-                    </Link>
-                </li>
-                <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
-                    <span>Visa Checklist</span>
-                </li>
-            </ul> */}
             <TableLayout
                 title="Visa Checklist"
                 data={data}

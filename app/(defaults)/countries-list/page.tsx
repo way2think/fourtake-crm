@@ -19,7 +19,7 @@ const CountriesList = async () => {
     //     console.log(error.message);
     // }
 
-    const {} = await http({ method: 'GET', endpoint: '/cms/country', options: {} });
+    // const {} = await http({ method: 'GET', endpoint: '/cms/country', options: {} });
 
     let data = [
         {
