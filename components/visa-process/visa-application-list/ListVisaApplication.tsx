@@ -25,31 +25,8 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
         { accessor: 'type', textAlign: 'left', title: 'Type' },
         { accessor: 'duration', textAlign: 'left', title: 'Duration' },
         { accessor: 'entry', textAlign: 'left', title: 'Entry' },
-    ];
+    ];   
 
-
-    // const tableColumns = [
-    //     { accessor: 'id', textAlign: 'left', title: 'SNo' },
-    //     { accessor: 'country', textAlign: 'left', title: 'Country' },
-    //     // { accessor: 'isgroup', textAlign: 'left', title: 'Is Group' },
-    //     { accessor: 'visatype', textAlign: 'left', title: 'Visa Type' },
-    //     { accessor: 'nationality', textAlign: 'left', title: 'Nationality' },
-    //     { accessor: 'stateofresidence', textAlign: 'left', title: 'State of Residence' },
-    //     { accessor: 'visaduration', textAlign: 'left', title: 'Visa Duration' },
-    //     { accessor: 'entrytype', textAlign: 'left', title: 'Entry Type' },
-    //     { accessor: 'traveldate', textAlign: 'left', title: 'Travel Date' },
-    //     { accessor: 'customertype', textAlign: 'left', title: 'Customer Type' },
-    //     // { accessor: 'phone', textAlign: 'left' },
-    //     // { accessor: 'email', textAlign: 'left' },
-    //     // { accessor: 'address', textAlign: 'left' },
-    //     // {
-    //     //     accessor: 'is_active',
-    //     //     textAlign: 'left',
-    //     //     render: ({ is_active }: { is_active: any }) => {
-    //     //         return is_active;
-    //     //     },
-    //     // },
-    // ];
     const handleDelete = (row: any) => {
         Swal.fire({
             icon: 'warning',
@@ -78,44 +55,7 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
             showMessage('Enter country name', 'error');
             return false;
         }
-        // if (!isValidName(params.lastname)) {
-        //     showMessage('Last Name is required.', 'error');
-        //     return true;
-        // }
-        // if (!isValidEmail(params.email)) {
-        //     showMessage('Invalid Email.', 'error');
-        //     return true;
-        // }
-        // if (params.center == '') {
-        //     showMessage('Select Center', 'error');
-        //     return true;
-        // }
-
-        // if (params.phone?.length < 0 || params.phone?.length > 10) {
-        //     showMessage('Invalid phone number', 'error');
-        //     return true;
-        // }
-        // if (!isValidPassword(params.password)) {
-        //     showMessage('Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-        //     return true;
-        // }
-        // if (!isValidPassword(params.confirmpassword)) {
-        //     showMessage('Confirm Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-        //     return true;
-        // }
-        // if (params.password !== params.confirmpassword) {
-        //     showMessage('Passwords must match', 'error');
-        //     return true;
-        // }
-        // if (params.designation === '') {
-        //     showMessage('Designation is required.', 'error');
-        //     return true;
-        // }
-
-        // if (params.address == '') {
-        //     showMessage('Enter Address', 'error');
-        //     return true;
-        // }
+        
 
         if (value.id) {
             //update user
@@ -166,10 +106,6 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
 
             //   searchContacts();
         }
-
-        // showMessage('User has been saved successfully.');
-        // setAddContactModal(false);
-        // setIsEdit(false);
     };
 
     return (

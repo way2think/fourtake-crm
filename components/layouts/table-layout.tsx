@@ -46,7 +46,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
     const [filterTitle, setFilterTitle] = useState('Filter');
-
     const router = useRouter();
 
     useEffect(() => {
@@ -61,13 +60,17 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
         setFilterItem(filterItems);
     }, [search, data, filterby]);
 
+    useEffect(() => {
+        setFilterItem(data);
+    }, [data]);
+
     const handleEdit = (object: any) => {
         if (title == 'List Visa Application') {
             //router.push(`/manage-visa`);
             // const data = encodeURIComponent(JSON.stringify(object));
             // const url = `/manage-visa?data=${data}`;
             // router.push(url);
-            
+
             // console.log(object);
             // sessionStorage.setItem('iseditmode', 'true');
             // sessionStorage.setItem('manageVisaData', JSON.stringify(object));
@@ -108,7 +111,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     };
 
     const handleSave = () => {
-        
         if (handleSubmit(addData)) {
             setIsOpen(false);
             setAddData({});
@@ -198,14 +200,12 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                         </div>
                     )}
 
-                    
-                        <div>
-                            <button type="button" className="btn btn-primary" onClick={handleFilter}>
-                                <IconTxtFile className="ltr:mr-2 rtl:ml-2" />
-                                {filterTitle}
-                            </button>
-                        </div>
-                    
+                    <div>
+                        <button type="button" className="btn btn-primary" onClick={handleFilter}>
+                            <IconTxtFile className="ltr:mr-2 rtl:ml-2" />
+                            {filterTitle}
+                        </button>
+                    </div>
                 </div>
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
@@ -224,8 +224,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 addData={addData}
                 isEdit={isEdit}
                 setIsEdit={setIsEdit}
-            // followUps={followUps}
-            // setFollowUps={setFollowUps}
+                // followUps={followUps}
+                // setFollowUps={setFollowUps}
             />
 
             <ReuseActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} width="">
