@@ -1,12 +1,4 @@
-import { isError } from 'lodash';
-
-type ApiObject = {
-    endpoint: string;
-};
-
-type ApiResponse = {};
-
-const getData = async ({ endpoint }: ApiObject) => {
+const getData = async ({ endpoint }) => {
     console.log('env', `${process.env.API_BASE_URL}/${endpoint}`);
     try {
         const res = await fetch(`${process.env.API_BASE_URL}/${endpoint}`, {

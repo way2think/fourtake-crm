@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import themeConfigSlice from '@/store/themeConfigSlice';
 import { apiSlice } from '@/services/api/apiSlice';
+import themeConfigSlice from '@/store/theme.store';
+import userSlice from '@/store/user.store';
 
 const rootReducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
     themeConfig: themeConfigSlice,
+    user: userSlice,
 });
 
 export default configureStore({

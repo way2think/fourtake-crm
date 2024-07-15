@@ -1,6 +1,6 @@
 'use client';
 import { IRootState } from '@/store';
-import { toggleSidebar } from '@/store/themeConfigSlice';
+import { toggleSidebar } from '@/store/theme.store';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Overlay = () => {
