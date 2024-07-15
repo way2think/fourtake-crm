@@ -69,7 +69,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                                         <IconTrash size={16} />
                                     </ActionIcon>
                                 )}
-                                {title !== 'Visa Checklist' && (
+                                {title === 'List Visa Application' && (
                                     <>
                                         <ActionIcon
                                             size="sm"
