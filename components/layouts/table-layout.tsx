@@ -74,7 +74,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
             setIsEdit(true);
             setIsOpen(true);
             setAddData(object);
-           
+
         }
     };
 
@@ -83,9 +83,26 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     };
 
     const handleInputChange = (e: any) => {
-        const { value, id } = e.target;
+        // const { value, id } = e.target;
+        // setAddData({ ...addData, [id]: value });
 
-        setAddData({ ...addData, [id]: value });
+        const { value, id, options } = e.target;
+
+        if (options) {
+            // Handling multiple select options
+            const selectedOptions = Array.from(options)
+                .filter((option) => (option as HTMLOptionElement).selected)
+                .map((option) => (option as HTMLOptionElement).value)
+                .join(', '); // Join selected options with a comma
+
+            setAddData((prevData) => ({
+                ...prevData,
+                [id]: selectedOptions,
+            }));
+        } else {
+            setAddData({ ...addData, [id]: value });
+        }
+
     };
 
     const handleExport = () => {
