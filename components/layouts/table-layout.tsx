@@ -44,11 +44,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [assignPasswordValue, setAssignPasswordValue] = useState<any>();
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
-<<<<<<< HEAD
-
-=======
     const [filterTitle, setFilterTitle] = useState('Filter');
->>>>>>> 098c9aedc374dbf8795766b6660ae6e0e9e9f67f
 
     const router = useRouter();
 
