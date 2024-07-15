@@ -421,7 +421,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             </button>
                             <ActionModal isOpen={isOpenNextFollowup} setIsOpen={setIsOpenNextFollowup} handleSave={handleSave} width="max-w-2xl">
                                 <div className="flex  items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                                    <h5 className="text-lg font-bold">Add User</h5>
+                                    <h5 className="text-lg font-bold">Add Next FollowUp</h5>
                                     <button
                                         onClick={() => {
                                             setIsOpenNextFollowup(false);
