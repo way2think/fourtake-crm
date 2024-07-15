@@ -22,10 +22,10 @@ interface LeadManagementActionModalProps {
     setAddData: any;
     isEdit?: any;
     setIsEdit?: any;
-    followUps?: any;
-    setFollowUps?: any;
+    // followUps?: any;
+    // setFollowUps?: any;
 }
-const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ isEdit, followUps, setFollowUps, setIsEdit, isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
+const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ isEdit, setIsEdit, isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
     const [setMail, setSetEmail] = useState<string>();
     const [docPickup, setDocPickup] = useState(false);
@@ -37,6 +37,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     const [nextFollowUp, setNextFollowUp] = useState<any>([]);
     const [isOpenNextFollowup, setIsOpenNextFollowup] = useState(false);
     const [addNextFollowUpData, setAddNextFollowUpData] = useState<any>({});
+    const [followUps, setFollowUps] = useState(addData?.followup || []);
 
     useEffect(() => {
         setLeadNotes(addData.leadnote || []);

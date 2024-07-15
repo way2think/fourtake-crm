@@ -44,7 +44,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [assignPasswordValue, setAssignPasswordValue] = useState<any>();
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
-    const [followUps, setFollowUps] = useState([]);
+ 
    
     const router = useRouter();
 
@@ -222,8 +222,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 addData={addData}
                 isEdit={isEdit}
                 setIsEdit={setIsEdit}
-                followUps={followUps}
-                setFollowUps={setFollowUps}
+                // followUps={followUps}
+                // setFollowUps={setFollowUps}
             />
 
             <ReuseActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} width="">
