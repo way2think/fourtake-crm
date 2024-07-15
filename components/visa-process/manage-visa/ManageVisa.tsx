@@ -119,6 +119,8 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
             setIsOpen(false);
             setAddUser({});
 
+           
+
             // return updatedData;
         } else {
             //add user

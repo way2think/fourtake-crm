@@ -66,7 +66,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
             // const url = `/manage-visa?data=${data}`;
             // router.push(url);
             // debugger;
-            console.log(object);
+            //console.log(object);
             // sessionStorage.setItem('iseditmode', 'true');
             // sessionStorage.setItem('manageVisaData', JSON.stringify(object));
             router.push(`/manage-visa`);
@@ -112,10 +112,24 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     };
 
     const handleSave = () => {
+        debugger;
         if (handleSubmit(addData)) {
             setIsOpen(false);
             setAddData({});
+
+            //Navigate to Manage Visa Page
+            //console.log(title)
+            if (title == 'Lead List') {
+                //alert("Navigate")
+                //console.log(addData)
+                if ((addData as { status: string }).status === 'Done') {
+                    router.push(`/manage-visa`);
+                }
+
+            }
         }
+
+
     };
 
     const handleFilter = () => {
