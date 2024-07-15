@@ -1,5 +1,5 @@
 'use client';
-import CountryActionModal from '@/components/CMS/countries/CountryActionModal';
+import CountryActionModal from '@/components/cms/countries/CountryActionModal';
 import TableLayout from '@/components/layouts/table-layout';
 import { showMessage } from '@/utils/notification';
 

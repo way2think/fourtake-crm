@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://plato.proxy.beeceptor.com/api',
+        baseUrl: `${process.env.API_BASE_URL}`,
     }),
     endpoints: (builder) => ({
         signUp: builder.mutation({

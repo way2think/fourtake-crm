@@ -86,7 +86,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                                             color="red"
                                             //  onClick={() => handleDelete?.(row)}
                                         >
-                                            <IconVerify  />
+                                            <IconVerify />
                                         </ActionIcon>
                                         <ActionIcon
                                             size="sm"
@@ -102,7 +102,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                                             color="red"
                                             //  onClick={() => handleDelete?.(row)}
                                         >
-                                            <IconList  />
+                                            <IconList />
                                         </ActionIcon>
                                     </>
                                 )}

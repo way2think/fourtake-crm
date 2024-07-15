@@ -1,7 +1,7 @@
 import React from 'react';
-import EmbassyVfs from '@/components/CMS/embassy-vfs/EmbassyVfs';
+import EmbassyVfs from '@/components/cms/embassy-vfs/EmbassyVfs';
 import { Metadata } from 'next';
-import Country from '@/components/CMS/countries/Country';
+import Country from '@/components/cms/countries/Country';
 
 export const metadata: Metadata = {
     title: 'Fourtake CRM',

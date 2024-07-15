@@ -1,39 +1,36 @@
 'use client';
 
-import { getData } from '@/api';
-import ComponentsFormsFileUploadMulti from '@/components/Reusable/file-upload/components-forms-file-upload-multi';
-import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
-import TableLayout from '@/components/layouts/table-layout';
-import { use } from 'react';
-import { Transition, Dialog } from '@headlessui/react';
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
-import IconX from '@/components/icon/icon-x';
-import CountryActionModal from './CountryActionModal';
+import React, { useState } from 'react';
 import Swal from 'sweetalert2';
+import TableLayout from '@/components/layouts/table-layout';
+import CountryActionModal from './CountryActionModal';
 import { showMessage } from '@/utils/notification';
-import Link from 'next/link';
+import { countrySlice, useDeleteCountryMutation, useGetCountriesQuery } from '@/services/api/cms/countrySlice';
+import type { Country } from '@/models/Country';
+import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
+import { isFetchBaseQueryError, isSerializedError } from '@/utils/validator';
 
-// const getServerData = async () => {
-//     return await getData({ endpoint: 'http://localhost:5001/center' });
-// };
 const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
-    const [data, setData] = useState(countrydata);
-    // const { data, isError, error } = use(getServerData());
-    // // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
-    // // console.log('dataaaa: ', data);
-    // if (isError) {
-    //     console.log(error.message);
-    // }.
+    const [deleteCountry, { data: isDeleted, isLoading: isDeletedLoading, isError, error }] = useDeleteCountryMutation();
+    const { data: countries, isFetching, isLoading } = useGetCountriesQuery(undefined);
+    const { items = [], meta = {} } = countries || {};
 
-    console.log('country', data);
+    const [handleLocalRTKUpdate] = useRTKLocalUpdate();
+
+    // console.log('countries: ', countries, isFetching, isLoading);
+    // console.log('isDeleted: ', isDeleted, isDeletedLoading, isError, error);
+
+    const [data, setData] = useState(countrydata);
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
-        { accessor: 'country', textAlign: 'left', title: 'Country Name' },
+        { accessor: 'name', textAlign: 'left', title: 'Country Name' },
     ];
 
-    const handleDelete = (row: any) => {
-        Swal.fire({
+    const exportColumns = ['id', 'country'];
+
+    const handleDelete = async (country: Country) => {
+        const result = await Swal.fire({
             icon: 'warning',
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -41,86 +38,107 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
             confirmButtonText: 'Delete',
             padding: '2em',
             customClass: 'sweet-alerts',
-        }).then((result) => {
-            if (result.value) {
-                setData(data.filter((item: any) => item.id !== row.id));
-                Swal.fire({ title: 'Deleted!', text: 'Your file has been deleted.', icon: 'success', customClass: 'sweet-alerts' });
+        });
+
+        if (result.value) {
+            const { id } = country;
+            // console.log('id: ', id);
+            const res = (await deleteCountry({ id })) as any;
+            if ('error' in res) {
+                // if (isFetchBaseQueryError(res.error)) {
+                //     console.log('FetchBaseQueryError data: ', res.error.data);
+                //     Swal.fire({ title: `${res.error.data?.error || 'Error'}!`, text: `${res.error.data?.message || 'Please try after sometime'}`, icon: 'error', customClass: 'sweet-alerts' });
+                // } else if (isSerializedError(res.error)) {
+                //     console.log('SerializedError message: ', res.error.message);
+                // } else {
+                //     console.log('Unknown error: ', res.error);
+                // }
+                await Swal.fire({ title: `${res.error.data?.error || 'Error'}!`, text: `${res.error.data?.message || 'Please try after sometime'}`, icon: 'error', customClass: 'sweet-alerts' });
+                return true;
+            } else {
+                // console.log('data: ', res.data);
+                const filteredCountries = items.filter((item: Country) => item.id !== country.id);
+                // console.log('filteredCountries: ', filteredCountries);
+                const updatedObject = {
+                    items: [...filteredCountries],
+                    meta: {
+                        ...meta,
+                        itemCount: meta.itemCount - 1,
+                        totalItems: meta.totalItems - 1,
+                    },
+                };
+                handleLocalRTKUpdate({ apiObjectRef: countrySlice, endpoint: 'getCountries', updateReceipe: updatedObject });
+                Swal.fire({ title: 'Deleted!', text: res.data.message, icon: 'success', customClass: 'sweet-alerts' });
                 return true;
             }
-        });
+        }
     };
-
-    const exportColumns = ['id', 'country'];
 
     const handleSubmit = (value: any) => {
         if (value.country == '' || value.country == null) {
             showMessage('Enter country name', 'error');
             return false;
         }
-    
 
-        if (value.id) {
-            //update user
-            let formData: any = data.find((d: any) => d.id === value.id);
-            formData.country = value.country;
-            formData.language = value.language;
-            formData.dailingcode = value.dailingcode;
-            formData.capital = value.capital;
-            formData.cities = value.cities;
-            formData.countrydetails = value.countrydetails;
-            formData.climate = value.climate;
-            formData.currency = value.currency;
-            formData.timezone = value.timezone;
-            formData.additionalinfo = value.additionalinfo;
-            formData.website = value.website;
-            formData.ispopular = value.ispopular;
-            formData.isoutsource = value.isoutsource;
-            formData.isjurisdiction = value.isjurisdiction;
-            formData.image = value.image;
-            formData.flag = value.flag;
+        console.log('value: ', value);
 
-            return formData;
-        } else {
-            //add user
-            let maxUserId = data.length ? data.reduce((max: any, character: any) => (character.id > max ? character.id : max), data[0].id) : 0;
+        // if (value.id) {
+        //     //update user
+        //     let formData: any = data.find((d: any) => d.id === value.id);
+        //     formData.country = value.country;
+        //     formData.language = value.language;
+        //     formData.dailingcode = value.dailingcode;
+        //     formData.capital = value.capital;
+        //     formData.cities = value.cities;
+        //     formData.countrydetails = value.countrydetails;
+        //     formData.climate = value.climate;
+        //     formData.currency = value.currency;
+        //     formData.timezone = value.timezone;
+        //     formData.additionalinfo = value.additionalinfo;
+        //     formData.website = value.website;
+        //     formData.ispopular = value.ispopular;
+        //     formData.isoutsource = value.isoutsource;
+        //     formData.isjurisdiction = value.isjurisdiction;
+        //     formData.image = value.image;
+        //     formData.flag = value.flag;
 
-            let formData = {
-                id: +maxUserId + 1,
-                country: value.country,
-                language: value.language,
-                dailingcode: value.dailingcode,
-                capital: value.capital,
-                cities: value.cities,
-                countrydetails: value.countrydetails,
-                climate: value.climate,
-                currency: value.currency,
-                timezone: value.timezone,
-                additionalinfo: value.additionalinfo,
-                website: value.website,
-                ispopular: value.ispopular,
-                isoutsource: value.isoutsource,
-                isjurisdiction: value.isjurisdiction,
-                image: value.image,
-                flag: value.flag,
-            };
-            setData([...data, formData]);
-            return formData;
+        //     return formData;
+        // } else {
+        //     //add user
+        //     let maxUserId = data.length ? data.reduce((max: any, character: any) => (character.id > max ? character.id : max), data[0].id) : 0;
 
-            //   searchContacts();
-        }
-
-        // showMessage('User has been saved successfully.');
-        // setAddContactModal(false);
-        // setIsEdit(false);
+        //     let formData = {
+        //         id: +maxUserId + 1,
+        //         country: value.country,
+        //         language: value.language,
+        //         dailingcode: value.dailingcode,
+        //         capital: value.capital,
+        //         cities: value.cities,
+        //         countrydetails: value.countrydetails,
+        //         climate: value.climate,
+        //         currency: value.currency,
+        //         timezone: value.timezone,
+        //         additionalinfo: value.additionalinfo,
+        //         website: value.website,
+        //         ispopular: value.ispopular,
+        //         isoutsource: value.isoutsource,
+        //         isjurisdiction: value.isjurisdiction,
+        //         image: value.image,
+        //         flag: value.flag,
+        //     };
+        //     setData([...data, formData]);
+        //     return formData;
+        // }
     };
+
     return (
         <>
             <TableLayout
-                title="Country List"
+                title="Country"
                 setData={setData}
                 filterby="country"
                 handleDelete={handleDelete}
-                data={data}
+                data={items}
                 totalPages={data?.length || 0}
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}

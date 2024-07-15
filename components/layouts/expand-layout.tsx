@@ -10,7 +10,7 @@ import ComponentsFormsFileUploadSingle from '../Reusable/file-upload/components-
 import ComponentsFormsFileUploadMulti from '../Reusable/file-upload/components-forms-file-upload-multi';
 import IconX from '../icon/icon-x';
 //import ActionModal from '../Reusable/Modal/ActionModal';
-import CountryActionModal from '../CMS/countries/CountryActionModal';
+import CountryActionModal from '../cms/countries/CountryActionModal';
 import IconFile from '../icon/icon-zip-file';
 import PasswordActionModal from '../user-management/PasswordActionModal';
 import PaginationExpand from '../Reusable/Table/PaginationExpand';

@@ -12,11 +12,13 @@ interface CountryActionModalProps {
     setAddData: any;
 }
 const CountryActionModal: React.FC<CountryActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
-   
+    console.log('CountryActionModal: ', addData);
+
     const handleCheckBoxChange = (e: any) => {
         const { id, checked } = e.target;
         setAddData((prev: any) => ({ ...prev, [id]: checked }));
     };
+
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
@@ -38,7 +40,7 @@ const CountryActionModal: React.FC<CountryActionModalProps> = ({ isOpen, setAddD
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
                             <label htmlFor="countrysname">Country Name</label>
-                            <input id="country" type="text" placeholder="Enter Country Name" className="form-input" value={addData?.country} onChange={(e) => handleInputChange(e)} />
+                            <input id="country" type="text" placeholder="Enter Country Name" className="form-input" value={addData?.name} onChange={(e) => handleInputChange(e)} />
                         </div>
                         <div className="mb-5">
                             <label htmlFor="languages">Languages </label>

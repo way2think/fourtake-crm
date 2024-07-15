@@ -10,7 +10,7 @@ import ComponentsFormsFileUploadSingle from '../Reusable/file-upload/components-
 import ComponentsFormsFileUploadMulti from '../Reusable/file-upload/components-forms-file-upload-multi';
 import IconX from '../icon/icon-x';
 //import ActionModal from '../Reusable/Modal/ActionModal';
-import CountryActionModal from '../CMS/countries/CountryActionModal';
+import CountryActionModal from '../cms/countries/CountryActionModal';
 import IconFile from '../icon/icon-zip-file';
 import PasswordActionModal from '../user-management/PasswordActionModal';
 import ReuseActionModal from '../Reusable/Modal/ActionModal';
@@ -46,6 +46,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
     const [filterTitle, setFilterTitle] = useState('Filter');
+
     const router = useRouter();
 
     useEffect(() => {
