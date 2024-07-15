@@ -45,7 +45,11 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [assignPasswordValue, setAssignPasswordValue] = useState<any>();
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
+<<<<<<< HEAD
+
+=======
     const [filterTitle, setFilterTitle] = useState('Filter');
+>>>>>>> 098c9aedc374dbf8795766b6660ae6e0e9e9f67f
 
     const router = useRouter();
 
@@ -67,7 +71,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
             // const data = encodeURIComponent(JSON.stringify(object));
             // const url = `/manage-visa?data=${data}`;
             // router.push(url);
-            // debugger;
+            
             // console.log(object);
             // sessionStorage.setItem('iseditmode', 'true');
             // sessionStorage.setItem('manageVisaData', JSON.stringify(object));
@@ -108,7 +112,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     };
 
     const handleSave = () => {
-        debugger;
+        
         if (handleSubmit(addData)) {
             setIsOpen(false);
             setAddData({});
@@ -224,8 +228,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 addData={addData}
                 isEdit={isEdit}
                 setIsEdit={setIsEdit}
-                // followUps={followUps}
-                // setFollowUps={setFollowUps}
+            // followUps={followUps}
+            // setFollowUps={setFollowUps}
             />
 
             <ReuseActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} width="">

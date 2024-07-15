@@ -47,9 +47,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         setFollowUps(addData.followup || []);
     }, [addData?.followup]);
 
-    useEffect(() => {
-        setLeadNotes(addData.leadnote || []);
-    }, [addData?.leadnote]);
+    
 
     useEffect(() => {
         if (addData.email) {
@@ -134,7 +132,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
             setFollowUps([...followUps, newFollowup]);
             setAddData({
                 ...addData,
-                followup: [...addData.followup, newFollowup], 
+                followup: addData.followup ? [...addData.followup, newFollowup] : [newFollowup],
             });
             setIsOpenNextFollowup(false);
             setAddNextFollowUpData({});

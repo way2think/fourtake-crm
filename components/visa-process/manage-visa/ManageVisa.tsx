@@ -26,7 +26,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
     useEffect(() => {
 
         const editmode = sessionStorage.getItem('iseditmode');
-        debugger;
+        
         if (editmode == 'true') {
             const data = sessionStorage.getItem('manageVisaData');
             if (data) {
@@ -78,7 +78,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
     };
 
     const handleSaveUser = () => {
-        debugger;
+        
         if (addUser.firstname == '' || addUser.firstname == null) {
             showMessage('Enter First name', 'error');
             return false;
@@ -124,7 +124,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
             // return updatedData;
         } else {
             //add user
-            debugger;
+            
             const maxUserId = applicantDetails.length ? Math.max(...applicantDetails.map((d: any) => d.id)) : 0;
             console.log(addUser);
             const newUser = {
@@ -163,7 +163,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
 
 
     const handleSubmit = (value: any) => {
-        debugger;
+        
         if (addData.country == '' || addData.country == null) {
             showMessage('Select Country', 'error');
             return false;

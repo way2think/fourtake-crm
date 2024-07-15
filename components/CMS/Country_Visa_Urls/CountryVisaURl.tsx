@@ -54,7 +54,7 @@ const CountryVisaURl: React.FC<{ countryvisaurls: any }> = ({ countryvisaurls })
     const exportColumns = ['id', 'country', 'urls'];
 
     const handleSubmit = (value: any) => {
-        debugger;
+        
         if (value.country == '' || value.country == null) {
             showMessage('Select Country', 'error');
             return false;

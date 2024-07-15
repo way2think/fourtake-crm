@@ -49,7 +49,7 @@ const ComponentsFormDatePickerRange: React.FC<ComponentsFormDatePickerRangeProps
     // console.log("date filter", dateFilter)
 
     const handleDateChange = (selectedDates: Date[]) => {
-        debugger;
+        
         setDateRange(selectedDates);
 
         if (selectedDates.length === 2) {
