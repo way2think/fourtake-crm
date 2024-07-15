@@ -79,44 +79,7 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
             showMessage('Select State', 'error');
             return false;
         }
-        // if (!isValidName(params.lastname)) {
-        //     showMessage('Last Name is required.', 'error');
-        //     return true;
-        // }
-        // if (!isValidEmail(params.email)) {
-        //     showMessage('Invalid Email.', 'error');
-        //     return true;
-        // }
-        // if (params.center == '') {
-        //     showMessage('Select Center', 'error');
-        //     return true;
-        // }
-
-        // if (params.phone?.length < 0 || params.phone?.length > 10) {
-        //     showMessage('Invalid phone number', 'error');
-        //     return true;
-        // }
-        // if (!isValidPassword(params.password)) {
-        //     showMessage('Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-        //     return true;
-        // }
-        // if (!isValidPassword(params.confirmpassword)) {
-        //     showMessage('Confirm Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-        //     return true;
-        // }
-        // if (params.password !== params.confirmpassword) {
-        //     showMessage('Passwords must match', 'error');
-        //     return true;
-        // }
-        // if (params.designation === '') {
-        //     showMessage('Designation is required.', 'error');
-        //     return true;
-        // }
-
-        // if (params.address == '') {
-        //     showMessage('Enter Address', 'error');
-        //     return true;
-        // }
+    
 
         if (value.id) {
             //update user
@@ -184,9 +147,7 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
             //   searchContacts();
         }
 
-        // showMessage('User has been saved successfully.');
-        // setAddContactModal(false);
-        // setIsEdit(false);
+       
     };
     
     return (

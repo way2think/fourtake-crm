@@ -44,6 +44,9 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [assignPasswordValue, setAssignPasswordValue] = useState<any>();
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
+    const [filterTitle,setFilterTitle]=useState("Filter")
+
+    
  
    
     const router = useRouter();
@@ -135,6 +138,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
 
     const handleFilter = () => {
         setShowCustomizer(true);
+setFilterTitle("Filter Applied")
     };
 
     return (
@@ -200,7 +204,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                         <div>
                             <button type="button" className="btn btn-primary" onClick={handleFilter}>
                                 <IconFile className="ltr:mr-2 rtl:ml-2" />
-                                Filter
+                                {filterTitle}
                             </button>
                         </div>
                     )}
@@ -212,7 +216,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 </div>
             </div>
 
-            {title == 'Lead List' && <Filtersetting data={data} setFilterItem={setFilterItem} showCustomizer={showCustomizer} setShowCustomizer={setShowCustomizer} />}
+            {title == 'Lead List' && <Filtersetting data={data} setFilterItem={setFilterItem} showCustomizer={showCustomizer} setFilterTitle={setFilterTitle} setShowCustomizer={setShowCustomizer} />}
             <ActionModal
                 isOpen={isOpen}
                 setAddData={setAddData}
