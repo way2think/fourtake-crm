@@ -89,6 +89,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                                             //  onClick={() => handleDelete?.(row)}
                                         >
                                             <IconVerify />
+                                            <IconVerify />
                                         </ActionIcon>
                                         <ActionIcon
                                             size="sm"

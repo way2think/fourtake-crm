@@ -10,7 +10,7 @@ import ComponentsFormsFileUploadSingle from '../Reusable/file-upload/components-
 import ComponentsFormsFileUploadMulti from '../Reusable/file-upload/components-forms-file-upload-multi';
 import IconX from '../icon/icon-x';
 import ReuseActionModal from '../Reusable/Modal/ActionModal';
-import CountryActionModal from '../CMS/countries/CountryActionModal';
+import CountryActionModal from '../cms/countries/CountryActionModal';
 import IconFile from '../icon/icon-zip-file';
 import ComponentsFormDatePickerRange from '../lead-management/lead-manage/components-form-date-picker-range';
 import CountView from '../popup/StatusWiseReportCountView';
@@ -170,8 +170,6 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
     };
     console.log('filter item', filterItem, addData);
     const handleSubmitReport = () => {
-        
-
         let requiredFields: string[] = [];
         let dataFilter = data;
 
@@ -222,7 +220,6 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
             //     });
             // }
 
-            
             if (dateFilter) {
                 if (typeof dateFilter === 'string' && dateFilter.includes(' to ')) {
                     const [startDateStr, endDateStr] = dateFilter.split(' to ');
@@ -337,26 +334,24 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                     </div>
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        
-                            <>
-                                <div className="mb-5">
-                                    <ComponentsFormDatePickerRange setDateFilter={setDateFilter} />
-                                </div>
+                        <>
+                            <div className="mb-5">
+                                <ComponentsFormDatePickerRange setDateFilter={setDateFilter} />
+                            </div>
 
-                                <div className="flex items-center">
-                                    <div>
-                                        <button type="button" className="btn btn-primary mr-5" onClick={handleSubmitReport}>
-                                            Submit
-                                        </button>
-                                    </div>
-                                    <div>
-                                        <button type="button" className="btn btn-outline-primary mr-5" onClick={handleExport}>
-                                            Export to Excel
-                                        </button>
-                                    </div>
+                            <div className="flex items-center">
+                                <div>
+                                    <button type="button" className="btn btn-primary mr-5" onClick={handleSubmitReport}>
+                                        Submit
+                                    </button>
                                 </div>
-                            </>
-                       
+                                <div>
+                                    <button type="button" className="btn btn-outline-primary mr-5" onClick={handleExport}>
+                                        Export to Excel
+                                    </button>
+                                </div>
+                            </div>
+                        </>
                     </div>
                 </div>
 

@@ -1,4 +1,4 @@
-import EntryTypes from '@/components/CMS/entry-types/EntryTypes';
+import EntryTypes from '@/components/cms/entry-types/EntryTypes';
 import { Metadata } from 'next';
 import React from 'react';
 

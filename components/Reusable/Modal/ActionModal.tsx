@@ -23,7 +23,7 @@ import IconPencil from '@/components/icon/icon-pencil';
 import IconTrashLines from '@/components/icon/icon-trash-lines';
 import ComponentsFormsFileUploadSingle from '../file-upload/components-forms-file-upload-single';
 import ComponentsFormsFileUploadMulti from '../file-upload/components-forms-file-upload-multi';
-import CountryActionModal from '../../CMS/countries/CountryActionModal';
+import CountryActionModal from '../../cms/countries/CountryActionModal';
 // import { exportToExcel } from '../Reusable/ExportExcel/exportToExcel';
 
 interface ActionModalProps {

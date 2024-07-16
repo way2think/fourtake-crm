@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
-import Country from '@/components/CMS/countries/Country';
+import Country from '@/components/cms/countries/Country';
 import { Suspense } from 'react';
 import { getData } from '@/api';
-import VisaStatus from '@/components/CMS/visa_status/VisaStatus';
+import VisaStatus from '@/components/cms/visa_status/VisaStatus';
 
 export const metadata: Metadata = {
     title: 'checklist | Countries list',

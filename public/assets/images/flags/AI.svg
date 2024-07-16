@@ -39,7 +39,7 @@
                     <use xlink:href="#path-4"></use>
                 </mask>
                 <g id="Mask">
-                    <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-4"></use>
+                    <use fill="black" fillOpacity="1" filter="url(#filter-6)" xlink:href="#path-4"></use>
                     <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-4"></use>
                 </g>
                 <rect id="Rectangle-1106" fill="#9ACCFF" mask="url(#mask-5)" x="0" y="4" width="4" height="1"></rect>
