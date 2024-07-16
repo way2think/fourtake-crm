@@ -41,6 +41,13 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
     const endIndex = startIndex + pageSize;
     const paginatedData = useMemo(() => data?.slice(startIndex, endIndex), [data, startIndex, endIndex]);
 
+    const handleMouseEnter: React.MouseEventHandler<HTMLElement> = (event) => {
+        const svgElement = event.currentTarget.querySelector('svg title');
+        if (svgElement) {
+            svgElement.textContent = "Multiple Passport";
+        }
+    };
+
     const columns = useMemo(() => {
         const baseColumns = [...tableColumns];
 
@@ -106,8 +113,10 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                                             variant="subtle"
                                             color="red"
                                             onClick={() => handleListLine?.(row)}
+                                            onMouseEnter={handleMouseEnter}
                                         >
-                                            <IconList />
+                                            <IconList title="list-line"/>
+                                            
                                         </ActionIcon>
                                         <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleTracking?.(row)}>
                                             <IconTrendingUp />
