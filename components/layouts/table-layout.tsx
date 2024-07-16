@@ -90,6 +90,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const handleInputChange = (e: any) => {
         const { value, id, options } = e.target;
 
+        // console.log('handleInputChange: ', id, value);
+
         if (options) {
             // Handling multiple select options
             const selectedOptions = Array.from(options)
@@ -111,8 +113,15 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
         exportToExcel(data, exportColumns, fileName);
     };
 
-    const handleSave = () => {
-        if (handleSubmit(addData)) {
+    const handleSave = async () => {
+        // this is to send only object with value, so null values are filtered out
+        const filteredObj = Object.fromEntries(Object.entries(addData).filter(([key, value]) => value !== null && value !== '' && value !== undefined));
+
+        // console.log('fil: ', filteredObj);
+
+        const isSuccess = await handleSubmit(filteredObj);
+
+        if (isSuccess) {
             setIsOpen(false);
             setAddData({});
 

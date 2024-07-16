@@ -4,12 +4,13 @@ export const countrySlice = apiSlice.injectEndpoints({
     overrideExisting: (module as any).hot?.status() === 'apply', // dev env, That is probably due to hot module reloading reloading the file when you apply changes to it.
     endpoints: (build) => ({
         createCountry: build.mutation({
-            query: () => ({
+            query: ({ body }) => ({
                 method: 'POST',
                 url: `/cms/country`,
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                body,
             }),
         }),
         getCountries: build.query({
@@ -22,16 +23,17 @@ export const countrySlice = apiSlice.injectEndpoints({
             }),
         }),
         updateCountry: build.mutation({
-            query: ({ id }) => ({
+            query: ({ id, body }) => ({
                 method: 'PATCH',
                 url: `/cms/country/${id}`,
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                body,
             }),
         }),
         deleteCountry: build.mutation({
-            query: ({ id }) => {
+            query: (id) => {
                 console.log('id:: ', id);
                 return {
                     method: 'DELETE',
@@ -45,4 +47,4 @@ export const countrySlice = apiSlice.injectEndpoints({
     }),
 });
 
-export const { useGetCountriesQuery, useDeleteCountryMutation } = countrySlice;
+export const { useCreateCountryMutation, useGetCountriesQuery, useUpdateCountryMutation, useDeleteCountryMutation } = countrySlice;

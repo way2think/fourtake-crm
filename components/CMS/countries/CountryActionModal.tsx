@@ -12,7 +12,7 @@ interface CountryActionModalProps {
     setAddData: any;
 }
 const CountryActionModal: React.FC<CountryActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
-    console.log('CountryActionModal: ', addData);
+    // console.log('CountryActionModal: ', addData);
 
     const handleCheckBoxChange = (e: any) => {
         const { id, checked } = e.target;
@@ -40,17 +40,17 @@ const CountryActionModal: React.FC<CountryActionModalProps> = ({ isOpen, setAddD
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
                             <label htmlFor="countrysname">Country Name</label>
-                            <input id="country" type="text" placeholder="Enter Country Name" className="form-input" value={addData?.name} onChange={(e) => handleInputChange(e)} />
+                            <input id="name" type="text" placeholder="Enter Country Name" className="form-input" value={addData?.name} onChange={(e) => handleInputChange(e)} />
                         </div>
                         <div className="mb-5">
                             <label htmlFor="languages">Languages </label>
-                            <input id="language" type="text" onChange={(e) => handleInputChange(e)} value={addData?.language} placeholder="Enter Languages" className="form-input" />
+                            <input id="languages" type="text" onChange={(e) => handleInputChange(e)} value={addData?.languages} placeholder="Enter Languages" className="form-input" />
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <label htmlFor="dailingcode">Dailing Code</label>
-                            <input id="dailingcode" value={addData?.dailingcode} onChange={(e) => handleInputChange(e)} type="tel" placeholder="Enter dailing Code" className="form-input" />
+                            <label htmlFor="dialing_code">Dailing Code</label>
+                            <input id="dialing_code" value={addData?.dialing_code} onChange={(e) => handleInputChange(e)} type="tel" placeholder="Enter dailing Code" className="form-input" />
                         </div>
                         <div className="mb-5">
                             <label htmlFor="capital">Capital </label>
@@ -66,11 +66,11 @@ const CountryActionModal: React.FC<CountryActionModalProps> = ({ isOpen, setAddD
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <label htmlFor="countrydetails">Country Details</label>
+                            <label htmlFor="country_detail">Country Details</label>
                             <textarea
-                                id="countrydetails"
+                                id="country_detail"
                                 rows={3}
-                                value={addData?.countrydetails}
+                                value={addData?.country_detail}
                                 onChange={(e) => handleInputChange(e)}
                                 placeholder="Enter Country Details"
                                 className="form-textarea min-h-[80px] resize-none"
@@ -100,11 +100,11 @@ const CountryActionModal: React.FC<CountryActionModalProps> = ({ isOpen, setAddD
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="mb-5">
-                            <label htmlFor="additionalinfo">Additional Info</label>
+                            <label htmlFor="additional_info">Additional Info</label>
                             <textarea
-                                id="additionalinfo"
+                                id="additional_info"
                                 rows={3}
-                                value={addData?.additionalinfo}
+                                value={addData?.additional_info}
                                 onChange={(e) => handleInputChange(e)}
                                 placeholder="Enter Additional Info"
                                 className="form-textarea min-h-[80px] resize-none"
@@ -122,10 +122,10 @@ const CountryActionModal: React.FC<CountryActionModalProps> = ({ isOpen, setAddD
                             <label className="flex cursor-pointer items-center">
                                 <input
                                     type="checkbox"
-                                    id="ispopular"
+                                    id="is_popular"
                                     // value={addData?.ispopular}
                                     onChange={(e) => handleCheckBoxChange(e)}
-                                    checked={addData?.ispopular || false}
+                                    checked={addData?.is_popular || false}
                                     className="form-checkbox  bg-white dark:bg-black"
                                 />
                                 <span className="text-white-dark">Is popular Country </span>
@@ -135,8 +135,8 @@ const CountryActionModal: React.FC<CountryActionModalProps> = ({ isOpen, setAddD
                             <label className="flex cursor-pointer items-center">
                                 <input
                                     type="checkbox"
-                                    id="isoutsource"
-                                    checked={addData?.isoutsource || false}
+                                    id="is_outsource_application_center"
+                                    checked={addData?.is_outsource_application_center || false}
                                     // value={addData?.isoutsource}
                                     onChange={(e) => handleCheckBoxChange(e)}
                                     className="form-checkbox bg-white dark:bg-black"
@@ -148,8 +148,8 @@ const CountryActionModal: React.FC<CountryActionModalProps> = ({ isOpen, setAddD
                             <label className="flex cursor-pointer items-center">
                                 <input
                                     type="checkbox"
-                                    id="isjurisdiction"
-                                    checked={addData?.isjurisdiction || false}
+                                    id="is_jurisdiction"
+                                    checked={addData?.is_jurisdiction || false}
                                     // value={addData?.isjurisdiction}
                                     onChange={(e) => handleCheckBoxChange(e)}
                                     className="form-checkbox bg-white dark:bg-black"
