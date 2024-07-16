@@ -11,6 +11,7 @@ import IconVerify from '@/components/icon/menu/icon-verify';
 import IconCancel from '@/components/icon/icon-cancel';
 import IconUnVerified from '@/components/icon/icon-unverified';
 import IconList from '@/components/icon/icon-list';
+import IconTrendingUp from '@/components/icon/icon-trending-up';
 
 interface PaginationTableProps {
     title?: string;
@@ -22,13 +23,15 @@ interface PaginationTableProps {
     ReuseActionModalShow?: (row: any) => void;
     handleRestore?: (row: any) => void;
     handleListLine?: (row: any) => void;
+    handleTracking?: (row: any) => void;
 }
 
 interface Row {
     [key: string]: any;
 }
 
-const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow, actionhide, handleRestore, handleListLine }) => {
+
+const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow, actionhide, handleRestore, handleTracking, handleListLine }) => {
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
     const [page, setPage] = useState(1);
@@ -87,7 +90,8 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                                             color="red"
                                             //  onClick={() => handleDelete?.(row)}
                                         >
-                                            <IconVerify  />
+                                            <IconVerify />
+                                            <IconVerify />
                                         </ActionIcon>
                                         <ActionIcon
                                             size="sm"
@@ -103,7 +107,10 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                                             color="red"
                                             onClick={() => handleListLine?.(row)}
                                         >
-                                            <IconList  />
+                                            <IconList />
+                                        </ActionIcon>
+                                        <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleTracking?.(row)}>
+                                            <IconTrendingUp />
                                         </ActionIcon>
                                     </>
                                 )}

@@ -15,7 +15,7 @@ type TOptions = {
     url?: string;
     headers?: THeader;
     setAuthorization?: boolean;
-    accessToken?: string;
+    accessToken?: string | null;
     hasFiles?: boolean;
     showSuccessMsg?: boolean;
 };

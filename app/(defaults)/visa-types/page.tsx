@@ -1,6 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
-import VisaTypes from '@/components/CMS/visa-types/VisaTypes';
+import VisaTypes from '@/components/cms/visa-types/VisaTypes';
 import { getData } from '@/api';
 
 export const metadata: Metadata = {

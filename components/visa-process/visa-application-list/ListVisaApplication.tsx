@@ -1,5 +1,5 @@
 'use client';
-import CountryActionModal from '@/components/CMS/countries/CountryActionModal';
+import CountryActionModal from '@/components/cms/countries/CountryActionModal';
 import TableLayout from '@/components/layouts/table-layout';
 import { showMessage } from '@/utils/notification';
 
@@ -14,7 +14,7 @@ import ListVisaApplicationListLine from './ListVisaApplicationListLine';
 const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplication }) => {
     const [data, setData] = useState(listapplication);
     const exportColumns = ['id', 'applydate', 'refno', 'apptype', 'applname', 'cosultantname', 'destination', 'type', 'duration', 'entry'];
-    
+
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'SNo' },
         { accessor: 'applydate', textAlign: 'left', title: 'Apply Date' },
@@ -26,7 +26,7 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
         { accessor: 'type', textAlign: 'left', title: 'Type' },
         { accessor: 'duration', textAlign: 'left', title: 'Duration' },
         { accessor: 'entry', textAlign: 'left', title: 'Entry' },
-    ];   
+    ];
 
     const handleDelete = (row: any) => {
         Swal.fire({
@@ -56,7 +56,6 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
             showMessage('Enter country name', 'error');
             return false;
         }
-        
 
         if (value.id) {
             //update user

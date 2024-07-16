@@ -1,6 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
-import Country from '@/components/CMS/countries/Country';
+import Country from '@/components/cms/countries/Country';
 import DailyReport from '@/components/Reports/daily-report/DailyReport';
 
 export const metadata: Metadata = {

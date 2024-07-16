@@ -1,6 +1,6 @@
 import { THeader, THttp, TOptions, TResponse } from '@/types/api';
 
-const getHeaders = ({ headers = {}, hasFiles = false, setAuthorization = true, accessToken = null }) => {
+const getHeaders = ({ headers = {}, hasFiles = false, setAuthorization = true, accessToken = null }: TOptions) => {
     // this headers will have Content-Type, Authorization with Beared Token also
     const newHeaders: THeader = {
         ...headers,

@@ -1,3 +1,6 @@
+import { SerializedError } from '@reduxjs/toolkit';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
+
 function isValidEmail(email: string) {
     // Regular expression for a valid email address
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -83,11 +86,14 @@ function isValidUrl(url: string) {
     }
 
     // Define the regular expression for URL validation
-    const urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|(\\d{1,3}\\.){3}\\d{1,3})' + // domain name and extension
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-        '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+    const urlPattern = new RegExp(
+        '^(https?:\\/\\/)?' + // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|(\\d{1,3}\\.){3}\\d{1,3})' + // domain name and extension
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$',
+        'i'
+    ); // fragment locator
 
     // Test if the URL matches the pattern and has the correct domain, return true if it does
     if (urlPattern.test(url) && /\.(com|org|in)(\/|$)/.test(url)) {
@@ -108,6 +114,13 @@ function isValidUrl(url: string) {
     // console.log(isValidUrl(null)); // false
 }
 
+const isFetchBaseQueryError = (error: any): error is FetchBaseQueryError => {
+    return error && typeof error === 'object' && 'status' in error && 'data' in error;
+};
+
+const isSerializedError = (error: any): error is SerializedError => {
+    return error && typeof error === 'object' && 'message' in error;
+};
 
 export {
     isValidEmail,
@@ -120,5 +133,7 @@ export {
     isLettersAndNumbers,
     isCapitalLettersAndNumbers,
     isValidTextareaContent,
-    isValidUrl
+    isValidUrl,
+    isFetchBaseQueryError,
+    isSerializedError,
 };

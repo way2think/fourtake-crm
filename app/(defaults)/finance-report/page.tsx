@@ -1,6 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
-import Country from '@/components/CMS/countries/Country';
+import Country from '@/components/cms/countries/Country';
 import DailyReport from '@/components/Reports/daily-report/DailyReport';
 import FinanceReport from '@/components/Reports/finance-report/FinanceReport';
 
@@ -13,7 +13,7 @@ const FinanceReportPage = () => {
         {
             id: 1,
             consultantname: 'jagan',
-            center:"Mumbai",
+            center: 'Mumbai',
             noofapplicant: '2',
             applydate: '2024-06-19',
             visafee: '40000/-',
@@ -28,7 +28,7 @@ const FinanceReportPage = () => {
         {
             id: 2,
             consultantname: 'sanjay',
-            center:"Chennai",
+            center: 'Chennai',
             noofapplicant: '2',
             applydate: '2024-07-06',
             visafee: '40000/-',

@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
-import Country from '@/components/CMS/countries/Country';
+import Country from '@/components/cms/countries/Country';
 import { Suspense, use } from 'react';
-import { getData } from '@/api';
-import { http } from '@/utils/http';
+// import { getData } from '@/api';
+// import { http } from '@/utils/http';
 
 export const metadata: Metadata = {
     title: 'CMS - Countries',

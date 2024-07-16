@@ -9,8 +9,6 @@ import React, { Fragment, useEffect, useMemo } from 'react';
 import ComponentsFormsFileUploadSingle from '../Reusable/file-upload/components-forms-file-upload-single';
 import ComponentsFormsFileUploadMulti from '../Reusable/file-upload/components-forms-file-upload-multi';
 import IconX from '../icon/icon-x';
-//import ActionModal from '../Reusable/Modal/ActionModal';
-import CountryActionModal from '../CMS/countries/CountryActionModal';
 import IconFile from '../icon/icon-zip-file';
 import PasswordActionModal from '../user-management/PasswordActionModal';
 import ReuseActionModal from '../Reusable/Modal/ActionModal';
@@ -36,23 +34,25 @@ interface TableLayoutProps {
 const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setData, totalPages, handleDelete, handleSubmit, tableColumns, ActionModal, exportColumns, Filtersetting, ActionModalListLine }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
-    debugger;
+
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
     const [isEditAddNote, setIsEditAddNote] = useState(false);
 
-    //List Visa Application Page ListLine Action
-    const [isOpenListLine, setIsOpenListLine] = useState(false);
-    //const [isEditAddNote, setIsEditAddNote] = useState(false);
-
+    const [isOpenlistLine, setIsOpenListLine] = useState(false);
 
 
     const [search, setSearch] = useState('');
     const [filterItem, setFilterItem] = useState(data);
-    const [addData, setAddData] = useState({});
+    const [addData, setAddData] = useState({ refno: '', status: '' });
     const [assignPasswordValue, setAssignPasswordValue] = useState<any>();
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
     const [filterTitle, setFilterTitle] = useState('Filter');
+    const [track, setTrack] = useState({
+        url: '',
+        other: '',
+    });
+    const [isOpenTrack, setIsOpenTrack] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -73,14 +73,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
 
     const handleEdit = (object: any) => {
         if (title == 'List Visa Application') {
-            //router.push(`/manage-visa`);
-            // const data = encodeURIComponent(JSON.stringify(object));
-            // const url = `/manage-visa?data=${data}`;
-            // router.push(url);
-
-            // console.log(object);
-            // sessionStorage.setItem('iseditmode', 'true');
-            // sessionStorage.setItem('manageVisaData', JSON.stringify(object));
             router.push(`/manage-visa`);
         } else {
             setIsEdit(true);
@@ -93,8 +85,21 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
         alert(object);
     };
 
+    const handleTracking = (object: any) => {
+        setAddData(object);
+        setIsOpenTrack(true);
+    };
+
+    const handleTrackInputChange = (e: any) => {
+        const { value, id } = e.target;
+
+        setTrack({ ...track, [id]: value });
+    };
+
     const handleInputChange = (e: any) => {
         const { value, id, options } = e.target;
+
+        // console.log('handleInputChange: ', id, value);
 
         if (options) {
             // Handling multiple select options
@@ -117,10 +122,17 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
         exportToExcel(data, exportColumns, fileName);
     };
 
-    const handleSave = () => {
-        if (handleSubmit(addData)) {
+    const handleSave = async () => {
+        // this is to send only object with value, so null values are filtered out
+        const filteredObj = Object.fromEntries(Object.entries(addData).filter(([key, value]) => value !== null && value !== '' && value !== undefined));
+
+        // console.log('fil: ', filteredObj);
+
+        const isSuccess = await handleSubmit(filteredObj);
+
+        if (isSuccess) {
             setIsOpen(false);
-            setAddData({});
+            setAddData({ refno: '', status: '' });
 
             //Navigate to Manage Visa Page
             //console.log(title)
@@ -132,6 +144,12 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 }
             }
         }
+    };
+
+    const handleTrackSave = () => {
+        setAddData({ ...addData, ...track });
+        setIsOpenTrack(false);
+        setTrack({ url: '', other: '' });
     };
 
     const handleFilter = () => {
@@ -221,7 +239,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                     <PaginationTable title={title} data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} handleRestore={handleRestore} handleListLine={handleListLine} />
                 </div>
             </div>
-
             {title == 'Lead List' && <Filtersetting data={data} setFilterItem={setFilterItem} showCustomizer={showCustomizer} setFilterTitle={setFilterTitle} setShowCustomizer={setShowCustomizer} />}
             <ActionModal
                 isOpen={isOpen}
@@ -238,15 +255,15 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
 
             {title == 'List Visa Application' &&
                 <ActionModalListLine
-                    isOpen={isOpenListLine}
+                    isOpen={isOpenlistLine}
                     setIsOpen={setIsOpenListLine}
-
                 />
             }
 
+
             {/* <ReuseActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} width="">
                 <AddNote isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} />
-            </ReuseActionModal> */}
+            </ReuseActionModal>  */}
         </>
     );
 };
