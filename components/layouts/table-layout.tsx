@@ -36,7 +36,7 @@ interface TableLayoutProps {
 const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setData, totalPages, handleDelete, handleSubmit, tableColumns, ActionModal, exportColumns, Filtersetting, ActionModalListLine }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
-
+    debugger;
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
     const [isEditAddNote, setIsEditAddNote] = useState(false);
 
@@ -44,7 +44,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const [isOpenListLine, setIsOpenListLine] = useState(false);
     //const [isEditAddNote, setIsEditAddNote] = useState(false);
 
-    
+
 
     const [search, setSearch] = useState('');
     const [filterItem, setFilterItem] = useState(data);
@@ -232,19 +232,21 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 addData={addData}
                 isEdit={isEdit}
                 setIsEdit={setIsEdit}
-                // followUps={followUps}
-                // setFollowUps={setFollowUps}
+            // followUps={followUps}
+            // setFollowUps={setFollowUps}
             />
 
-            <ActionModalListLine 
-                isOpen={isOpenListLine}
-                setIsOpen={setIsOpenListLine}
-                
-            />
+            {title == 'List Visa Application' &&
+                <ActionModalListLine
+                    isOpen={isOpenListLine}
+                    setIsOpen={setIsOpenListLine}
 
-            <ReuseActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} width="">
+                />
+            }
+
+            {/* <ReuseActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} width="">
                 <AddNote isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} />
-            </ReuseActionModal>
+            </ReuseActionModal> */}
         </>
     );
 };

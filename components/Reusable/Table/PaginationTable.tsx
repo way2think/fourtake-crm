@@ -33,17 +33,6 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
     const [page, setPage] = useState(1);
 
-<<<<<<< HEAD
-    // const handleListLine = (row: any) => {
-    //     // Implement the logic to handle the deletion of the row
-    //     console.log('Deleting row:', row);
-    //     alert("Welcome");
-    //     // You can add your deletion logic here, e.g., updating the state, making an API call, etc.
-    // };
-
-
-=======
->>>>>>> 6728c35583345065ea4198563dc4702df3453694
     const totalPages = useMemo(() => Math.ceil(data.length / pageSize), [data.length, pageSize]);
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;
