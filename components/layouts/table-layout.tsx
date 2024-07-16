@@ -9,7 +9,6 @@ import React, { Fragment, useEffect, useMemo } from 'react';
 import ComponentsFormsFileUploadSingle from '../Reusable/file-upload/components-forms-file-upload-single';
 import ComponentsFormsFileUploadMulti from '../Reusable/file-upload/components-forms-file-upload-multi';
 import IconX from '../icon/icon-x';
-//import ActionModal from '../Reusable/Modal/ActionModal';
 import CountryActionModal from '../CMS/countries/CountryActionModal';
 import IconFile from '../icon/icon-zip-file';
 import PasswordActionModal from '../user-management/PasswordActionModal';
@@ -35,17 +34,20 @@ interface TableLayoutProps {
 const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setData, totalPages, handleDelete, handleSubmit, tableColumns, ActionModal, exportColumns, Filtersetting }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
-
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
     const [isEditAddNote, setIsEditAddNote] = useState(false);
-
     const [search, setSearch] = useState('');
     const [filterItem, setFilterItem] = useState(data);
-    const [addData, setAddData] = useState({});
+    const [addData, setAddData] = useState({ refno: '', status: '' });
     const [assignPasswordValue, setAssignPasswordValue] = useState<any>();
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
     const [filterTitle, setFilterTitle] = useState('Filter');
+    const [track, setTrack] = useState({
+        url: '',
+        other: '',
+    });
+    const [isOpenTrack, setIsOpenTrack] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -66,14 +68,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
 
     const handleEdit = (object: any) => {
         if (title == 'List Visa Application') {
-            //router.push(`/manage-visa`);
-            // const data = encodeURIComponent(JSON.stringify(object));
-            // const url = `/manage-visa?data=${data}`;
-            // router.push(url);
-
-            // console.log(object);
-            // sessionStorage.setItem('iseditmode', 'true');
-            // sessionStorage.setItem('manageVisaData', JSON.stringify(object));
             router.push(`/manage-visa`);
         } else {
             setIsEdit(true);
@@ -84,6 +78,17 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
 
     const handleRestore = (object: any) => {
         alert(object);
+    };
+
+    const handleTracking = (object: any) => {
+        setAddData(object);
+        setIsOpenTrack(true);
+    };
+
+    const handleTrackInputChange = (e: any) => {
+        const { value, id } = e.target;
+
+        setTrack({ ...track, [id]: value });
     };
 
     const handleInputChange = (e: any) => {
@@ -113,7 +118,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
     const handleSave = () => {
         if (handleSubmit(addData)) {
             setIsOpen(false);
-            setAddData({});
+            setAddData({ refno: '', status: '' });
 
             //Navigate to Manage Visa Page
             //console.log(title)
@@ -125,6 +130,12 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 }
             }
         }
+    };
+
+    const handleTrackSave = () => {
+        setAddData({ ...addData, ...track });
+        setIsOpenTrack(false);
+        setTrack({ url: '', other: '' });
     };
 
     const handleFilter = () => {
@@ -203,10 +214,17 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
                 <div className="table-responsive">
-                    <PaginationTable title={title} data={filterItem} tableColumns={tableColumns} handleDelete={handleDelete} handleEdit={handleEdit} handleRestore={handleRestore} />
+                    <PaginationTable
+                        title={title}
+                        data={filterItem}
+                        tableColumns={tableColumns}
+                        handleDelete={handleDelete}
+                        handleEdit={handleEdit}
+                        handleRestore={handleRestore}
+                        handleTracking={handleTracking}
+                    />
                 </div>
             </div>
-
             {title == 'Lead List' && <Filtersetting data={data} setFilterItem={setFilterItem} showCustomizer={showCustomizer} setFilterTitle={setFilterTitle} setShowCustomizer={setShowCustomizer} />}
             <ActionModal
                 isOpen={isOpen}
@@ -217,10 +235,62 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, setDat
                 addData={addData}
                 isEdit={isEdit}
                 setIsEdit={setIsEdit}
-                // followUps={followUps}
-                // setFollowUps={setFollowUps}
             />
+            
+            {/* Modal for tracking Url */}
+            <ReuseActionModal isOpen={isOpenTrack} setIsOpen={setIsOpenTrack} handleSave={handleTrackSave} width="max-w-2xl">
+                <div className="flex  items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
+                    <h5 className="text-lg font-bold">Tracking Details</h5>
+                    <button
+                        onClick={() => {
+                            setIsOpenTrack(false);
+                            setTrack({ url: '', other: '' });
+                            // setIsEdit(false);
+                        }}
+                        type="button"
+                        className="text-white-dark hover:text-dark"
+                    >
+                        <IconX />
+                    </button>
+                </div>
 
+                <div className="m-5 grid grid-cols-1 gap-5 md:grid-cols-1">
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <div className="mb-5">
+                            <label htmlFor="refno">Ref No</label>
+                            <input id="refno" type="text" disabled={true} value={addData?.refno} placeholder="Ref No" className="form-input" />
+                        </div>
+                        <div className="mb-5">
+                            <label htmlFor="url">Tracking URL </label>
+                            <input id="url" value={track?.url} onChange={(e) => handleTrackInputChange(e)} type="text" placeholder="Enter Mobile Number" className="form-input" />
+                        </div>
+                    </div>
+                </div>
+                <div className="m-5 grid grid-cols-1 gap-5 md:grid-cols-1">
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <div className="mb-5">
+                            <label htmlFor="other">Others</label>
+                            <input id="other" type="text" onChange={(e) => handleTrackInputChange(e)} value={track?.other} placeholder="Other Details" className="form-input" />
+                        </div>
+                    </div>
+                </div>
+                <div className=" float-end m-3 flex items-center justify-end">
+                    <button
+                        onClick={() => {
+                            setIsOpenTrack(false);
+                            setTrack({ url: '', other: '' });
+                            // setIsEdit(false);
+                        }}
+                        type="button"
+                        className="btn btn-outline-danger"
+                    >
+                        Cancel
+                    </button>
+                    <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={handleTrackSave}>
+                        Save
+                    </button>
+                </div>
+            </ReuseActionModal>
             <ReuseActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} width="">
                 <AddNote isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} />
             </ReuseActionModal>
