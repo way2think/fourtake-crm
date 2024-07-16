@@ -1,5 +1,3 @@
-// src/utils/crudOperations.ts
-
 import Swal from 'sweetalert2';
 import { isFetchBaseQueryError, isSerializedError } from '@/utils/validator';
 import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta, MutationDefinition } from '@reduxjs/toolkit/dist/query/react';
@@ -107,7 +105,7 @@ export const handleDelete = async ({ deleteMutation, item, items, meta, handleLo
     });
 
     if (result.value) {
-        const res = await deleteMutation(1);
+        const res = await deleteMutation(item.id);
         if ('error' in res) {
             await handleErrorResponse(res.error);
             return false;

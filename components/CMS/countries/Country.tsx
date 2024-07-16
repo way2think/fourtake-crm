@@ -8,7 +8,6 @@ import { showMessage } from '@/utils/notification';
 import { countrySlice, useCreateCountryMutation, useDeleteCountryMutation, useGetCountriesQuery, useUpdateCountryMutation } from '@/services/api/cms/countrySlice';
 import type { Country } from '@/models/Country';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
-import { isFetchBaseQueryError, isSerializedError } from '@/utils/validator';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 
 const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
