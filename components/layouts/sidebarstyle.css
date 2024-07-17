@@ -24,7 +24,7 @@
     --tw-text-opacity: 1;
     color: rgb(14 23 38 / var(--tw-text-opacity));
 } */
- 
+
 .sidebar .nav-item > div.active > div > span, .sidebar .nav-item > a.active > div > span {
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity));
