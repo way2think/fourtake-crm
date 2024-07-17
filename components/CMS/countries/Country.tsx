@@ -23,14 +23,12 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
     // console.log('countries: ', countries, isFetching, isLoading);
     // console.log('isDeleted: ', isDeleted, isDeletedLoading, isError, error);
 
-    const [data, setData] = useState(countrydata);
-
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
         { accessor: 'name', textAlign: 'left', title: 'Country Name' },
     ];
 
-    const exportColumns = ['id', 'country'];
+    const exportColumns = ['id', 'name'];
 
     // const handleDelete = async (country: Country) => {
     //     const result = await Swal.fire({
@@ -232,11 +230,10 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
         <>
             <TableLayout
                 title="Country"
-                setData={setData}
                 filterby="name"
                 handleDelete={handleDeleteCountry}
                 data={items}
-                totalPages={data?.length || 0}
+                totalPages={items?.length || 0}
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={CountryActionModal}

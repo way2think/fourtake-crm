@@ -22,8 +22,8 @@ const EntryTypesActionModal: React.FC<EntryTypesActionModalProps> = ({ isOpen, s
             <div className="p-5">
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                     <div className="mb-5">
-                        <label htmlFor="entrytype">Entry Type*</label>
-                        <input id="entrytype" type="text" value={addData?.entrytype} onChange={(e) => handleInputChange(e)} placeholder="Enter Entry Type" className="form-input" />
+                        <label htmlFor="name">Entry Type*</label>
+                        <input id="name" type="text" value={addData?.name} onChange={(e) => handleInputChange(e)} placeholder="Enter Entry Type" className="form-input" />
                     </div>
                 </div>
                 <div className="mt-4 flex items-center justify-end">
