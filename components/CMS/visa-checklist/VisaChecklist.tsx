@@ -18,7 +18,6 @@ const getServerData = async () => {
 const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata }) => {
     const [data, setData] = useState(visachecklistdata);
 
-
     const exportColumns = ['country', 'type', 'embassy'];
     const tableColumns = [
         { accessor: 'country', textAlign: 'left', title: 'Country' },
@@ -44,7 +43,6 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
         });
     };
 
-    
     const handleSubmit = (value: any) => {
         if (value.country == '' || value.country == null) {
             showMessage('Select country ', 'error');
@@ -102,7 +100,7 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
                 ActionModal={VisaChecklistActionModal}
                 handleDelete={handleDelete}
                 exportColumns={exportColumns}
-                filterby={['country', 'type', 'embassy']} // handleSave ={handleSave}
+                filterby={['country', 'type', 'embassy']}
                 handleSubmit={handleSubmit}
             />
         </>

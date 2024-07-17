@@ -43,7 +43,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
     const handleMouseEnter: React.MouseEventHandler<HTMLElement> = (event) => {
         const svgElement = event.currentTarget.querySelector('svg title');
         if (svgElement) {
-            svgElement.textContent = "Multiple Passport";
+            svgElement.textContent = 'Multiple Passport';
         }
     };
 

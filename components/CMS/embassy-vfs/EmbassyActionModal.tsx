@@ -53,7 +53,7 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                         </div>
                         <div className="dropdown">
                             <label htmlFor="visacountry"> Country</label>
-                            <select className="form-input" defaultValue="" id="country" onChange={(e) => handleInputChange(e)} value={addData?.country}>
+                            <select className="form-input" defaultValue="" id="country" onChange={(e) => handleInputChange(e)} value={addData?.country?.id}>
                                 <option value="" disabled={true}>
                                     Countries
                                 </option>

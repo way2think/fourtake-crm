@@ -19,12 +19,20 @@ const EmbassyVfs: React.FC = () => {
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'S.NO' },
         { accessor: 'type', textAlign: 'left', title: 'Embassy/VFS' },
-        { accessor: 'country', textAlign: 'left', title: 'Visa Country' },
+        {
+            accessor: 'country.name',
+            textAlign: 'left',
+            title: 'Visa Country',
+            render: (row: any) => {
+                return row.country.name;
+            },
+        },
         { accessor: 'name', textAlign: 'left', title: 'Name' },
         { accessor: 'state', textAlign: 'left', title: 'State' },
         { accessor: 'city', textAlign: 'left', title: 'City' },
     ];
     console.log('emabassy data', items);
+
     const exportColumns = ['id', 'type', 'country', 'name', 'city', 'state'];
 
     const handleDeleteEmbassyVfs = (embassyvfs: EmbassyVfs) =>
