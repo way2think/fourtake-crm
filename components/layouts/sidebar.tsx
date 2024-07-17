@@ -17,7 +17,6 @@ import { usePathname } from 'next/navigation';
 import { getTranslation } from '@/i18n';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useNavigate } from 'react-router-dom';
 import './sidebarstyle.css';
 
 const Sidebar = () => {
@@ -83,7 +82,6 @@ const Sidebar = () => {
     }, [pathname]);
 
     const setActiveRoute = () => {
-        debugger;
         let allLinks = document.querySelectorAll('.sidebar ul a.active');
         for (let i = 0; i < allLinks.length; i++) {
             const element = allLinks[i];
