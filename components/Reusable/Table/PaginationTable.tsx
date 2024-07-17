@@ -30,7 +30,6 @@ interface Row {
     [key: string]: any;
 }
 
-
 const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, handleEdit, handleDelete, title, ReuseActionModalShow, actionhide, handleRestore, handleTracking, handleListLine }) => {
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
@@ -91,7 +90,6 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                                             //  onClick={() => handleDelete?.(row)}
                                         >
                                             <IconVerify />
-                                            <IconVerify />
                                         </ActionIcon>
                                         <ActionIcon
                                             size="sm"
@@ -101,16 +99,11 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                                         >
                                             <IconUnVerified />
                                         </ActionIcon>
-                                        <ActionIcon
-                                            size="sm"
-                                            variant="subtle"
-                                            color="red"
-                                            onClick={() => handleListLine?.(row)}
-                                        >
-                                            <IconList />
+                                        <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleListLine?.(row)}>
+                                            <IconList title="Multiple Passport" />
                                         </ActionIcon>
                                         <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleTracking?.(row)}>
-                                            <IconTrendingUp />
+                                            <IconTrendingUp title="Application Tracking" />
                                         </ActionIcon>
                                     </>
                                 )}
