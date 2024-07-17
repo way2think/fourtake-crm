@@ -15,7 +15,7 @@ const ListVisaApplicationListLine: React.FC<ListVisaApplicationListLineProps> = 
     return (
         <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} width="max-w-4xl">
             <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                <h5 className="text-lg font-bold">Add Visa Checklist</h5>
+                <h5 className="text-lg font-bold">Multiple Passport</h5>
                 <button
                     onClick={() => {
                         setIsOpen(false);
@@ -88,8 +88,7 @@ const ListVisaApplicationListLine: React.FC<ListVisaApplicationListLineProps> = 
                 <div className="mt-4 flex items-center justify-end">
                     <button
                         onClick={() => {
-                            setIsOpen(false);
-                            
+                            setIsOpen(false);                          
                         }}
                         type="button"
                         className="btn btn-outline-danger"

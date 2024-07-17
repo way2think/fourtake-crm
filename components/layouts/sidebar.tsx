@@ -16,8 +16,12 @@ import IconMenuPages from '@/components/icon/menu/icon-menu-pages';
 import { usePathname } from 'next/navigation';
 import { getTranslation } from '@/i18n';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import './sidebarstyle.css';
 
 const Sidebar = () => {
+    const [clicked, setClicked] = useState(false);
+    const router = useRouter();
     const dispatch = useDispatch();
     const { t } = getTranslation();
     const pathname = usePathname();
@@ -65,6 +69,18 @@ const Sidebar = () => {
         selector?.classList.add('active');
     };
 
+    // const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    //     if (!clicked) {
+    //         // First click: change background color
+    //         e.preventDefault();
+    //         setClicked(true);
+    //         toggleMenu('Lead Management');
+    //     } else {
+    //         // Second click: navigate to the page
+    //         router.push('/lead-list');
+    //     }
+    // };
+
     return (
         <div className={semidark ? 'dark' : ''}>
             <nav
@@ -88,7 +104,7 @@ const Sidebar = () => {
                     <PerfectScrollbar className="relative h-[calc(100vh-80px)]">
                         <ul className="relative space-y-0.5 p-4 py-0 font-semibold">
                             <li className="nav-item">
-                                <Link href="/" className="group ">
+                                <Link href="/" className="group "  onClick={() => toggleMenu('Dashboard')}>
                                     <div className="flex items-center">
                                         <IconMenuNotes className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
                                         <span className="group-hover:!text-[#005fbe]dark:group-hover:text-[#005fbe] text-black dark:text-[#506690] ltr:pl-3 rtl:pr-3">{t('Dashboard')}</span>
@@ -107,7 +123,7 @@ const Sidebar = () => {
                                     </div>
                                 </button> */}
 
-                                <button type="button" className={`${currentMenu === 'User List' ? 'active' : ''} nav-link group w-full `} onClick={() => toggleMenu('User List')}>
+                                <div  className={`${currentMenu === 'User List' ? 'active' : ''} nav-link group w-full nabarbuttoncustom`} onClick={() => toggleMenu('User List')}>
                                     <div className="flex items-center">
                                         <IconMenuUsers className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
@@ -118,7 +134,7 @@ const Sidebar = () => {
                                     <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
                                         <IconCaretDown />
                                     </div> */}
-                                </button>
+                                </div>
 
                                 {/* <AnimateHeight duration={300} height={currentMenu === 'User Management' ? 'auto' : 0}>
                                     <ul className="sub-menu text-gray-500">
@@ -135,18 +151,35 @@ const Sidebar = () => {
                                 </AnimateHeight> */}
                             </li>
                             <li className="menu nav-item">
-                                <button type="button" className={`${currentMenu === 'Lead Management' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Lead Management')}>
+                                <div  className={`${currentMenu === 'Lead Management' ? 'active' : ''} nav-link group w-full nabarbuttoncustom`} onClick={() => toggleMenu('Lead Management')}>
                                     <div className="flex items-center">
                                         <IconMenuElements className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
                                             <Link href="/lead-list">Lead Management</Link>
                                         </span>
                                     </div>
-                                    {/* 
+                                     
                                     <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
                                         <IconCaretDown />
-                                    </div> */}
-                                </button>
+                                    </div> 
+                                </div>
+
+                                {/* <button
+                                    type="button"
+                                    className={`${currentMenu === 'Lead Management' ? 'active' : ''} nav-link group w-full ${clicked ? 'active' : ''}`}
+                                    onClick={handleClick}
+                                >
+                                    <div className="flex items-center">
+                                        <IconMenuElements className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
+                                            <Link href="/lead-list">Lead Management</Link>
+                                        </span>
+                                    </div>
+                                    <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                        <IconCaretDown />
+                                    </div>
+                                </button> */}
+
                             </li>
 
                             <li className="menu nav-item">
