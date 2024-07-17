@@ -4,17 +4,12 @@ import IconSearch from '../icon/icon-search';
 import IconUserPlus from '../icon/icon-user-plus';
 import { exportToExcel } from '../Reusable/ExportExcel/exportToExcel';
 import PaginationTable from '../Reusable/Table/PaginationTable';
-import { Transition, Dialog } from '@headlessui/react';
 import React, { Fragment, useEffect, useMemo } from 'react';
-import ComponentsFormsFileUploadSingle from '../Reusable/file-upload/components-forms-file-upload-single';
-import ComponentsFormsFileUploadMulti from '../Reusable/file-upload/components-forms-file-upload-multi';
 import IconX from '../icon/icon-x';
 import IconFile from '../icon/icon-zip-file';
 import PasswordActionModal from '../user-management/PasswordActionModal';
 import ReuseActionModal from '../Reusable/Modal/ActionModal';
-import AddNote from '../popup/LeadListAddNote';
 import { useRouter } from 'next/navigation';
-import IconTxtFile from '../icon/icon-txt-file';
 
 interface TableLayoutProps {
     title: string;
@@ -26,25 +21,11 @@ interface TableLayoutProps {
     handleSubmit?: any;
     exportColumns?: string[];
     handleDelete: any;
-    setData: any;
     filterby: any;
     ActionModalListLine?: any;
 }
 
-const TableLayout: React.FC<TableLayoutProps> = ({
-    title,
-    filterby,
-    data,
-    setData,
-    totalPages,
-    handleDelete,
-    handleSubmit,
-    tableColumns,
-    ActionModal,
-    exportColumns,
-    Filtersetting,
-    ActionModalListLine,
-}) => {
+const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalPages, handleDelete, handleSubmit, tableColumns, ActionModal, exportColumns, Filtersetting, ActionModalListLine }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
 
