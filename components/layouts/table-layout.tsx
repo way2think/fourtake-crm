@@ -139,8 +139,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         const filteredObj = Object.fromEntries(Object.entries(addData).filter(([key, value]) => value !== null && value !== '' && value !== undefined));
 
         // console.log('fil: ', filteredObj);
-
-        const isSuccess = await handleSubmit(filteredObj);
+        // passing addData, without removing null values, because during update we will be emptying some fields
+        const isSuccess = await handleSubmit(addData);
 
         if (isSuccess) {
             setIsOpen(false);
@@ -171,8 +171,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
 
     const handleListLine = (object: any) => {
         // Implement the logic to handle the deletion of the row
-        console.log('Deleting row:', object);
-        //alert("Welcome");
+        // console.log('Deleting row:', object);
         setIsOpenListLine(true);
         // You can add your deletion logic here, e.g., updating the state, making an API call, etc.
     };
