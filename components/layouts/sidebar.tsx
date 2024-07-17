@@ -104,7 +104,7 @@ const Sidebar = () => {
                     <PerfectScrollbar className="relative h-[calc(100vh-80px)]">
                         <ul className="relative space-y-0.5 p-4 py-0 font-semibold">
                             <li className="nav-item">
-                                <Link href="/" className="group "  onClick={() => toggleMenu('Dashboard')}>
+                                <Link href="/" className="group "  >
                                     <div className="flex items-center">
                                         <IconMenuNotes className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
                                         <span className="group-hover:!text-[#005fbe]dark:group-hover:text-[#005fbe] text-black dark:text-[#506690] ltr:pl-3 rtl:pr-3">{t('Dashboard')}</span>
@@ -125,7 +125,7 @@ const Sidebar = () => {
 
                                 <div  className={`${currentMenu === 'User List' ? 'active' : ''} nav-link group w-full nabarbuttoncustom`} onClick={() => toggleMenu('User List')}>
                                     <div className="flex items-center">
-                                        <IconMenuUsers className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
+                                        <IconMenuUsers className="shrink-0 !text-[#000] " />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
                                             <Link href="/user-list">User List</Link>
                                         </span>
@@ -153,15 +153,15 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <div  className={`${currentMenu === 'Lead Management' ? 'active' : ''} nav-link group w-full nabarbuttoncustom`} onClick={() => toggleMenu('Lead Management')}>
                                     <div className="flex items-center">
-                                        <IconMenuElements className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
+                                        <IconMenuElements className="shrink-0 !text-[#000] " />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
                                             <Link href="/lead-list">Lead Management</Link>
                                         </span>
                                     </div>
                                      
-                                    <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                    {/* <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
                                         <IconCaretDown />
-                                    </div> 
+                                    </div>  */}
                                 </div>
 
                                 {/* <button
