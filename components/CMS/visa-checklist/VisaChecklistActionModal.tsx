@@ -5,6 +5,7 @@ import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import NewComponentsFormsFileUploadMultiple from '@/components/Reusable/file-upload/NewComponentsFormsFileUploadSingle';
 import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
 import IconX from '@/components/icon/icon-x';
+import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
 
 interface VisaChecklistActionModalProps {
     isOpen: any;
@@ -16,6 +17,9 @@ interface VisaChecklistActionModalProps {
 }
 
 const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
+    const { data: countries, isLoading, isFetching } = useGetCountriesQuery(undefined);
+    const { items = [], meta = {} } = countries || {};
+    console.log('items', items);
     return (
         <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-4xl">
             <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
@@ -34,17 +38,16 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
             <div className="p-5">
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                     <div className="dropdown">
-                        <label htmlFor="role">Countries*</label>
+                        <label htmlFor="country">Countries*</label>
                         <select className="form-input" defaultValue="" id="country" value={addData?.country} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
                                 Countries
                             </option>
-                            <option value="Chennai">Chennai</option>
-                            <option value="Vellore">Vellore</option>
-                            <option value="Bengaluru">Bengaluru</option>
-                            <option value="New Delhi">New Delhi</option>
-                            <option value="Mangalore">Mangalore</option>
-                            <option value="Mumbai">Mumbai</option>
+                            {items.map((country: any) => (
+                                <option key={country.id} value={country.id}>
+                                    {country.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div className="dropdown">

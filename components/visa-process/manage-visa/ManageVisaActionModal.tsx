@@ -40,7 +40,6 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
         setLeadNotes(addUser.leadnote || []);
     }, [addUser?.leadnote]);
 
-
     const handleCheckBoxChange = (e: any) => {
         //Change it 13-07-2024
         // const { id, checked } = e.target;
@@ -234,53 +233,53 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1">
-                    <div className="mb-5 mt-7">
-                                    <label htmlFor="leadnote" style={{ display: 'inline-block' }}>
-                                        Note
-                                    </label>
-                                    <button className="btn btn-primary ml-5" style={{ marginLeft: '20px', display: 'inline-block' }} onClick={handleButtonClickShowAddNote}>
-                                        Add Note
-                                    </button>
+                        <div className="mb-5 mt-7">
+                            <label htmlFor="leadnote" style={{ display: 'inline-block' }}>
+                                Note
+                            </label>
+                            <button className="btn btn-primary ml-5" style={{ marginLeft: '20px', display: 'inline-block' }} onClick={handleButtonClickShowAddNote}>
+                                Add Note
+                            </button>
 
-                                    <div className="mt-3">
-                                        {leadNotes?.map((note: string, index: number) => (
-                                            <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
-                                                <div>{note}</div>
-                                                <div className="flex items-center">
-                                                    <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
-                                                        Edit
-                                                    </button>
-                                                    <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    <ActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} handleSave={handleNoteAction} width="max-w-2xl">
-                                        <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                                            <h5 className="text-lg font-bold">{modalTitle}</h5>
-                                            <button onClick={handleCloseModal} type="button" className="text-white-dark hover:text-dark">
-                                                <IconX />
+                            <div className="mt-3">
+                                {leadNotes?.map((note: string, index: number) => (
+                                    <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
+                                        <div>{note}</div>
+                                        <div className="flex items-center">
+                                            <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
+                                                Edit
+                                            </button>
+                                            <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
+                                                Delete
                                             </button>
                                         </div>
-                                        <div className="p-5">
-                                            <textarea
-                                                id="leadNote"
-                                                onChange={handleLeadNoteChange}
-                                                value={leadNote}
-                                                placeholder="Enter your note here"
-                                                className="min-h-[150px] w-full rounded-lg border p-2 outline-none"
-                                            />
-                                            <div className="mt-3">
-                                                <button onClick={handleNoteAction} className="btn btn-primary">
-                                                    {actionButtonText}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </ActionModal>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <ActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} handleSave={handleNoteAction} width="max-w-2xl">
+                                <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
+                                    <h5 className="text-lg font-bold">{modalTitle}</h5>
+                                    <button onClick={handleCloseModal} type="button" className="text-white-dark hover:text-dark">
+                                        <IconX />
+                                    </button>
                                 </div>
+                                <div className="p-5">
+                                    <textarea
+                                        id="leadNote"
+                                        onChange={handleLeadNoteChange}
+                                        value={leadNote}
+                                        placeholder="Enter your note here"
+                                        className="min-h-[150px] w-full rounded-lg border p-2 outline-none"
+                                    />
+                                    <div className="mt-3">
+                                        <button onClick={handleNoteAction} className="btn btn-primary">
+                                            {actionButtonText}
+                                        </button>
+                                    </div>
+                                </div>
+                            </ActionModal>
+                        </div>
                     </div>
 
                     <div className="mt-8 flex items-center justify-end">

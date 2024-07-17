@@ -30,21 +30,16 @@ const Sidebar = () => {
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
     const semidark = useSelector((state: IRootState) => state.themeConfig.semidark);
 
-    
     const toggleMenu = (value: string) => {
-        debugger;
-
         if (value.charAt(0) === '1') {
             console.log("The first character is '1'");
             value = value.slice(1);
-            setCurrentMenu(value)
-
+            setCurrentMenu(value);
         } else {
             setCurrentMenu((oldValue) => {
                 return oldValue === value ? '' : value;
             });
         }
-       
 
         // if(value !== value) {
         //     setCurrentMenu((value) => {
@@ -52,7 +47,7 @@ const Sidebar = () => {
         //      });
         // }
 
-        console.log(currentMenu)
+        console.log(currentMenu);
     };
 
     useEffect(() => {
@@ -143,7 +138,7 @@ const Sidebar = () => {
                                     </div>
                                 </button> */}
 
-                                <div  className={`${currentMenu === 'User List' ? 'active' : ''} nav-link group w-full nabarbuttoncustom`} onClick={() => toggleMenu('1User List')}>
+                                <div className={`${currentMenu === 'User List' ? 'active' : ''} nav-link nabarbuttoncustom group w-full`} onClick={() => toggleMenu('1User List')}>
                                     <div className="flex items-center">
                                         <IconMenuUsers className="shrink-0 !text-[#000] " />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
@@ -171,14 +166,14 @@ const Sidebar = () => {
                                 </AnimateHeight> */}
                             </li>
                             <li className="menu nav-item">
-                                <button type='button'  className={`${currentMenu === 'Lead Management' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('1Lead Management')}>
+                                <button type="button" className={`${currentMenu === 'Lead Management' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('1Lead Management')}>
                                     <div className="flex items-center">
                                         <IconMenuElements className="shrink-0 !text-[#000] " />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
                                             <Link href="/lead-list">Lead Management</Link>
                                         </span>
                                     </div>
-                                     
+
                                     {/* <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
                                         <IconCaretDown />
                                     </div>  */}
@@ -199,7 +194,6 @@ const Sidebar = () => {
                                         <IconCaretDown />
                                     </div>
                                 </button> */}
-
                             </li>
 
                             <li className="menu nav-item">

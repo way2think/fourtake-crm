@@ -17,15 +17,9 @@ const getServerData = async () => {
 };
 const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata }) => {
     const [data, setData] = useState(visachecklistdata);
-    // const { data, isError, error } = use(getServerData());
-    // // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
-    // // console.log('dataaaa: ', data);
-    // if (isError) {
-    //     console.log(error.message);
-    // }
 
 
-
+    const exportColumns = ['country', 'type', 'embassy'];
     const tableColumns = [
         { accessor: 'country', textAlign: 'left', title: 'Country' },
         { accessor: 'type', textAlign: 'left', title: 'Visa type' },
@@ -50,7 +44,7 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
         });
     };
 
-    const exportColumns = ['country', 'type', 'embassy'];
+    
     const handleSubmit = (value: any) => {
         if (value.country == '' || value.country == null) {
             showMessage('Select country ', 'error');
@@ -107,7 +101,6 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
                 tableColumns={tableColumns}
                 ActionModal={VisaChecklistActionModal}
                 handleDelete={handleDelete}
-                setData={setData}
                 exportColumns={exportColumns}
                 filterby={['country', 'type', 'embassy']} // handleSave ={handleSave}
                 handleSubmit={handleSubmit}
