@@ -23,7 +23,7 @@ const CountryActionModal: React.FC<CountryActionModalProps> = ({ isOpen, setAddD
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
                 <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                    <h5 className="text-lg font-bold">Add Country</h5>
+                    <h5 className="text-lg font-bold">{addData.id ? 'Edit' : 'Add'} Country</h5>
                     <button
                         onClick={() => {
                             setIsOpen(false);

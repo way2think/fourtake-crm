@@ -2,13 +2,13 @@ import { FC } from 'react';
 
 interface IconChatDotProps {
     className?: string;
-    title: string;
+    title?: string;
 }
 
-const IconList: FC<IconChatDotProps> = ({ className, title  }) => {
+const IconList: FC<IconChatDotProps> = ({ className, title }) => {
     return (
         <svg fill="#000000" width="20px" height="20px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-            <title>{title}</title>
+            {title && <title>{title}</title>}
             <rect x="15" y="8" width="9" height="2" className="clr-i-outline clr-i-outline-path-1"></rect>
             <rect x="15" y="12" width="9" height="2" className="clr-i-outline clr-i-outline-path-2"></rect>
             <rect x="15" y="16" width="9" height="2" className="clr-i-outline clr-i-outline-path-3"></rect>
