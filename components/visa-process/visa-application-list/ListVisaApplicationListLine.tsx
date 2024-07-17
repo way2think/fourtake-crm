@@ -88,8 +88,7 @@ const ListVisaApplicationListLine: React.FC<ListVisaApplicationListLineProps> = 
                 <div className="mt-4 flex items-center justify-end">
                     <button
                         onClick={() => {
-                            setIsOpen(false);
-                            
+                            setIsOpen(false);                          
                         }}
                         type="button"
                         className="btn btn-outline-danger"
