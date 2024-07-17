@@ -16,29 +16,37 @@ import IconMenuPages from '@/components/icon/menu/icon-menu-pages';
 import { usePathname } from 'next/navigation';
 import { getTranslation } from '@/i18n';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
+import { useNavigate } from 'react-router-dom';
 import './sidebarstyle.css';
 
 const Sidebar = () => {
     const [clicked, setClicked] = useState(false);
-    const router = useRouter();
     const dispatch = useDispatch();
     const { t } = getTranslation();
     const pathname = usePathname();
     const [currentMenu, setCurrentMenu] = useState<string>('');
+    const [isAciveCondition, setIsAciveCondition] = useState<string>('');
     const [errorSubMenu, setErrorSubMenu] = useState(false);
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
     const semidark = useSelector((state: IRootState) => state.themeConfig.semidark);
 
     const toggleMenu = (value: string) => {
         if (value.charAt(0) === '1') {
-            console.log("The first character is '1'");
             value = value.slice(1);
             setCurrentMenu(value);
         } else {
             setCurrentMenu((oldValue) => {
                 return oldValue === value ? '' : value;
             });
+        }
+
+        if(currentMenu=="User List") {
+            setIsAciveCondition('active')
+
+        }if(currentMenu=="Lead Management") {
+            setIsAciveCondition('active')
+            
         }
 
         // if(value !== value) {
@@ -75,6 +83,7 @@ const Sidebar = () => {
     }, [pathname]);
 
     const setActiveRoute = () => {
+        debugger;
         let allLinks = document.querySelectorAll('.sidebar ul a.active');
         for (let i = 0; i < allLinks.length; i++) {
             const element = allLinks[i];
@@ -82,6 +91,12 @@ const Sidebar = () => {
         }
         const selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
         selector?.classList.add('active');
+    };
+
+    const handleClick = () => {
+        toggleMenu('1User List');
+        //navigate('/user-list');
+        //router.push('/user-list');
     };
 
     // const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -138,18 +153,19 @@ const Sidebar = () => {
                                     </div>
                                 </button> */}
 
-                                <div className={`${currentMenu === 'User List' ? 'active' : ''} nav-link nabarbuttoncustom group w-full`} onClick={() => toggleMenu('1User List')}>
+                                <Link href="/user-list" className={`${currentMenu === 'User List' || isAciveCondition === 'active' ? 'active' : ''} nav-link group w-full nabarbuttoncustom`} onClick={() => toggleMenu('1User List')}>
                                     <div className="flex items-center">
                                         <IconMenuUsers className="shrink-0 !text-[#000] " />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
-                                            <Link href="/user-list">User List</Link>
+                                            {/* <Link href="/user-list">User List</Link> */}
+                                            User List
                                         </span>
                                     </div>
                                     {/* 
                                     <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
                                         <IconCaretDown />
                                     </div> */}
-                                </div>
+                                </Link>
 
                                 {/* <AnimateHeight duration={300} height={currentMenu === 'User Management' ? 'auto' : 0}>
                                     <ul className="sub-menu text-gray-500">
@@ -166,18 +182,19 @@ const Sidebar = () => {
                                 </AnimateHeight> */}
                             </li>
                             <li className="menu nav-item">
-                                <button type="button" className={`${currentMenu === 'Lead Management' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('1Lead Management')}>
+                                <Link href="/lead-list" className={`${currentMenu === 'Lead Management' || isAciveCondition === 'active' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('1Lead Management')}>
                                     <div className="flex items-center">
                                         <IconMenuElements className="shrink-0 !text-[#000] " />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
-                                            <Link href="/lead-list">Lead Management</Link>
+                                            {/* <Link href="/lead-list">Lead Management</Link> */}
+                                            Lead Management
                                         </span>
                                     </div>
 
                                     {/* <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
                                         <IconCaretDown />
                                     </div>  */}
-                                </button>
+                                </Link>
 
                                 {/* <button
                                     type="button"
