@@ -22,11 +22,6 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
         setSelectedOptions(arr);
     }, [addData]);
 
-    // useEffect(() => {
-    //     setAddData((prev: any) => ({ ...prev, [id]: selectedOptions }));
-    // }, [selectedOptions]);
-
-    // console.log('selected options', selectedOptions);
 
     const handleChange = (selected: any) => {
         console.log('selected options', selected);

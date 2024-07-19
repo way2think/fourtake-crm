@@ -1,20 +1,11 @@
 'use client';
 import { getData } from '@/api';
-import ComponentsFormsFileUploadMulti from '@/components/Reusable/file-upload/components-forms-file-upload-multi';
-import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
 import TableLayout from '@/components/layouts/table-layout';
-import { use } from 'react';
-import { Transition, Dialog } from '@headlessui/react';
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
-import IconX from '@/components/icon/icon-x';
+import React, { useState } from 'react';
 import VisaChecklistActionModal from './VisaChecklistActionModal';
 import Swal from 'sweetalert2';
 import { showMessage } from '@/utils/notification';
-import Link from 'next/link';
 
-const getServerData = async () => {
-    return await getData({ endpoint: 'http://localhost:5001/center' });
-};
 const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata }) => {
     const [data, setData] = useState(visachecklistdata);
 
@@ -82,13 +73,7 @@ const VisaChecklist: React.FC<{ visachecklistdata: any }> = ({ visachecklistdata
             };
             setData([...data, formData]);
             return formData;
-
-            //   searchContacts();
         }
-
-        // showMessage('User has been saved successfully.');
-        // setAddContactModal(false);
-        // setIsEdit(false);
     };
     return (
         <>

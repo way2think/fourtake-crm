@@ -2,6 +2,7 @@ import IconX from '@/components/icon/icon-x';
 import ComponentsFormsFileUploadMulti from '../../Reusable/file-upload/components-forms-file-upload-multi';
 import ComponentsFormsFileUploadSingle from '../../Reusable/file-upload/components-forms-file-upload-single';
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
+import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
 
 interface CountryVisaURlActionModalProps {
     isOpen: any;
@@ -12,11 +13,10 @@ interface CountryVisaURlActionModalProps {
     setAddData: any;
 }
 const CountryVisaURlActionModal: React.FC<CountryVisaURlActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
-    
-    const handleCheckBoxChange = (e: any) => {
-        const { id, checked } = e.target;
-        setAddData((prev: any) => ({ ...prev, [id]: checked }));
-    };
+
+
+    const { data: countries, isFetching, isLoading } = useGetCountriesQuery(undefined);
+    const { items = [], meta = {} } = countries || {};
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-xl">
@@ -38,20 +38,22 @@ const CountryVisaURlActionModal: React.FC<CountryVisaURlActionModalProps> = ({ i
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="dropdown mb-5">
                             <label htmlFor="country">Country</label>
-                            <select className="form-input" defaultValue="" id="country" value={addData?.country} onChange={(e) => handleInputChange(e)}>
+                            <select className="form-input" defaultValue="" id="country" value={addData?.country?.id} onChange={(e) => handleInputChange(e)}>
                                 <option value="" disabled={true}>
                                     Country
                                 </option>
-                                <option value="Canada">Canada</option>
-                                <option value="India">India</option>
-                                <option value="Usa">Usa</option>
+                                {items.map((country: any) => (
+                                    <option value={country.id} key={country.id}>
+                                        {country.name}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="mb-5 ">
                             <label htmlFor="url">Url</label>
-                            <input id="urls" type="text" onChange={(e) => handleInputChange(e)} value={addData?.urls} placeholder="Enter Url" className="form-input" />
+                            <input id="url" type="text" onChange={(e) => handleInputChange(e)} value={addData?.url} placeholder="Enter Url" className="form-input" />
                         </div>
                     </div>
                     <div className="mt-8 flex items-center justify-end">

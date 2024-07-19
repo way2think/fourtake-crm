@@ -6,7 +6,6 @@ import TableLayout from '@/components/layouts/table-layout';
 import CountryActionModal from './CountryActionModal';
 import { showMessage } from '@/utils/notification';
 import { countrySlice, useCreateCountryMutation, useDeleteCountryMutation, useGetCountriesQuery, useUpdateCountryMutation } from '@/services/api/cms/countrySlice';
-// import type { Country } from '@/models/Country';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import type { Country } from '@/models/country.entity';
@@ -19,10 +18,7 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
     const { items = [], meta = {} } = countries || {};
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
-
-    // console.log('countries: ', countries, isFetching, isLoading);
-    // console.log('isDeleted: ', isDeleted, isDeletedLoading, isError, error);
-
+    
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
         { accessor: 'name', textAlign: 'left', title: 'Country Name' },

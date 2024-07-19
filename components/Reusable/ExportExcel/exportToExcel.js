@@ -1,7 +1,12 @@
 import { writeFile, utils, write } from 'xlsx';
 
 export const exportToExcel = (data, columns, fileName = 'data.xlsx') => {
-    const filteredData = data.map((row) => {
+    const flattenedData = data.map((row) => ({
+        ...row,
+        ...(row?.country && { country: row.country.name }), // Flatten 'country.name' from 'country' object
+    }));
+
+    const filteredData = flattenedData.map((row) => {
         const filteredRow = {};
         columns.forEach((col) => {
             if (Array.isArray(row[col])) {

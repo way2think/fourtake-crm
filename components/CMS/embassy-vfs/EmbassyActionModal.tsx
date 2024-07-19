@@ -33,7 +33,14 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
                 <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
                     <h5 className="text-lg font-bold">{addData.id ? 'Edit' : 'Add'} Embassy</h5>
-                    <button onClick={() => setIsOpen(false)} type="button" className="text-white-dark hover:text-dark">
+                    <button
+                        onClick={() => {
+                            setIsOpen(false);
+                            setAddData({});
+                        }}
+                        type="button"
+                        className="text-white-dark hover:text-dark"
+                    >
                         <IconX />
                     </button>
                 </div>
@@ -44,11 +51,10 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                             <label htmlFor="type">Embassy / VFS</label>
                             <select className="form-input" defaultValue="" id="type" onChange={(e) => handleInputChange(e)} value={addData?.type}>
                                 <option value="" disabled={true}>
-                                    Embassy / VFS
+                                    Select Embassy / VFS
                                 </option>
                                 <option value="embassy">Embassy</option>
                                 <option value="vfs">VFS</option>
-                                <option value="all">All</option>
                             </select>
                         </div>
                         <div className="dropdown">
@@ -66,17 +72,6 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                         </div>
                         <div className="dropdown">
                             <label htmlFor="jurisdiction">Jurisdiction</label>
-                            {/* <select className="form-input" defaultValue="" id="jurisdiction" onChange={(e) => handleInputChange(e)} value={addData?.jurisdiction}>
-                                <option value="" disabled={true}>
-                                    Jurisdiction
-                                </option>
-                                <option value="Chennai">Chennai</option>
-                                <option value="Vellore">Vellore</option>
-                                <option value="Bengaluru">Bengaluru</option>
-                                <option value="New Delhi">New Delhi</option>
-                                <option value="Mangalore">Mangalore</option>
-                                <option value="Mumbai">Mumbai</option>
-                            </select> */}
                             <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-1 ">
                                 <ComponentsFormsSelectMultiselect addData={addData} options={options} setAddData={setAddData} id={'jurisdiction'} />
                             </div>
@@ -144,15 +139,15 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <label htmlFor="mail">Email</label>
-                            <input id="mail" onChange={(e) => handleInputChange(e)} value={addData?.mail} type="email" placeholder="Enter Email" className="form-input" />
+                            <label htmlFor="email">Email</label>
+                            <input id="email" onChange={(e) => handleInputChange(e)} value={addData?.email} type="email" placeholder="Enter Email" className="form-input" />
                         </div>
                         <div className="mb-5">
-                            <label htmlFor="submissiondetails">Submission Details</label>
+                            <label htmlFor="submission_details">Submission Details</label>
                             <input
-                                id="submissiondetails"
+                                id="submission_details"
                                 onChange={(e) => handleInputChange(e)}
-                                value={addData?.submissiondetails}
+                                value={addData?.submission_details}
                                 type="text"
                                 placeholder="Enter Submission Details"
                                 className="form-input"
@@ -162,19 +157,26 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <label htmlFor="collectiondetails">Collection Details</label>
+                            <label htmlFor="collection_details">Collection Details</label>
                             <input
-                                id="collectiondetails"
+                                id="collection_details"
                                 onChange={(e) => handleInputChange(e)}
-                                value={addData?.collectiondetails}
+                                value={addData?.collection_details}
                                 type="text"
                                 placeholder="Enter Collection Details"
                                 className="form-input"
                             />
                         </div>
                         <div className="mb-5">
-                            <label htmlFor="processingtime">Processing Time</label>
-                            <input id="processingtime" onChange={(e) => handleInputChange(e)} value={addData?.processingtime} type="text" placeholder="Enter Processing Time" className="form-input" />
+                            <label htmlFor="processing_time">Processing Time</label>
+                            <input
+                                id="processing_time"
+                                onChange={(e) => handleInputChange(e)}
+                                value={addData?.processing_time}
+                                type="text"
+                                placeholder="Enter Processing Time"
+                                className="form-input"
+                            />
                         </div>
                     </div>
 

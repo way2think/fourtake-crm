@@ -48,13 +48,25 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
     const [isOpenTrack, setIsOpenTrack] = useState(false);
     const router = useRouter();
 
+    console.log("addData",addData)
+
     useEffect(() => {
         let filterItems;
 
         if (Array.isArray(filterby)) {
             filterItems = data.filter((item: any) => filterby.some((filter: any) => item[filter]?.toLowerCase().includes(search.toLowerCase())));
         } else {
-            filterItems = data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase()));
+            // filterItems = data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase()));
+            filterItems = data.filter((item: any) => {
+                const keys = filterby.split('.');
+                let value = item;
+
+                for (const key of keys) {
+                    value = value?.[key];
+                }
+
+                return value?.toString().toLowerCase().includes(search.toLowerCase());
+            });
         }
 
         setFilterItem(filterItems);
