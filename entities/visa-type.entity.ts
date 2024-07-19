@@ -1,4 +1,4 @@
 export interface VisaType {
-    id?: number;
+    id: number;
     name: string;
 }
