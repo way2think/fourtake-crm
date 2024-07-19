@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { getData } from '@/api';
-import CountryVisaURl from '@/components/CMS/Country_Visa_Urls/CountryVisaURl';
+import CountryVisaURl from '@/components/cms/country-visa-urls/CountryVisaURl';
 
 export const metadata: Metadata = {
     title: 'Fourtake - CMS | CountrY Visa URL',

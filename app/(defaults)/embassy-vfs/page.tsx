@@ -1,5 +1,5 @@
 import React from 'react';
-import EmbassyVfs from '@/components/CMS/embassy-vfs/EmbassyVfs';
+import EmbassyVfs from '@/components/cms/embassy-vfs/EmbassyVfs';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

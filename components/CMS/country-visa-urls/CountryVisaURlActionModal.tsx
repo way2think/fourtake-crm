@@ -4,7 +4,7 @@ import ComponentsFormsFileUploadSingle from '../../Reusable/file-upload/componen
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
 
-interface CountryVisaURlActionModalProps {
+interface CountryVisaUrlActionModalProps {
     isOpen: any;
     setIsOpen: any;
     handleSave: any;
@@ -12,9 +12,7 @@ interface CountryVisaURlActionModalProps {
     handleInputChange: any;
     setAddData: any;
 }
-const CountryVisaURlActionModal: React.FC<CountryVisaURlActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
-
-
+const CountryVisaURlActionModal: React.FC<CountryVisaUrlActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
     const { data: countries, isFetching, isLoading } = useGetCountriesQuery(undefined);
     const { items = [], meta = {} } = countries || {};
     return (

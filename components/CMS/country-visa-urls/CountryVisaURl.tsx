@@ -3,7 +3,7 @@ import TableLayout from '@/components/layouts/table-layout';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import Swal from 'sweetalert2';
 import { showMessage } from '@/utils/notification';
-import CountryVisaURlActionModal from '@/components/CMS/Country_Visa_Urls/CountryVisaURlActionModal';
+import CountryVisaURlActionModal from '@/components/cms/country-visa-urls/CountryVisaURlActionModal';
 import {
     countryVisaUrlSlice,
     useCreateCountryVisaUrlMutation,
@@ -12,7 +12,7 @@ import {
     useUpdateCountryVisaUrlMutation,
 } from '@/services/api/cms/countryVisaUrlSlice';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
-import { CountryVisaUrl } from '@/models/country-visa-url.entity';
+import { CountryVisaUrl } from '@/entities/country-visa-url.entity';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 
 const CountryVisaURl: React.FC = ({}) => {

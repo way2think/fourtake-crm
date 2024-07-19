@@ -1,12 +1,12 @@
 'use client';
 import TableLayout from '@/components/layouts/table-layout';
 import React from 'react';
-import VisaStatusActionModal from '@/components/CMS/visa_status/VisaStatusActionModal';
+import VisaStatusActionModal from '@/components/cms/visa_status/VisaStatusActionModal';
 import { showMessage } from '@/utils/notification';
 import { useCreateVisaStatusMutation, useDeleteVisaStatusMutation, useGetVisaStatusesQuery, useUpdateVisaStatusMutation, visaStatusSlice } from '@/services/api/cms/visaStatusSlice';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
-import type { VisaStatus } from '@/models/visa-status.entity';
+import type { VisaStatus } from '@/entities/visa-status.entity';
 
 const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
     const [createVisaStatus, {}] = useCreateVisaStatusMutation();

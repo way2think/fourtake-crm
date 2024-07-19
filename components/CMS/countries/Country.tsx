@@ -8,17 +8,18 @@ import { showMessage } from '@/utils/notification';
 import { countrySlice, useCreateCountryMutation, useDeleteCountryMutation, useGetCountriesQuery, useUpdateCountryMutation } from '@/services/api/cms/countrySlice';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
-import type { Country } from '@/models/country.entity';
+import type { Country } from '@/entities/country.entity';
 
 const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
     const [createCountry, {}] = useCreateCountryMutation();
     const [updateCountry, {}] = useUpdateCountryMutation();
     const [deleteCountry, {}] = useDeleteCountryMutation();
+
     const { data: countries, isFetching, isLoading } = useGetCountriesQuery(undefined);
     const { items = [], meta = {} } = countries || {};
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
-    
+
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
         { accessor: 'name', textAlign: 'left', title: 'Country Name' },

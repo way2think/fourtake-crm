@@ -47,8 +47,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         setFollowUps(addData.followup || []);
     }, [addData?.followup]);
 
-    
-
     useEffect(() => {
         if (addData.email) {
             setSetEmail(addData.email || '');
@@ -122,17 +120,15 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
             // return updatedData;
         } else {
             const maxUserId = followUps.length ? Math.max(...followUps.map((d: any) => d.followup_id)) : 0;
-        
-            const newFollowup = 
-                {
-                    ...addNextFollowUpData,
-                    followup_id: +maxUserId + 1,
-                }
-            ;
+
+            const newFollowup = {
+                ...addNextFollowUpData,
+                followup_id: +maxUserId + 1,
+            };
             setFollowUps([...followUps, newFollowup]);
             setAddData({
                 ...addData,
-                followup: addData.followup ? [...addData.followup, newFollowup] : [newFollowup],
+                followup: addData.followup ? [...addData.followup, newFollowup] : [newFollowup],
             });
             setIsOpenNextFollowup(false);
             setAddNextFollowUpData({});

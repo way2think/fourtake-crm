@@ -1,9 +1,9 @@
 'use client';
 import TableLayout from '@/components/layouts/table-layout';
-import EmbassyActionModal from '@/components/CMS/embassy-vfs/EmbassyActionModal';
+import EmbassyActionModal from '@/components/cms/embassy-vfs/EmbassyActionModal';
 import { showMessage } from '@/utils/notification';
 import { embassyVfsSlice, useCreateEmbassyVfsMutation, useDeleteEmbassyVfsMutation, useGetEmbassyVfsQuery, useUpdateEmbassyVfsMutation } from '@/services/api/cms/embassyVfsSlice';
-import type { EmbassyVfs } from '@/models/embassy-vfs.entity';
+import type { EmbassyVfs } from '@/entities/embassy-vfs.entity';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 
@@ -94,7 +94,7 @@ const EmbassyVfs: React.FC = () => {
         <>
             <TableLayout
                 title="Embassy/Vfs"
-                filterby='country.name'
+                filterby="country.name"
                 data={items}
                 handleDelete={handleDeleteEmbassyVfs}
                 totalPages={items?.length || 0}
