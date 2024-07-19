@@ -64,8 +64,8 @@ const LeadManagement: React.FC = () => {
             items,
             meta,
             handleLocalUpdate: handleLocalRTKUpdate,
-            apiObjectRef: leadSlice,
-            endpoint: 'getleads',
+            apiObjectRef : leadSlice,
+            endpoint : 'getLeads',
         });
 
     const exportColumns = ['id', 'leadname', 'email', 'contact', 'country', 'visatype', 'stateofresidence', 'emailsentdate', 'lastfollowup', 'nextfollowup', 'status'];
