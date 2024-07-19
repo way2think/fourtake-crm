@@ -5,9 +5,9 @@ import { showMessage } from '@/utils/notification';
 import Swal from 'sweetalert2';
 import { useCreateVisaTypeMutation, useDeleteVisaTypeMutation, useGetVisaTypesQuery, useUpdateVisaTypeMutation, visaTypeSlice } from '@/services/api/cms/visaTypeSlice';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
-import { VisaType } from '@/models/visa-type.entity';
+import { VisaType } from '@/entities/visa-type.entity';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
-import VisaTypesActionModal from '@/components/CMS/visa-types/VisaTypesActionModal';
+import VisaTypesActionModal from '@/components/cms/visa-types/VisaTypesActionModal';
 
 const VisaTypes: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
     const [createVisaType, {}] = useCreateVisaTypeMutation();

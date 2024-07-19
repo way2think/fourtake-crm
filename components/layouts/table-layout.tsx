@@ -48,7 +48,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
     const [isOpenTrack, setIsOpenTrack] = useState(false);
     const router = useRouter();
 
-    console.log("addData",addData)
+    // console.log('addData', addData);
 
     useEffect(() => {
         let filterItems;

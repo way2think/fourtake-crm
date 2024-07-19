@@ -34,7 +34,6 @@ export const countrySlice = apiSlice.injectEndpoints({
         }),
         deleteCountry: build.mutation({
             query: (id) => {
-                console.log('id:: ', id);
                 return {
                     method: 'DELETE',
                     url: `/cms/country/${id}`,

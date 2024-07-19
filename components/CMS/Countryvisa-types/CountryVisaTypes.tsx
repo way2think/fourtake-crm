@@ -2,7 +2,7 @@
 
 import TableLayout from '@/components/layouts/table-layout';
 import React from 'react';
-import CountryVisaTypeActionModal from '@/components/CMS/Countryvisa-types/CountryVisaTypesActionModal';
+import CountryVisaTypeActionModal from '@/components/cms/Countryvisa-types/CountryVisaTypesActionModal';
 
 import { showMessage } from '@/utils/notification';
 import {
@@ -13,7 +13,7 @@ import {
     useUpdateCountryVisaTypeMutation,
 } from '@/services/api/cms/countryVisaTypeSlice';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
-import { CountryVisaType } from '@/models/country-visa-type.entity';
+import { CountryVisaType } from '@/entities/country-visa-type.entity';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 
 const CountryVisaTypes: React.FC = () => {
@@ -23,7 +23,7 @@ const CountryVisaTypes: React.FC = () => {
     const { data, isFetching, isLoading } = useGetCountryVisaTypesQuery(undefined);
     const { items = [], meta = {} } = data || {};
 
-    console.log('items', items,data);
+    console.log('items', items, data);
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 

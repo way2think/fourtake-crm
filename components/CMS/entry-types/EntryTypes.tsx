@@ -1,12 +1,12 @@
 'use client';
 import TableLayout from '@/components/layouts/table-layout';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
-import EntryTypesActionModal from '@/components/CMS/entry-types/EntryTypesActionModal';
+import EntryTypesActionModal from '@/components/cms/entry-types/EntryTypesActionModal';
 import { showMessage } from '@/utils/notification';
 import { entryTypeSlice, useCreateEntryTypeMutation, useDeleteEntryTypeMutation, useGetEntryTypesQuery, useUpdateEntryTypeMutation } from '@/services/api/cms/entryTypeSlice';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
-import { EntryType } from '@/models/entry-type.entity';
+import { EntryType } from '@/entities/entry-type.entity';
 
 const EntryTypes: React.FC<{ entrytypedata: any }> = ({ entrytypedata }) => {
     const [createEntryType, {}] = useCreateEntryTypeMutation();

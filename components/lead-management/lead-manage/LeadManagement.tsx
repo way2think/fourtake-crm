@@ -1,31 +1,20 @@
 'use client';
 
-import { getData } from '@/api';
-import ComponentsFormsFileUploadMulti from '@/components/Reusable/file-upload/components-forms-file-upload-multi';
-import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
-import { use } from 'react';
-import { Transition, Dialog } from '@headlessui/react';
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import IconX from '@/components/icon/icon-x';
-import CountryActionModal from './LeadManagementActionModal';
 import Swal from 'sweetalert2';
 import { showMessage } from '@/utils/notification';
 import TableLayout from '@/components/layouts/table-layout';
 import Filtersetting from '@/components/layouts/filtersetting';
 import LeadManagementActionModal from './LeadManagementActionModal';
 import Link from 'next/link';
+import { useGetLeadsQuery } from '@/services/api/leadSlice';
 
-// const getServerData = async () => {
-//     return await getData({ endpoint: 'http://localhost:5001/center' });
-// };
-const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
-    const [data, setData] = useState(leadlistdata);
-    // const { data, isError, error } = use(getServerData());
-    // // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
-    // // console.log('dataaaa: ', data);
-    // if (isError) {
-    //     console.log(error.message);
-    // }
+const LeadManagement: React.FC = () => {
+    const { data, isError, error, isFetching, isLoading } = useGetLeadsQuery(undefined);
+
+    // console.log('leads: ', data, isLoading, isFetching);
+    // console.log('eror: ', isError, error);
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
@@ -79,7 +68,6 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
             showMessage('Select State', 'error');
             return false;
         }
-    
 
         if (value.id) {
             //update user
@@ -146,10 +134,8 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
 
             //   searchContacts();
         }
-
-       
     };
-    
+
     return (
         <>
             <ul className="mb-3 flex space-x-2 rtl:space-x-reverse">
@@ -164,11 +150,10 @@ const LeadManagement: React.FC<{ leadlistdata: any }> = ({ leadlistdata }) => {
             </ul>
             <TableLayout
                 title="Lead List"
-                setData={setData}
                 filterby="country"
                 handleDelete={handleDelete}
-                data={data}
-                totalPages={data?.length || 0}
+                data={data?.items || []}
+                totalPages={data?.items?.length || 0}
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={LeadManagementActionModal}
