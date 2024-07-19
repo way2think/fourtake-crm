@@ -1,5 +1,5 @@
 export interface Country {
-    id?: number;
+    id: number;
     name: string;
     languages?: string;
     dialing_code?: string;

@@ -1,7 +1,7 @@
 'use client';
 
 import TableLayout from '@/components/layouts/table-layout';
-import React from 'react';
+import React, { useMemo } from 'react';
 import CountryVisaTypeActionModal from '@/components/cms/Countryvisa-types/CountryVisaTypesActionModal';
 
 import { showMessage } from '@/utils/notification';
@@ -23,23 +23,28 @@ const CountryVisaTypes: React.FC = () => {
     const { data, isFetching, isLoading } = useGetCountryVisaTypesQuery(undefined);
     const { items = [], meta = {} } = data || {};
 
-    console.log('items', items, data);
+    console.log('data', data);
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
         {
-            accessor: 'country',
+            accessor: 'name',
             textAlign: 'left',
             title: 'Country Name',
+        },
+        {
+            accessor: 'country_visa_types',
+            textAlign: 'left',
+            title: 'Country Visa Types',
             render: (row: any) => {
-                return row.country.name;
+                return row.country_visa_types.map((item: any) => item.name).join(', ');
             },
         },
     ];
 
-    const exportColumns = ['id', 'country', 'visatypes'];
+    const exportColumns = ['id', 'country', 'type'];
 
     const handleDeleteCountryVisaType = (countryvisatype: CountryVisaType) =>
         handleDelete({
@@ -130,7 +135,7 @@ const CountryVisaTypes: React.FC = () => {
         <>
             <TableLayout
                 title="Country Visa Types"
-                data={items}
+                data={items || []}
                 filterby="country"
                 totalPages={items?.length || 0}
                 handleDelete={handleDeleteCountryVisaType}
