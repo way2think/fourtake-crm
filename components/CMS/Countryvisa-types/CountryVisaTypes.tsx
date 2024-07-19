@@ -23,7 +23,7 @@ const CountryVisaTypes: React.FC = () => {
     const { data, isFetching, isLoading } = useGetCountryVisaTypesQuery(undefined);
     const { items = [], meta = {} } = data || {};
 
-    console.log('items', items,data);
+    console.log('items', items, data);
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
@@ -39,7 +39,7 @@ const CountryVisaTypes: React.FC = () => {
         },
     ];
 
-    const exportColumns = ['id', 'country', 'visatypes'];
+    const exportColumns = ['id', 'country', 'type'];
 
     const handleDeleteCountryVisaType = (countryvisatype: CountryVisaType) =>
         handleDelete({
@@ -130,7 +130,7 @@ const CountryVisaTypes: React.FC = () => {
         <>
             <TableLayout
                 title="Country Visa Types"
-                data={items}
+                data={items || []}
                 filterby="country"
                 totalPages={items?.length || 0}
                 handleDelete={handleDeleteCountryVisaType}

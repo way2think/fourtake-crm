@@ -18,8 +18,12 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
     const [selectedOptions, setSelectedOptions] = useState<OptionType[]>([]);
 
     useEffect(() => {
-        const arr: any = options.filter((item: any) => addData[id]?.includes(item.value));
-        setSelectedOptions(arr);
+        if (Array.isArray(addData[id])) {
+            const arr = options.filter((item: any) => addData[id].includes(item.value));
+            setSelectedOptions(arr);
+        } else {
+            setSelectedOptions([]); // or handle as needed
+        }
     }, [addData]);
 
 
