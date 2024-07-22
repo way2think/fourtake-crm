@@ -14,10 +14,12 @@ interface ComponentsFormDatePickerBasicProps {
 }
 
 const formatDate = (date: Date) => {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    // const day = String(date.getDate()).padStart(2, '0');
+    // const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    // const year = date.getFullYear();
+    // return `${day}/${month}/${year}`;
+
+    return date.toISOString(); // Convert to ISO 8601 string
 };
 
 const ComponentsFormDatePickerBasic: React.FC<ComponentsFormDatePickerBasicProps> = ({ label, id, setAddData, isEdit, addData }) => {
