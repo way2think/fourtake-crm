@@ -20,6 +20,7 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
 
     const { data: visatypes } = useGetVisaTypesQuery(undefined);
 
+
     return (
         <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-4xl">
             <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
@@ -52,11 +53,11 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                     </div>
                     <div className="dropdown">
                         <label htmlFor="role">Visa Category*</label>
-                        <select className="form-input" defaultValue="" id="type" value={addData?.type?.id} onChange={(e) => handleInputChange(e)}>
-                            <option value="" disabled={true}>
+                        <select className="form-input" defaultValue="" id="type" value={addData?.type?.id || ''} onChange={(e) => handleInputChange(e)}>
+                            <option value="" disabled>
                                 Visa Type
                             </option>
-                            {visatypes?.items.map((type: any) => (
+                            {visatypes?.items?.map((type: any) => (
                                 <option key={type.id} value={type.id}>
                                     {type.name}
                                 </option>

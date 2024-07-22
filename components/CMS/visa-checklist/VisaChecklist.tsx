@@ -24,7 +24,7 @@ const VisaChecklist: React.FC = () => {
 
     const exportColumns = ['country', 'type', 'embassy'];
     const tableColumns = [
-        // { accessor: 'id', textAlign: 'left', title: 'ID' },
+        { accessor: 'id', textAlign: 'left', title: 'ID' },
         {
             accessor: 'country',
             textAlign: 'left',
@@ -33,7 +33,14 @@ const VisaChecklist: React.FC = () => {
                 return row.country.name;
             },
         },
-        { accessor: 'type', textAlign: 'left', title: 'Visa type' },
+        {
+            accessor: 'type',
+            textAlign: 'left',
+            title: 'Visa type',
+            render: (row: any) => {
+                return row.type.name;
+            },
+        },
         { accessor: 'embassy', textAlign: 'left', title: 'Embassy' },
     ];
 
@@ -49,10 +56,18 @@ const VisaChecklist: React.FC = () => {
         });
 
     const handleSubmit = async (value: VisaChecklist) => {
-        // if (value.name === '' || value.name == null) {
-        //     showMessage('Enter country name', 'error');
-        //     return false;
-        // }
+        if (value.country == '' || value.country == null) {
+            showMessage('Select country ', 'error');
+            return false;
+        }
+        if (value.type == '' || value.type == null) {
+            showMessage('Select Visa type', 'error');
+            return false;
+        }
+        if (value.embassy == '' || value.embassy == null) {
+            showMessage('Select Embassy Location', 'error');
+            return false;
+        }
 
         if (value.id) {
             return handleUpdate({

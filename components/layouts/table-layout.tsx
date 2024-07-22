@@ -48,7 +48,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
         other: '',
     });
 
-    const [isImportOpen, setIsImportOpen] = useState(true);
+    const [isImportOpen, setIsImportOpen] = useState(false);
     const [isOpenTrack, setIsOpenTrack] = useState(false);
     const router = useRouter();
 
@@ -170,7 +170,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
     };
 
     const handleFileUpload = (e: any) => {
-        console.log('import e', e);
+
         const file = e.target.files[0];
         const reader = new FileReader();
 
@@ -379,8 +379,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
 
             {title == 'List Visa Application' && <ActionModalListLine isOpen={isOpenlistLine} setIsOpen={setIsOpenListLine} />}
 
-            <ImportExcel isOpen={isImportOpen} setIsOpen={setIsImportOpen} />
-
+            {/* {isImportOpen && <ImportExcel isOpen={isImportOpen} setIsOpen={setIsImportOpen} />} */}
             {/* <ReuseActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} width="">
                 <AddNote isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} />
             </ReuseActionModal>  */}

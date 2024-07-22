@@ -40,10 +40,10 @@ const ImportExcel: React.FC<ImportExcelProps> = ({ isOpen, setIsOpen }) => {
     };
     return (
         <>
-            <ActionModal isOpen={true} setIsOpen={true} width='w-xl'>
+            <ActionModal isOpen={true} setIsOpen={true} width='max-w-xl'>
                 <div className='p-10'>
                     <input type="file" accept=".xlsx, .xls" onChange={handleFileChange} />
-                    <button onClick={handleFileUpload}>Upload</button>
+                    <button onClick={handleFileUpload} className="btn btn-primary float-right">Upload</button>
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                 </div>
             </ActionModal>
