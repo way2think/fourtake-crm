@@ -1,7 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import IconSearch from '../icon/icon-search';
 import IconUserPlus from '../icon/icon-user-plus';
+import * as XLSX from 'xlsx';
 import { exportToExcel } from '../Reusable/ExportExcel/exportToExcel';
 import PaginationTable from '../Reusable/Table/PaginationTable';
 import React, { Fragment, useEffect, useMemo } from 'react';
@@ -45,6 +46,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
         url: '',
         other: '',
     });
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const [isOpenTrack, setIsOpenTrack] = useState(false);
     const router = useRouter();
 
@@ -54,7 +57,13 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
         let filterItems;
 
         if (Array.isArray(filterby)) {
-            filterItems = data.filter((item: any) => filterby.some((filter: any) => item[filter]?.toLowerCase().includes(search.toLowerCase())));
+            filterItems = data.filter((item: any) =>
+                filterby.some((filter: any) => {
+                    const itemValue = item[filter];
+                    // Ensure itemValue is a string before calling toLowerCase
+                    return typeof itemValue === 'string' && itemValue.toLowerCase().includes(search.toLowerCase());
+                })
+            );
         } else {
             // filterItems = data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase()));
             filterItems = data.filter((item: any) => {
@@ -151,6 +160,41 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
         }
     };
 
+    // const handleFileUpload = (e: any) => {
+    //     console.log('import e', e);
+    //     const file = e.target.files[0];
+    //     const reader = new FileReader();
+
+    //     reader.onload = (event) => {
+    //         const fileReader = event.target as FileReader;
+    //         const arrayBuffer = fileReader.result as ArrayBuffer;
+    //         const uint8Array = new Uint8Array(arrayBuffer);
+    //         const binaryString = uint8Array.reduce((acc, byte) => acc + String.fromCharCode(byte), '');
+    //         const workbook = XLSX.read(binaryString, { type: 'binary' });
+    //         const firstSheetName = workbook.SheetNames[0];
+    //         const worksheet = workbook.Sheets[firstSheetName];
+    //         const parsedData = XLSX.utils.sheet_to_json(worksheet);
+    //         // setData(parsedData);
+    //         console.log('import data', parsedData);
+    //     };
+
+    //     reader.readAsArrayBuffer(file);
+    // };
+
+    // const handleButtonClick = () => {
+    //     const input = document.createElement('input');
+    //     input.type = 'file';
+    //     input.accept = '.xlsx, .xls';
+    //     input.onchange = (e) => {
+    //         const target = e.target as HTMLInputElement;
+    //         if (target && target.files && target.files[0]) {
+    //             const file = target.files[0];
+    //             handleFileUpload(file);
+    //         }
+    //     };
+    //     input.click();
+    // };
+
     const handleTrackSave = () => {
         setAddData({ ...addData, ...track });
         setIsOpenTrack(false);
@@ -236,6 +280,11 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
                             </button>
                         </div>
                     )}
+                    {/* <div>
+                        <button type="button" className="btn btn-primary" onClick={handleButtonClick}>
+                            Import
+                        </button>
+                    </div> */}
                 </div>
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
