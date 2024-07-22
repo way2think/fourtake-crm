@@ -1,9 +1,6 @@
-import MarkdownEditor from '@/components/Reusable/Markdown-Editor/MarkDownEditor';
-import VisafeeEditor from '@/components/Reusable/Markdown-Editor/VisafeeEditor';
 import VisafeeEditorJodit from '@/components/Reusable/Markdown-Editor/VisafeeEditorJodit';
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import NewComponentsFormsFileUploadMultiple from '@/components/Reusable/file-upload/NewComponentsFormsFileUploadSingle';
-import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
 import IconX from '@/components/icon/icon-x';
 import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
 
@@ -19,7 +16,7 @@ interface VisaChecklistActionModalProps {
 const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
     const { data: countries, isLoading, isFetching } = useGetCountriesQuery(undefined);
     const { items = [], meta = {} } = countries || {};
-    console.log('items', items);
+    console.log('items', items, addData);
     return (
         <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-4xl">
             <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
@@ -39,9 +36,9 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                     <div className="dropdown">
                         <label htmlFor="country">Countries*</label>
-                        <select className="form-input" defaultValue="" id="country" value={addData?.country} onChange={(e) => handleInputChange(e)}>
-                            <option value="" disabled={true}>
-                                Countries
+                        <select className="form-input" id="country" value={addData?.country.name || ''} onChange={(e) => handleInputChange(e)}>
+                            <option value="" disabled>
+                                Select Countries
                             </option>
                             {items.map((country: any) => (
                                 <option key={country.id} value={country.id}>
