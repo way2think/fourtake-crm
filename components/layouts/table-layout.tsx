@@ -11,6 +11,7 @@ import IconFile from '../icon/icon-zip-file';
 import PasswordActionModal from '../user-management/PasswordActionModal';
 import ReuseActionModal from '../Reusable/Modal/ActionModal';
 import { useRouter } from 'next/navigation';
+import ImportExcel from '../Reusable/import-excel/ImportExcel';
 
 interface TableLayoutProps {
     title: string;
@@ -47,11 +48,18 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
         other: '',
     });
 
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [isImportOpen, setIsImportOpen] = useState(true);
     const [isOpenTrack, setIsOpenTrack] = useState(false);
     const router = useRouter();
 
-    // console.log('addData', addData);
+    const [file, setFile] = useState<File | null>(null);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setFile(e.target.files[0]);
+            // setError(null);
+        }
+    };
 
     useEffect(() => {
         let filterItems;
@@ -137,7 +145,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
     };
 
     const handleSave = async () => {
-        debugger;
+        // debugger;
         // this is to send only object with value, so null values are filtered out
         const filteredObj = Object.fromEntries(Object.entries(addData).filter(([key, value]) => value !== null && value !== '' && value !== undefined));
 
@@ -161,40 +169,40 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
         }
     };
 
-    // const handleFileUpload = (e: any) => {
-    //     console.log('import e', e);
-    //     const file = e.target.files[0];
-    //     const reader = new FileReader();
+    const handleFileUpload = (e: any) => {
+        console.log('import e', e);
+        const file = e.target.files[0];
+        const reader = new FileReader();
 
-    //     reader.onload = (event) => {
-    //         const fileReader = event.target as FileReader;
-    //         const arrayBuffer = fileReader.result as ArrayBuffer;
-    //         const uint8Array = new Uint8Array(arrayBuffer);
-    //         const binaryString = uint8Array.reduce((acc, byte) => acc + String.fromCharCode(byte), '');
-    //         const workbook = XLSX.read(binaryString, { type: 'binary' });
-    //         const firstSheetName = workbook.SheetNames[0];
-    //         const worksheet = workbook.Sheets[firstSheetName];
-    //         const parsedData = XLSX.utils.sheet_to_json(worksheet);
-    //         // setData(parsedData);
-    //         console.log('import data', parsedData);
-    //     };
+        reader.onload = (event) => {
+            const fileReader = event.target as FileReader;
+            const arrayBuffer = fileReader.result as ArrayBuffer;
+            const uint8Array = new Uint8Array(arrayBuffer);
+            const binaryString = uint8Array.reduce((acc, byte) => acc + String.fromCharCode(byte), '');
+            const workbook = XLSX.read(binaryString, { type: 'binary' });
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+            const parsedData = XLSX.utils.sheet_to_json(worksheet);
+            // setData(parsedData);
+            console.log('import data', parsedData);
+        };
 
-    //     reader.readAsArrayBuffer(file);
-    // };
+        reader.readAsArrayBuffer(file);
+    };
 
-    // const handleButtonClick = () => {
-    //     const input = document.createElement('input');
-    //     input.type = 'file';
-    //     input.accept = '.xlsx, .xls';
-    //     input.onchange = (e) => {
-    //         const target = e.target as HTMLInputElement;
-    //         if (target && target.files && target.files[0]) {
-    //             const file = target.files[0];
-    //             handleFileUpload(file);
-    //         }
-    //     };
-    //     input.click();
-    // };
+    const handleButtonClick = () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.xlsx, .xls';
+        input.onchange = (e) => {
+            const target = e.target as HTMLInputElement;
+            if (target && target.files && target.files[0]) {
+                const file = target.files[0];
+                handleFileUpload(file);
+            }
+        };
+        input.click();
+    };
 
     const handleTrackSave = () => {
         setAddData({ ...addData, ...track });
@@ -295,11 +303,11 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
                             </button>
                         </div>
                     )}
-                    {/* <div>
+                    <div>
                         <button type="button" className="btn btn-primary" onClick={handleButtonClick}>
                             Import
                         </button>
-                    </div> */}
+                    </div>
                         <div>
                             <button
                                 type="button"
@@ -392,6 +400,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
             </ReuseActionModal>
 
             {title == 'List Visa Application' && <ActionModalListLine isOpen={isOpenlistLine} setIsOpen={setIsOpenListLine} />}
+
+            <ImportExcel isOpen={isImportOpen} setIsOpen={setIsImportOpen} />
 
             {/* <ReuseActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} width="">
                 <AddNote isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} />

@@ -205,7 +205,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                 <div className="p-5">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="mb-5">
-                            <ComponentsFormDatePickerBasic label="Create Date" id={'createdate'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                            <ComponentsFormDatePickerBasic label="Create Date" id={'create_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
@@ -238,8 +238,8 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="dropdown mb-5">
-                            <label htmlFor="stateofresidence">State of Residence</label>
-                            <select className="form-input" defaultValue="" id="stateofresidence" value={addData?.stateofresidence} onChange={(e) => handleInputChange(e)}>
+                            <label htmlFor="residence_state">State of Residence</label>
+                            <select className="form-input" defaultValue="" id="residence_state" value={addData?.stateofresidence} onChange={(e) => handleInputChange(e)}>
                                 <option value="" disabled={true}>
                                     Select State
                                 </option>
@@ -249,8 +249,8 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             </select>
                         </div>
                         <div className="dropdown mb-5">
-                            <label htmlFor="visatype">Visa Type</label>
-                            <select className="form-input" defaultValue="" id="visatype" value={addData?.visatype} onChange={(e) => handleInputChange(e)}>
+                            <label htmlFor="visa_type">Visa Type</label>
+                            <select className="form-input" defaultValue="" id="visa_type" value={addData?.visa_type} onChange={(e) => handleInputChange(e)}>
                                 <option value="" disabled={true}>
                                     Visa Type
                                 </option>

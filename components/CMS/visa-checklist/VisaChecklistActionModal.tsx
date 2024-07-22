@@ -3,6 +3,7 @@ import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import NewComponentsFormsFileUploadMultiple from '@/components/Reusable/file-upload/NewComponentsFormsFileUploadSingle';
 import IconX from '@/components/icon/icon-x';
 import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
+import { useGetVisaTypesQuery } from '@/services/api/cms/visaTypeSlice';
 
 interface VisaChecklistActionModalProps {
     isOpen: any;
@@ -16,7 +17,9 @@ interface VisaChecklistActionModalProps {
 const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
     const { data: countries, isLoading, isFetching } = useGetCountriesQuery(undefined);
     const { items = [], meta = {} } = countries || {};
-    console.log('items', items, addData);
+
+    const { data: visatypes } = useGetVisaTypesQuery(undefined);
+
     return (
         <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-4xl">
             <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
@@ -36,7 +39,7 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                     <div className="dropdown">
                         <label htmlFor="country">Countries*</label>
-                        <select className="form-input" id="country" value={addData?.country.name || ''} onChange={(e) => handleInputChange(e)}>
+                        <select className="form-input" id="country" value={addData?.country?.id || ''} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled>
                                 Select Countries
                             </option>
@@ -49,12 +52,15 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                     </div>
                     <div className="dropdown">
                         <label htmlFor="role">Visa Category*</label>
-                        <select className="form-input" defaultValue="" id="type" value={addData?.type} onChange={(e) => handleInputChange(e)}>
+                        <select className="form-input" defaultValue="" id="type" value={addData?.type?.id} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
                                 Visa Type
                             </option>
-                            <option value="Business">Business Visa</option>
-                            <option value="Visitor">Visitor Visa</option>
+                            {visatypes?.items.map((type: any) => (
+                                <option key={type.id} value={type.id}>
+                                    {type.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 </div>
