@@ -8,12 +8,14 @@ import TableLayout from '@/components/layouts/table-layout';
 import Filtersetting from '@/components/layouts/filtersetting';
 import LeadManagementActionModal from './LeadManagementActionModal';
 import Link from 'next/link';
-import { leadSlice, useGetLeadsQuery, useDeleteLeadMutation } from '@/services/api/leadSlice';
+import { leadSlice, useGetLeadsQuery, useDeleteLeadMutation, useCreateLeadMutation, useUpdateLeadMutation } from '@/services/api/leadSlice';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import type { Lead } from '@/entities/lead.entity';
 
 const LeadManagement: React.FC = () => {
+    const [createLead, {}] = useCreateLeadMutation();
+    const [updateLead, {}] = useUpdateLeadMutation();
     const [deleteLead, {}] = useDeleteLeadMutation();
 
     const { data:leads, isError, error, isFetching, isLoading } = useGetLeadsQuery(undefined);
@@ -21,8 +23,11 @@ const LeadManagement: React.FC = () => {
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
+    console.log(items);
+
     // console.log('leads: ', data, isLoading, isFetching);
     // console.log('eror: ', isError, error);
+
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
@@ -30,11 +35,11 @@ const LeadManagement: React.FC = () => {
         { accessor: 'email', textAlign: 'left', title: 'Email' },
         { accessor: 'phone', textAlign: 'left', title: 'Phone no' },
         { accessor: 'country', textAlign: 'left', title: 'Country' },
-        { accessor: 'visatype', textAlign: 'left', title: 'Visa Type' },
+        { accessor: 'visa_type', textAlign: 'left', title: 'Visa Type' },
         // { accessor: 'stateofresidence', textAlign: 'left', title: 'State Of Residence' },
-        { accessor: 'emailsentdate', textAlign: 'left', title: 'Email Sent Date' },
+        { accessor: 'email_sent_date', textAlign: 'left', title: 'Email Sent Date' },
         // { accessor: 'lastfollowup', textAlign: 'left', title: 'Last Follow Up' },
-        { accessor: 'nextfollowupdate', textAlign: 'left', title: 'Next Follow Up' },
+        { accessor: 'next_followup', textAlign: 'left', title: 'Next Follow Up' },
         { accessor: 'status', textAlign: 'left', title: 'Status' },
         { accessor: 'stage', textAlign: 'left', title: 'Stage' },
     ];
@@ -57,6 +62,8 @@ const LeadManagement: React.FC = () => {
     //     });
     // };
 
+    
+    
     const handleDeleteLead = (lead: Lead) =>
         handleDelete({
             deleteMutation: deleteLead,
@@ -67,6 +74,31 @@ const LeadManagement: React.FC = () => {
             apiObjectRef : leadSlice,
             endpoint : 'getLeads',
         });
+
+        const handleSubmit = async (value: Lead) => {
+        
+            if (value.id) {
+                return handleUpdate({
+                    updateMutation: updateLead,
+                    value,
+                    items,
+                    meta,
+                    handleLocalUpdate: handleLocalRTKUpdate,
+                    apiObjectRef: leadSlice,
+                    endpoint: 'getLeads',
+                });
+            } else {
+                return handleCreate({
+                    createMutation: createLead,
+                    value,
+                    items,
+                    meta,
+                    handleLocalUpdate: handleLocalRTKUpdate,
+                    apiObjectRef: leadSlice,
+                    endpoint: 'getLeads',
+                });
+            }
+        };
 
     const exportColumns = ['id', 'leadname', 'email', 'contact', 'country', 'visatype', 'stateofresidence', 'emailsentdate', 'lastfollowup', 'nextfollowup', 'status'];
 
@@ -177,7 +209,7 @@ const LeadManagement: React.FC = () => {
                 exportColumns={exportColumns}
                 ActionModal={LeadManagementActionModal}
                 Filtersetting={Filtersetting}
-                //handleSubmit={handleSubmit}
+                handleSubmit={handleSubmit}
             />
         </>
     );

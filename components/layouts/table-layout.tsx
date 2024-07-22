@@ -128,6 +128,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
     };
 
     const handleSave = async () => {
+        debugger;
         // this is to send only object with value, so null values are filtered out
         const filteredObj = Object.fromEntries(Object.entries(addData).filter(([key, value]) => value !== null && value !== '' && value !== undefined));
 
