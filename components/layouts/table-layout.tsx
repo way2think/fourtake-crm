@@ -252,6 +252,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
                             </div>
                         )}
 
+                        
+
                         {title === 'User' && (
                             <div>
                                 <button type="button" className="btn btn-primary" onClick={() => setAssignPassword(true)}>
@@ -274,6 +276,18 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
                                 Export to Excel
                             </button>
                         </div>
+                        {title === 'Embassy/Vfs' && (
+                        <div className="dropdown">
+                            <select className="form-input" defaultValue="" id="type">
+                                <option value="">
+                                    Select Embassy / VFS
+                                </option>
+                                <option value="all">All</option>
+                                <option value="embassy">Embassy</option>
+                                <option value="vfs">VFS</option>
+                            </select>
+                        </div>
+                       )} 
                     </div>
                     <div className="relative">
                         <input type="text" placeholder={`Search`} className="peer form-input py-2 ltr:pr-11 rtl:pl-11" value={search} onChange={(e) => setSearch(e.target.value)} />
@@ -294,6 +308,14 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
                             Import
                         </button>
                     </div>
+                        <div>
+                            <button
+                                type="button"
+                                className="btn btn-primary"
+                            >
+                                Search 
+                            </button>
+                        </div>
                 </div>
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
