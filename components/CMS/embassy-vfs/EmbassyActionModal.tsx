@@ -34,7 +34,7 @@ interface OptionType {
     label: string;
 }
 const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
-    const [states] = useState(Object.keys(stateCityData));
+    const [states] = useState([]);
     const [cities, setCities] = useState<string[]>([]);
     const [selectedState, setSelectedState] = useState('');
     const [selectedCity, setSelectedCity] = useState('');

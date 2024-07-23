@@ -26,7 +26,10 @@ interface TableLayoutProps {
     filterby: any;
     ActionModalListLine?: any;
 }
-
+interface AddDataProps {
+    refno?: any;
+    status?: any;
+}
 const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalPages, handleDelete, handleSubmit, tableColumns, ActionModal, exportColumns, Filtersetting, ActionModalListLine }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
@@ -38,7 +41,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
 
     const [search, setSearch] = useState('');
     const [filterItem, setFilterItem] = useState(data);
-    const [addData, setAddData] = useState({ refno: '', status: '' });
+    const [addData, setAddData] = useState<AddDataProps>({});
     const [assignPasswordValue, setAssignPasswordValue] = useState<any>();
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
@@ -359,7 +362,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
                             <label htmlFor="refno">Ref No</label>
-                            <input id="refno" type="text" disabled={true} value={addData?.refno} placeholder="Ref No" className="form-input" />
+                            <input id="refno" type="text" disabled={true} value={addData?.refno && addData.refno} placeholder="Ref No" className="form-input" />
                         </div>
                         <div className="mb-5">
                             <label htmlFor="url">Tracking URL </label>

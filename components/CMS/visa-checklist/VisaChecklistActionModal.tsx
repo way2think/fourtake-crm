@@ -19,6 +19,7 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
     const { items = [], meta = {} } = countries || {};
 
     const { data: visatypes } = useGetVisaTypesQuery(undefined);
+    console.log('addData', addData);
 
 
     return (
@@ -40,11 +41,11 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                     <div className="dropdown">
                         <label htmlFor="country">Countries*</label>
-                        <select className="form-input" id="country" value={addData?.country?.id || ''} onChange={(e) => handleInputChange(e)}>
+                        <select className="form-input" id="country" value={(addData?.country && addData?.country.id) || ''} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled>
                                 Select Countries
                             </option>
-                            {items.map((country: any) => (
+                            {items?.map((country: any) => (
                                 <option key={country.id} value={country.id}>
                                     {country.name}
                                 </option>
@@ -53,7 +54,7 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                     </div>
                     <div className="dropdown">
                         <label htmlFor="role">Visa Category*</label>
-                        <select className="form-input" defaultValue="" id="type" value={addData?.type?.id || ''} onChange={(e) => handleInputChange(e)}>
+                        <select className="form-input" defaultValue="" id="type" value={(addData.visa_type && addData?.visa_type.id) || ''} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled>
                                 Visa Type
                             </option>
