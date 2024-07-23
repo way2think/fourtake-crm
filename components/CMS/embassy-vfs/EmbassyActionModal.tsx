@@ -7,6 +7,20 @@ import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
 import { stateCityData } from '@/utils/constant';
 import React, { useState } from 'react';
 
+// interface StateCityData {
+//     [key: string]: string[];
+//   }
+
+// const stateCityData: StateCityData = {
+//     'Andaman and Nicobar Islands': ['Port Blair', 'Nicobar'],
+//     'Andhra Pradesh': ['Vishakhapatnam', 'Vijayawada'],
+//     // other states...
+//   };
+
+interface StateCities {
+    [key: string]: string[];
+  }
+
 interface EmbassyActionModalProps {
     isOpen: any;
     setIsOpen: any;
@@ -37,13 +51,20 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
     ];
     const handleStateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const state = e.target.value;
+        setAddData({...addData,state})
+        
         setSelectedState(state);
         setCities(stateCityData[state] || []);
         setSelectedCity(''); // Reset city when state changes
       };
       const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCity(e.target.value);
+        const city = e.target.value;
+        setAddData({...addData,city})
       };
+      debugger;
+      console.log(addData)
+
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
@@ -65,7 +86,7 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-3 ">
                         <div className="dropdown">
                             <label htmlFor="type">Embassy / VFS</label>
-                            <select className="form-input" defaultValue="" id="type" onChange={handleStateChange} value={addData?.type}>
+                            <select className="form-input" defaultValue="" id="type" onChange={(e) => handleInputChange(e)} value={addData?.type}>
                                 <option value="" disabled={true}>
                                     Select Embassy / VFS
                                 </option>
@@ -116,7 +137,7 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="dropdown">
                             <label htmlFor="state">State</label>
-                            <select className="form-input" defaultValue="" id="state" onChange={(e) => handleInputChange(e)} value={addData?.state}>
+                            <select className="form-input" defaultValue="" id="state" onChange={handleStateChange} value={addData?.state}>
                                 <option value="" >State</option>
                                 {states.map((state) => (
                                     <option key={state} value={state}>{state}</option>
@@ -125,7 +146,7 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                         </div>
                         <div className="dropdown">
                             <label htmlFor="city">City</label>
-                            <select className="form-input" defaultValue="" id="city" onChange={(e) => handleInputChange(e)} value={addData?.city}>
+                            <select className="form-input" defaultValue="" id="city" onChange={handleCityChange} value={addData?.city}>  
                                 <option value="" >City</option>
                                 {cities.map((city) => (
                                     <option key={city} value={city}>{city}</option>
