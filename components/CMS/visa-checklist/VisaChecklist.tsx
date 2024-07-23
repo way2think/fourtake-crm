@@ -20,7 +20,7 @@ const VisaChecklist: React.FC = () => {
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
-    console.log('item', items);
+    console.log('item visa checklist', items);
 
     const exportColumns = ['country', 'type', 'embassy'];
     const tableColumns = [
@@ -30,7 +30,7 @@ const VisaChecklist: React.FC = () => {
             textAlign: 'left',
             title: 'Country',
             render: (row: any) => {
-                return row.country.name;
+                return row?.country?.name;
             },
         },
         {
@@ -38,7 +38,7 @@ const VisaChecklist: React.FC = () => {
             textAlign: 'left',
             title: 'Visa type',
             render: (row: any) => {
-                return row.type.name;
+                return row?.type_type?.name;
             },
         },
         { accessor: 'embassy', textAlign: 'left', title: 'Embassy' },
@@ -68,6 +68,8 @@ const VisaChecklist: React.FC = () => {
             showMessage('Select Embassy Location', 'error');
             return false;
         }
+
+        console.log("value",value)
 
         if (value.id) {
             return handleUpdate({
