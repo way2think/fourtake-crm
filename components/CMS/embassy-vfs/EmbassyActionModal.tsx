@@ -4,6 +4,8 @@ import ComponentsFormsFileUploadSingle from '../../Reusable/file-upload/componen
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import ComponentsFormsSelectMultiselect from '@/components/Reusable/select/components-forms-select-multiselect';
 import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
+import { stateCityData } from '@/utils/constant';
+import React, { useState } from 'react';
 
 interface EmbassyActionModalProps {
     isOpen: any;
@@ -18,6 +20,11 @@ interface OptionType {
     label: string;
 }
 const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
+    const [states] = useState(Object.keys(stateCityData));
+    const [cities, setCities] = useState<string[]>([]);
+    const [selectedState, setSelectedState] = useState('');
+    const [selectedCity, setSelectedCity] = useState('');
+
     const { data: countries, isLoading, isFetching } = useGetCountriesQuery(undefined);
     const { items = [], meta = {} } = countries || {};
     const options: OptionType[] = [
@@ -28,6 +35,15 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
         { value: 'Mangalore', label: 'Work Visa' },
         { value: 'Mumbai', label: 'Mumbai' },
     ];
+    const handleStateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const state = e.target.value;
+        setSelectedState(state);
+        setCities(stateCityData[state] || []);
+        setSelectedCity(''); // Reset city when state changes
+      };
+      const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedCity(e.target.value);
+      };
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
@@ -49,7 +65,7 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-3 ">
                         <div className="dropdown">
                             <label htmlFor="type">Embassy / VFS</label>
-                            <select className="form-input" defaultValue="" id="type" onChange={(e) => handleInputChange(e)} value={addData?.type}>
+                            <select className="form-input" defaultValue="" id="type" onChange={handleStateChange} value={addData?.type}>
                                 <option value="" disabled={true}>
                                     Select Embassy / VFS
                                 </option>
@@ -101,29 +117,19 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                         <div className="dropdown">
                             <label htmlFor="state">State</label>
                             <select className="form-input" defaultValue="" id="state" onChange={(e) => handleInputChange(e)} value={addData?.state}>
-                                <option value="" disabled={true}>
-                                    State
-                                </option>
-                                <option value="Chennai">Chennai</option>
-                                <option value="Vellore">Vellore</option>
-                                <option value="Bengaluru">Bengaluru</option>
-                                <option value="New Delhi">New Delhi</option>
-                                <option value="Mangalore">Mangalore</option>
-                                <option value="Mumbai">Mumbai</option>
+                                <option value="" >State</option>
+                                {states.map((state) => (
+                                    <option key={state} value={state}>{state}</option>
+                                ))}
                             </select>
                         </div>
                         <div className="dropdown">
                             <label htmlFor="city">City</label>
                             <select className="form-input" defaultValue="" id="city" onChange={(e) => handleInputChange(e)} value={addData?.city}>
-                                <option value="" disabled={true}>
-                                    City
-                                </option>
-                                <option value="Chennai">Chennai</option>
-                                <option value="Vellore">Vellore</option>
-                                <option value="Bengaluru">Bengaluru</option>
-                                <option value="New Delhi">New Delhi</option>
-                                <option value="Mangalore">Mangalore</option>
-                                <option value="Mumbai">Mumbai</option>
+                                <option value="" >City</option>
+                                {cities.map((city) => (
+                                    <option key={city} value={city}>{city}</option>
+                                ))}
                             </select>
                         </div>
                     </div>
