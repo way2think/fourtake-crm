@@ -5,7 +5,7 @@ import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import ComponentsFormsSelectMultiselect from '@/components/Reusable/select/components-forms-select-multiselect';
 import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
 import { stateCityData } from '@/utils/constant';
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 
 // interface StateCityData {
 //     [key: string]: string[];
@@ -34,7 +34,7 @@ interface OptionType {
     label: string;
 }
 const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
-    const [states] = useState([]);
+    const [states] = useState(Object.keys(stateCityData));
     const [cities, setCities] = useState<string[]>([]);
     const [selectedState, setSelectedState] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
@@ -49,6 +49,12 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
         { value: 'Mangalore', label: 'Work Visa' },
         { value: 'Mumbai', label: 'Mumbai' },
     ];
+    useEffect(() => {
+        if (addData?.state) {
+            setCities(stateCityData[addData.state] || []);
+            setSelectedCity(''); // Reset city when state changes
+        }
+    }, [addData?.state]);
     const handleStateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const state = e.target.value;
         setAddData({...addData,state})
@@ -62,8 +68,8 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
         const city = e.target.value;
         setAddData({...addData,city})
       };
-      debugger;
-      console.log(addData)
+      
+       //console.log(addData)
 
     return (
         <>
