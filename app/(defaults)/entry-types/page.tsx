@@ -3,21 +3,12 @@ import { Metadata } from 'next';
 import React from 'react';
 
 export const metadata: Metadata = {
-    title: 'Fourtake CRM',
+    title: 'Fourtake CRM - Entry type',
 };
 
-const Sales = () => {
-    const data = [
-        {
-            id: 1,
-            entrytype: 'single ',
-        },
-        {
-            id: 2,
-            entrytype: 'Double',
-        },
-    ];
-    return <EntryTypes entrytypedata={data} />;
+const EntryType = () => {
+
+    return <EntryTypes />;
 };
 
-export default Sales;
+export default EntryType;
