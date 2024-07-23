@@ -50,6 +50,8 @@ export const handleCreate = async ({ createMutation, value, items, meta, handleL
         customClass: 'sweet-alerts',
     });
 
+    console.log('value: ', value);
+
     if (result.value) {
         const res = await createMutation({ body: { ...value } });
         if ('error' in res) {
