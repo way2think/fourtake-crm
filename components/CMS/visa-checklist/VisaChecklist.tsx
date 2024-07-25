@@ -69,7 +69,13 @@ const VisaChecklist: React.FC = () => {
             return false;
         }
 
-        console.log("value",value)
+        console.log('value', value);
+
+        // console.log('formdata: ', formData, formData.get('country'));
+
+        // for (var key of formData.entries()) {
+        //     console.log(key[0] + ', ' + key[1]);
+        // }
 
         if (value.id) {
             return handleUpdate({
