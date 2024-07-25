@@ -7,16 +7,6 @@ import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
 import { stateCityData } from '@/utils/constant';
 import React, { useState, useEffect  } from 'react';
 
-// interface StateCityData {
-//     [key: string]: string[];
-//   }
-
-// const stateCityData: StateCityData = {
-//     'Andaman and Nicobar Islands': ['Port Blair', 'Nicobar'],
-//     'Andhra Pradesh': ['Vishakhapatnam', 'Vijayawada'],
-//     // other states...
-//   };
-
 interface StateCities {
     [key: string]: string[];
   }
@@ -34,7 +24,8 @@ interface OptionType {
     label: string;
 }
 const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
-    const [states] = useState(Object.keys(stateCityData));
+    // const [states] = useState(Object.keys(stateCityData));
+    const [states] = useState(Object.keys(stateCityData).sort());
     const [cities, setCities] = useState<string[]>([]);
     const [selectedState, setSelectedState] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
@@ -51,7 +42,8 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
     ];
     useEffect(() => {
         if (addData?.state) {
-            setCities(stateCityData[addData.state] || []);
+            // setCities(stateCityData[addData.state] || []);
+            setCities((stateCityData[addData.state] || []).sort());
             setSelectedCity(''); // Reset city when state changes
         }
     }, [addData?.state]);
@@ -60,7 +52,8 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
         setAddData({...addData,state})
         
         setSelectedState(state);
-        setCities(stateCityData[state] || []);
+        setCities((stateCityData[state] || []).sort());
+        // setCities(stateCityData[state] || []);
         setSelectedCity(''); // Reset city when state changes
       };
       const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
