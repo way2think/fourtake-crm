@@ -19,7 +19,7 @@ const EmbassyVfs: React.FC = () => {
     const { data, isFetching, isLoading } = useGetEmbassyVfsQuery({ page, limit, sortField, sortOrder, search, filter });
     const { items = [], meta = {} } = data || {};
 
-    console.log('data: ', data, isLoading, isFetching);
+    // console.log('data: ', data, isLoading, isFetching);
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
