@@ -19,8 +19,7 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
     const { items = [], meta = {} } = countries || {};
 
     const { data: visatypes } = useGetVisaTypesQuery(undefined);
-    console.log('addData', addData);
-
+    // console.log('addData', addData);
 
     return (
         <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-4xl">

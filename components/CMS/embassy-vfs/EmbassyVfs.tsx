@@ -1,4 +1,5 @@
 'use client';
+
 import TableLayout from '@/components/layouts/table-layout';
 import EmbassyActionModal from '@/components/cms/embassy-vfs/EmbassyActionModal';
 import { showMessage } from '@/utils/notification';
@@ -6,13 +7,19 @@ import { embassyVfsSlice, useCreateEmbassyVfsMutation, useDeleteEmbassyVfsMutati
 import type { EmbassyVfs } from '@/entities/embassy-vfs.entity';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
+import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 
 const EmbassyVfs: React.FC = () => {
     const [createEmbassyVfs, {}] = useCreateEmbassyVfsMutation();
     const [updateEmbassyVfs, {}] = useUpdateEmbassyVfsMutation();
     const [deleteEmbassyVfs, {}] = useDeleteEmbassyVfsMutation();
-    const { data, isFetching, isLoading } = useGetEmbassyVfsQuery(undefined);
+
+    const { page, limit, sortField, sortOrder, search, filter, setFilter, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10, initialFilter: 'all' });
+
+    const { data, isFetching, isLoading } = useGetEmbassyVfsQuery({ page, limit, sortField, sortOrder, search, filter });
     const { items = [], meta = {} } = data || {};
+
+    console.log('data: ', data, isLoading, isFetching);
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
@@ -43,6 +50,7 @@ const EmbassyVfs: React.FC = () => {
             handleLocalUpdate: handleLocalRTKUpdate,
             apiObjectRef: embassyVfsSlice,
             endpoint: 'getEmbassyVfs',
+            args: { page, limit, sortField, sortOrder, search },
         });
 
     const handleSubmit = async (value: EmbassyVfs) => {
@@ -68,6 +76,7 @@ const EmbassyVfs: React.FC = () => {
         }
 
         if (value.id) {
+            console.log('hi', value.id);
             return handleUpdate({
                 updateMutation: updateEmbassyVfs,
                 value,
@@ -76,6 +85,7 @@ const EmbassyVfs: React.FC = () => {
                 handleLocalUpdate: handleLocalRTKUpdate,
                 apiObjectRef: embassyVfsSlice,
                 endpoint: 'getEmbassyVfs',
+                args: { page, limit, sortField, sortOrder, search, filter },
             });
         } else {
             return handleCreate({
@@ -86,6 +96,7 @@ const EmbassyVfs: React.FC = () => {
                 handleLocalUpdate: handleLocalRTKUpdate,
                 apiObjectRef: embassyVfsSlice,
                 endpoint: 'getEmbassyVfs',
+                args: { page, limit, sortField, sortOrder, search, filter },
             });
         }
     };
@@ -96,12 +107,17 @@ const EmbassyVfs: React.FC = () => {
                 title="Embassy/Vfs"
                 filterby="country.name"
                 data={items}
+                meta={meta}
                 handleDelete={handleDeleteEmbassyVfs}
-                totalPages={items?.length || 0}
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={EmbassyActionModal}
                 handleSubmit={handleSubmit}
+                setSearch={setSearch}
+                filter={filter}
+                setFilter={setFilter}
+                setPage={setPage}
+                setLimit={setLimit}
             />
         </>
     );

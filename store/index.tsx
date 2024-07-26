@@ -2,11 +2,13 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { apiSlice } from '@/services/api/apiSlice';
 import themeConfigSlice from '@/store/theme.store';
 import userSlice from '@/store/user.store';
+import paginationSlice from '@/store/pagination.store';
 
 const rootReducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
     themeConfig: themeConfigSlice,
     user: userSlice,
+    pagination: paginationSlice,
 });
 
 export default configureStore({

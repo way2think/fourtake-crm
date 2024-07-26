@@ -4,15 +4,6 @@ export const visaChecklistSlice = apiSlice.injectEndpoints({
     overrideExisting: (module as any).hot?.status() === 'apply', // dev env, That is probably due to hot module reloading reloading the file when you apply changes to it.
     endpoints: (build) => ({
         createVisaChecklist: build.mutation({
-            // query: ({ body }) => ({
-            //     method: 'POST',
-            //     url: `/cms/visa-checklist`,
-            //     body,
-
-            //     // headers: {
-            //     //     'Content-Type': 'multipart/form-data',
-            //     // },
-            // }),
             query: ({ body }) => {
                 const bodyFormData = new FormData();
                 bodyFormData.append('country', body.country);
@@ -22,15 +13,16 @@ export const visaChecklistSlice = apiSlice.injectEndpoints({
                 bodyFormData.append('fee', body.fee);
 
                 if (body.forms) {
-                    body.forms.forEach((file) => {
+                    body.forms.forEach((file: File) => {
                         bodyFormData.append('forms', file);
                     });
                 }
 
                 // console.log('bodyFormData: ', bodyFormData);
-                for (let [key, value] of bodyFormData.entries()) {
-                    console.log(`${key}: ${value}`);
-                }
+                // const entries = bodyFormData.entries();
+                // for (let [key, value] of entries) {
+                //     console.log(`${key}: ${value}`);
+                // }
 
                 return {
                     url: '/cms/visa-checklist',

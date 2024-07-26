@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState, useRef, useEffect } from 'react';
 import PaginationTable from '../Table/PaginationTable';
 import { render } from '@headlessui/react/dist/utils/render';
 import './NewComponentsFormsFileUploadSingle.css';
+import { Form } from '@/entities/form.entity';
 
 interface NewComponentsFormsFileUploadMultipleProps {
     setAddData: React.Dispatch<React.SetStateAction<any>>;
@@ -54,7 +55,11 @@ const NewComponentsFormsFileUploadMultiple: React.FC<NewComponentsFormsFileUploa
         adjustInputWidth();
     }, [selectedFiles]);
 
-    console.log('selected files', selectedFiles);
+    // console.log('selected files', selectedFiles);
+
+    const openForm = (form: Form) => {
+        window.open(form.url, '_blank');
+    };
 
     return (
         <div className="mb-2">
@@ -108,7 +113,9 @@ const NewComponentsFormsFileUploadMultiple: React.FC<NewComponentsFormsFileUploa
                         </div>
                         {addData?.forms?.map((form: any, index: any) => (
                             <div key={index} className="table-row">
-                                <div className="form-name">{form?.name || ''}</div>
+                                <div className="form-name" onClick={() => openForm(form)}>
+                                    {form?.name || ''}
+                                </div>
                                 <div className="form-tag">{form?.id || ''}</div>
                                 <div>
                                     <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => handleFileDelete(form)}>
