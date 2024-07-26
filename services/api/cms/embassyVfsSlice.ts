@@ -13,8 +13,10 @@ export const embassyVfsSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: [{ type: 'EmbassyVfs', id: 'LIST' }],
         }),
         getEmbassyVfs: build.query({
+            providesTags: (result, error, arg) => (result ? [{ type: 'EmbassyVfs', id: 'LIST' }, ...result.items.map(({ id }) => ({ type: 'EmbassyVfs', id }))] : [{ type: 'EmbassyVfs', id: 'LIST' }]),
             query: (args) => {
                 const url = generateURLWithPagination({
                     endpoint: '/cms/embassy-vfs',
@@ -44,6 +46,7 @@ export const embassyVfsSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'EmbassyVfs', id }],
         }),
         deleteEmbassyVfs: build.mutation({
             query: (id) => {
@@ -56,6 +59,7 @@ export const embassyVfsSlice = apiSlice.injectEndpoints({
                     },
                 };
             },
+            invalidatesTags: (result, error, { id }) => [{ type: 'EmbassyVfs', id }],
         }),
     }),
 });

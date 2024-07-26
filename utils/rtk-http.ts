@@ -20,6 +20,7 @@ interface HandleCreateParams {
     apiObjectRef: any;
     endpoint: string;
     args?: any;
+    refetch: Function;
 }
 
 interface HandleUpdateParams {
@@ -44,7 +45,7 @@ interface HandleDeleteParams {
     args?: any;
 }
 
-export const handleCreate = async ({ createMutation, value, items, meta, handleLocalUpdate, apiObjectRef, endpoint, args = undefined }: HandleCreateParams): Promise<boolean> => {
+export const handleCreate = async ({ createMutation, value, items, meta, handleLocalUpdate, apiObjectRef, endpoint, args = undefined, refetch }: HandleCreateParams): Promise<boolean> => {
     const result = await Swal.fire({
         icon: 'warning',
         title: 'Are you sure?',
@@ -66,8 +67,9 @@ export const handleCreate = async ({ createMutation, value, items, meta, handleL
             const newItem = { id: res?.data?.data?.id, ...value };
             const updatedItems = [...items, newItem];
             const updatedMeta = { ...meta, itemCount: meta.itemCount + 1, totalItems: meta.totalItems + 1 };
-            handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta: updatedMeta, args } });
+            // handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta: updatedMeta, args } });
             Swal.fire({ title: 'Created!', text: res.data.message, icon: 'success', customClass: 'sweet-alerts' });
+            // refetch();
             return true;
         }
     }
@@ -93,7 +95,7 @@ export const handleUpdate = async ({ updateMutation, value, items, meta, handleL
         } else {
             console.log('result,value', value, args);
             const updatedItems = items.map((item) => (item.id === value.id ? { ...item, ...value } : item));
-            handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta }, args });
+            // handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta }, args });
             Swal.fire({ title: 'Updated!', text: res.data.message, icon: 'success', customClass: 'sweet-alerts' });
             return true;
         }

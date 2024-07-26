@@ -56,7 +56,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
     const [page, setPage] = useState(meta?.currentPage || 1);
 
     const paginationPages = usePagination(meta ? { currentPage: page, pageSize: meta?.itemsPerPage, totalCount: meta?.totalItems } : { currentPage: 1, pageSize: 10, totalCount: 1 }); // to generate page numbers
-    console.log('meta: ', meta, data);
+    // console.log('meta: ', meta, data);
 
     // const totalPages = useMemo(() => Math.ceil(data.length / pageSize), [data.length, pageSize]);
     const totalPages = 100;
@@ -154,7 +154,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
     };
 
     const handlePageSizeChange = (size: number) => {
-        const newTotalPages = Math.ceil(data.length / size);
+        const newTotalPages = Math.ceil((meta ? meta?.totalItems : data.length) / size);
         if (page > newTotalPages) {
             setPage(newTotalPages);
             updatePage(newTotalPages);
