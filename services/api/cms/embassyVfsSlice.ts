@@ -16,7 +16,8 @@ export const embassyVfsSlice = apiSlice.injectEndpoints({
             invalidatesTags: [{ type: 'EmbassyVfs', id: 'LIST' }],
         }),
         getEmbassyVfs: build.query({
-            providesTags: (result, error, arg) => (result ? [{ type: 'EmbassyVfs', id: 'LIST' }, ...result.items.map(({ id }) => ({ type: 'EmbassyVfs', id }))] : [{ type: 'EmbassyVfs', id: 'LIST' }]),
+            providesTags: (result, error, arg) =>
+                result ? [{ type: 'EmbassyVfs', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'EmbassyVfs', id }))] : [{ type: 'EmbassyVfs', id: 'LIST' }],
             query: (args) => {
                 const url = generateURLWithPagination({
                     endpoint: '/cms/embassy-vfs',

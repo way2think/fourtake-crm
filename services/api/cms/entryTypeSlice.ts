@@ -16,7 +16,8 @@ export const entryTypeSlice = apiSlice.injectEndpoints({
             invalidatesTags: [{ type: 'EntryType', id: 'LIST' }],
         }),
         getEntryTypes: build.query({
-            providesTags: (result, error, arg) => (result ? [{ type: 'EntryType', id: 'LIST' }, ...result.items.map(({ id }) => ({ type: 'EntryType', id }))] : [{ type: 'EntryType', id: 'LIST' }]),
+            providesTags: (result, error, arg) =>
+                result ? [{ type: 'EntryType', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'EntryType', id }))] : [{ type: 'EntryType', id: 'LIST' }],
             query: (args) => {
                 const url = generateURLWithPagination({
                     endpoint: '/cms/entry-type',

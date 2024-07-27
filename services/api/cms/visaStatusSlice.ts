@@ -16,7 +16,8 @@ export const visaStatusSlice = apiSlice.injectEndpoints({
             invalidatesTags: [{ type: 'VisaStatus', id: 'LIST' }],
         }),
         getVisaStatuses: build.query({
-            providesTags: (result, error, arg) => (result ? [{ type: 'VisaStatus', id: 'LIST' }, ...result.items.map(({ id }) => ({ type: 'VisaStatus', id }))] : [{ type: 'VisaStatus', id: 'LIST' }]),
+            providesTags: (result, error, arg) =>
+                result ? [{ type: 'VisaStatus', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'VisaStatus', id }))] : [{ type: 'VisaStatus', id: 'LIST' }],
             query: (args) => {
                 const url = generateURLWithPagination({
                     endpoint: '/cms/visa-status',

@@ -1,3 +1,4 @@
+import { generateURLWithPagination } from '@/utils/rtk-http';
 import { apiSlice } from '../apiSlice';
 
 export const visaChecklistSlice = apiSlice.injectEndpoints({
@@ -30,15 +31,30 @@ export const visaChecklistSlice = apiSlice.injectEndpoints({
                     body: bodyFormData,
                 };
             },
+            invalidatesTags: [{ type: 'VisaChecklist', id: 'LIST' }],
         }),
         getVisaChecklist: build.query({
-            query: () => ({
-                method: 'GET',
-                url: '/cms/visa-checklist',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }),
+            providesTags: (result, error, arg) =>
+                result ? [{ type: 'VisaChecklist', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'VisaChecklist', id }))] : [{ type: 'VisaChecklist', id: 'LIST' }],
+            query: (args) => {
+                const url = generateURLWithPagination({
+                    endpoint: '/cms/visa-checklist',
+                    page: args?.page,
+                    limit: args?.limit,
+                    sortField: args?.sortField,
+                    sortOrder: args?.sortOrder,
+                    search: args?.search,
+                    filter: args?.filter,
+                });
+
+                return {
+                    method: 'GET',
+                    url,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+            },
         }),
         updateVisaChecklist: build.mutation({
             query: ({ id, body }) => ({
@@ -49,17 +65,17 @@ export const visaChecklistSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'VisaChecklist', id }],
         }),
         deleteVisaChecklist: build.mutation({
-            query: (id) => {
-                return {
-                    method: 'DELETE',
-                    url: `/cms/visa-checklist/${id}`,
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                };
-            },
+            query: (id) => ({
+                method: 'DELETE',
+                url: `/cms/visa-checklist/${id}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'VisaChecklist', id }],
         }),
     }),
 });

@@ -1,7 +1,7 @@
 'use client';
 
 import TableLayout from '@/components/layouts/table-layout';
-import CountryVisaTypeActionModal from '@/components/cms/country-visa-types/CountryVisaTypesActionModal';
+import CountryVisaTypeActionModal from '@/components/cms/Countryvisa-types/CountryVisaTypesActionModal';
 
 import { showMessage } from '@/utils/notification';
 import {
@@ -14,15 +14,17 @@ import {
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { CountryVisaType } from '@/entities/country-visa-type.entity';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
+import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 
 const CountryVisaTypes: React.FC = () => {
     const [createCountryVisaType, {}] = useCreateCountryVisaTypeMutation();
     const [updateCountryVisaType, {}] = useUpdateCountryVisaTypeMutation();
     const [deleteCountryVisaType, {}] = useDeleteCountryVisaTypeMutation();
-    const { data, isFetching, isLoading } = useGetCountryVisaTypesQuery(undefined);
-    const { items = [], meta = {} } = data || {};
 
-    console.log('data', data);
+    const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
+
+    const { data, isFetching, isLoading } = useGetCountryVisaTypesQuery({ page, limit, sortField, sortOrder, search });
+    const { items = [], meta = {} } = data || {};
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
@@ -135,13 +137,16 @@ const CountryVisaTypes: React.FC = () => {
             <TableLayout
                 title="Country Visa Types"
                 data={items || []}
+                meta={meta}
                 filterby="country"
-                totalPages={items?.length || 0}
                 handleDelete={handleDeleteCountryVisaType}
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={CountryVisaTypeActionModal}
                 handleSubmit={handleSubmit}
+                setSearch={setSearch}
+                setPage={setPage}
+                setLimit={setLimit}
             />
         </>
     );

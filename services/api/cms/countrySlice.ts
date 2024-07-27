@@ -16,7 +16,8 @@ export const countrySlice = apiSlice.injectEndpoints({
             invalidatesTags: [{ type: 'Country', id: 'LIST' }],
         }),
         getCountries: build.query({
-            providesTags: (result, error, arg) => (result ? [{ type: 'Country', id: 'LIST' }, ...result.items.map(({ id }) => ({ type: 'Country', id }))] : [{ type: 'Country', id: 'LIST' }]),
+            providesTags: (result, error, arg) =>
+                result ? [{ type: 'Country', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'Country', id }))] : [{ type: 'Country', id: 'LIST' }],
             query: (args) => {
                 const url = generateURLWithPagination({
                     endpoint: '/cms/country',

@@ -17,7 +17,7 @@ export const countryVisaUrlSlice = apiSlice.injectEndpoints({
         }),
         getCountryVisaUrls: build.query({
             providesTags: (result, error, arg) =>
-                result ? [{ type: 'CountryVisaUrl', id: 'LIST' }, ...result.items.map(({ id }) => ({ type: 'CountryVisaUrl', id }))] : [{ type: 'CountryVisaUrl', id: 'LIST' }],
+                result ? [{ type: 'CountryVisaUrl', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'CountryVisaUrl', id }))] : [{ type: 'CountryVisaUrl', id: 'LIST' }],
             query: (args) => {
                 const url = generateURLWithPagination({
                     endpoint: '/cms/country-visa-url',

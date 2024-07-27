@@ -1,3 +1,4 @@
+import { generateURLWithPagination } from '@/utils/rtk-http';
 import { apiSlice } from '../apiSlice';
 
 export const countryVisaTypeSlice = apiSlice.injectEndpoints({
@@ -12,15 +13,30 @@ export const countryVisaTypeSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: [{ type: 'CountryVisaType', id: 'LIST' }],
         }),
         getCountryVisaTypes: build.query({
-            query: () => ({
-                method: 'GET',
-                url: '/cms/country-visa-type',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }),
+            providesTags: (result, error, arg) =>
+                result ? [{ type: 'CountryVisaType', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'CountryVisaType', id }))] : [{ type: 'CountryVisaType', id: 'LIST' }],
+            query: (args) => {
+                const url = generateURLWithPagination({
+                    endpoint: '/cms/country-visa-type',
+                    page: args?.page,
+                    limit: args?.limit,
+                    sortField: args?.sortField,
+                    sortOrder: args?.sortOrder,
+                    search: args?.search,
+                    filter: args?.filter,
+                });
+
+                return {
+                    method: 'GET',
+                    url,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+            },
         }),
         updateCountryVisaType: build.mutation({
             query: ({ id, body }) => ({
@@ -31,17 +47,17 @@ export const countryVisaTypeSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'CountryVisaType', id }],
         }),
         deleteCountryVisaType: build.mutation({
-            query: (id) => {
-                return {
-                    method: 'DELETE',
-                    url: `/cms/country-visa-type/${id}`,
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                };
-            },
+            query: (id) => ({
+                method: 'DELETE',
+                url: `/cms/country-visa-type/${id}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'CountryVisaType', id }],
         }),
     }),
 });

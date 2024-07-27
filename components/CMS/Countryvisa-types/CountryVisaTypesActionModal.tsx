@@ -28,7 +28,7 @@ const CountryVisaTypeActionModal: React.FC<CountryVisaTypeActionModalProps> = ({
         { value: 'Transit Visa', label: 'Transit Visa' },
         { value: 'Medical Visa', label: 'Medical Visa' },
     ];
-    console.log('Add data', addData);
+
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-xl" height="h-50">
