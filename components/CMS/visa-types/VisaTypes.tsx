@@ -1,4 +1,5 @@
 'use client';
+
 import TableLayout from '@/components/layouts/table-layout';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { showMessage } from '@/utils/notification';
@@ -8,12 +9,16 @@ import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { VisaType } from '@/entities/visa-type.entity';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import VisaTypesActionModal from '@/components/cms/visa-types/VisaTypesActionModal';
+import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 
 const VisaTypes: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
     const [createVisaType, {}] = useCreateVisaTypeMutation();
     const [updateVisaType, {}] = useUpdateVisaTypeMutation();
     const [deleteVisaType, {}] = useDeleteVisaTypeMutation();
-    const { data: visatypes, isFetching, isLoading } = useGetVisaTypesQuery(undefined);
+
+    const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
+
+    const { data: visatypes, isFetching, isLoading } = useGetVisaTypesQuery({ page, limit, sortField, sortOrder, search });
     const { items = [], meta = {} } = visatypes || {};
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
@@ -52,6 +57,7 @@ const VisaTypes: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
             });
         }
     };
+
     const handleDeleteVisaType = (visatype: VisaType) => {
         handleDelete({
             deleteMutation: deleteVisaType,
@@ -70,12 +76,14 @@ const VisaTypes: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
                 title="Visa Types"
                 filterby="name"
                 data={items}
-                totalPages={items?.length || 0}
                 tableColumns={tableColumns}
                 handleDelete={handleDeleteVisaType}
                 ActionModal={VisaTypesActionModal}
                 exportColumns={exportColumns}
                 handleSubmit={handleSubmit}
+                setSearch={setSearch}
+                setPage={setPage}
+                setLimit={setLimit}
             />
         </>
     );

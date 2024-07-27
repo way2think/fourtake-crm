@@ -1,3 +1,4 @@
+import { generateURLWithPagination } from '@/utils/rtk-http';
 import { apiSlice } from '../apiSlice';
 
 export const visaTypeSlice = apiSlice.injectEndpoints({
@@ -12,15 +13,29 @@ export const visaTypeSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: [{ type: 'VisaType', id: 'LIST' }],
         }),
         getVisaTypes: build.query({
-            query: () => ({
-                method: 'GET',
-                url: '/cms/visa-type',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }),
+            providesTags: (result, error, arg) => (result ? [{ type: 'VisaType', id: 'LIST' }, ...result.items.map(({ id }) => ({ type: 'VisaType', id }))] : [{ type: 'VisaType', id: 'LIST' }]),
+            query: (args) => {
+                const url = generateURLWithPagination({
+                    endpoint: '/cms/visa-type',
+                    page: args?.page,
+                    limit: args?.limit,
+                    sortField: args?.sortField,
+                    sortOrder: args?.sortOrder,
+                    search: args?.search,
+                    filter: args?.filter,
+                });
+
+                return {
+                    method: 'GET',
+                    url,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+            },
         }),
         updateVisaType: build.mutation({
             query: ({ id, body }) => ({
@@ -31,6 +46,7 @@ export const visaTypeSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'VisaType', id }],
         }),
         deleteVisaType: build.mutation({
             query: (id) => {
@@ -42,6 +58,7 @@ export const visaTypeSlice = apiSlice.injectEndpoints({
                     },
                 };
             },
+            invalidatesTags: (result, error, { id }) => [{ type: 'VisaType', id }],
         }),
     }),
 });

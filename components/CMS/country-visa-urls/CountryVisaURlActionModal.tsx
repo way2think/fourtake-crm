@@ -12,7 +12,7 @@ interface CountryVisaUrlActionModalProps {
     handleInputChange: any;
     setAddData: any;
 }
-const CountryVisaURlActionModal: React.FC<CountryVisaUrlActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
+const CountryVisaUrlActionModal: React.FC<CountryVisaUrlActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
     const { data: countries, isFetching, isLoading } = useGetCountriesQuery(undefined);
     const { items = [], meta = {} } = countries || {};
     return (
@@ -75,4 +75,4 @@ const CountryVisaURlActionModal: React.FC<CountryVisaUrlActionModalProps> = ({ i
     );
 };
 
-export default CountryVisaURlActionModal;
+export default CountryVisaUrlActionModal;

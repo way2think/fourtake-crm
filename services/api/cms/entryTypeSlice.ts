@@ -1,3 +1,4 @@
+import { generateURLWithPagination } from '@/utils/rtk-http';
 import { apiSlice } from '../apiSlice';
 
 export const entryTypeSlice = apiSlice.injectEndpoints({
@@ -12,15 +13,29 @@ export const entryTypeSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: [{ type: 'EntryType', id: 'LIST' }],
         }),
         getEntryTypes: build.query({
-            query: () => ({
-                method: 'GET',
-                url: '/cms/entry-type',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }),
+            providesTags: (result, error, arg) => (result ? [{ type: 'EntryType', id: 'LIST' }, ...result.items.map(({ id }) => ({ type: 'EntryType', id }))] : [{ type: 'EntryType', id: 'LIST' }]),
+            query: (args) => {
+                const url = generateURLWithPagination({
+                    endpoint: '/cms/entry-type',
+                    page: args?.page,
+                    limit: args?.limit,
+                    sortField: args?.sortField,
+                    sortOrder: args?.sortOrder,
+                    search: args?.search,
+                    filter: args?.filter,
+                });
+
+                return {
+                    method: 'GET',
+                    url,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+            },
         }),
         updateEntryType: build.mutation({
             query: ({ id, body }) => ({
@@ -31,17 +46,17 @@ export const entryTypeSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: [{ type: 'EntryType', id: 'LIST' }],
         }),
         deleteEntryType: build.mutation({
-            query: (id) => {
-                return {
-                    method: 'DELETE',
-                    url: `/cms/entry-type/${id}`,
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                };
-            },
+            query: (id) => ({
+                method: 'DELETE',
+                url: `/cms/entry-type/${id}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }),
+            invalidatesTags: [{ type: 'EntryType', id: 'LIST' }],
         }),
     }),
 });

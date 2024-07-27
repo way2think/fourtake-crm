@@ -27,7 +27,7 @@ export const embassyVfsSlice = apiSlice.injectEndpoints({
                     search: args?.search,
                     filter: args?.filter,
                 });
-                console.log('url', url);
+
                 return {
                     method: 'GET',
                     url,

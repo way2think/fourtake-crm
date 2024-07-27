@@ -16,7 +16,7 @@ const EmbassyVfs: React.FC = () => {
 
     const { page, limit, sortField, sortOrder, search, filter, setFilter, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10, initialFilter: 'all' });
 
-    const { data, isFetching, isLoading, refetch } = useGetEmbassyVfsQuery({ page, limit, sortField, sortOrder, search, filter });
+    const { data, isFetching, isLoading } = useGetEmbassyVfsQuery({ page, limit, sortField, sortOrder, search, filter });
     const { items = [], meta = {} } = data || {};
 
     // console.log('data: ', data, isLoading, isFetching);
@@ -76,7 +76,6 @@ const EmbassyVfs: React.FC = () => {
         }
 
         if (value.id) {
-            console.log('hi', value.id);
             return handleUpdate({
                 updateMutation: updateEmbassyVfs,
                 value,
@@ -97,7 +96,6 @@ const EmbassyVfs: React.FC = () => {
                 apiObjectRef: embassyVfsSlice,
                 endpoint: 'getEmbassyVfs',
                 args: { page, limit, sortField, sortOrder, search, filter },
-                refetch,
             });
         }
     };

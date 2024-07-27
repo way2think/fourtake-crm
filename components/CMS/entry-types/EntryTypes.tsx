@@ -7,12 +7,16 @@ import { entryTypeSlice, useCreateEntryTypeMutation, useDeleteEntryTypeMutation,
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import { EntryType } from '@/entities/entry-type.entity';
+import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 
 const EntryTypes: React.FC = () => {
     const [createEntryType, {}] = useCreateEntryTypeMutation();
     const [updateEntryType, {}] = useUpdateEntryTypeMutation();
     const [deleteEntryType, {}] = useDeleteEntryTypeMutation();
-    const { data, isFetching, isLoading } = useGetEntryTypesQuery(undefined);
+
+    const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
+
+    const { data, isFetching, isLoading } = useGetEntryTypesQuery({ page, limit, sortField, sortOrder, search });
     const { items = [], meta = {} } = data || {};
 
     const exportColumns = ['id', 'name'];
@@ -99,12 +103,14 @@ const EntryTypes: React.FC = () => {
                 title="Entry Types"
                 filterby="name"
                 data={items}
-                totalPages={items?.length || 0}
                 tableColumns={tableColumns}
                 ActionModal={EntryTypesActionModal}
                 handleDelete={handleDeleteEntryType}
                 exportColumns={exportColumns}
                 handleSubmit={handleSubmit}
+                setSearch={setSearch}
+                setPage={setPage}
+                setLimit={setLimit}
             />
         </>
     );

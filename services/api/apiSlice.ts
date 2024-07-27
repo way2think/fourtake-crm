@@ -5,7 +5,7 @@ export const apiSlice = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.API_BASE_URL}`,
     }),
-    tagTypes: ['EmbassyVfs'],
+    tagTypes: ['EmbassyVfs', 'VisaType', 'VisaStatus', 'EntryType'],
     endpoints: (builder) => ({
         signUp: builder.mutation({
             query: (credentials) => ({

@@ -1,7 +1,7 @@
 'use client';
+
 import TableLayout from '@/components/layouts/table-layout';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
-import Swal from 'sweetalert2';
 import { showMessage } from '@/utils/notification';
 import CountryVisaURlActionModal from '@/components/cms/country-visa-urls/CountryVisaURlActionModal';
 import {

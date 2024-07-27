@@ -20,7 +20,6 @@ interface HandleCreateParams {
     apiObjectRef: any;
     endpoint: string;
     args?: any;
-    refetch: Function;
 }
 
 interface HandleUpdateParams {
@@ -45,7 +44,7 @@ interface HandleDeleteParams {
     args?: any;
 }
 
-export const handleCreate = async ({ createMutation, value, items, meta, handleLocalUpdate, apiObjectRef, endpoint, args = undefined, refetch }: HandleCreateParams): Promise<boolean> => {
+export const handleCreate = async ({ createMutation, value, items, meta, handleLocalUpdate, apiObjectRef, endpoint, args = undefined }: HandleCreateParams): Promise<boolean> => {
     const result = await Swal.fire({
         icon: 'warning',
         title: 'Are you sure?',
@@ -122,7 +121,7 @@ export const handleDelete = async ({ deleteMutation, item, items, meta, handleLo
         } else {
             const updatedItems = items.filter((i) => i.id !== item.id);
             const updatedMeta = { ...meta, itemCount: meta.itemCount - 1, totalItems: meta.totalItems - 1 };
-            handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta: updatedMeta }, args });
+            // handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta: updatedMeta }, args });
             Swal.fire({ title: 'Deleted!', text: res.data.message, icon: 'success', customClass: 'sweet-alerts' });
             return true;
         }

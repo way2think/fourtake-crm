@@ -28,7 +28,7 @@ interface TableLayoutProps {
     ActionModalListLine?: any;
     setSearch: Function;
     filter?: string;
-    setFilter: Function;
+    setFilter?: Function;
     setPage: Function;
     setLimit: Function;
 }
@@ -304,7 +304,9 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                                     value={filter}
                                     onChange={(e) => {
                                         // console.log('e.target', e.target.value);
-                                        updateFilter(e.target.value);
+                                        if (updateFilter) {
+                                            updateFilter(e.target.value);
+                                        }
                                     }}
                                 >
                                     <option value="all">All</option>
