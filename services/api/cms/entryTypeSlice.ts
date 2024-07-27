@@ -46,7 +46,7 @@ export const entryTypeSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
-            invalidatesTags: [{ type: 'EntryType', id: 'LIST' }],
+            invalidatesTags: (result, error, { id }) => [{ type: 'EntryType', id }],
         }),
         deleteEntryType: build.mutation({
             query: (id) => ({
@@ -56,7 +56,7 @@ export const entryTypeSlice = apiSlice.injectEndpoints({
                     'Content-Type': 'application/json',
                 },
             }),
-            invalidatesTags: [{ type: 'EntryType', id: 'LIST' }],
+            invalidatesTags: (result, error, { id }) => [{ type: 'EntryType', id }],
         }),
     }),
 });

@@ -74,6 +74,7 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
                 title="Visa Status"
                 handleDelete={handleDeleteVisaStatus}
                 data={items}
+                meta={meta}
                 filterby="name"
                 tableColumns={tableColumns}
                 ActionModal={VisaStatusActionModal}

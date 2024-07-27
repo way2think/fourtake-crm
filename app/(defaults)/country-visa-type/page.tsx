@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import CountryVisaTypes from '@/components/cms/Countryvisa-types/CountryVisaTypes';
+import CountryVisaTypes from '@/components/cms/country-visa-types/CountryVisaTypes';
 
 export const metadata: Metadata = {
     title: 'Fourtake - CRM | Country Visa Types',

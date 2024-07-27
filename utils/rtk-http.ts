@@ -63,9 +63,9 @@ export const handleCreate = async ({ createMutation, value, items, meta, handleL
             await handleErrorResponse(res.error);
             return false;
         } else {
-            const newItem = { id: res?.data?.data?.id, ...value };
-            const updatedItems = [...items, newItem];
-            const updatedMeta = { ...meta, itemCount: meta.itemCount + 1, totalItems: meta.totalItems + 1 };
+            // const newItem = { id: res?.data?.data?.id, ...value };
+            // const updatedItems = [...items, newItem];
+            // const updatedMeta = { ...meta, itemCount: meta.itemCount + 1, totalItems: meta.totalItems + 1 };
             // handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta: updatedMeta, args } });
             Swal.fire({ title: 'Created!', text: res.data.message, icon: 'success', customClass: 'sweet-alerts' });
             // refetch();
@@ -87,13 +87,14 @@ export const handleUpdate = async ({ updateMutation, value, items, meta, handleL
     });
 
     if (result.value) {
+        console.log('value', value);
         const res = await updateMutation({ id: value.id, body: { ...value } });
         if ('error' in res) {
             await handleErrorResponse(res.error);
             return false;
         } else {
-            console.log('result,value', value, args);
-            const updatedItems = items.map((item) => (item.id === value.id ? { ...item, ...value } : item));
+            // console.log('result,value', value, args);
+            // const updatedItems = items.map((item) => (item.id === value.id ? { ...item, ...value } : item));
             // handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta }, args });
             Swal.fire({ title: 'Updated!', text: res.data.message, icon: 'success', customClass: 'sweet-alerts' });
             return true;
@@ -119,8 +120,8 @@ export const handleDelete = async ({ deleteMutation, item, items, meta, handleLo
             await handleErrorResponse(res.error);
             return false;
         } else {
-            const updatedItems = items.filter((i) => i.id !== item.id);
-            const updatedMeta = { ...meta, itemCount: meta.itemCount - 1, totalItems: meta.totalItems - 1 };
+            // const updatedItems = items.filter((i) => i.id !== item.id);
+            // const updatedMeta = { ...meta, itemCount: meta.itemCount - 1, totalItems: meta.totalItems - 1 };
             // handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta: updatedMeta }, args });
             Swal.fire({ title: 'Deleted!', text: res.data.message, icon: 'success', customClass: 'sweet-alerts' });
             return true;

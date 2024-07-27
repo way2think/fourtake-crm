@@ -17,7 +17,7 @@ import { PaginationMeta } from '@/types/pagination';
 interface TableLayoutProps {
     title: string;
     data: object[];
-    meta?: PaginationMeta;
+    meta: PaginationMeta;
     tableColumns: object[];
     ActionModal: any;
     Filtersetting?: any;
@@ -38,7 +38,6 @@ interface AddDataProps {
 }
 const TableLayout: React.FC<TableLayoutProps> = ({
     title,
-    filterby,
     data,
     meta,
     handleDelete,
@@ -147,8 +146,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({
     const handleInputChange = (e: any) => {
         const { value, id, options } = e.target;
 
-        // console.log('handleInputChange: ', id, value);
-
         if (options) {
             // Handling multiple select options
             const selectedOptions = Array.from(options)
@@ -173,10 +170,12 @@ const TableLayout: React.FC<TableLayoutProps> = ({
     const handleSave = async () => {
         // debugger;
         // this is to send only object with value, so null values are filtered out
-        const filteredObj = Object.fromEntries(Object.entries(addData).filter(([key, value]) => value !== null && value !== '' && value !== undefined));
+        // const filteredObj = Object.fromEntries(Object.entries(addData).filter(([key, value]) => value !== null && value !== '' && value !== undefined));
 
         // console.log('fil: ', filteredObj);
         // passing addData, without removing null values, because during update we will be emptying some fields
+
+        console.log('ad', addData);
         const isSuccess = await handleSubmit(addData);
 
         if (isSuccess) {

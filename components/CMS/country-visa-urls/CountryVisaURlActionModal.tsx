@@ -13,8 +13,9 @@ interface CountryVisaUrlActionModalProps {
     setAddData: any;
 }
 const CountryVisaUrlActionModal: React.FC<CountryVisaUrlActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
-    const { data: countries, isFetching, isLoading } = useGetCountriesQuery(undefined);
+    const { data: countries, isFetching, isLoading } = useGetCountriesQuery({ page: 0, limit: 0 });
     const { items = [], meta = {} } = countries || {};
+
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-xl">

@@ -103,6 +103,7 @@ const EntryTypes: React.FC = () => {
                 title="Entry Types"
                 filterby="name"
                 data={items}
+                meta={meta}
                 tableColumns={tableColumns}
                 ActionModal={EntryTypesActionModal}
                 handleDelete={handleDeleteEntryType}

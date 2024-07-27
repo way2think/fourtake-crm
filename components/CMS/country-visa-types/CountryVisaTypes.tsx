@@ -1,8 +1,7 @@
 'use client';
 
 import TableLayout from '@/components/layouts/table-layout';
-import React, { useMemo } from 'react';
-import CountryVisaTypeActionModal from '@/components/cms/Countryvisa-types/CountryVisaTypesActionModal';
+import CountryVisaTypeActionModal from '@/components/cms/country-visa-types/CountryVisaTypesActionModal';
 
 import { showMessage } from '@/utils/notification';
 import {
