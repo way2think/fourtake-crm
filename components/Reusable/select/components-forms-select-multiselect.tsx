@@ -26,7 +26,6 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
         }
     }, [addData]);
 
-
     const handleChange = (selected: any) => {
         console.log('selected options', selected);
         if (selected && selected.length == options.length) {
