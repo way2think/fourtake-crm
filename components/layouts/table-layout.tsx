@@ -308,11 +308,11 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
                             Export to Excel
                         </button>
                     </div>
-                    <div>
-                        <button type="button" className="btn btn-primary" onClick={handleButtonClick}>
+                    {/* <div>
+                        <button type="button" className="btn btn-primary" onClick={()=>setIsImportOpen(true)}>
                             Import
                         </button>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div className="panel mt-5 overflow-hidden border-0 p-0">
