@@ -12,11 +12,12 @@ import PasswordActionModal from '../user-management/PasswordActionModal';
 import ReuseActionModal from '../Reusable/Modal/ActionModal';
 import { useRouter } from 'next/navigation';
 import ImportExcel from '../Reusable/import-excel/ImportExcel';
+import { PaginationMeta } from '@/types/pagination';
 
 interface TableLayoutProps {
     title: string;
     data: object[];
-    totalPages: number;
+    meta: PaginationMeta;
     tableColumns: object[];
     ActionModal: any;
     Filtersetting?: any;
@@ -25,12 +26,33 @@ interface TableLayoutProps {
     handleDelete: any;
     filterby: any;
     ActionModalListLine?: any;
+    setSearch: Function;
+    filter?: string;
+    setFilter?: Function;
+    setPage: Function;
+    setLimit: Function;
 }
 interface AddDataProps {
     refno?: any;
     status?: any;
 }
-const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalPages, handleDelete, handleSubmit, tableColumns, ActionModal, exportColumns, Filtersetting, ActionModalListLine }) => {
+const TableLayout: React.FC<TableLayoutProps> = ({
+    title,
+    data,
+    meta,
+    handleDelete,
+    handleSubmit,
+    tableColumns,
+    ActionModal,
+    exportColumns,
+    Filtersetting,
+    ActionModalListLine,
+    setSearch: updateSearch,
+    filter,
+    setFilter: updateFilter,
+    setPage,
+    setLimit,
+}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
 
@@ -64,33 +86,33 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
         }
     };
 
-    useEffect(() => {
-        let filterItems;
+    // useEffect(() => {
+    //     let filterItems;
 
-        if (Array.isArray(filterby)) {
-            filterItems = data.filter((item: any) =>
-                filterby.some((filter: any) => {
-                    const itemValue = item[filter];
-                    // Ensure itemValue is a string before calling toLowerCase
-                    return typeof itemValue === 'string' && itemValue.toLowerCase().includes(search.toLowerCase());
-                })
-            );
-        } else {
-            // filterItems = data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase()));
-            filterItems = data.filter((item: any) => {
-                const keys = filterby.split('.');
-                let value = item;
+    //     if (Array.isArray(filterby)) {
+    //         filterItems = data.filter((item: any) =>
+    //             filterby.some((filter: any) => {
+    //                 const itemValue = item[filter];
+    //                 // Ensure itemValue is a string before calling toLowerCase
+    //                 return typeof itemValue === 'string' && itemValue.toLowerCase().includes(search.toLowerCase());
+    //             })
+    //         );
+    //     } else {
+    //         // filterItems = data.filter((item: any) => item[filterby]?.toLowerCase().includes(search.toLowerCase()));
+    //         filterItems = data.filter((item: any) => {
+    //             const keys = filterby.split('.');
+    //             let value = item;
 
-                for (const key of keys) {
-                    value = value?.[key];
-                }
+    //             for (const key of keys) {
+    //                 value = value?.[key];
+    //             }
 
-                return value?.toString().toLowerCase().includes(search.toLowerCase());
-            });
-        }
+    //             return value?.toString().toLowerCase().includes(search.toLowerCase());
+    //         });
+    //     }
 
-        setFilterItem(filterItems);
-    }, [search, data, filterby]);
+    //     setFilterItem(filterItems);
+    // }, [search, data, filterby]);
 
     useEffect(() => {
         setFilterItem(data);
@@ -124,8 +146,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
     const handleInputChange = (e: any) => {
         const { value, id, options } = e.target;
 
-        // console.log('handleInputChange: ', id, value);
-
         if (options) {
             // Handling multiple select options
             const selectedOptions = Array.from(options)
@@ -150,10 +170,12 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
     const handleSave = async () => {
         // debugger;
         // this is to send only object with value, so null values are filtered out
-        const filteredObj = Object.fromEntries(Object.entries(addData).filter(([key, value]) => value !== null && value !== '' && value !== undefined));
+        // const filteredObj = Object.fromEntries(Object.entries(addData).filter(([key, value]) => value !== null && value !== '' && value !== undefined));
 
         // console.log('fil: ', filteredObj);
         // passing addData, without removing null values, because during update we will be emptying some fields
+
+        console.log('ad', addData);
         const isSuccess = await handleSubmit(addData);
 
         if (isSuccess) {
@@ -274,8 +296,18 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
 
                         {title === 'Embassy/Vfs' && (
                             <div className="dropdown">
-                                <select className="form-input" defaultValue="" id="type">
-                                    <option value="">Select Embassy / VFS</option>
+                                <select
+                                    className="form-input"
+                                    defaultValue=""
+                                    id="type"
+                                    value={filter}
+                                    onChange={(e) => {
+                                        // console.log('e.target', e.target.value);
+                                        if (updateFilter) {
+                                            updateFilter(e.target.value);
+                                        }
+                                    }}
+                                >
                                     <option value="all">All</option>
                                     <option value="embassy">Embassy</option>
                                     <option value="vfs">VFS</option>
@@ -285,7 +317,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
                     </div>
                     <div className="relative">
                         <input type="text" placeholder={`Search`} className="peer form-input py-2 ltr:pr-11 rtl:pl-11" value={search} onChange={(e) => setSearch(e.target.value)} />
-                        <button type="button" className="absolute top-1/2 -translate-y-1/2 peer-focus:text-primary ltr:right-[11px] rtl:left-[11px]">
+                        <button type="button" className="absolute top-1/2 -translate-y-1/2 peer-focus:text-primary ltr:right-[11px] rtl:left-[11px]" onClick={() => updateSearch(search)}>
                             <IconSearch className="mx-auto" />
                         </button>
                     </div>
@@ -299,7 +331,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
                     )}
 
                     <div>
-                        <button type="button" className="btn btn-primary">
+                        <button type="button" className="btn btn-primary" onClick={() => updateSearch(search)}>
                             Search
                         </button>
                     </div>
@@ -319,13 +351,16 @@ const TableLayout: React.FC<TableLayoutProps> = ({ title, filterby, data, totalP
                 <div className="table-responsive">
                     <PaginationTable
                         title={title}
-                        data={filterItem}
+                        data={data}
+                        meta={meta}
                         tableColumns={tableColumns}
                         handleDelete={handleDelete}
                         handleEdit={handleEdit}
                         handleRestore={handleRestore}
                         handleListLine={handleListLine}
                         handleTracking={handleTracking}
+                        setPage={setPage}
+                        setLimit={setLimit}
                     />
                 </div>
             </div>

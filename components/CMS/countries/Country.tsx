@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
-import Swal from 'sweetalert2';
+import React from 'react';
 import TableLayout from '@/components/layouts/table-layout';
 import CountryActionModal from './CountryActionModal';
 import { showMessage } from '@/utils/notification';
@@ -9,13 +8,16 @@ import { countrySlice, useCreateCountryMutation, useDeleteCountryMutation, useGe
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import type { Country } from '@/entities/country.entity';
+import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 
 const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
     const [createCountry, {}] = useCreateCountryMutation();
     const [updateCountry, {}] = useUpdateCountryMutation();
     const [deleteCountry, {}] = useDeleteCountryMutation();
 
-    const { data: countries, isFetching, isLoading } = useGetCountriesQuery(undefined);
+    const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
+
+    const { data: countries, isFetching, isLoading } = useGetCountriesQuery({ page, limit, sortField, sortOrder, search });
     const { items = [], meta = {} } = countries || {};
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
@@ -230,11 +232,14 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
                 filterby="name"
                 handleDelete={handleDeleteCountry}
                 data={items}
-                totalPages={items?.length || 0}
+                meta={meta}
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={CountryActionModal}
                 handleSubmit={handleSubmit}
+                setSearch={setSearch}
+                setPage={setPage}
+                setLimit={setLimit}
             />
         </>
     );

@@ -1,26 +1,60 @@
+import { generateURLWithPagination } from '@/utils/rtk-http';
 import { apiSlice } from '../apiSlice';
 
 export const visaChecklistSlice = apiSlice.injectEndpoints({
     overrideExisting: (module as any).hot?.status() === 'apply', // dev env, That is probably due to hot module reloading reloading the file when you apply changes to it.
     endpoints: (build) => ({
         createVisaChecklist: build.mutation({
-            query: ({ body }) => ({
-                method: 'POST',
-                url: `/cms/visa-checklist`,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body,
-            }),
+            query: ({ body }) => {
+                const bodyFormData = new FormData();
+                bodyFormData.append('country', body.country);
+                bodyFormData.append('type', body.type);
+                bodyFormData.append('embassy', body.embassy);
+                bodyFormData.append('checklist', body.checklist);
+                bodyFormData.append('fee', body.fee);
+
+                if (body.forms) {
+                    body.forms.forEach((file: File) => {
+                        bodyFormData.append('forms', file);
+                    });
+                }
+
+                // console.log('bodyFormData: ', bodyFormData);
+                // const entries = bodyFormData.entries();
+                // for (let [key, value] of entries) {
+                //     console.log(`${key}: ${value}`);
+                // }
+
+                return {
+                    url: '/cms/visa-checklist',
+                    method: 'POST',
+                    body: bodyFormData,
+                };
+            },
+            invalidatesTags: [{ type: 'VisaChecklist', id: 'LIST' }],
         }),
         getVisaChecklist: build.query({
-            query: () => ({
-                method: 'GET',
-                url: '/cms/visa-checklist',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }),
+            providesTags: (result, error, arg) =>
+                result ? [{ type: 'VisaChecklist', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'VisaChecklist', id }))] : [{ type: 'VisaChecklist', id: 'LIST' }],
+            query: (args) => {
+                const url = generateURLWithPagination({
+                    endpoint: '/cms/visa-checklist',
+                    page: args?.page,
+                    limit: args?.limit,
+                    sortField: args?.sortField,
+                    sortOrder: args?.sortOrder,
+                    search: args?.search,
+                    filter: args?.filter,
+                });
+
+                return {
+                    method: 'GET',
+                    url,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+            },
         }),
         updateVisaChecklist: build.mutation({
             query: ({ id, body }) => ({
@@ -31,17 +65,17 @@ export const visaChecklistSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'VisaChecklist', id }],
         }),
         deleteVisaChecklist: build.mutation({
-            query: (id) => {
-                return {
-                    method: 'DELETE',
-                    url: `/cms/visa-checklist/${id}`,
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                };
-            },
+            query: (id) => ({
+                method: 'DELETE',
+                url: `/cms/visa-checklist/${id}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'VisaChecklist', id }],
         }),
     }),
 });

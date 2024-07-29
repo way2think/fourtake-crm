@@ -7,12 +7,16 @@ import { useCreateVisaStatusMutation, useDeleteVisaStatusMutation, useGetVisaSta
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import type { VisaStatus } from '@/entities/visa-status.entity';
+import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 
 const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
     const [createVisaStatus, {}] = useCreateVisaStatusMutation();
     const [updateVisaStatus, {}] = useUpdateVisaStatusMutation();
     const [deleteVisaStatus, {}] = useDeleteVisaStatusMutation();
-    const { data, isFetching, isLoading } = useGetVisaStatusesQuery(undefined);
+
+    const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
+
+    const { data, isFetching, isLoading } = useGetVisaStatusesQuery({ page, limit, sortField, sortOrder, search });
     const { items = [], meta = {} } = data || {};
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
@@ -70,12 +74,15 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
                 title="Visa Status"
                 handleDelete={handleDeleteVisaStatus}
                 data={items}
+                meta={meta}
                 filterby="name"
-                totalPages={items?.length || 0}
                 tableColumns={tableColumns}
                 ActionModal={VisaStatusActionModal}
                 exportColumns={exportColumns}
                 handleSubmit={handleSubmit}
+                setSearch={setSearch}
+                setPage={setPage}
+                setLimit={setLimit}
             />
         </>
     );

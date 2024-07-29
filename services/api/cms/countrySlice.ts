@@ -1,3 +1,4 @@
+import { generateURLWithPagination } from '@/utils/rtk-http';
 import { apiSlice } from '../apiSlice';
 
 export const countrySlice = apiSlice.injectEndpoints({
@@ -12,15 +13,30 @@ export const countrySlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: [{ type: 'Country', id: 'LIST' }],
         }),
         getCountries: build.query({
-            query: () => ({
-                method: 'GET',
-                url: '/cms/country',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }),
+            providesTags: (result, error, arg) =>
+                result ? [{ type: 'Country', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'Country', id }))] : [{ type: 'Country', id: 'LIST' }],
+            query: (args) => {
+                const url = generateURLWithPagination({
+                    endpoint: '/cms/country',
+                    page: args?.page,
+                    limit: args?.limit,
+                    sortField: args?.sortField,
+                    sortOrder: args?.sortOrder,
+                    search: args?.search,
+                    filter: args?.filter,
+                });
+
+                return {
+                    method: 'GET',
+                    url,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+            },
         }),
         updateCountry: build.mutation({
             query: ({ id, body }) => ({
@@ -31,17 +47,17 @@ export const countrySlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'Country', id }],
         }),
         deleteCountry: build.mutation({
-            query: (id) => {
-                return {
-                    method: 'DELETE',
-                    url: `/cms/country/${id}`,
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                };
-            },
+            query: (id) => ({
+                method: 'DELETE',
+                url: `/cms/country/${id}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'Country', id }],
         }),
     }),
 });

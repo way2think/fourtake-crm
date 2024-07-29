@@ -2,11 +2,13 @@ import Swal from 'sweetalert2';
 import { isFetchBaseQueryError, isSerializedError } from '@/utils/validator';
 import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta, MutationDefinition } from '@reduxjs/toolkit/dist/query/react';
 import { MutationTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks';
+import { RTKPagination } from '@/types/rtk-api';
 
 interface HandleLocalUpdateParams {
     apiObjectRef: any;
     endpoint: string;
     updateReceipe: any;
+    args?: any;
 }
 
 interface HandleCreateParams {
@@ -17,6 +19,7 @@ interface HandleCreateParams {
     handleLocalUpdate: (params: HandleLocalUpdateParams) => void;
     apiObjectRef: any;
     endpoint: string;
+    args?: any;
 }
 
 interface HandleUpdateParams {
@@ -27,6 +30,7 @@ interface HandleUpdateParams {
     handleLocalUpdate: (params: HandleLocalUpdateParams) => void;
     apiObjectRef: any;
     endpoint: string;
+    args?: any;
 }
 
 interface HandleDeleteParams {
@@ -37,9 +41,10 @@ interface HandleDeleteParams {
     handleLocalUpdate: (params: HandleLocalUpdateParams) => void;
     apiObjectRef: any;
     endpoint: string;
+    args?: any;
 }
 
-export const handleCreate = async ({ createMutation, value, items, meta, handleLocalUpdate, apiObjectRef, endpoint }: HandleCreateParams): Promise<boolean> => {
+export const handleCreate = async ({ createMutation, value, items, meta, handleLocalUpdate, apiObjectRef, endpoint, args = undefined }: HandleCreateParams): Promise<boolean> => {
     const result = await Swal.fire({
         icon: 'warning',
         title: 'Are you sure?',
@@ -50,24 +55,27 @@ export const handleCreate = async ({ createMutation, value, items, meta, handleL
         customClass: 'sweet-alerts',
     });
 
+    // console.log('value: ', value);
+
     if (result.value) {
         const res = await createMutation({ body: { ...value } });
         if ('error' in res) {
             await handleErrorResponse(res.error);
             return false;
         } else {
-            const newItem = { id: res?.data?.data?.id, ...value };
-            const updatedItems = [...items, newItem];
-            const updatedMeta = { ...meta, itemCount: meta.itemCount + 1, totalItems: meta.totalItems + 1 };
-            handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta: updatedMeta } });
+            // const newItem = { id: res?.data?.data?.id, ...value };
+            // const updatedItems = [...items, newItem];
+            // const updatedMeta = { ...meta, itemCount: meta.itemCount + 1, totalItems: meta.totalItems + 1 };
+            // handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta: updatedMeta, args } });
             Swal.fire({ title: 'Created!', text: res.data.message, icon: 'success', customClass: 'sweet-alerts' });
+            // refetch();
             return true;
         }
     }
     return false;
 };
 
-export const handleUpdate = async ({ updateMutation, value, items, meta, handleLocalUpdate, apiObjectRef, endpoint }: HandleUpdateParams): Promise<boolean> => {
+export const handleUpdate = async ({ updateMutation, value, items, meta, handleLocalUpdate, apiObjectRef, endpoint, args = undefined }: HandleUpdateParams): Promise<boolean> => {
     const result = await Swal.fire({
         icon: 'warning',
         title: 'Are you sure?',
@@ -79,13 +87,15 @@ export const handleUpdate = async ({ updateMutation, value, items, meta, handleL
     });
 
     if (result.value) {
+        console.log('value', value);
         const res = await updateMutation({ id: value.id, body: { ...value } });
         if ('error' in res) {
             await handleErrorResponse(res.error);
             return false;
         } else {
-            const updatedItems = items.map((item) => (item.id === value.id ? { ...item, ...value } : item));
-            handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta } });
+            // console.log('result,value', value, args);
+            // const updatedItems = items.map((item) => (item.id === value.id ? { ...item, ...value } : item));
+            // handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta }, args });
             Swal.fire({ title: 'Updated!', text: res.data.message, icon: 'success', customClass: 'sweet-alerts' });
             return true;
         }
@@ -93,7 +103,7 @@ export const handleUpdate = async ({ updateMutation, value, items, meta, handleL
     return false;
 };
 
-export const handleDelete = async ({ deleteMutation, item, items, meta, handleLocalUpdate, apiObjectRef, endpoint }: HandleDeleteParams): Promise<boolean> => {
+export const handleDelete = async ({ deleteMutation, item, items, meta, handleLocalUpdate, apiObjectRef, endpoint, args = undefined }: HandleDeleteParams): Promise<boolean> => {
     const result = await Swal.fire({
         icon: 'warning',
         title: 'Are you sure?',
@@ -110,9 +120,9 @@ export const handleDelete = async ({ deleteMutation, item, items, meta, handleLo
             await handleErrorResponse(res.error);
             return false;
         } else {
-            const updatedItems = items.filter((i) => i.id !== item.id);
-            const updatedMeta = { ...meta, itemCount: meta.itemCount - 1, totalItems: meta.totalItems - 1 };
-            handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta: updatedMeta } });
+            // const updatedItems = items.filter((i) => i.id !== item.id);
+            // const updatedMeta = { ...meta, itemCount: meta.itemCount - 1, totalItems: meta.totalItems - 1 };
+            // handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta: updatedMeta }, args });
             Swal.fire({ title: 'Deleted!', text: res.data.message, icon: 'success', customClass: 'sweet-alerts' });
             return true;
         }
@@ -129,4 +139,33 @@ const handleErrorResponse = async (error: FetchBaseQueryError | Error | any) => 
     //     await Swal.fire({ title: 'Unknown error!', text: 'Please try after sometime', icon: 'error', customClass: 'sweet-alerts' });
     //   }
     await Swal.fire({ title: `${error.data?.error || 'Error'}!`, text: `${error.data?.message || 'Please try after sometime'}`, icon: 'error', customClass: 'sweet-alerts' });
+};
+
+export const generateURLWithPagination = ({ endpoint, page = 1, limit = 10, sortOrder, sortField, search, filter }: RTKPagination) => {
+    // let url = `${endpoint}&page=${page}&limit=${limit}`;
+
+    // if (sortOrder) {
+    //     url += `&sortOrder=${sortOrder}`;
+    // }
+
+    // if (sortField) {
+    //     url += `&sortField=${sortField}`;
+    // }
+
+    // if (search) {
+    //     url += `&search=${search}`;
+    // }
+
+    // return url;
+
+    const params = new URLSearchParams({
+        page: String(page),
+        limit: String(limit),
+        ...(sortOrder && { sortOrder }),
+        ...(sortField && { sortField }),
+        ...(search && { search }),
+        ...(filter && { filter }),
+    });
+
+    return `${endpoint}?${params.toString()}`;
 };

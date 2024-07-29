@@ -1,3 +1,4 @@
+import { generateURLWithPagination } from '@/utils/rtk-http';
 import { apiSlice } from '../apiSlice';
 
 export const visaStatusSlice = apiSlice.injectEndpoints({
@@ -12,15 +13,32 @@ export const visaStatusSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: [{ type: 'VisaStatus', id: 'LIST' }],
         }),
         getVisaStatuses: build.query({
-            query: () => ({
-                method: 'GET',
-                url: '/cms/visa-status',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }),
+            providesTags: (result, error, arg) =>
+                result ? [{ type: 'VisaStatus', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'VisaStatus', id }))] : [{ type: 'VisaStatus', id: 'LIST' }],
+            query: (args) => {
+                const url = generateURLWithPagination({
+                    endpoint: '/cms/visa-status',
+                    page: args?.page,
+                    limit: args?.limit,
+                    sortField: args?.sortField,
+                    sortOrder: args?.sortOrder,
+                    search: args?.search,
+                    filter: args?.filter,
+                });
+
+                console.log('url', url);
+
+                return {
+                    method: 'GET',
+                    url,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+            },
         }),
         updateVisaStatus: build.mutation({
             query: ({ id, body }) => ({
@@ -31,6 +49,7 @@ export const visaStatusSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'VisaStatus', id }],
         }),
         deleteVisaStatus: build.mutation({
             query: (id) => {
@@ -42,6 +61,7 @@ export const visaStatusSlice = apiSlice.injectEndpoints({
                     },
                 };
             },
+            invalidatesTags: (result, error, { id }) => [{ type: 'VisaStatus', id }],
         }),
     }),
 });

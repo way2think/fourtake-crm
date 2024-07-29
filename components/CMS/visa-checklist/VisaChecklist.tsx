@@ -1,21 +1,23 @@
 'use client';
-import { getData } from '@/api';
+
 import TableLayout from '@/components/layouts/table-layout';
-import React, { useState } from 'react';
+import React from 'react';
 import VisaChecklistActionModal from './VisaChecklistActionModal';
-import Swal from 'sweetalert2';
 import { showMessage } from '@/utils/notification';
 import { useCreateVisaChecklistMutation, useDeleteVisaChecklistMutation, useGetVisaChecklistQuery, useUpdateVisaChecklistMutation, visaChecklistSlice } from '@/services/api/cms/visaChecklistSlice';
 import type { VisaChecklist } from '@/entities/visa-checklist.entity';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
+import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 
 const VisaChecklist: React.FC = () => {
     const [createVisaChecklist, {}] = useCreateVisaChecklistMutation();
     const [updateVisaChecklist, {}] = useUpdateVisaChecklistMutation();
     const [deleteVisaChecklist, {}] = useDeleteVisaChecklistMutation();
 
-    const { data, isFetching, isLoading } = useGetVisaChecklistQuery(undefined);
+    const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
+
+    const { data, isFetching, isLoading } = useGetVisaChecklistQuery({ page, limit, sortField, sortOrder, search });
     const { items = [], meta = {} } = data || {};
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
@@ -69,7 +71,13 @@ const VisaChecklist: React.FC = () => {
             return false;
         }
 
-        console.log("value",value)
+        // console.log('value', value);
+
+        // console.log('formdata: ', formData, formData.get('country'));
+
+        // for (var key of formData.entries()) {
+        //     console.log(key[0] + ', ' + key[1]);
+        // }
 
         if (value.id) {
             return handleUpdate({
@@ -159,13 +167,16 @@ const VisaChecklist: React.FC = () => {
             <TableLayout
                 title="Visa Checklist"
                 data={items}
-                totalPages={items?.length || 0}
+                meta={meta}
                 tableColumns={tableColumns}
                 ActionModal={VisaChecklistActionModal}
                 handleDelete={handleDeleteVisaChecklist}
                 exportColumns={exportColumns}
                 filterby={['country', 'type', 'embassy']}
                 handleSubmit={handleSubmit}
+                setSearch={setSearch}
+                setPage={setPage}
+                setLimit={setLimit}
             />
         </>
     );

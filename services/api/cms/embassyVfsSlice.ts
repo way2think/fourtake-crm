@@ -1,3 +1,4 @@
+import { generateURLWithPagination } from '@/utils/rtk-http';
 import { apiSlice } from '../apiSlice';
 
 export const embassyVfsSlice = apiSlice.injectEndpoints({
@@ -12,15 +13,30 @@ export const embassyVfsSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: [{ type: 'EmbassyVfs', id: 'LIST' }],
         }),
         getEmbassyVfs: build.query({
-            query: () => ({
-                method: 'GET',
-                url: '/cms/embassy-vfs',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }),
+            providesTags: (result, error, arg) =>
+                result ? [{ type: 'EmbassyVfs', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'EmbassyVfs', id }))] : [{ type: 'EmbassyVfs', id: 'LIST' }],
+            query: (args) => {
+                const url = generateURLWithPagination({
+                    endpoint: '/cms/embassy-vfs',
+                    page: args?.page,
+                    limit: args?.limit,
+                    sortField: args?.sortField,
+                    sortOrder: args?.sortOrder,
+                    search: args?.search,
+                    filter: args?.filter,
+                });
+
+                return {
+                    method: 'GET',
+                    url,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+            },
         }),
         updateEmbassyVfs: build.mutation({
             query: ({ id, body }) => ({
@@ -31,6 +47,7 @@ export const embassyVfsSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'EmbassyVfs', id }],
         }),
         deleteEmbassyVfs: build.mutation({
             query: (id) => {
@@ -43,8 +60,9 @@ export const embassyVfsSlice = apiSlice.injectEndpoints({
                     },
                 };
             },
+            invalidatesTags: (result, error, { id }) => [{ type: 'EmbassyVfs', id }],
         }),
     }),
 });
 
-export const { useCreateEmbassyVfsMutation, useGetEmbassyVfsQuery, useUpdateEmbassyVfsMutation, useDeleteEmbassyVfsMutation } = embassyVfsSlice;
+export const { useCreateEmbassyVfsMutation, useGetEmbassyVfsQuery, useLazyGetEmbassyVfsQuery, useUpdateEmbassyVfsMutation, useDeleteEmbassyVfsMutation } = embassyVfsSlice;

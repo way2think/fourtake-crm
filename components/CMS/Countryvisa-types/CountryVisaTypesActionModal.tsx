@@ -3,6 +3,7 @@ import ComponentsFormsFileUploadMulti from '../../Reusable/file-upload/component
 import ComponentsFormsFileUploadSingle from '../../Reusable/file-upload/components-forms-file-upload-single';
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import ComponentsFormsSelectMultiselect from '@/components/Reusable/select/components-forms-select-multiselect';
+import { useGetVisaTypesQuery } from '@/services/api/cms/visaTypeSlice';
 
 interface CountryVisaTypeActionModalProps {
     isOpen: any;
@@ -18,6 +19,8 @@ interface OptionType {
     label: string;
 }
 const CountryVisaTypeActionModal: React.FC<CountryVisaTypeActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
+    const { data, isFetching, isLoading } = useGetVisaTypesQuery({ page: 0, limit: 0 });
+
     const options: OptionType[] = [
         { value: 'E-Visa', label: 'E-Visa' },
         { value: 'Business Visa', label: 'Business Visa' },
@@ -28,7 +31,7 @@ const CountryVisaTypeActionModal: React.FC<CountryVisaTypeActionModalProps> = ({
         { value: 'Transit Visa', label: 'Transit Visa' },
         { value: 'Medical Visa', label: 'Medical Visa' },
     ];
-    console.log('Add data', addData);
+
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-xl" height="h-50">

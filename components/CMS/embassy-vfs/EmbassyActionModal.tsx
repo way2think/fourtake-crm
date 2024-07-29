@@ -5,21 +5,11 @@ import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import ComponentsFormsSelectMultiselect from '@/components/Reusable/select/components-forms-select-multiselect';
 import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
 import { stateCityData } from '@/utils/constant';
-import React, { useState } from 'react';
-
-// interface StateCityData {
-//     [key: string]: string[];
-//   }
-
-// const stateCityData: StateCityData = {
-//     'Andaman and Nicobar Islands': ['Port Blair', 'Nicobar'],
-//     'Andhra Pradesh': ['Vishakhapatnam', 'Vijayawada'],
-//     // other states...
-//   };
+import React, { useState, useEffect } from 'react';
 
 interface StateCities {
     [key: string]: string[];
-  }
+}
 
 interface EmbassyActionModalProps {
     isOpen: any;
@@ -34,7 +24,8 @@ interface OptionType {
     label: string;
 }
 const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
-    const [states] = useState([]);
+    // const [states] = useState(Object.keys(stateCityData));
+    const [states] = useState(Object.keys(stateCityData).sort());
     const [cities, setCities] = useState<string[]>([]);
     const [selectedState, setSelectedState] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
@@ -49,21 +40,29 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
         { value: 'Mangalore', label: 'Work Visa' },
         { value: 'Mumbai', label: 'Mumbai' },
     ];
+    useEffect(() => {
+        if (addData?.state) {
+            // setCities(stateCityData[addData.state] || []);
+            setCities((stateCityData[addData.state] || []).sort());
+            setSelectedCity(''); // Reset city when state changes
+        }
+    }, [addData?.state]);
     const handleStateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const state = e.target.value;
-        setAddData({...addData,state})
-        
+        setAddData({ ...addData, state });
+
         setSelectedState(state);
-        setCities(stateCityData[state] || []);
+        setCities((stateCityData[state] || []).sort());
+        // setCities(stateCityData[state] || []);
         setSelectedCity(''); // Reset city when state changes
-      };
-      const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    };
+    const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCity(e.target.value);
         const city = e.target.value;
-        setAddData({...addData,city})
-      };
-      debugger;
-      console.log(addData)
+        setAddData({ ...addData, city });
+    };
+
+    //console.log(addData)
 
     return (
         <>
@@ -138,18 +137,22 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                         <div className="dropdown">
                             <label htmlFor="state">State</label>
                             <select className="form-input" defaultValue="" id="state" onChange={handleStateChange} value={addData?.state}>
-                                <option value="" >State</option>
+                                <option value="">State</option>
                                 {states.map((state) => (
-                                    <option key={state} value={state}>{state}</option>
+                                    <option key={state} value={state}>
+                                        {state}
+                                    </option>
                                 ))}
                             </select>
                         </div>
                         <div className="dropdown">
                             <label htmlFor="city">City</label>
-                            <select className="form-input" defaultValue="" id="city" onChange={handleCityChange} value={addData?.city}>  
-                                <option value="" >City</option>
+                            <select className="form-input" defaultValue="" id="city" onChange={handleCityChange} value={addData?.city}>
+                                <option value="">City</option>
                                 {cities.map((city) => (
-                                    <option key={city} value={city}>{city}</option>
+                                    <option key={city} value={city}>
+                                        {city}
+                                    </option>
                                 ))}
                             </select>
                         </div>

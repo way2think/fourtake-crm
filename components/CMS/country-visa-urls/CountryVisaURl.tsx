@@ -1,7 +1,7 @@
 'use client';
+
 import TableLayout from '@/components/layouts/table-layout';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
-import Swal from 'sweetalert2';
 import { showMessage } from '@/utils/notification';
 import CountryVisaURlActionModal from '@/components/cms/country-visa-urls/CountryVisaURlActionModal';
 import {
@@ -14,12 +14,16 @@ import {
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { CountryVisaUrl } from '@/entities/country-visa-url.entity';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
+import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 
 const CountryVisaURl: React.FC = ({}) => {
     const [createCountryVisaUrl, {}] = useCreateCountryVisaUrlMutation();
     const [updateCountryVisaUrl, {}] = useUpdateCountryVisaUrlMutation();
     const [deleteCountryVisaUrl, {}] = useDeleteCountryVisaUrlMutation();
-    const { data, isFetching, isLoading } = useGetCountryVisaUrlsQuery(undefined);
+
+    const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
+
+    const { data, isFetching, isLoading } = useGetCountryVisaUrlsQuery({ page, limit, sortField, sortOrder, search });
     const { items = [], meta = {} } = data || {};
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
@@ -39,8 +43,6 @@ const CountryVisaURl: React.FC = ({}) => {
 
     const exportColumns = ['id', 'country', 'url'];
 
-    console.log('items', items);
-
     const handleDeleteCountryVisaUrl = (countryVisaUrl: CountryVisaUrl) =>
         handleDelete({
             deleteMutation: deleteCountryVisaUrl,
@@ -53,14 +55,16 @@ const CountryVisaURl: React.FC = ({}) => {
         });
 
     const handleSubmit = async (value: CountryVisaUrl) => {
-        if (value.country == null) {
+        console.log('value', value);
+        if (!value.country) {
             showMessage('Select Country', 'error');
             return false;
         }
-        if (value.url == '' || value.url == null) {
+        if (!value.url) {
             showMessage('Fill URL', 'error');
             return false;
         }
+
         if (value.id) {
             return handleUpdate({
                 updateMutation: updateCountryVisaUrl,
@@ -72,9 +76,16 @@ const CountryVisaURl: React.FC = ({}) => {
                 endpoint: 'getCountryVisaUrls',
             });
         } else {
+            // pass country object, to create as it expects id inside the object
+            const updatedValue = {
+                url: value.url,
+                country: {
+                    id: value.country,
+                },
+            };
             return handleCreate({
                 createMutation: createCountryVisaUrl,
-                value,
+                value: updatedValue,
                 items,
                 meta,
                 handleLocalUpdate: handleLocalRTKUpdate,
@@ -89,13 +100,16 @@ const CountryVisaURl: React.FC = ({}) => {
             <TableLayout
                 title="Country Visa Urls"
                 filterby="country.name"
-                handleDelete={handleDeleteCountryVisaUrl}
                 data={items}
-                totalPages={items?.length || 0}
+                meta={meta}
+                handleDelete={handleDeleteCountryVisaUrl}
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={CountryVisaURlActionModal}
                 handleSubmit={handleSubmit}
+                setSearch={setSearch}
+                setPage={setPage}
+                setLimit={setLimit}
             />
         </>
     );
