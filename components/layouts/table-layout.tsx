@@ -77,7 +77,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({
     const [isOpenTrack, setIsOpenTrack] = useState(false);
     const router = useRouter();
 
-    console.log('addData', addData);
     const [file, setFile] = useState<File | null>(null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,6 +145,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
 
     const handleInputChange = (e: any) => {
         const { value, id, options } = e.target;
+        console.log('value', value, id);
 
         if (options) {
             // Handling multiple select options - array
@@ -159,16 +159,14 @@ const TableLayout: React.FC<TableLayoutProps> = ({
             //     [id]: selectedOptions,
             // }));
 
-    
-
             const selectedOptions = Array.from(options)
-              .filter((option) => (option as HTMLOptionElement).selected)
-              .map((option) => {
-                const id = (option as HTMLOptionElement).value; // Use value or id based on your needs
-                 // Log each selected ID
-                return id;
-              })
-              .join(','); // Join IDs into a comma-separated string
+                .filter((option) => (option as HTMLOptionElement).selected)
+                .map((option) => {
+                    const id = (option as HTMLOptionElement).value; // Use value or id based on your needs
+                    // Log each selected ID
+                    return id;
+                })
+                .join(','); // Join IDs into a comma-separated string
 
             setAddData((prevData) => ({
                 ...prevData,

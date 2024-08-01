@@ -71,7 +71,7 @@ const NewComponentsFormsFileUploadMultiple: React.FC<NewComponentsFormsFileUploa
                     type="file"
                     id="fileUpload"
                     ref={fileInputRef}
-                    accept=".pdf,.doc,.docx"
+                    // accept=".pdf,.doc,.docx"
                     multiple
                     onChange={handleFileChange}
                     className="absolute cursor-pointer opacity-0"

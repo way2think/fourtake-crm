@@ -68,7 +68,6 @@ const VisaChecklist: React.FC = () => {
         });
 
     const handleSubmit = async (value: VisaChecklist) => {
-        console.log('value', value);
         if (value.country == '' || value.country == null) {
             showMessage('Select country ', 'error');
             return false;
@@ -91,18 +90,20 @@ const VisaChecklist: React.FC = () => {
         // }
 
         if (value.id) {
-            const embassy_vfs = value.embassy_vfs.map((item: any) => item.id);
-            value = { ...value, embassy_vfs };
+            const embassy_vfs = value.embassy_vfs.map((item: any) => item.id).join(',');
+            const updatedValues = { ...value, embassy_vfs };
             if (value?.country?.id) {
-                value = { ...value, country: value?.country?.id };
+                updatedValues.country = value?.country?.id;
             }
             if (value?.visa_type?.id) {
-                value = { ...value, visa_type: value?.visa_type?.id };
+                updatedValues.visa_type = value?.visa_type?.id;
             }
-            console.log('value', embassy_vfs, value);
+
+            // console.log('value', updatedValues);
+
             return handleUpdate({
                 updateMutation: updateVisaChecklist,
-                value,
+                value: updatedValues,
                 items,
                 meta,
                 handleLocalUpdate: handleLocalRTKUpdate,
@@ -110,7 +111,7 @@ const VisaChecklist: React.FC = () => {
                 endpoint: 'getVisaChecklist',
             });
         } else {
-            const embassy_vfs = value.embassy_vfs.map((item: any) => item.id);
+            const embassy_vfs = value.embassy_vfs.map((item: any) => item.id).join(',');
             value = { ...value, embassy_vfs };
 
             return handleCreate({

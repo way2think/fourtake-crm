@@ -19,12 +19,6 @@ export const visaChecklistSlice = apiSlice.injectEndpoints({
                     });
                 }
 
-                // console.log('bodyFormData: ', bodyFormData);
-                // const entries = bodyFormData.entries();
-                // for (let [key, value] of entries) {
-                //     console.log(`${key}: ${value}`);
-                // }
-
                 return {
                     url: '/cms/visa-checklist',
                     method: 'POST',
@@ -57,14 +51,34 @@ export const visaChecklistSlice = apiSlice.injectEndpoints({
             },
         }),
         updateVisaChecklist: build.mutation({
-            query: ({ id, body }) => ({
-                method: 'PATCH',
-                url: `/cms/visa-checklist/${id}`,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body,
-            }),
+            query: ({ id, body }) => {
+                // method: 'PATCH',
+                // url: `/cms/visa-checklist/${id}`,
+                // headers: {
+                //     'Content-Type': 'application/json',
+                // },
+                // body,
+                console.log('body: ', body);
+
+                const bodyFormData = new FormData();
+                bodyFormData.append('country', body.country);
+                bodyFormData.append('visa_type', body.visa_type);
+                bodyFormData.append('embassy_vfs', body.embassy_vfs);
+                bodyFormData.append('checklist', body.checklist);
+                bodyFormData.append('fee', body.fee);
+
+                if (body.forms) {
+                    body.forms.forEach((file: File) => {
+                        bodyFormData.append('forms', file);
+                    });
+                }
+
+                return {
+                    url: `/cms/visa-checklist/${id}`,
+                    method: 'PATCH',
+                    body: bodyFormData,
+                };
+            },
             invalidatesTags: (result, error, { id }) => [{ type: 'VisaChecklist', id }],
         }),
         deleteVisaChecklist: build.mutation({

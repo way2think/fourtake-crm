@@ -31,11 +31,14 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
     }, [embassy]);
 
     useEffect(() => {
-        if (addData?.country) {
+        console.log('addData', addData);
+        if (addData?.country?.id) {
             const filteredEmbassies = embassyData.filter((item: any) => item?.country?.id === +addData.country.id);
             setEmbassyFilter(filteredEmbassies);
+
+            console.log('fil', filteredEmbassies);
         }
-    }, [embassyData]);
+    }, [addData, embassyData]);
 
     // useEffect(() => {
     //     if (addData.country) {
@@ -54,19 +57,17 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
         setEmbassyFilter(filteredEmbassies);
     };
 
-    const handleSelectChange = (e:any) => {
-        const selectedOptions = Array.from(e.target.selectedOptions, (option:any) => ({
-          id: parseInt(option.value), // Parse the id to an integer
-          name: option.text, // Store the name if necessary
+    const handleSelectChange = (e: any) => {
+        const selectedOptions = Array.from(e.target.selectedOptions, (option: any) => ({
+            id: parseInt(option.value), // Parse the id to an integer
+            name: option.text, // Store the name if necessary
         }));
-    
-        setAddData((prevData :any) => ({
-          ...prevData,
-          embassy_vfs: selectedOptions,
-        }));
-      };
 
-    console.log('addData', addData);
+        setAddData((prevData: any) => ({
+            ...prevData,
+            embassy_vfs: selectedOptions,
+        }));
+    };
 
     return (
         <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-4xl">
@@ -138,7 +139,7 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                             multiple
                             className="form-select"
                             // value={addData?.embassy_vfs ? addData?.embassy_vfs?.split(', ') : []} // assuming addData.embassy is an array
-                            value={ addData?.embassy_vfs?.map((item: any) => item.id)  ||  []}
+                            value={addData?.embassy_vfs?.map((item: any) => item.id) || []}
                             onChange={(e) => handleSelectChange(e)}
                         >
                             {embassyFilter?.map((data: any) => (
