@@ -19,8 +19,10 @@ const NewComponentsFormsFileUploadMultiple: React.FC<NewComponentsFormsFileUploa
         setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
         setAddData((prevData: any) => ({
             ...prevData,
-            forms: [...(prevData.files || []), ...files],
+            forms: [...(prevData.forms || []), ...files],
         }));
+
+        console.log('files', files);
 
         // Clear the input value to allow re-uploading the same file after deletion
         if (fileInputRef.current) {
@@ -111,7 +113,7 @@ const NewComponentsFormsFileUploadMultiple: React.FC<NewComponentsFormsFileUploa
                             <div>Tag</div>
                             <div>Action</div>
                         </div>
-                        {addData?.forms?.map((form: any, index: any) => (
+                        {addData?.files?.map((form: any, index: any) => (
                             <div key={index} className="table-row">
                                 <div className="form-name" onClick={() => openForm(form)}>
                                     {form?.name || ''}

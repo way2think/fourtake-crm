@@ -96,6 +96,9 @@ const VisaChecklist: React.FC = () => {
             if (value?.country?.id) {
                 value = { ...value, country: value?.country?.id };
             }
+            if (value?.visa_type?.id) {
+                value = { ...value, visa_type: value?.visa_type?.id };
+            }
             console.log('value', embassy_vfs, value);
             return handleUpdate({
                 updateMutation: updateVisaChecklist,
