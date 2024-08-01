@@ -24,7 +24,7 @@ const VisaChecklist: React.FC = () => {
 
     console.log('item visa checklist', items);
 
-    const exportColumns = ['country', 'type', 'embassy'];
+    const exportColumns = ['country', 'visa_type', 'embassy_vfs'];
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
         {
@@ -36,14 +36,24 @@ const VisaChecklist: React.FC = () => {
             },
         },
         {
-            accessor: 'type',
+            accessor: 'visaType',
             textAlign: 'left',
             title: 'Visa type',
             render: (row: any) => {
-                return row?.type_type?.name;
+                return row?.visa_type?.name;
             },
         },
-        { accessor: 'embassy', textAlign: 'left', title: 'Embassy' },
+        {
+            accessor: 'embassy_vfs',
+            textAlign: 'left',
+            title: 'Embassy',
+            render: (row: any) => {
+                if (row?.embassy_vfs && Array.isArray(row.embassy_vfs)) {
+                    return row.embassy_vfs.map((obj: any) => obj.name).join(', ');
+                }
+                return ''; // Return an empty string or a placeholder if `embassy_vfs` is undefined or not an array
+            },
+        },
     ];
 
     const handleDeleteVisaChecklist = (visachecklist: VisaChecklist) =>
@@ -58,15 +68,16 @@ const VisaChecklist: React.FC = () => {
         });
 
     const handleSubmit = async (value: VisaChecklist) => {
+        console.log('value', value);
         if (value.country == '' || value.country == null) {
             showMessage('Select country ', 'error');
             return false;
         }
-        if (value.type == '' || value.type == null) {
+        if (value.visa_type == '' || value.visa_type == null) {
             showMessage('Select Visa type', 'error');
             return false;
         }
-        if (value.embassy == '' || value.embassy == null) {
+        if (value.embassy_vfs == '' || value.embassy_vfs == null) {
             showMessage('Select Embassy Location', 'error');
             return false;
         }
@@ -80,6 +91,12 @@ const VisaChecklist: React.FC = () => {
         // }
 
         if (value.id) {
+            const embassy_vfs = value.embassy_vfs.map((item: any) => item.id);
+            value = { ...value, embassy_vfs };
+            if (value?.country?.id) {
+                value = { ...value, country: value?.country?.id };
+            }
+            console.log('value', embassy_vfs, value);
             return handleUpdate({
                 updateMutation: updateVisaChecklist,
                 value,
@@ -90,6 +107,9 @@ const VisaChecklist: React.FC = () => {
                 endpoint: 'getVisaChecklist',
             });
         } else {
+            const embassy_vfs = value.embassy_vfs.map((item: any) => item.id);
+            value = { ...value, embassy_vfs };
+
             return handleCreate({
                 createMutation: createVisaChecklist,
                 value,

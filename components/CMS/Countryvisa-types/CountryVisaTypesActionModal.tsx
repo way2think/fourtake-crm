@@ -20,17 +20,23 @@ interface OptionType {
 }
 const CountryVisaTypeActionModal: React.FC<CountryVisaTypeActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
     const { data, isFetching, isLoading } = useGetVisaTypesQuery({ page: 0, limit: 0 });
+    const { data: visatypes } = useGetVisaTypesQuery({ page: 0, limit: 0, sortField: 'id' });
 
-    const options: OptionType[] = [
-        { value: 'E-Visa', label: 'E-Visa' },
-        { value: 'Business Visa', label: 'Business Visa' },
-        { value: 'Tourist Visa', label: 'Tourist Visa' },
-        { value: 'Student Visa', label: 'Student Visa' },
-        { value: 'Work Visa', label: 'Work Visa' },
-        { value: 'Diplomatic Visa', label: 'Diplomatic Visa' },
-        { value: 'Transit Visa', label: 'Transit Visa' },
-        { value: 'Medical Visa', label: 'Medical Visa' },
-    ];
+    const options = visatypes?.items?.map((option: any) => ({
+        value: option.id,
+        label: option.name,
+    }));
+
+    // const options: OptionType[] = [
+    //     { value: 'E-Visa', label: 'E-Visa' },
+    //     { value: 'Business Visa', label: 'Business Visa' },
+    //     { value: 'Tourist Visa', label: 'Tourist Visa' },
+    //     { value: 'Student Visa', label: 'Student Visa' },
+    //     { value: 'Work Visa', label: 'Work Visa' },
+    //     { value: 'Diplomatic Visa', label: 'Diplomatic Visa' },
+    //     { value: 'Transit Visa', label: 'Transit Visa' },
+    //     { value: 'Medical Visa', label: 'Medical Visa' },
+    // ];
 
     return (
         <>
@@ -44,7 +50,7 @@ const CountryVisaTypeActionModal: React.FC<CountryVisaTypeActionModalProps> = ({
 
                 <div className="p-5">
                     <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-1 ">
-                        <ComponentsFormsSelectMultiselect addData={addData} options={options} setAddData={setAddData} id={'type'} />
+                        <ComponentsFormsSelectMultiselect addData={addData} options={options} setAddData={setAddData} id={'visa_type'} />
                     </div>
 
                     <div className="mt-8 flex items-center justify-end">

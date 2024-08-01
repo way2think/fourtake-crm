@@ -2,8 +2,11 @@ import VisafeeEditorJodit from '@/components/Reusable/Markdown-Editor/VisafeeEdi
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import NewComponentsFormsFileUploadMultiple from '@/components/Reusable/file-upload/NewComponentsFormsFileUploadSingle';
 import IconX from '@/components/icon/icon-x';
+import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
+import { useGetEmbassyVfsQuery } from '@/services/api/cms/embassyVfsSlice';
 import { useGetVisaTypesQuery } from '@/services/api/cms/visaTypeSlice';
+import { useEffect, useMemo, useState } from 'react';
 
 interface VisaChecklistActionModalProps {
     isOpen: any;
@@ -15,11 +18,55 @@ interface VisaChecklistActionModalProps {
 }
 
 const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
-    const { data: countries, isLoading, isFetching } = useGetCountriesQuery(undefined);
+    const [embassyFilter, setEmbassyFilter] = useState<any>([]);
+    const { data: countries, isLoading, isFetching } = useGetCountriesQuery({ page: 0, limit: 0 });
     const { items = [], meta = {} } = countries || {};
+    // const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 0 });
 
-    const { data: visatypes } = useGetVisaTypesQuery(undefined);
-    // console.log('addData', addData);
+    const { data: visatypes } = useGetVisaTypesQuery({ page: 0, limit: 0, sortField: 'id' });
+    const { data: embassy } = useGetEmbassyVfsQuery({ page: 0, limit: 0 });
+
+    const embassyData = useMemo(() => {
+        return embassy?.items?.map((item: any) => item.type === 'embassy' && item);
+    }, [embassy]);
+
+    useEffect(() => {
+        if (addData?.country) {
+            const filteredEmbassies = embassyData.filter((item: any) => item?.country?.id === +addData.country.id);
+            setEmbassyFilter(filteredEmbassies);
+        }
+    }, [embassyData]);
+
+    // useEffect(() => {
+    //     if (addData.country) {
+    //         const filteredEmbassies = embassyData.filter((item: any) => {
+    //             return item?.country?.id === +addData.country.id;
+    //         });
+    //         setEmbassyFilter(filteredEmbassies);
+    //     }
+    // }, [ addData.country,addData]);
+
+    const handleEmbassyChange = (e: any) => {
+        const filteredEmbassies = embassyData.filter((item: any) => {
+            console.log('country', typeof +e.target.value, typeof item?.country?.id);
+            return item?.country?.id === +e.target.value;
+        });
+        setEmbassyFilter(filteredEmbassies);
+    };
+
+    const handleSelectChange = (e:any) => {
+        const selectedOptions = Array.from(e.target.selectedOptions, (option:any) => ({
+          id: parseInt(option.value), // Parse the id to an integer
+          name: option.text, // Store the name if necessary
+        }));
+    
+        setAddData((prevData :any) => ({
+          ...prevData,
+          embassy_vfs: selectedOptions,
+        }));
+      };
+
+    console.log('addData', addData);
 
     return (
         <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-4xl">
@@ -40,7 +87,16 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                     <div className="dropdown">
                         <label htmlFor="country">Countries*</label>
-                        <select className="form-input" id="country" value={(addData?.country && addData?.country.id) || ''} onChange={(e) => handleInputChange(e)}>
+                        <select
+                            className="form-input"
+                            id="country"
+                            value={addData?.country?.id}
+                            onChange={(e) => {
+                                handleInputChange(e);
+                                handleEmbassyChange(e);
+                            }}
+                            defaultValue=""
+                        >
                             <option value="" disabled>
                                 Select Countries
                             </option>
@@ -52,10 +108,10 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                         </select>
                     </div>
                     <div className="dropdown">
-                        <label htmlFor="role">Visa Category*</label>
-                        <select className="form-input" defaultValue="" id="type" value={(addData.visa_type && addData?.visa_type.id) || ''} onChange={(e) => handleInputChange(e)}>
+                        <label htmlFor=" visa_type">Visa Type*</label>
+                        <select className="form-input" defaultValue="" id="visa_type" value={addData?.visa_type?.id} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled>
-                                Visa Type
+                                Select Visa Type
                             </option>
                             {visatypes?.items?.map((type: any) => (
                                 <option key={type.id} value={type.id}>
@@ -78,16 +134,18 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                         ></textarea> */}
                         <label htmlFor="embassy">Embassy*</label>
                         <select
-                            id="embassy"
+                            id="embassy_vfs"
                             multiple
                             className="form-select"
-                            value={addData?.embassy ? addData.embassy.split(', ') : []} // assuming addData.embassy is an array
-                            onChange={(e) => handleInputChange(e)}
+                            // value={addData?.embassy_vfs ? addData?.embassy_vfs?.split(', ') : []} // assuming addData.embassy is an array
+                            value={ addData?.embassy_vfs?.map((item: any) => item.id)  ||  []}
+                            onChange={(e) => handleSelectChange(e)}
                         >
-                            <option value="volvo">Volvo</option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
+                            {embassyFilter?.map((data: any) => (
+                                <option key={data.id} value={data.id}>
+                                    {data.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 </div>

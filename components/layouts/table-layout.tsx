@@ -77,6 +77,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
     const [isOpenTrack, setIsOpenTrack] = useState(false);
     const router = useRouter();
 
+    console.log('addData', addData);
     const [file, setFile] = useState<File | null>(null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -147,15 +148,31 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         const { value, id, options } = e.target;
 
         if (options) {
-            // Handling multiple select options
+            // Handling multiple select options - array
+            // const selectedOptions = Array.from(options)
+            //     .filter((option) => (option as HTMLOptionElement).selected)
+            //     .map((option) => (option as HTMLOptionElement).value)
+            //     .join(', '); // Join selected options with a comma
+
+            // setAddData((prevData) => ({
+            //     ...prevData,
+            //     [id]: selectedOptions,
+            // }));
+
+    
+
             const selectedOptions = Array.from(options)
-                .filter((option) => (option as HTMLOptionElement).selected)
-                .map((option) => (option as HTMLOptionElement).value)
-                .join(', '); // Join selected options with a comma
+              .filter((option) => (option as HTMLOptionElement).selected)
+              .map((option) => {
+                const id = (option as HTMLOptionElement).value; // Use value or id based on your needs
+                 // Log each selected ID
+                return id;
+              })
+              .join(','); // Join IDs into a comma-separated string
 
             setAddData((prevData) => ({
                 ...prevData,
-                [id]: selectedOptions,
+                [id]: selectedOptions, // Store as a comma-separated string
             }));
         } else {
             setAddData({ ...addData, [id]: value });
@@ -175,7 +192,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         // console.log('fil: ', filteredObj);
         // passing addData, without removing null values, because during update we will be emptying some fields
 
-        console.log('ad', addData);
         const isSuccess = await handleSubmit(addData);
 
         if (isSuccess) {

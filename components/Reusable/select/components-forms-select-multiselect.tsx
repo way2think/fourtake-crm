@@ -18,19 +18,22 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
     const [selectedOptions, setSelectedOptions] = useState<OptionType[]>([]);
 
     useEffect(() => {
-        if (Array.isArray(addData[id])) {
-            const arr = options.filter((item: any) => addData[id].includes(item.value));
+        if (Array.isArray(addData.country_visa_types)) {
+            const selectedIds = addData.country_visa_types.map((item: any) => item.name);
+            const arr = options.filter((item: any) => selectedIds.includes(item.label));
             setSelectedOptions(arr);
+
+            console.log('arr', arr, options);
         } else {
             setSelectedOptions([]); // or handle as needed
         }
-    }, [addData]);
+    }, []);
 
     const handleChange = (selected: any) => {
         console.log('selected options', selected);
         if (selected && selected.length == options.length) {
             console.log('1');
-            const getValue = options.map((item: any) => item.value);
+            const getValue = options.map((item: any) => item.value).join(', ');
             setSelectedOptions(options);
             setAddData((prev: any) => ({ ...prev, [id]: getValue }));
         } else if (selected && selected.length === 0) {
@@ -38,7 +41,7 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
             setAddData((prev: any) => ({ ...prev, [id]: [] }));
             console.log('2');
         } else {
-            const getValue = selected.map((item: any) => item.value);
+            const getValue = selected.map((item: any) => item.value).join(', ');
             setSelectedOptions(selected as OptionType[]);
             setAddData((prev: any) => ({ ...prev, [id]: getValue }));
             console.log('3');
@@ -51,7 +54,7 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
             setAddData((prev: any) => ({ ...prev, [id]: [] }));
         } else {
             setSelectedOptions(options);
-            const getValue = options.map((item: any) => item.value);
+            const getValue = options.map((item: any) => item.value).join(', ');
             setAddData((prev: any) => ({ ...prev, [id]: getValue }));
         }
     };

@@ -8,8 +8,8 @@ export const visaChecklistSlice = apiSlice.injectEndpoints({
             query: ({ body }) => {
                 const bodyFormData = new FormData();
                 bodyFormData.append('country', body.country);
-                bodyFormData.append('type', body.type);
-                bodyFormData.append('embassy', body.embassy);
+                bodyFormData.append('visa_type', body.visa_type);
+                bodyFormData.append('embassy_vfs', body.embassy_vfs);
                 bodyFormData.append('checklist', body.checklist);
                 bodyFormData.append('fee', body.fee);
 

@@ -98,7 +98,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                 <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
                                     <IconEdit size={16} />
                                 </ActionIcon>
-                                {title !== 'dashboard' && (
+                                {title !== 'dashboard' && title !== 'Country Visa Types' && (
                                     <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
                                         <IconTrash size={16} />
                                     </ActionIcon>

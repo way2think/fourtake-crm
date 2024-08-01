@@ -1,8 +1,8 @@
 export interface VisaChecklist {
     id?: number;
     country: string;
-    type: string;
-    embassy: string;
+    visa_type: string;
+    embassy_vfs: any;
     checklist: string;
     fee: string;
     form: string;

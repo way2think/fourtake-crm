@@ -1,8 +1,6 @@
 'use client';
 
 import TableLayout from '@/components/layouts/table-layout';
-import CountryVisaTypeActionModal from '@/components/cms/Countryvisa-types/CountryVisaTypesActionModal';
-
 import { showMessage } from '@/utils/notification';
 import {
     countryVisaTypeSlice,
@@ -15,6 +13,7 @@ import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { CountryVisaType } from '@/entities/country-visa-type.entity';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import { usePaginationOptions } from '@/hooks/usePaginationOptions';
+import CountryVisaTypeActionModal from '@/components/cms/countryvisa-types/CountryVisaTypesActionModal';
 
 const CountryVisaTypes: React.FC = () => {
     const [createCountryVisaType, {}] = useCreateCountryVisaTypeMutation();
@@ -23,8 +22,10 @@ const CountryVisaTypes: React.FC = () => {
 
     const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
-    const { data, isFetching, isLoading } = useGetCountryVisaTypesQuery({ page, limit, sortField, sortOrder, search });
+    const { data, isFetching, isLoading } = useGetCountryVisaTypesQuery(undefined);
     const { items = [], meta = {} } = data || {};
+
+    console.log("time",items)
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
@@ -45,7 +46,7 @@ const CountryVisaTypes: React.FC = () => {
         },
     ];
 
-    const exportColumns = ['id', 'country', 'type'];
+    const exportColumns = ['id', 'country', 'visa_type'];
 
     const handleDeleteCountryVisaType = (countryvisatype: CountryVisaType) =>
         handleDelete({
@@ -59,7 +60,7 @@ const CountryVisaTypes: React.FC = () => {
         });
 
     const handleSubmit = async (value: CountryVisaType) => {
-        if (value.type == '' || value.type == null || value.type.length === 0) {
+        if (value.visa_type == null) {
             showMessage('Select VisaTypes', 'error');
             return false;
         }
