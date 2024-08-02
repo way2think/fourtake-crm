@@ -49,7 +49,7 @@ const VisaChecklist: React.FC = () => {
             title: 'Embassy',
             render: (row: any) => {
                 if (row?.embassy_vfs && Array.isArray(row.embassy_vfs)) {
-                    return row.embassy_vfs.map((obj: any) => obj.name).join(', ');
+                    return row.embassy_vfs.map((obj: any) => `${obj.name} - ${obj.city}`).join(', ');
                 }
                 return ''; // Return an empty string or a placeholder if `embassy_vfs` is undefined or not an array
             },

@@ -13,8 +13,8 @@ export const visaChecklistSlice = apiSlice.injectEndpoints({
                 bodyFormData.append('checklist', body.checklist);
                 bodyFormData.append('fee', body.fee);
 
-                if (body.forms) {
-                    body.forms.forEach((file: File) => {
+                if (body.files) {
+                    body.files.forEach((file: File) => {
                         bodyFormData.append('forms', file);
                     });
                 }
@@ -67,8 +67,8 @@ export const visaChecklistSlice = apiSlice.injectEndpoints({
                 bodyFormData.append('checklist', body.checklist);
                 bodyFormData.append('fee', body.fee);
 
-                if (body.forms) {
-                    body.forms.forEach((file: File) => {
+                if (body.files) {
+                    body.files.forEach((file: File) => {
                         bodyFormData.append('forms', file);
                     });
                 }
@@ -91,6 +91,7 @@ export const visaChecklistSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: (result, error, { id }) => [{ type: 'VisaChecklist', id }],
         }),
+       
     }),
 });
 

@@ -144,7 +144,7 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                         >
                             {embassyFilter?.map((data: any) => (
                                 <option key={data.id} value={data.id}>
-                                    {data.name}
+                                    {data.name} -{data.city}
                                 </option>
                             ))}
                         </select>

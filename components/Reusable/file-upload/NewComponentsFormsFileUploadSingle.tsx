@@ -3,6 +3,9 @@ import PaginationTable from '../Table/PaginationTable';
 import { render } from '@headlessui/react/dist/utils/render';
 import './NewComponentsFormsFileUploadSingle.css';
 import { Form } from '@/entities/form.entity';
+import { handleDelete } from '@/utils/rtk-http';
+import { formSlice, useDeleteFormMutation } from '@/services/api/formSlice';
+import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 
 interface NewComponentsFormsFileUploadMultipleProps {
     setAddData: React.Dispatch<React.SetStateAction<any>>;
@@ -13,13 +16,15 @@ const NewComponentsFormsFileUploadMultiple: React.FC<NewComponentsFormsFileUploa
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null); // Define buttonRef here
+    const [deleteForm, {}] = useDeleteFormMutation();
+    const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
         setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
         setAddData((prevData: any) => ({
             ...prevData,
-            forms: [...(prevData.forms || []), ...files],
+            files: [...(prevData.files || []), ...files],
         }));
 
         console.log('files', files);
@@ -37,6 +42,35 @@ const NewComponentsFormsFileUploadMultiple: React.FC<NewComponentsFormsFileUploa
             ...prevData,
             files: updatedFiles,
         }));
+    };
+
+    const handleFormDelete = async (id: Number | string) => {
+        const item = { id }; // Assuming the item is represented by an object with an id
+        //   const items = []; // Replace with actual items if available
+        const meta = {}; // Replace with actual meta if available
+
+        await handleDelete({
+            deleteMutation: deleteForm,
+            item,
+            items: [],
+            meta,
+            handleLocalUpdate: handleLocalRTKUpdate,
+            apiObjectRef: formSlice,
+            endpoint: 'getForm',
+        });
+        const updatedForm = addData?.forms?.filter((item: any) => item.id !== id);
+        setAddData({ ...addData, forms: updatedForm });
+        // handleDelete({
+        //     deleteMutation: deleteForm,
+        //     item: id,
+        //     items:[],
+        //     meta,
+        //     handleLocalUpdate: handleLocalRTKUpdate,
+        //     apiObjectRef: formSlice,
+        //     endpoint: 'getForm',
+        // });
+        // const res = await deleteForm(id);
+        // console.log('res', res);
     };
 
     const triggerFileInput = () => {
@@ -91,21 +125,18 @@ const NewComponentsFormsFileUploadMultiple: React.FC<NewComponentsFormsFileUploa
                 </button>
             </div>
             <div className="mt-2">
+                {selectedFiles.length > 0 && <h2>Selected Files</h2>}
                 {selectedFiles.map((file, index) => (
-                    <>
-                        {' '}
-                        <h2>Selected Files</h2>
-                        <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
-                            <span>{file.name}</span>
-                            <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => handleFileDelete(file)}>
-                                Delete
-                            </button>
-                        </div>
-                    </>
+                    <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
+                        <span>{file.name}</span>
+                        <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => handleFileDelete(file)}>
+                            Delete
+                        </button>
+                    </div>
                 ))}
             </div>
 
-            {addData?.id && (
+            {addData?.id && addData?.forms?.length > 0 && (
                 <div className="mt-2">
                     <div className="form-table">
                         <div className="table-header">
@@ -113,14 +144,15 @@ const NewComponentsFormsFileUploadMultiple: React.FC<NewComponentsFormsFileUploa
                             <div>Tag</div>
                             <div>Action</div>
                         </div>
-                        {addData?.files?.map((form: any, index: any) => (
+
+                        {addData?.forms?.map((form: any, index: any) => (
                             <div key={index} className="table-row">
                                 <div className="form-name" onClick={() => openForm(form)}>
                                     {form?.name || ''}
                                 </div>
                                 <div className="form-tag">form_{form?.id || ''}</div>
                                 <div>
-                                    <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => handleFileDelete(form)}>
+                                    <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => handleFormDelete(form.id)}>
                                         Delete
                                     </button>
                                 </div>
