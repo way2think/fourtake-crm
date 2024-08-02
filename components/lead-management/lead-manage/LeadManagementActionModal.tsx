@@ -12,6 +12,11 @@ import PaginationTable from '@/components/Reusable/Table/PaginationTable';
 import { showMessage } from '@/utils/notification';
 import { isValidEmail, isValidPhoneNumber } from '@/utils/validator';
 import { render } from '@headlessui/react/dist/utils/render';
+import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
+import { Country } from '@/entities/country.entity';
+import { useGetCountryVisaTypesQuery } from '@/services/api/cms/countryVisaTypeSlice';
+import { CountryVisaType } from '@/entities/country-visa-type.entity';
+import { VisaType } from '@/entities/visa-type.entity';
 
 interface LeadManagementActionModalProps {
     isOpen: any;
@@ -26,6 +31,14 @@ interface LeadManagementActionModalProps {
     // setFollowUps?: any;
 }
 const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ isEdit, setIsEdit, isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
+    // const { data: countries, isLoading, isFetching, isError, error } = useGetCountriesQuery({ page: 0, limit: 0 });
+
+    const { data: countryVisaTypes } = useGetCountryVisaTypesQuery({ page: 0, limit: 0 });
+
+    // console.log('country: ', countryVisaTypes);
+
+    const [visaTypes, setVisaTypes] = useState([]);
+
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
     const [setMail, setSetEmail] = useState<string>();
     const [docPickup, setDocPickup] = useState(false);
@@ -225,13 +238,39 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         </div>
                         <div className="dropdown mb-5">
                             <label htmlFor="country">Country</label>
-                            <select className="form-input" defaultValue="" id="country" value={addData?.country} onChange={(e) => handleInputChange(e)}>
+                            <select
+                                className="form-input"
+                                defaultValue=""
+                                id="country"
+                                value={addData?.country}
+                                onChange={(e) => {
+                                    // console.log('e', e.target.value);
+                                    const { items } = countryVisaTypes;
+                                    // console.log('cou', items);
+                                    const index = items.findIndex((cv: any) => cv.id == e.target.value);
+                                    // console.log('countryVisaType[index]', items[index]);
+                                    setVisaTypes(items[index].country_visa_types);
+                                    handleInputChange(e);
+                                }}
+                            >
                                 <option value="" disabled={true}>
                                     Country
                                 </option>
-                                <option value="Canada">Canada</option>
+                                {/* <option value="Canada">Canada</option>
                                 <option value="India">India</option>
-                                <option value="Usa">Usa</option>
+                                <option value="Usa">Usa</option> */}
+                                {countryVisaTypes?.items.map((countryVisaType: any) => (
+                                    <option
+                                        key={countryVisaType.id}
+                                        value={countryVisaType.id}
+                                        // onClick={() => {
+                                        //     console.log('hi', countryVisaType);
+                                        //     setVisaTypes(countryVisaType.country_visa_types);
+                                        // }}
+                                    >
+                                        {countryVisaType.name}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                     </div>
@@ -254,8 +293,13 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 <option value="" disabled={true}>
                                     Visa Type
                                 </option>
-                                <option value="Business Type">Business Visa</option>
-                                <option value="Vistor Visa">Vistor Visa</option>
+                                {/* <option value="Business Type">Business Visa</option>
+                                <option value="Vistor Visa">Vistor Visa</option> */}
+                                {visaTypes.map((visaType: VisaType) => (
+                                    <option key={visaType.id} value={visaType.id}>
+                                        {visaType.name}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                     </div>

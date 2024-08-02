@@ -9,18 +9,19 @@ import { leadSlice, useGetLeadsQuery, useDeleteLeadMutation, useCreateLeadMutati
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import type { Lead } from '@/entities/lead.entity';
+import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 
 const LeadManagement: React.FC = () => {
     const [createLead, {}] = useCreateLeadMutation();
     const [updateLead, {}] = useUpdateLeadMutation();
     const [deleteLead, {}] = useDeleteLeadMutation();
 
-    const { data: leads, isError, error, isFetching, isLoading } = useGetLeadsQuery(undefined);
+    const { page, limit, sortField, sortOrder, search, filter, setFilter, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
+
+    const { data: leads, isError, error, isFetching, isLoading } = useGetLeadsQuery({ page, limit, sortField, sortOrder, search, filter });
     const { items = [], meta = {} } = leads || {};
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
-
-    console.log(items);
 
     // console.log('leads: ', data, isLoading, isFetching);
     // console.log('eror: ', isError, error);
@@ -197,12 +198,16 @@ const LeadManagement: React.FC = () => {
                 filterby="country"
                 handleDelete={handleDeleteLead}
                 data={items}
-                totalPages={items?.length || 0}
+                meta={meta}
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={LeadManagementActionModal}
                 Filtersetting={Filtersetting}
                 handleSubmit={handleSubmit}
+                setSearch={setSearch}
+                setPage={setPage}
+                setLimit={setLimit}
+                setFilter={setFilter}
             />
         </>
     );
