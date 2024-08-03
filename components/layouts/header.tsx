@@ -33,6 +33,9 @@ import IconMenuPages from '@/components/icon/menu/icon-menu-pages';
 import IconMenuMore from '@/components/icon/menu/icon-menu-more';
 import { usePathname, useRouter } from 'next/navigation';
 import { getTranslation } from '@/i18n';
+import { signOut } from 'next-auth/react';
+import { useLogoutMutation } from '@/services/api/apiSlice';
+import { showMessage } from '@/utils/notification';
 
 const Header = () => {
     const pathname = usePathname();
@@ -145,6 +148,25 @@ const Header = () => {
 
     const [search, setSearch] = useState(false);
 
+    const [logoutMutation, {}] = useLogoutMutation();
+
+    const logoutHandler = async (e: any) => {
+        e.preventDefault();
+        try {
+            const res = (await logoutMutation({})) as any;
+
+            // console.log('ressss: ', res?.data.message);
+
+            alert(res?.data.message);
+            // debugger;
+            await signOut();
+            // console.log('res', res1);
+        } catch (error) {
+            console.error('Error during sign out:', error);
+            return false;
+        }
+    };
+
     return (
         <header className={`z-40 ${themeConfig.semidark && themeConfig.menu === 'horizontal' ? 'dark' : ''}`}>
             <div className="shadow-sm">
@@ -213,9 +235,10 @@ const Header = () => {
                         <div>
                             {themeConfig.theme === 'light' ? (
                                 <button
-                                    className={`${themeConfig.theme === 'light' &&
+                                    className={`${
+                                        themeConfig.theme === 'light' &&
                                         'flex items-center rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60'
-                                        }`}
+                                    }`}
                                     onClick={() => dispatch(toggleTheme('dark'))}
                                 >
                                     <IconSun />
@@ -225,9 +248,10 @@ const Header = () => {
                             )}
                             {themeConfig.theme === 'dark' && (
                                 <button
-                                    className={`${themeConfig.theme === 'dark' &&
+                                    className={`${
+                                        themeConfig.theme === 'dark' &&
                                         'flex items-center rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60'
-                                        }`}
+                                    }`}
                                     onClick={() => dispatch(toggleTheme('system'))}
                                 >
                                     <IconMoon />
@@ -235,9 +259,10 @@ const Header = () => {
                             )}
                             {themeConfig.theme === 'system' && (
                                 <button
-                                    className={`${themeConfig.theme === 'system' &&
+                                    className={`${
+                                        themeConfig.theme === 'system' &&
                                         'flex items-center rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60'
-                                        }`}
+                                    }`}
                                     onClick={() => dispatch(toggleTheme('light'))}
                                 >
                                     <IconLaptop />
@@ -442,10 +467,14 @@ const Header = () => {
                                         </Link>
                                     </li>
                                     <li className="border-t border-white-light dark:border-white-light/10">
-                                        <Link href="/auth/boxed-signin" className="!py-3 text-danger">
+                                        <button
+                                            onClick={logoutHandler}
+                                            className="flex items-center !py-3 text-danger"
+                                            style={{ border: 'none', background: 'none', cursor: 'pointer', width: '100%' }} // Add any inline styles if needed
+                                        >
                                             <IconLogout className="h-4.5 w-4.5 shrink-0 rotate-90 ltr:mr-2 rtl:ml-2" />
                                             Sign Out
-                                        </Link>
+                                        </button>
                                     </li>
                                 </ul>
                             </Dropdown>
