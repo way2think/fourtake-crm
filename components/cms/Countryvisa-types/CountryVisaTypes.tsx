@@ -22,10 +22,10 @@ const CountryVisaTypes: React.FC = () => {
 
     const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
-    const { data, isFetching, isLoading } = useGetCountryVisaTypesQuery(undefined);
+    const { data, isFetching, isLoading } = useGetCountryVisaTypesQuery({ page, limit, sortField, sortOrder, search });
     const { items = [], meta = {} } = data || {};
 
-    console.log('time', items);
+    // console.log('time', items);
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
