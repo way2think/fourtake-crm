@@ -49,6 +49,7 @@
         "react-select": "^5.8.0",
         "react-simplemde-editor": "^5.2.0",
         "react-table": "^7.8.0",
+        "sharp": "^0.33.4",
         "simplemde": "^1.11.2",
         "sweetalert2": "^11.11.0",
         "typescript": "4.9.4",
