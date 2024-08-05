@@ -14,7 +14,7 @@ class InvalidLoginError extends CredentialsSignin {
 
 interface CustomUser {
     id: string;
-    email: string;
+    username: string;
     access_token: string;
     // Add any other fields you expect
 }
@@ -107,7 +107,7 @@ export const { handlers, auth, signIn } = NextAuth({
             name: 'NestJS',
             type: 'credentials',
             credentials: {
-                email: { label: 'Email', type: 'text' },
+                username: { label: 'Username', type: 'text' },
                 password: { label: 'Password', type: 'password' },
             },
             async authorize(credentials) {

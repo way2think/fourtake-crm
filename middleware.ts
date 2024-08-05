@@ -4,9 +4,11 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function middleware(request: NextRequest, response: NextResponse) {
     const session = await auth();
 
-    if (!session && !request.nextUrl.pathname.startsWith('/login')) {
+    // console.log('sess', session);
+
+    if (!session?.user?.accessToken && !request.nextUrl.pathname.startsWith('/login')) {
         return NextResponse.redirect(new URL('/login', request.url));
-    } else if (session && request.nextUrl.pathname.startsWith('/login')) {
+    } else if (session?.user?.accessToken && request.nextUrl.pathname.startsWith('/login')) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 

@@ -9,7 +9,7 @@ import { showMessage } from '@/utils/notification';
 const ComponentsAuthLoginForm = () => {
     const router = useRouter();
 
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     // useEffect(() => {
@@ -27,7 +27,7 @@ const ComponentsAuthLoginForm = () => {
 
         try {
             const result = await signIn('local', {
-                email,
+                username,
                 password,
                 redirect: false,
             });
@@ -51,12 +51,12 @@ const ComponentsAuthLoginForm = () => {
                     <label htmlFor="Email">Email</label>
                     <div className="relative text-white-dark">
                         <input
-                            id="Email"
-                            type="email"
-                            placeholder="Enter Email"
+                            id="username"
+                            type="text"
+                            placeholder="Enter Username"
                             className="form-input ps-10 placeholder:text-white-dark"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             required
                         />
                         <span className="absolute start-4 top-1/2 -translate-y-1/2">
