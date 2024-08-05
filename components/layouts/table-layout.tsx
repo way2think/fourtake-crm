@@ -347,11 +347,12 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                             Search
                         </button>
                     </div>
-                    <div>
+                    {/* Export will be uncommented once the client has updated all the data, then will modify export all the columns to import to main db (prod)  */}
+                    {/* <div>
                         <button type="button" className="btn btn-outline-primary" onClick={handleExport}>
                             Export to Excel
                         </button>
-                    </div>
+                    </div>  */}
                     {/* <div>
                         <button type="button" className="btn btn-primary" onClick={()=>setIsImportOpen(true)}>
                             Import
