@@ -21,22 +21,9 @@ const CountriesList = async () => {
 
     // const {} = await http({ method: 'GET', endpoint: '/cms/country', options: {} });
 
-    let data = [
-        {
-            id: 1,
-            country: 'India',
-            language: 'tamil,hindi,etc',
-            dailingcode: '+91',
-        },
-        {
-            id: 2,
-            country: 'America',
-        },
-    ];
-
     return (
         <Suspense fallback={<p>Loading...</p>}>
-            <Country countrydata={data} />
+            <Country />
         </Suspense>
     );
 };

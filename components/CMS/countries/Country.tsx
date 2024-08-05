@@ -10,7 +10,7 @@ import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import type { Country as CountryEntity } from '@/entities/country.entity';
 import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 
-const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
+const Country: React.FC = () => {
     const [createCountry, {}] = useCreateCountryMutation();
     const [updateCountry, {}] = useUpdateCountryMutation();
     const [deleteCountry, {}] = useDeleteCountryMutation();
