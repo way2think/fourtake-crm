@@ -1,7 +1,4 @@
 import { Metadata } from 'next';
-import Country from '@/components/cms/countries/Country';
-import { Suspense } from 'react';
-import { getData } from '@/api';
 import LeadManagement from '@/components/lead-management/lead-manage/LeadManagement';
 
 export const metadata: Metadata = {
