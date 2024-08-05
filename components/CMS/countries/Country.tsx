@@ -7,7 +7,7 @@ import { showMessage } from '@/utils/notification';
 import { countrySlice, useCreateCountryMutation, useDeleteCountryMutation, useGetCountriesQuery, useUpdateCountryMutation } from '@/services/api/cms/countrySlice';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
-import type { Country } from '@/entities/country.entity';
+import type { Country as CountryEntity } from '@/entities/country.entity';
 import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 
 const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
@@ -74,7 +74,7 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
     //     }
     // };
 
-    const handleDeleteCountry = (country: Country) =>
+    const handleDeleteCountry = (country: CountryEntity) =>
         handleDelete({
             deleteMutation: deleteCountry,
             item: country,
@@ -197,7 +197,7 @@ const Country: React.FC<{ countrydata: any }> = ({ countrydata }) => {
     //     }
     // };
 
-    const handleSubmit = async (value: Country) => {
+    const handleSubmit = async (value: CountryEntity) => {
         if (value.name === '' || value.name == null) {
             showMessage('Enter country name', 'error');
             return false;
