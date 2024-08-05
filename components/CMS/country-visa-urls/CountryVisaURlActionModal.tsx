@@ -3,6 +3,7 @@ import ComponentsFormsFileUploadMulti from '../../Reusable/file-upload/component
 import ComponentsFormsFileUploadSingle from '../../Reusable/file-upload/components-forms-file-upload-single';
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
+import SearchableDropdown from '@/components/Reusable/country-selector/CountrySearchDropdown';
 
 interface CountryVisaUrlActionModalProps {
     isOpen: any;
@@ -34,7 +35,8 @@ const CountryVisaUrlActionModal: React.FC<CountryVisaUrlActionModalProps> = ({ i
                 </div>
 
                 <div className="p-5">
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
+                    <SearchableDropdown addData={addData} setAddData={setAddData} />
+                    {/* <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="dropdown mb-5">
                             <label htmlFor="country">Country</label>
                             <select className="form-input" defaultValue="" id="country" value={addData?.country?.id} onChange={(e) => handleInputChange(e)}>
@@ -48,8 +50,8 @@ const CountryVisaUrlActionModal: React.FC<CountryVisaUrlActionModalProps> = ({ i
                                 ))}
                             </select>
                         </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
+                    </div> */}
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-1 mt-5 ">
                         <div className="mb-5 ">
                             <label htmlFor="url">Url</label>
                             <input id="url" type="text" onChange={(e) => handleInputChange(e)} value={addData?.url} placeholder="Enter Url" className="form-input" />

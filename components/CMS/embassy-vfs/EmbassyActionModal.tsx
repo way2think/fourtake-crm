@@ -6,6 +6,7 @@ import ComponentsFormsSelectMultiselect from '@/components/Reusable/select/compo
 import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
 import { stateCityData } from '@/utils/constant';
 import React, { useState, useEffect } from 'react';
+import SearchableDropdown from '@/components/Reusable/country-selector/CountrySearchDropdown';
 
 interface StateCities {
     [key: string]: string[];
@@ -33,12 +34,43 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
     const { data: countries, isLoading, isFetching } = useGetCountriesQuery(undefined);
     const { items = [], meta = {} } = countries || {};
     const options: OptionType[] = [
-        { value: 'Chennai', label: 'Chennai' },
-        { value: 'Vellore', label: 'Vellore' },
-        { value: 'Bengaluru', label: 'Bengaluru' },
-        { value: 'New Delhi', label: 'New Delhi' },
-        { value: 'Mangalore', label: 'Work Visa' },
+        { value: 'Andaman and Nicobar Islands', label: 'Andaman and Nicobar Islands' },
+        { value: 'Andhra Pradesh', label: 'Andhra Pradesh' },
+        { value: 'Arunachal Pradesh', label: 'Arunachal Pradesh' },
+        { value: 'Assam', label: 'Assam' },
+        { value: 'Bihar', label: 'Bihar' },
+        { value: 'Chandigarh', label: 'Chandigarh' },
+        { value: 'Chhattisgarh', label: 'Chhattisgarh' },
+        { value: 'Dadra and Nagar Haveli', label: 'Dadra and Nagar Haveli' },
+        { value: 'Daman and Diu', label: 'Daman and Diu' },
+        { value: 'Delhi', label: 'Delhi' },
+        { value: 'Goa', label: 'Goa' },
+        { value: 'Gujarat', label: 'Gujarat' },
+        { value: 'Haryana', label: 'Haryana' },
+        { value: 'Himachal Pradesh', label: 'Himachal Pradesh' },
+        { value: 'Jammu and Kashmir', label: 'Jammu and Kashmir' },
+        { value: 'Jharkhand', label: 'Jharkhand' },
+        { value: 'Karnataka', label: 'Karnataka' },
+        { value: 'Kerala', label: 'Kerala' },
+        { value: 'Madhya Pradesh', label: 'Madhya Pradesh' },
+        { value: 'Maharashtra', label: 'Maharashtra' },
+        { value: 'Meghalaya', label: 'Meghalaya' },
+        { value: 'Mizoram', label: 'Mizoram' },
         { value: 'Mumbai', label: 'Mumbai' },
+        { value: 'Nagaland', label: 'Nagaland' },
+        { value: 'Orissa', label: 'Orissa' },
+        { value: 'Puducherry', label: 'Puducherry' },
+        { value: 'Punjab', label: 'Punjab' },
+        { value: 'Rajasthan', label: 'Rajasthan' },
+        { value: 'Sikkim', label: 'Sikkim' }, 
+        { value: 'Tamil Nadu', label: 'Tamil Nadu' },
+        { value: 'Telangana', label: 'Telangana' },
+        { value: 'Tripura', label: 'Tripura' },
+        { value: 'Uttar Pradesh', label: 'Uttar Pradesh' },
+        { value: 'Uttarakhand', label: 'Uttarakhand' },
+        { value: 'Uttaranchal', label: 'Uttaranchal' },
+        { value: 'Uttarakhand', label: 'Uttarakhand' },
+        { value: 'West Bengal', label: 'West Bengal' },
     ];
     useEffect(() => {
         if (addData?.state) {
@@ -93,7 +125,8 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                                 <option value="vfs">VFS</option>
                             </select>
                         </div>
-                        <div className="dropdown">
+                        <SearchableDropdown addData={addData} setAddData={setAddData} />
+                        {/* <div className="dropdown">
                             <label htmlFor="visacountry"> Country</label>
                             <select className="form-input" defaultValue="" id="country" onChange={(e) => handleInputChange(e)} value={addData?.country?.id}>
                                 <option value="" disabled={true}>
@@ -105,7 +138,7 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                                     </option>
                                 ))}
                             </select>
-                        </div>
+                        </div> */}
                         <div className="dropdown">
                             <label htmlFor="jurisdiction">Jurisdiction</label>
                             <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-1 ">

@@ -73,6 +73,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         other: '',
     });
 
+    console.log("addData",addData)
+
     const [isImportOpen, setIsImportOpen] = useState(false);
     const [isOpenTrack, setIsOpenTrack] = useState(false);
     const router = useRouter();
@@ -142,10 +144,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({
 
         setTrack({ ...track, [id]: value });
     };
-
     const handleInputChange = (e: any) => {
         const { value, id, options } = e.target;
-        console.log('value', value, id);
 
         if (options) {
             // Handling multiple select options - array
@@ -349,11 +349,12 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                             Search
                         </button>
                     </div>
-                    <div>
+                    {/* Export will be uncommented once the client has updated all the data, then will modify export all the columns to import to main db (prod)  */}
+                    {/* <div>
                         <button type="button" className="btn btn-outline-primary" onClick={handleExport}>
                             Export to Excel
                         </button>
-                    </div>
+                    </div>  */}
                     {/* <div>
                         <button type="button" className="btn btn-primary" onClick={()=>setIsImportOpen(true)}>
                             Import

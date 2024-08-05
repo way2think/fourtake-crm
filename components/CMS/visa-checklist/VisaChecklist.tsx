@@ -20,9 +20,8 @@ const VisaChecklist: React.FC = () => {
     const { data, isFetching, isLoading } = useGetVisaChecklistQuery({ page, limit, sortField, sortOrder, search });
     const { items = [], meta = {} } = data || {};
 
-    const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
-    console.log('item visa checklist', items);
+    const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
     const exportColumns = ['country', 'visa_type', 'embassy_vfs'];
     const tableColumns = [
