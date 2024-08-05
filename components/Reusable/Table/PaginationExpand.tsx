@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import '@mantine/core/styles.layer.css';
 import 'mantine-datatable/styles.layer.css';
-import './paginationTable.css';
+import './paginationtable.css';
 
 import { showNotification } from '@mantine/notifications';
 import { DataTable } from 'mantine-datatable';
