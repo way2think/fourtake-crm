@@ -73,6 +73,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         other: '',
     });
 
+    console.log("addData",addData)
+
     const [isImportOpen, setIsImportOpen] = useState(false);
     const [isOpenTrack, setIsOpenTrack] = useState(false);
     const router = useRouter();
