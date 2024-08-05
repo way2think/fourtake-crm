@@ -1,4 +1,4 @@
-const getData = async ({ endpoint }) => {
+const getData = async ({ endpoint }: { endpoint: string }) => {
     console.log('env', `${process.env.API_BASE_URL}/${endpoint}`);
     try {
         const res = await fetch(`${process.env.API_BASE_URL}/${endpoint}`, {

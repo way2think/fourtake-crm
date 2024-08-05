@@ -28,8 +28,8 @@ interface PaginationTableProps {
     handleRestore?: (row: any) => void;
     handleListLine?: (row: any) => void;
     handleTracking?: (row: any) => void;
-    setPage: Function;
-    setLimit: Function;
+    setPage?: Function;
+    setLimit?: Function;
 }
 
 interface Row {
@@ -150,17 +150,23 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
 
     const handlePageChange = (pageNum: number) => {
         setPage(pageNum);
-        updatePage(pageNum);
+        if (updatePage) {
+            updatePage(pageNum);
+        }
     };
 
     const handlePageSizeChange = (size: number) => {
         const newTotalPages = Math.ceil((meta ? meta?.totalItems : data.length) / size);
         if (page > newTotalPages) {
             setPage(newTotalPages);
-            updatePage(newTotalPages);
+            if (updatePage) {
+                updatePage(newTotalPages);
+            }
         }
         setPageSize(size);
-        updatePageLimit(size);
+        if (updatePageLimit) {
+            updatePageLimit(size);
+        }
     };
 
     // const renderPageNumbers = () => {

@@ -152,18 +152,16 @@ const UserManagement: React.FC<{ userdata: any }> = ({ userdata }) => {
                     <span>User List</span>
                 </li>
             </ul>
-            <TableLayout
+            {/* <TableLayout
                 title="User"
-                setData={setData}
                 filterby="firstname"
                 handleDelete={handleDelete}
                 data={data}
-                totalPages={data?.length || 0}
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={UserManagementActionModal}
                 handleSubmit={handleSubmit}
-            />
+            /> */}
         </>
     );
 };

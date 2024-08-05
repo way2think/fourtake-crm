@@ -1,6 +1,4 @@
 import IconX from '@/components/icon/icon-x';
-import ComponentsFormsFileUploadMulti from '../../Reusable/file-upload/components-forms-file-upload-multi';
-import ComponentsFormsFileUploadSingle from '../../Reusable/file-upload/components-forms-file-upload-single';
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import ComponentsFormsSelectMultiselect from '@/components/Reusable/select/components-forms-select-multiselect';
 import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
@@ -62,7 +60,7 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
         { value: 'Puducherry', label: 'Puducherry' },
         { value: 'Punjab', label: 'Punjab' },
         { value: 'Rajasthan', label: 'Rajasthan' },
-        { value: 'Sikkim', label: 'Sikkim' }, 
+        { value: 'Sikkim', label: 'Sikkim' },
         { value: 'Tamil Nadu', label: 'Tamil Nadu' },
         { value: 'Telangana', label: 'Telangana' },
         { value: 'Tripura', label: 'Tripura' },

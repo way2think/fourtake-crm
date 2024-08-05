@@ -157,18 +157,16 @@ const DeletedApplication: React.FC<{ listapplication: any }> = ({ listapplicatio
 
     return (
         <>
-            <TableLayout
+            {/* <TableLayout
                 title="Deleted Application"
-                setData={setData}
                 filterby="country"
                 handleDelete={handleDelete}
                 data={data}
-                totalPages={data?.length || 0}
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={CountryActionModal}
                 handleSubmit={handleSubmit}
-            />
+            /> */}
         </>
     );
 };

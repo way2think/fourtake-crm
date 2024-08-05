@@ -2,7 +2,6 @@ import VisafeeEditorJodit from '@/components/Reusable/Markdown-Editor/VisafeeEdi
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import NewComponentsFormsFileUploadMultiple from '@/components/Reusable/file-upload/NewComponentsFormsFileUploadSingle';
 import IconX from '@/components/icon/icon-x';
-import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
 import { useGetEmbassyVfsQuery } from '@/services/api/cms/embassyVfsSlice';
 import { useGetVisaTypesQuery } from '@/services/api/cms/visaTypeSlice';
@@ -84,7 +83,7 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
             </div>
             <div className="p-5">
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                    <SearchableDropdown  addData={addData} setAddData={setAddData} handleEmbassyChange={handleEmbassyChange} />
+                    <SearchableDropdown addData={addData} setAddData={setAddData} handleEmbassyChange={handleEmbassyChange} />
                     {/* <div className="dropdown">
                         <label htmlFor="country">Countries*</label>
                         <select
@@ -165,9 +164,6 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                     </div>
                 </div>
                 <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-1">
-                    {/* <div className="mb-2">
-                        <ComponentsFormsFileUploadSingle setAddData={setAddData} addData={addData} />
-                    </div> */}
                     <div className="mb-2">
                         <NewComponentsFormsFileUploadMultiple setAddData={setAddData} addData={addData} />
                     </div>

@@ -141,12 +141,8 @@ const ComponentsModalOptionalSizes = () => {
                                                     </div>
                                                 </div>
                                                 <div className="grid grid-cols-1 gap-5 md:grid-cols-3 ">
-                                                    <div className="mb-5">
-                                                        <ComponentsFormsFileUploadsingle />
-                                                    </div>
-                                                    <div className="mb-5">
-                                                        <ComponentsFormsFileUploadMulti />
-                                                    </div>
+                                                    <div className="mb-5">{/* <ComponentsFormsFileUploadsingle /> */}</div>
+                                                    <div className="mb-5">{/* <ComponentsFormsFileUploadMulti /> */}</div>
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end">
                                                     <button onClick={() => setModal5(false)} type="button" className="btn btn-outline-danger">

@@ -144,7 +144,7 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
                         <Tab.Panels>
                             <Tab.Panel>
                                 <div className="active pt-5">
-                                    <TableLayout
+                                    {/* <TableLayout
                                         title="List Visa Application"
                                         setData={setData}
                                         filterby="country"
@@ -156,7 +156,7 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
                                         ActionModal={CountryActionModal}
                                         ActionModalListLine={ListVisaApplicationListLine}
                                         handleSubmit={handleSubmit}
-                                    />
+                                    /> */}
                                 </div>
                             </Tab.Panel>
                             <Tab.Panel>

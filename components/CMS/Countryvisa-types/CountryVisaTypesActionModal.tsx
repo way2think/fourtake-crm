@@ -1,6 +1,4 @@
 import IconX from '@/components/icon/icon-x';
-import ComponentsFormsFileUploadMulti from '../../Reusable/file-upload/components-forms-file-upload-multi';
-import ComponentsFormsFileUploadSingle from '../../Reusable/file-upload/components-forms-file-upload-single';
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import ComponentsFormsSelectMultiselect from '@/components/Reusable/select/components-forms-select-multiselect';
 import { useGetVisaTypesQuery } from '@/services/api/cms/visaTypeSlice';

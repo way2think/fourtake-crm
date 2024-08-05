@@ -149,7 +149,7 @@ const CmsTablesCountriesList = ({ title }: CmsTablesCountriesListProps) => {
                 <div className="mb-5 flex flex-col gap-5 md:flex-row md:items-center">
                     <h5 className="text-lg font-semibold dark:text-white-light">{title}</h5>
                     <div className="mb-0 flex items-start justify-center ltr:ml-auto rtl:mr-auto">
-                        <ComponentsModalOptionalSizes />
+                        {/* <ComponentsModalOptionalSizes /> */}
                         <button type="button" className="btn btn-primary mr-2">
                             <IconMenuDocumentation className="mr-2" /> Export to excell
                         </button>

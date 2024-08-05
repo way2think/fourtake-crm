@@ -13,7 +13,7 @@ import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { CountryVisaType } from '@/entities/country-visa-type.entity';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import { usePaginationOptions } from '@/hooks/usePaginationOptions';
-import CountryVisaTypeActionModal from '@/components/cms/countryvisa-types/CountryVisaTypesActionModal';
+import CountryVisaTypeActionModal from './CountryVisaTypesActionModal';
 
 const CountryVisaTypes: React.FC = () => {
     const [createCountryVisaType, {}] = useCreateCountryVisaTypeMutation();
@@ -25,7 +25,7 @@ const CountryVisaTypes: React.FC = () => {
     const { data, isFetching, isLoading } = useGetCountryVisaTypesQuery(undefined);
     const { items = [], meta = {} } = data || {};
 
-    console.log("time",items)
+    console.log('time', items);
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 

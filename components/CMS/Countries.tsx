@@ -1,33 +1,17 @@
 'use client';
-import IconFacebook from '@/components/icon/icon-facebook';
-import IconInstagram from '@/components/icon/icon-instagram';
-import IconLayoutGrid from '@/components/icon/icon-layout-grid';
-import IconLinkedin from '@/components/icon/icon-linkedin';
-import IconListCheck from '@/components/icon/icon-list-check';
+
 import IconSearch from '@/components/icon/icon-search';
-import IconTwitter from '@/components/icon/icon-twitter';
-import IconUser from '@/components/icon/icon-user';
 import IconUserPlus from '@/components/icon/icon-user-plus';
-import IconX from '@/components/icon/icon-x';
-import { Transition, Dialog } from '@headlessui/react';
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Swal from 'sweetalert2';
-import Dropdown from '../dropdown';
-import ElementsDropdownsBasic from '../Reusable/elements-dropdowns-basic';
-import ComponentsFormsSelectBasic from '../Reusable/select/components-forms-select-basic';
-import AddUserForm from '../user-management/AddUserForm';
-import { isValidEmail, isValidName, isValidPassword, isValidPhoneNumber } from '@/utils/validator';
+import { isValidPassword } from '@/utils/validator';
 import IconLockDots from '../icon/icon-lock-dots';
 
-import './pagination.css';
-import PaginationTable from '../Reusable/Table/PaginationTable';
-import ComponentsModalOptionalSizes from '../Reusable/Modal/components-modal-optional-sizes';
-import ComponentsFormsFileUploadSingle from '../Reusable/file-upload/components-forms-file-upload-single';
-import ComponentsFormsFileUploadMulti from '../Reusable/file-upload/components-forms-file-upload-multi';
 import IconPencil from '@/components/icon/icon-pencil';
 import IconTrashLines from '@/components/icon/icon-trash-lines';
 import { exportToExcel } from '../Reusable/ExportExcel/exportToExcel';
-import ActionModal from '../Reusable/Modal/ActionModal';
+
+import './pagination.css';
 
 const Countries = () => {
     const [addContactModal, setAddContactModal] = useState<any>(false);
@@ -355,7 +339,7 @@ const Countries = () => {
                 </div>
             </div>
             {/* <ComponentsModalOptionalSizes /> */}
-            <PaginationTable data={contactList} />
+            {/* <PaginationTable data={contactList} /> */}
             {/* <ActionModal addContactModal={addContactModal} setAddContactModal={setAddContactModal} saveUser={saveUser} /> */}
 
             {/* <Transition appear show={addContactModal} as={Fragment}>
