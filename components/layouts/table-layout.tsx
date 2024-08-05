@@ -142,10 +142,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({
 
         setTrack({ ...track, [id]: value });
     };
-
     const handleInputChange = (e: any) => {
         const { value, id, options } = e.target;
-        console.log('value', value, id);
 
         if (options) {
             // Handling multiple select options - array

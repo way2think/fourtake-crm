@@ -7,6 +7,7 @@ import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
 import { useGetEmbassyVfsQuery } from '@/services/api/cms/embassyVfsSlice';
 import { useGetVisaTypesQuery } from '@/services/api/cms/visaTypeSlice';
 import { useEffect, useMemo, useState } from 'react';
+import SearchableDropdown from '../../Reusable/country-selector/CountrySearchDropdown';
 
 interface VisaChecklistActionModalProps {
     isOpen: any;
@@ -26,17 +27,15 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
     const { data: visatypes } = useGetVisaTypesQuery({ page: 0, limit: 0, sortField: 'id' });
     const { data: embassy } = useGetEmbassyVfsQuery({ page: 0, limit: 0 });
 
+    console.log('addData', addData);
     const embassyData = useMemo(() => {
         return embassy?.items?.map((item: any) => item.type === 'embassy' && item);
     }, [embassy]);
 
     useEffect(() => {
-        console.log('addData', addData);
         if (addData?.country?.id) {
             const filteredEmbassies = embassyData.filter((item: any) => item?.country?.id === +addData.country.id);
             setEmbassyFilter(filteredEmbassies);
-
-            console.log('fil', filteredEmbassies);
         }
     }, [addData, embassyData]);
 
@@ -49,10 +48,9 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
     //     }
     // }, [ addData.country,addData]);
 
-    const handleEmbassyChange = (e: any) => {
+    const handleEmbassyChange = (option: any) => {
         const filteredEmbassies = embassyData.filter((item: any) => {
-            console.log('country', typeof +e.target.value, typeof item?.country?.id);
-            return item?.country?.id === +e.target.value;
+            return item?.country?.id == option.id;
         });
         setEmbassyFilter(filteredEmbassies);
     };
@@ -86,7 +84,8 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
             </div>
             <div className="p-5">
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                    <div className="dropdown">
+                    <SearchableDropdown  addData={addData} setAddData={setAddData} handleEmbassyChange={handleEmbassyChange} />
+                    {/* <div className="dropdown">
                         <label htmlFor="country">Countries*</label>
                         <select
                             className="form-input"
@@ -107,10 +106,10 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                                 </option>
                             ))}
                         </select>
-                    </div>
-                    <div className="dropdown">
+                    </div> */}
+                    <div className="dropdown ">
                         <label htmlFor=" visa_type">Visa Type*</label>
-                        <select className="form-input" defaultValue="" id="visa_type" value={addData?.visa_type?.id} onChange={(e) => handleInputChange(e)}>
+                        <select className="form-input p-3" defaultValue="" id="visa_type" value={addData?.visa_type?.id} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled>
                                 Select Visa Type
                             </option>
