@@ -228,9 +228,9 @@ const Sidebar = () => {
                                         <li>
                                             <Link href="/countries-list">Countries List</Link>
                                         </li>
-                                        {/* <li>
+                                        <li>
                                             <Link href="/visa-checklist">Visa Checklist</Link>{' '}
-                                        </li> */}
+                                        </li>
                                         <li>
                                             <Link href="/embassy-vfs">Embassy / VFS</Link>
                                         </li>
