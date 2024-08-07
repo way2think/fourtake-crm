@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '@/components/Reusable/country-selector/CountrySearchDropdown.css';
-import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
 
 interface Option {
     id: number | string;
@@ -8,16 +7,14 @@ interface Option {
 }
 
 interface SearchableDropdownProps {
-    // options: Option[];
     addData: any;
     setAddData: any;
     handleEmbassyChange?: any;
+    items: any; // Update this to match the correct type
+    setVisaTypes: any;
 }
 
-const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, setAddData, handleEmbassyChange }) => {
-    const { data: countries, isLoading, isFetching } = useGetCountriesQuery({ page: 0, limit: 0 });
-    const { items = [], meta = {} } = countries || {};
-
+const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, setAddData, handleEmbassyChange, items ,setVisaTypes}) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [filteredOptions, setFilteredOptions] = useState<Option[]>(items);
@@ -59,6 +56,8 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
     };
 
     const handleOptionClick = (option: Option) => {
+        const index = items.findIndex((cv: any) => cv.id == option.id);
+        setVisaTypes(items[index].country_visa_types);
         setSearchTerm(option.name);
         setAddData({ ...addData, country: option.id });
         setIsOpen(false);
@@ -79,7 +78,10 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
             {isOpen && (
                 <ul className="options-list list-group m-3">
                     {filteredOptions.map((option) => (
-                        <li key={option.id} onClick={() => handleOptionClick(option)}>
+                        <li key={option.id} onClick={() => {
+                            handleOptionClick(option)
+
+                            }}>
                             {option.name}
                         </li>
                     ))}
