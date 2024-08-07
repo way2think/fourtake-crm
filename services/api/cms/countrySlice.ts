@@ -21,7 +21,7 @@ export const countrySlice = apiSlice.injectEndpoints({
                 return {
                     method: 'POST',
                     url: `/cms/country`,
-                    body,
+                    body: bodyFormData,
                 };
             },
             invalidatesTags: [{ type: 'Country', id: 'LIST' }],
@@ -52,36 +52,22 @@ export const countrySlice = apiSlice.injectEndpoints({
         updateCountry: build.mutation({
             query: ({ id, body }) => {
                 const bodyFormData = new FormData();
-                // Object.entries(body).forEach(([key, value]) => {
-                //     if (value !== undefined && value !== null) {
-                //         // Ensure value is either a string or Blob before appending
-                //         if (typeof value === 'string' || value instanceof Blob) {
-                //             bodyFormData.append(key, value);
-                //         } else {
-                //             console.warn(`Value for ${key} is not a string or Blob and will not be appended.`);
-                //         }
-                //     }
-                // });
 
-                // for (const key in body) {
-                //     if (body.hasOwnProperty(key) && body[key] !== undefined && body[key] !== null) {
-                //         bodyFormData.append(key, body[key]);
-                //     }
-                // }
-
-                if (body.flag) {
-                    console.log("inside")
-                    bodyFormData.append('flag', body.flag);
-                  }
-                console.log('bodyFormData', bodyFormData,body.flag);
+                Object.entries(body).forEach(([key, value]) => {
+                    if (value !== undefined && value !== null) {
+                        // Ensure value is either a string or Blob before appending
+                        if (typeof value === 'string' || value instanceof Blob) {
+                            bodyFormData.append(key, value);
+                        } else {
+                            console.warn(`Value for ${key} is not a string or Blob and will not be appended.`);
+                        }
+                    }
+                });
 
                 return {
                     method: 'PATCH',
                     url: `/cms/country/${id}`,
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                      },
-                    body,
+                    body: bodyFormData,
                 };
             },
             invalidatesTags: (result, error, { id }) => [{ type: 'Country', id }],
