@@ -94,6 +94,12 @@
     -webkit-animation-duration: calc(var(--animate-duration) * 3);
     animation-duration: calc(var(--animate-duration) * 3);
 }
+.css-3w2yfm-ValueContainer {
+    max-height: 100px;
+    overflow: scroll !important;
+}
+
+
 @media (prefers-reduced-motion: reduce), print {
     .animate__animated {
         -webkit-animation-duration: 1ms !important;
