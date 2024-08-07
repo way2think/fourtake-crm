@@ -17,15 +17,28 @@ interface ComponentsFormsSelectMultiselectProps {
 const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselectProps> = ({ options, addData, setAddData, id }) => {
     const [selectedOptions, setSelectedOptions] = useState<OptionType[]>([]);
 
-    useEffect(() => {
-        if (Array.isArray(addData.country_visa_types)) {
-            const selectedIds = addData.country_visa_types.map((item: any) => item.name);
-            const arr = options.filter((item: any) => selectedIds.includes(item.label));
-            setSelectedOptions(arr);
+    console.log('addData', addData.jurisdiction);
+    console.log('selectedOptions', selectedOptions);
 
-            console.log('arr', arr, options);
+    // useEffect(() => {
+    //     if (Array.isArray(addData.jurisdiction) ) {
+    //         const selectedIds = addData?.jurisdiction.map((item: any) => item);
+    //         const arr = options.filter((item: any) => selectedIds.includes(item.label));
+    //         setSelectedOptions(arr);
+
+    //         console.log('arr', arr);
+    //     } else {
+    //         setSelectedOptions([]); // or handle as needed
+    //     }
+    // }, [addData.jurisdiction]);
+
+    useEffect(() => {
+        if (Array.isArray(addData[id])) {
+            const selectedValues = addData[id];
+            const selected = options.filter((option: any) => selectedValues.includes(option.value));
+            setSelectedOptions(selected);
         } else {
-            setSelectedOptions([]); // or handle as needed
+            setSelectedOptions([]);
         }
     }, []);
 
@@ -45,6 +58,7 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
             setSelectedOptions(selected as OptionType[]);
             setAddData((prev: any) => ({ ...prev, [id]: getValue }));
             console.log('3');
+            console.log('getValue', getValue);
         }
     };
 
@@ -60,15 +74,34 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
     };
 
     // Custom styles for react-select
+    // const customStyles: any = {
+    //     menu: (provided: any) => ({
+    //         ...provided,
+    //         maxHeight: '500px',
+    //         overflowY: 'auto', // Enable vertical scrolling
+    //         zIndex: 9999, // Ensure the dropdown menu appears above other elements
+    //     }),
+    //     menuPortal: (provided: any) => ({
+    //         ...provided,
+    //         zIndex: 9999, // Ensure the dropdown menu portal appears above other elements
+    //     }),
+    // };
+
     const customStyles: any = {
         menu: (provided: any) => ({
             ...provided,
-            overflowY: 'auto', // Enable vertical scrolling
+            maxHeight: '200px', // Set the maximum height for the dropdown menu
+            overflow: 'scroll', // Enable vertical scrolling
             zIndex: 9999, // Ensure the dropdown menu appears above other elements
         }),
         menuPortal: (provided: any) => ({
             ...provided,
             zIndex: 9999, // Ensure the dropdown menu portal appears above other elements
+        }),
+        multiValueContainer: (provided: any) => ({
+            ...provided,
+            maxHeight: '100px', // Set maximum height for the selected options
+            overflow: 'scroll', // Enable vertical scrolling
         }),
     };
 
@@ -114,7 +147,7 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
                 onChange={handleChange}
                 menuPortalTarget={document.body} // Append menu to the body to avoid clipping
                 closeMenuOnSelect={false} // Keep the menu open when selecting options
-                hideSelectedOptions={false}
+                hideSelectedOptions={true}
             />
         </div>
     );

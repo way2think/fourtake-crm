@@ -1,6 +1,4 @@
 import React, { ChangeEvent, useState, useRef, useEffect } from 'react';
-import PaginationTable from '../Table/PaginationTable';
-import { render } from '@headlessui/react/dist/utils/render';
 import './NewComponentsFormsFileUploadSingle.css';
 import { Form } from '@/entities/form.entity';
 import { handleDelete } from '@/utils/rtk-http';

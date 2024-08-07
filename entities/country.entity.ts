@@ -14,5 +14,6 @@ export interface Country {
     is_popular?: boolean;
     is_outsource_application_center?: boolean;
     is_jurisdiction?: boolean;
-    flag?: string;
+    flag?: any;
+    image?: any;
 }
