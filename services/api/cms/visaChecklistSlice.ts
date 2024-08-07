@@ -20,8 +20,8 @@ export const visaChecklistSlice = apiSlice.injectEndpoints({
                 }
 
                 return {
-                    url: '/cms/visa-checklist',
                     method: 'POST',
+                    url: '/cms/visa-checklist',
                     body: bodyFormData,
                 };
             },
@@ -91,7 +91,6 @@ export const visaChecklistSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: (result, error, { id }) => [{ type: 'VisaChecklist', id }],
         }),
-       
     }),
 });
 
