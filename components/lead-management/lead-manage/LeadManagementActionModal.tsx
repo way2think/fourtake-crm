@@ -305,7 +305,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <label htmlFor="numberofapplicants">No of Applicants </label>
+                            <label htmlFor="numberofapplicants">No of Applicants</label>
                             <input
                                 id="numberofapplicants"
                                 value={addData?.numberofapplicants}

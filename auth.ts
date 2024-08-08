@@ -118,36 +118,42 @@ export const { handlers, auth, signIn } = NextAuth({
                     credentials: 'include', // This is important to include cookies
                 });
 
-                const apiCookies = res.headers.getSetCookie();
-                console.log('auth-res', apiCookies);
+                console.log('auth-res-headers', res.headers, res.headers.get('set-cookie'));
+                // const apiCookies = res.headers.getSetCookie();
+                // console.log('auth-res', apiCookies);
 
-                if (apiCookies && apiCookies.length > 0) {
-                    apiCookies.forEach((cookie) => {
-                        const parsedCookie = parse(cookie);
-                        const [cookieName, cookieValue] = Object.entries(parsedCookie)[0];
-                        const httpOnly = cookie.includes('HttpOnly;') || cookie.includes('httponly;');
+                // if (apiCookies && apiCookies.length > 0) {
+                //     apiCookies.forEach((cookie) => {
 
-                        console.log('parse', parsedCookie, cookieName, cookieValue, httpOnly);
-                        // cookies().set({
-                        //     // name: cookieName,
-                        //     // value: cookieValue,
-                        //     // httpOnly: httpOnly,
-                        //     // maxAge: parseInt(parsedCookie['Max-Age']),
-                        //     // path: parsedCookie.path,
-                        //     // sameSite: parsedCookie.samesite,
-                        //     // expires: new Date(parsedCookie.expires),
-                        //     // secure: true,
-                        // });
+                //     });
+                // }
+                const cookie = res.headers.get('set-cookie');
+                if (cookie) {
+                    const parsedCookie = parse(cookie);
+                    const [cookieName, cookieValue] = Object.entries(parsedCookie)[0];
+                    const httpOnly = cookie.includes('HttpOnly;') || cookie.includes('httponly;');
 
-                        cookies().set({
-                            name: cookieName,
-                            value: cookieValue,
-                            httpOnly: httpOnly,
-                            path: parsedCookie.Path || parsedCookie.path,
-                            sameSite: 'strict',
-                            // secure: true,
-                            // maxAge: parseInt(parsedCookie['Max-Age']),
-                        });
+                    console.log('parse', parsedCookie, cookieName, cookieValue, httpOnly);
+                    // cookies().set({
+                    //     // name: cookieName,
+                    //     // value: cookieValue,
+                    //     // httpOnly: httpOnly,
+                    //     // maxAge: parseInt(parsedCookie['Max-Age']),
+                    //     // path: parsedCookie.path,
+                    //     // sameSite: parsedCookie.samesite,
+                    //     // expires: new Date(parsedCookie.expires),
+                    //     // secure: true,
+                    // });
+
+                    cookies().set({
+                        name: cookieName,
+                        value: cookieValue,
+                        httpOnly: httpOnly,
+                        path: parsedCookie.Path || parsedCookie.path,
+                        sameSite: 'strict',
+                        // secure: true,
+                        // maxAge: parseInt(parsedCookie['Max-Age']),
+                        // expires: new Date(parsedCookie.expires),
                     });
                 }
 
