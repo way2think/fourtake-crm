@@ -1,6 +1,7 @@
 import React from 'react';
 import ActionModal from '../Reusable/Modal/ActionModal';
 import IconX from '../icon/icon-x';
+import { roles } from '@/entities/role.entity';
 
 interface UserManagementActionModalProps {
     isOpen: any;
@@ -18,6 +19,7 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
         const { id, checked } = e.target;
         setAddData((prev: any) => ({ ...prev, [id]: checked }));
     };
+
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
@@ -40,11 +42,11 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
                             <label htmlFor="firstname">First Name</label>
-                            <input id="firstname" type="text" placeholder="Enter First Name" className="form-input" value={addData?.firstname} onChange={(e) => handleInputChange(e)} />
+                            <input id="first_name" type="text" placeholder="Enter First Name" className="form-input" value={addData?.first_name} onChange={(e) => handleInputChange(e)} />
                         </div>
                         <div className="mb-5">
                             <label htmlFor="lastname">Last Name </label>
-                            <input id="lastname" type="text" onChange={(e) => handleInputChange(e)} value={addData?.lastname} placeholder="Enter Last Name" className="form-input" />
+                            <input id="last_name" type="text" onChange={(e) => handleInputChange(e)} value={addData?.last_name} placeholder="Enter Last Name" className="form-input" />
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
@@ -108,26 +110,19 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                                 <option value="" disabled={true}>
                                     Select Role
                                 </option>
-                                <option value="admin">Admin</option>
-                                <option value="employee">Employee</option>
-                                <option value="accountant">Accountant</option>
-                                <option value="agent">Agent</option>
-                                <option value="corporate">Corporate</option>
+                                {roles.map((role) => (
+                                    <option key={role.name} value={role.value}>
+                                        {role.name}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                     </div>
                     <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5 mt-8">
                             <label className="flex cursor-pointer items-center">
-                                <input
-                                    type="checkbox"
-                                    id="status"
-                                    // value={addData?.ispopular}
-                                    onChange={(e) => handleCheckBoxChange(e)}
-                                    checked={addData?.status || false}
-                                    className="form-checkbox  bg-white dark:bg-black"
-                                />
-                                <span className="text-white-dark">IsActive </span>
+                                <input type="checkbox" id="status" onChange={(e) => handleCheckBoxChange(e)} checked={addData?.is_active || false} className="form-checkbox  bg-white dark:bg-black" />
+                                <span className="text-white-dark">Active</span>
                             </label>
                         </div>
                     </div>

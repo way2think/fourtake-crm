@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { showMessage } from '@/utils/notification';
 // import Tabs from '../Reusable/Tabs/Tabs';
 
-const ComponentsAuthLoginForm = () => {
+const ComponentsAuthLoginForm = ({ type }: { type: string }) => {
     const router = useRouter();
 
     const [username, setUsername] = useState('');
@@ -29,6 +29,7 @@ const ComponentsAuthLoginForm = () => {
             const result = await signIn('local', {
                 username,
                 password,
+                type,
                 redirect: false,
             });
             console.log('res: ', result);

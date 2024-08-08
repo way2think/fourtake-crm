@@ -34,6 +34,7 @@ import IconMenuMore from '@/components/icon/menu/icon-menu-more';
 import { usePathname, useRouter } from 'next/navigation';
 import { getTranslation } from '@/i18n';
 import { signOut } from 'next-auth/react';
+import Cookies from 'js-cookie';
 import { useLogoutMutation } from '@/services/api/apiSlice';
 import { showMessage } from '@/utils/notification';
 
@@ -158,6 +159,10 @@ const Header = () => {
             // console.log('ressss: ', res?.data.message);
 
             alert(res?.data.message);
+
+            // Cookies.remove('jwt-refresh-token', { path: '/', sameSite: 'Strict' });
+            // not working
+
             // debugger;
             await signOut();
             // console.log('res', res1);

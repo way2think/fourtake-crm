@@ -12,132 +12,122 @@ import Swal from 'sweetalert2';
 import { showMessage } from '@/utils/notification';
 import UserManagementActionModal from './UserManagementActionModal';
 import Link from 'next/link';
+import { usePaginationOptions } from '@/hooks/usePaginationOptions';
+import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
+import { useCreateUserMutation, useDeleteUserMutation, useGetUsersQuery, userSlice, useUpdateUserMutation } from '@/services/api/userSlice';
+import { User } from 'next-auth';
+import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
+import { rolesObject } from '@/entities/role.entity';
 
-// const getServerData = async () => {
-//     return await getData({ endpoint: 'http://localhost:5001/center' });
-// };
-const UserManagement: React.FC<{ userdata: any }> = ({ userdata }) => {
-    const [data, setData] = useState(userdata);
-    // const { data, isError, error } = use(getServerData());
-    // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
-    // // console.log('dataaaa: ', data);
-    // if (isError) {
-    //     console.log(error.message);
-    // }
+const UserManagement: React.FC = () => {
+    const [createUser, {}] = useCreateUserMutation();
+    const [updateUser, {}] = useUpdateUserMutation();
+    const [deleteUser, {}] = useDeleteUserMutation();
 
-    // userid: '1',
-    // usertype: 'Business',
-    // firstname: 'alan',
-    // lastname: 'james',
-    // email: 'alan@gmail.com',
-    // center: 'Bangalore',
-    // status: 'active',
-    // phone: '9874563215',
-    // password: 'way2think',
-    // confirmpassword: 'way2think',
-    // address: 'No.21 NY Street',
+    const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
-    // const getUser = async () => {
-    //     try {
-    //         const response = await getData({ endpoint: 'user' });
-    //         if (!response.isError) {
-    //             console.log('User data:', response.data);
-    //         } else {
-    //             console.error('Error fetching user data:', response.error);
-    //         }
-    //     } catch (error) {
-    //         console.error('Unexpected error:', error);
-    //     }
-    // };
+    const { data: countries, isFetching, isLoading } = useGetUsersQuery({ page, limit, sortField, sortOrder, search });
+    const { items = [], meta = {} } = countries || {};
+
+    // console.log('users', items);
+
+    const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
     const tableColumns = [
-        { accessor: 'id', textAlign: 'left', title: 'ID' },
+        { accessor: 'username', textAlign: 'left', title: 'Username' },
 
-        { accessor: 'firstname', textAlign: 'left', title: 'First Name' },
-        { accessor: 'lastname', textAlign: 'left', title: 'Last Name' },
-        { accessor: 'apptype', textAlign: 'left', title: 'Applicant Type' },
+        { accessor: 'first_name', textAlign: 'left', title: 'First Name' },
+        { accessor: 'last_name', textAlign: 'left', title: 'Last Name' },
+        // { accessor: 'apptype', textAlign: 'left', title: 'Applicant Type' },
         // { accessor: 'email', textAlign: 'left', title: 'Email' },
-        { accessor: 'center', textAlign: 'left', title: 'Center' },
+        {
+            accessor: 'center',
+            textAlign: 'left',
+            title: 'Center',
+            render: ({ center }: { center: any }) => {
+                return center.name;
+            },
+        },
         // { accessor: 'status', textAlign: 'left', title: 'status' },
         { accessor: 'phone', textAlign: 'left', title: 'phone' },
-        { accessor: 'role', textAlign: 'left', title: 'Role' },
+        {
+            accessor: 'role',
+            textAlign: 'left',
+            title: 'Role',
+            render: ({ role }: { role: string }) => {
+                return rolesObject[role];
+            },
+        },
         {
             accessor: 'status',
             textAlign: 'left',
             title: 'status',
-            render: ({ status }: { status: any }) => {
-                return status == true ? 'Active' : 'InActive';
+            render: ({ is_active }: { is_active: boolean }) => {
+                return is_active == true ? 'Active' : 'InActive';
             },
         },
     ];
 
-    const handleDelete = (row: any) => {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            showCancelButton: true,
-            confirmButtonText: 'Delete',
-            padding: '2em',
-            customClass: 'sweet-alerts',
-        }).then((result) => {
-            if (result.value) {
-                setData(data.filter((item: any) => item.id !== row.id));
-                Swal.fire({ title: 'Deleted!', text: 'Your file has been deleted.', icon: 'success', customClass: 'sweet-alerts' });
-                return true;
-            }
+    const exportColumns = ['id', 'first_name', 'last_name', 'email', 'center', 'status', 'phone', 'address'];
+
+    const handleDeleteUser = (user: User) =>
+        handleDelete({
+            deleteMutation: deleteUser,
+            item: user,
+            items,
+            meta,
+            handleLocalUpdate: handleLocalRTKUpdate,
+            apiObjectRef: userSlice,
+            endpoint: 'getUsers',
         });
-    };
 
-    const exportColumns = ['id', 'apptype', 'firstname', 'lastname', 'email', 'center', 'status', 'phone', 'address'];
-
-    const handleSubmit = (value: any) => {
-        if (value.firstname == '' || value.firstname == null) {
-            showMessage('Enter First name', 'error');
-            return false;
-        }
-
-        if (value.lastname == '' || value.lastname == null) {
-            showMessage('Enter Last name', 'error');
-            return false;
-        }
-        if (value.email == '' || value.email == null) {
-            showMessage('Enter Email', 'error');
-            return false;
-        }
-        if (value.password == '' || value.password == null) {
-            showMessage('Enter Password', 'error');
-            return false;
-        }
-        if (value.confirmpassword == '' || value.confirmpassword == null) {
-            showMessage('Enter Confirm Password ', 'error');
-            return false;
-        }
-        if (value.password !== value.confirmpassword) {
-            showMessage('Passwords should match ', 'error');
-            return false;
-        }
-
-        if (value.id) {
-            //update user
-            const updatedData = data.map((d: any) => (d.id === value.id ? { ...d, ...value } : d));
-            setData(updatedData);
-
-            return updatedData;
-        } else {
-            //add user
-            const maxUserId = data.length ? Math.max(...data.map((d: any) => d.id)) : 0;
-            const newUser = {
-                ...value,
-                id: +maxUserId + 1,
-            };
-            setData([...data, newUser]);
-            return newUser;
-        }
-
-        // showMessage('User has been saved successfully.');
-        // setAddContactModal(false);
-        // setIsEdit(false);
+    const handleSubmit = (value: User) => {
+        console.log('value: ', value);
+        // if (value.firstname == '' || value.firstname == null) {
+        //     showMessage('Enter First name', 'error');
+        //     return false;
+        // }
+        // if (value.lastname == '' || value.lastname == null) {
+        //     showMessage('Enter Last name', 'error');
+        //     return false;
+        // }
+        // if (value.email == '' || value.email == null) {
+        //     showMessage('Enter Email', 'error');
+        //     return false;
+        // }
+        // if (value.password == '' || value.password == null) {
+        //     showMessage('Enter Password', 'error');
+        //     return false;
+        // }
+        // if (value.confirmpassword == '' || value.confirmpassword == null) {
+        //     showMessage('Enter Confirm Password ', 'error');
+        //     return false;
+        // }
+        // if (value.password !== value.confirmpassword) {
+        //     showMessage('Passwords should match ', 'error');
+        //     return false;
+        // }
+        // if (value.id) {
+        //     return handleUpdate({
+        //         updateMutation: updateUser,
+        //         value,
+        //         items,
+        //         meta,
+        //         handleLocalUpdate: handleLocalRTKUpdate,
+        //         apiObjectRef: userSlice,
+        //         endpoint: 'getUsers',
+        //     });
+        // } else {
+        //     return handleCreate({
+        //         createMutation: createUser,
+        //         value,
+        //         items,
+        //         meta,
+        //         handleLocalUpdate: handleLocalRTKUpdate,
+        //         apiObjectRef: userSlice,
+        //         endpoint: 'getUsers',
+        //     });
+        // }
     };
 
     return (
@@ -152,16 +142,21 @@ const UserManagement: React.FC<{ userdata: any }> = ({ userdata }) => {
                     <span>User List</span>
                 </li>
             </ul>
-            {/* <TableLayout
+
+            <TableLayout
                 title="User"
                 filterby="firstname"
-                handleDelete={handleDelete}
-                data={data}
+                handleDelete={handleDeleteUser}
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={UserManagementActionModal}
                 handleSubmit={handleSubmit}
-            /> */}
+                data={items}
+                meta={meta}
+                setSearch={setSearch}
+                setPage={setPage}
+                setLimit={setLimit}
+            />
         </>
     );
 };
