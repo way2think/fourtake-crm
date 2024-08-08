@@ -11,10 +11,10 @@ interface SearchableDropdownProps {
     setAddData: any;
     handleEmbassyChange?: any;
     items: any; // Update this to match the correct type
-    setVisaTypes: any;
+    setVisaTypes?: any;
 }
 
-const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, setAddData, handleEmbassyChange, items ,setVisaTypes}) => {
+const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, setAddData, handleEmbassyChange, items, setVisaTypes }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [filteredOptions, setFilteredOptions] = useState<Option[]>(items);
@@ -41,6 +41,7 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
         }
     }, [addData.country, items]);
 
+
     useEffect(() => {
         if (searchTerm) {
             setFilteredOptions(items.filter((option: Option) => option.name.toLowerCase().includes(searchTerm.toLowerCase())));
@@ -55,9 +56,16 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
         setIsOpen(true);
     };
 
+
+
+    
+
     const handleOptionClick = (option: Option) => {
         const index = items.findIndex((cv: any) => cv.id == option.id);
-        setVisaTypes(items[index].country_visa_types);
+        if (setVisaTypes !== undefined) {
+            console.log('visaTypes', setVisaTypes);
+            setVisaTypes(items[index].country_visa_types);
+        }
         setSearchTerm(option.name);
         setAddData({ ...addData, country: option.id });
         setIsOpen(false);
@@ -78,10 +86,12 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
             {isOpen && (
                 <ul className="options-list list-group m-3">
                     {filteredOptions.map((option) => (
-                        <li key={option.id} onClick={() => {
-                            handleOptionClick(option)
-
-                            }}>
+                        <li
+                            key={option.id}
+                            onClick={() => {
+                                handleOptionClick(option);
+                            }}
+                        >
                             {option.name}
                         </li>
                     ))}

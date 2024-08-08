@@ -56,7 +56,8 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
     const [page, setPage] = useState(meta?.currentPage || 1);
 
     const paginationPages = usePagination(meta ? { currentPage: page, pageSize: meta?.itemsPerPage, totalCount: meta?.totalItems } : { currentPage: 1, pageSize: 10, totalCount: 1 }); // to generate page numbers
-    // console.log('meta: ', meta, data);
+
+    // console.log('paginationPages: ', paginationPages, meta?.totalItems);
 
     // const totalPages = useMemo(() => Math.ceil(data.length / pageSize), [data.length, pageSize]);
     const totalPages = 100;
@@ -169,6 +170,8 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
         }
     };
 
+    const lastPage = paginationPages?.[paginationPages.length - 1] ?? null;
+
     // const renderPageNumbers = () => {
     //     const pageNumbers = [];
     //     const maxPagesToShow = 5;
@@ -255,7 +258,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                     {paginationPages?.map((page) => (
                         <button
                             key={page}
-                            onClick={() => handlePageChange(page)}
+                            onClick={page !== '...' ? () => handlePageChange(page) : undefined}
                             style={{
                                 marginRight: '8px',
                                 backgroundColor: meta?.currentPage === page ? '#ddd' : '#fff',
@@ -267,16 +270,19 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                             {page}
                         </button>
                     ))}
-                    <button
-                        onClick={() => handlePageChange(page + 1)}
-                        disabled={page === totalPages}
-                        style={{
-                            marginRight: '8px',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        <IconCaretDown className="-rotate-90 rtl:rotate-90" size={16} />
-                    </button>
+
+                    {
+                        <button
+                            onClick={page === lastPage ? undefined : () => handlePageChange(page + 1)}
+                            disabled={page === totalPages}
+                            style={{
+                                marginRight: '8px',
+                                cursor: 'pointer',
+                            }}
+                        >
+                            <IconCaretDown className="-rotate-90 rtl:rotate-90" size={16} />
+                        </button>
+                    }
                 </div>
             </div>
         </div>

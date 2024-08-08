@@ -40,12 +40,11 @@ const Sidebar = () => {
             });
         }
 
-        if(currentMenu=="User List") {
-            setIsAciveCondition('active')
-
-        }if(currentMenu=="Lead Management") {
-            setIsAciveCondition('active')
-            
+        if (currentMenu == 'User List') {
+            setIsAciveCondition('active');
+        }
+        if (currentMenu == 'Lead Management') {
+            setIsAciveCondition('active');
         }
 
         // if(value !== value) {
@@ -54,7 +53,7 @@ const Sidebar = () => {
         //      });
         // }
 
-        console.log(currentMenu);
+        // console.log(currentMenu);
     };
 
     useEffect(() => {
@@ -151,7 +150,11 @@ const Sidebar = () => {
                                     </div>
                                 </button> */}
 
-                                <Link href="/user-list" className={`${currentMenu === 'User List' || isAciveCondition === 'active' ? 'active' : ''} nav-link group w-full nabarbuttoncustom`} onClick={() => toggleMenu('1User List')}>
+                                <Link
+                                    href="/user-list"
+                                    className={`${currentMenu === 'User List' || isAciveCondition === 'active' ? 'active' : ''} nav-link nabarbuttoncustom group w-full`}
+                                    onClick={() => toggleMenu('1User List')}
+                                >
                                     <div className="flex items-center">
                                         <IconMenuUsers className="shrink-0 !text-[#000] " />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
@@ -180,7 +183,11 @@ const Sidebar = () => {
                                 </AnimateHeight> */}
                             </li>
                             <li className="menu nav-item">
-                                <Link href="/lead-list" className={`${currentMenu === 'Lead Management' || isAciveCondition === 'active' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('1Lead Management')}>
+                                <Link
+                                    href="/lead-list"
+                                    className={`${currentMenu === 'Lead Management' || isAciveCondition === 'active' ? 'active' : ''} nav-link group w-full`}
+                                    onClick={() => toggleMenu('1Lead Management')}
+                                >
                                     <div className="flex items-center">
                                         <IconMenuElements className="shrink-0 !text-[#000] " />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">

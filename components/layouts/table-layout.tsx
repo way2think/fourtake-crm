@@ -73,7 +73,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         other: '',
     });
 
-    console.log("addData",addData)
+    // console.log("addData",addData)
 
     const [isImportOpen, setIsImportOpen] = useState(false);
     const [isOpenTrack, setIsOpenTrack] = useState(false);
@@ -222,7 +222,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
             const worksheet = workbook.Sheets[firstSheetName];
             const parsedData = XLSX.utils.sheet_to_json(worksheet);
             // setData(parsedData);
-            console.log('import data', parsedData);
+            // console.log('import data', parsedData);
         };
 
         reader.readAsArrayBuffer(file);

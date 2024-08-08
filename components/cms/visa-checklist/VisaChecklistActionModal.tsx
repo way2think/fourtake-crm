@@ -31,10 +31,26 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
     const embassyData = useMemo(() => {
         return embassy?.items?.map((item: any) => item.type === 'embassy' && item);
     }, [embassy]);
+    // console.log('countryVisaTypes.itmes', countryVisaTypes?.items);
 
     useEffect(() => {
-        if (addData?.country?.id) {
-            const filteredEmbassies = embassyData.filter((item: any) => item?.country?.id === +addData.country.id);
+        if (countryVisaTypes?.items && addData?.country?.id) {
+            // const res = countryVisaTypes?.items.filter((item: any) => item?.id === addData?.country?.id).map((item: any) => item?.country_visa_types);
+            const res = countryVisaTypes?.items
+                .filter((item: any) => item?.id === addData.country.id)
+                .map((item: any) => item?.country_visa_types)
+                .flat(); // Flatten the array of arrays into a single array
+ 
+            setVisaTypes(res);
+        }
+    }, [addData]);
+
+
+
+
+    useEffect(() => {
+        if (addData?.country?.id ) {
+            const filteredEmbassies = embassyData?.filter((item: any) => item?.country?.id === +addData.country.id);
             setEmbassyFilter(filteredEmbassies);
         }
     }, [addData, embassyData]);
