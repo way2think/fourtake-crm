@@ -32,6 +32,7 @@
         "highlight.js": "^11.9.0",
         "i18next": "^22.4.10",
         "jodit-react": "^4.1.2",
+        "js-cookie": "^3.0.5",
         "jwt-decode": "^4.0.0",
         "mantine-datatable": "^7.10.3",
         "markdown-it": "^14.1.0",
@@ -64,6 +65,7 @@
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.3",
         "@tailwindcss/typography": "^0.5.8",
+        "@types/js-cookie": "^3.0.6",
         "@types/lodash": "^4.14.191",
         "@types/react-flatpickr": "^3.8.11",
         "@types/react-redux": "^7.1.32",

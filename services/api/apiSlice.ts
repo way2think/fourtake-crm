@@ -14,7 +14,7 @@ export const apiSlice = createApi({
             return headers;
         },
     }),
-    tagTypes: ['Country', 'VisaChecklist', 'CountryVisaType', 'EmbassyVfs', 'VisaType', 'VisaStatus', 'EntryType', 'CountryVisaUrl', 'Lead'],
+    tagTypes: ['User', 'Country', 'VisaChecklist', 'CountryVisaType', 'EmbassyVfs', 'VisaType', 'VisaStatus', 'EntryType', 'CountryVisaUrl', 'Lead'],
     endpoints: (builder) => ({
         signUp: builder.mutation({
             query: (credentials) => ({

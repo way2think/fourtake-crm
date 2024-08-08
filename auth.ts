@@ -12,6 +12,20 @@ class InvalidLoginError extends CredentialsSignin {
     }
 }
 
+class AlreadyLoggedInError extends CredentialsSignin {
+    constructor(message: string, code: string) {
+        super(message);
+        this.code = code;
+    }
+}
+
+class CustomError extends CredentialsSignin {
+    constructor(message: string, code: string) {
+        super(message);
+        this.code = code;
+    }
+}
+
 interface CustomUser {
     id: string;
     username: string;
@@ -109,6 +123,7 @@ export const { handlers, auth, signIn } = NextAuth({
             credentials: {
                 username: { label: 'Username', type: 'text' },
                 password: { label: 'Password', type: 'password' },
+                type: { label: 'type', type: 'text' },
             },
             async authorize(credentials) {
                 const res = await fetch(`${process.env.API_BASE_URL}/auth/local/login`, {
@@ -118,7 +133,7 @@ export const { handlers, auth, signIn } = NextAuth({
                     credentials: 'include', // This is important to include cookies
                 });
 
-                console.log('auth-res-headers', res.headers, res.headers.get('set-cookie'));
+                // console.log('auth-res-headers', res.headers, res.headers.get('set-cookie'));
                 // const apiCookies = res.headers.getSetCookie();
                 // console.log('auth-res', apiCookies);
 
@@ -133,7 +148,7 @@ export const { handlers, auth, signIn } = NextAuth({
                     const [cookieName, cookieValue] = Object.entries(parsedCookie)[0];
                     const httpOnly = cookie.includes('HttpOnly;') || cookie.includes('httponly;');
 
-                    console.log('parse', parsedCookie, cookieName, cookieValue, httpOnly);
+                    // console.log('parse', parsedCookie, cookieName, cookieValue, httpOnly);
                     // cookies().set({
                     //     // name: cookieName,
                     //     // value: cookieValue,
@@ -162,9 +177,17 @@ export const { handlers, auth, signIn } = NextAuth({
                 if (res.ok && user) {
                     return user;
                 } else {
-                    // console.log('res.ok', res.ok, user);
+                    console.log('res.ok', user);
                     // throw new Error(user.message || 'Authentication failed');
-                    throw new InvalidLoginError(user.message || 'Invalid identifier or password', 'Invalid Credentials');
+                    if (user.statusCode === 409) {
+                        // conflict
+                        throw new AlreadyLoggedInError(user.message, user.message);
+                    } else if (user.statusCode === 400) {
+                        // conflict
+                        throw new InvalidLoginError(user.message || 'Invalid identifier or password', 'Invalid Credentials');
+                    } else {
+                        throw new CustomError(user.error, user.message);
+                    }
                     // return { error: user.message };
                 }
 
