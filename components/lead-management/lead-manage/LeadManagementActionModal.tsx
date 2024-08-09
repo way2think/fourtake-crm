@@ -19,6 +19,7 @@ import { CountryVisaType } from '@/entities/country-visa-type.entity';
 import { VisaType } from '@/entities/visa-type.entity';
 import LeadActionModal from './LeadEmailSendModal';
 import LeadEmailSendModal from './LeadEmailSendModal';
+import { stateCityData } from '@/utils/constant';
 
 interface LeadManagementActionModalProps {
     isOpen: any;
@@ -41,7 +42,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
 
     const [visaTypes, setVisaTypes] = useState([]);
     const [isMailOpen, setIsMailOpen] = useState(false);
-
+    const [states] = useState(Object.keys(stateCityData).sort());
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
     const [setMail, setSetEmail] = useState<string>();
     const [docPickup, setDocPickup] = useState(false);
@@ -67,7 +68,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         if (addData.email) {
             setSetEmail(addData.email || '');
         }
-        if (addData.docpickupdate) {
+        if (addData.doc_pickup_date) {
             //setDocPickup(true)
         }
     }, [addData]);
@@ -80,7 +81,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                 .map((item: any) => item?.country_visa_types)
                 .flat(); // Flatten the array of arrays into a single array
 
-            console.log('res', res);
+            // console.log('res', res);
             setVisaTypes(res);
         }
     }, [addData]);
@@ -102,7 +103,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     //     },
     // ];
 
-    console.log('addData', addData, leadNotes, 'leadNote', leadNote);
+    // console.log('addData', addData);
 
     const tableColumnsFollowUp = [
         {
@@ -213,6 +214,20 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         const updatedNotes = [...leadNotes];
         updatedNotes.splice(index, 1);
         setLeadNotes(updatedNotes);
+        setAddData({ ...addData, lead_note: updatedNotes });
+    };
+
+    const handleDeleteFollowUp = (data: any) => {
+        let updatedFollowups = [...followUps];
+
+        // Corrected filter logic to return a boolean value
+        updatedFollowups = updatedFollowups.filter((item) => item.followup_id !== data.followup_id);
+
+        setFollowUps(updatedFollowups);
+        // console.log('index', data, followUps, updatedFollowups);
+
+        // Assuming addData is an object with a followups property
+        setAddData({ ...addData, followups: updatedFollowups });
     };
 
     const handleCloseModal = () => {
@@ -224,13 +239,22 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     };
 
     const handleNoteAction = () => {
+        const currentTimeInSeconds = Math.floor(Date.now() / 1000); // Convert milliseconds to seconds
+
         if (modalTitle === 'Edit Note' && currentIndex !== null) {
             const updatedNotes = [...leadNotes];
-            updatedNotes[currentIndex] = leadNote;
+            updatedNotes[currentIndex] = {
+                ...leadNote,
+                created_time: updatedNotes[currentIndex].created_time, // Retain the original created_time during edit
+            };
             setLeadNotes(updatedNotes);
             setAddData({ ...addData, lead_note: updatedNotes });
         } else {
-            const updatedNotes = [...leadNotes, leadNote];
+            const newNote = {
+                ...leadNote,
+                created_time: currentTimeInSeconds, // Set created_time in seconds when creating a new note
+            };
+            const updatedNotes = [...leadNotes, newNote];
             setLeadNotes(updatedNotes);
             setAddData({ ...addData, lead_note: updatedNotes });
         }
@@ -282,7 +306,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 className="form-input"
                                 defaultValue=""
                                 id="country"
-                                value={addData?.country}
+                                value={addData?.country?.id}
                                 onChange={(e) => {
                                     // console.log('e', e.target.value);
                                     const { items } = countryVisaTypes;
@@ -322,9 +346,13 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 <option value="" disabled={true}>
                                     Select State
                                 </option>
-                                <option value="Canada">Tamil Nadu</option>
-                                <option value="India">Kernataka</option>
-                                <option value="Usa">AP</option>
+
+                                {states.map((state) => (
+                                    <option value={state}>{state}</option>
+                                ))}
+
+                                {/* <option value="India">Kernataka</option>
+                                <option value="Usa">AP</option> */}
                             </select>
                         </div>
                         <div className="dropdown mb-5">
@@ -349,20 +377,22 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             <input
                                 id="number_of_applicants"
                                 value={addData?.number_of_applicants}
-                                onChange={(e) => handleInputChange(e)}
+                                onChange={(e) => {
+                                    setAddData({ ...addData, number_of_applicants: +e.target.value });
+                                }}
                                 type="text"
                                 placeholder="Enter No of Applicants "
                                 className="form-input"
                             />
                         </div>
                         <div className="mb-5">
-                            <ComponentsFormDatePickerBasic label="Travel Date" id={'traveldate'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                            <ComponentsFormDatePickerBasic label="Travel Date" id={'travel_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="dropdown mb-5">
-                            <label htmlFor="leadtype">Lead Type</label>
-                            <select className="form-input" defaultValue="" id="leadtype" value={addData?.leadtype} onChange={(e) => handleInputChange(e)}>
+                            <label htmlFor="lead_type">Lead Type</label>
+                            <select className="form-input" defaultValue="" id="lead_type" value={addData?.lead_type} onChange={(e) => handleInputChange(e)}>
                                 <option value="" disabled={true}>
                                     Lead Type
                                 </option>
@@ -444,14 +474,14 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             {docPickup && (
                                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                                     <div className="mb-5">
-                                        <ComponentsFormDatePickerBasic label="Document pickup Date" id={'docpickupdate'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                                        <ComponentsFormDatePickerBasic label="Document pickup Date" id={'doc_pickup_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
                                     </div>
                                     <div className="mb-5">
-                                        <label htmlFor="docpickupremarks">Remarks</label>
+                                        <label htmlFor="doc_pickup_remark">Document PickUp Remarks</label>
                                         <textarea
-                                            id="docpickupremarks"
+                                            id="doc_pickup_remark"
                                             rows={1}
-                                            value={addData?.docpickupremarks}
+                                            value={addData?.doc_pickup_remark}
                                             onChange={(e) => handleInputChange(e)}
                                             placeholder="Enter Remarks"
                                             className="form-textarea min-h-[10px] resize-none"
@@ -572,7 +602,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 </div>
                             </ActionModal>
                             {followUps?.length !== 0 && (
-                                <PaginationTable data={followUps} tableColumns={tableColumnsFollowUp} handleEdit={handleEdit} handleDelete={handleDeleteNote} title="Customer Details" />
+                                <PaginationTable data={followUps} tableColumns={tableColumnsFollowUp} handleEdit={handleEdit} handleDelete={handleDeleteFollowUp} title="Customer Details" />
                             )}
                             {/* Add the table here */}
                             {/* <div className="mt-8">
@@ -638,6 +668,9 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                                 </button>
                                             </div>
                                             <div className="p-5">
+                                                {leadNote.created_time && <p>Created Time: {new Date(leadNote.created_time * 1000).toLocaleString()}</p>}
+                                                <br />
+
                                                 <textarea
                                                     id="leadNote"
                                                     onChange={handleLeadNoteChange}
