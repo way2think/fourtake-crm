@@ -52,7 +52,7 @@ export const handleCreate = async ({ createMutation, value, items, meta, handleL
         showCancelButton: true,
         confirmButtonText: 'Create',
         padding: '2em',
-        customClass: 'sweet-alerts',
+        customClass: { popup: 'sweet-alerts' },
     });
 
     // console.log('value: ', value);
@@ -67,7 +67,7 @@ export const handleCreate = async ({ createMutation, value, items, meta, handleL
             // const updatedItems = [...items, newItem];
             // const updatedMeta = { ...meta, itemCount: meta.itemCount + 1, totalItems: meta.totalItems + 1 };
             // handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta: updatedMeta, args } });
-            Swal.fire({ title: 'Created!', text: res.data.message, icon: 'success', customClass: 'sweet-alerts' });
+            await Swal.fire({ title: 'Created!', text: res.data.message, icon: 'success', customClass: { popup: 'sweet-alerts' } });
             // refetch();
             return true;
         }
@@ -83,7 +83,7 @@ export const handleUpdate = async ({ updateMutation, value, items, meta, handleL
         showCancelButton: true,
         confirmButtonText: 'Update',
         padding: '2em',
-        customClass: 'sweet-alerts',
+        customClass: { popup: 'sweet-alerts' },
     });
 
     if (result.value) {
@@ -96,7 +96,7 @@ export const handleUpdate = async ({ updateMutation, value, items, meta, handleL
             // console.log('result,value', value, args);
             // const updatedItems = items.map((item) => (item.id === value.id ? { ...item, ...value } : item));
             // handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta }, args });
-            Swal.fire({ title: 'Updated!', text: res.data.message, icon: 'success', customClass: 'sweet-alerts' });
+            await Swal.fire({ title: 'Updated!', text: res.data.message, icon: 'success', customClass: { popup: 'sweet-alerts' } });
             return true;
         }
     }
@@ -111,7 +111,7 @@ export const handleDelete = async ({ deleteMutation, item, items, meta, handleLo
         showCancelButton: true,
         confirmButtonText: 'Delete',
         padding: '2em',
-        customClass: 'sweet-alerts',
+        customClass: { popup: 'sweet-alerts' },
     });
 
     if (result.value) {
@@ -123,7 +123,7 @@ export const handleDelete = async ({ deleteMutation, item, items, meta, handleLo
             // const updatedItems = items.filter((i) => i.id !== item.id);
             // const updatedMeta = { ...meta, itemCount: meta.itemCount - 1, totalItems: meta.totalItems - 1 };
             // handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta: updatedMeta }, args });
-            Swal.fire({ title: 'Deleted!', text: res.data.message, icon: 'success', customClass: 'sweet-alerts' });
+            await Swal.fire({ title: 'Deleted!', text: res.data.message, icon: 'success', customClass: { popup: 'sweet-alerts' } });
             return true;
         }
     }
@@ -132,13 +132,13 @@ export const handleDelete = async ({ deleteMutation, item, items, meta, handleLo
 
 export const handleErrorResponse = async (error: FetchBaseQueryError | Error | any) => {
     // if (isFetchBaseQueryError(error)) {
-    //     await Swal.fire({ title: `${error.data?.error || 'Error'}!`, text: `${error.data?.message || 'Please try after sometime'}`, icon: 'error', customClass: 'sweet-alerts' });
+    //     await Swal.fire({ title: `${error.data?.error || 'Error'}!`, text: `${error.data?.message || 'Please try after sometime'}`, icon: 'error', customClass: { popup: 'sweet-alerts' } });
     //   } else if (isSerializedError(error)) {
-    //     await Swal.fire({ title: 'Error!', text: `${error.message || 'Please try after sometime'}`, icon: 'error', customClass: 'sweet-alerts' });
+    //     await Swal.fire({ title: 'Error!', text: `${error.message || 'Please try after sometime'}`, icon: 'error', customClass: { popup: 'sweet-alerts' } });
     //   } else {
-    //     await Swal.fire({ title: 'Unknown error!', text: 'Please try after sometime', icon: 'error', customClass: 'sweet-alerts' });
+    //     await Swal.fire({ title: 'Unknown error!', text: 'Please try after sometime', icon: 'error', customClass: { popup: 'sweet-alerts' } });
     //   }
-    await Swal.fire({ title: `${error.data?.error || 'Error'}!`, text: `${error.data?.message || 'Please try after sometime'}`, icon: 'error', customClass: 'sweet-alerts' });
+    await Swal.fire({ title: `${error.data?.error || 'Error'}!`, text: `${error.data?.message || 'Please try after sometime'}`, icon: 'error', customClass: { popup: 'sweet-alerts' } });
 };
 
 export const generateURLWithPagination = ({ endpoint, page = 1, limit = 10, sortOrder, sortField, search, filter }: RTKPagination) => {
