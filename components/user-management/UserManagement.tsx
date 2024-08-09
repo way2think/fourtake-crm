@@ -7,9 +7,10 @@ import Link from 'next/link';
 import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { useCreateUserMutation, useDeleteUserMutation, useGetUsersQuery, userSlice, useUpdateUserMutation } from '@/services/api/userSlice';
-import { User } from 'next-auth';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import { rolesObject } from '@/entities/role.entity';
+import { showMessage } from '@/utils/notification';
+import { User } from '@/entities/user.entity';
 
 const UserManagement: React.FC = () => {
     const [createUser, {}] = useCreateUserMutation();
@@ -81,52 +82,55 @@ const UserManagement: React.FC = () => {
         });
 
     const handleSubmit = (value: User) => {
+        if (value.first_name == '' || value.first_name == null) {
+            showMessage('Enter First name', 'error');
+            return false;
+        }
+        if (value.last_name == '' || value.last_name == null) {
+            showMessage('Enter Last name', 'error');
+            return false;
+        }
+        if (value.username == '' || value.username == null) {
+            showMessage('Enter Email', 'error');
+            return false;
+        }
+
         console.log('value: ', value);
-        // if (value.firstname == '' || value.firstname == null) {
-        //     showMessage('Enter First name', 'error');
-        //     return false;
-        // }
-        // if (value.lastname == '' || value.lastname == null) {
-        //     showMessage('Enter Last name', 'error');
-        //     return false;
-        // }
-        // if (value.email == '' || value.email == null) {
-        //     showMessage('Enter Email', 'error');
-        //     return false;
-        // }
-        // if (value.password == '' || value.password == null) {
-        //     showMessage('Enter Password', 'error');
-        //     return false;
-        // }
-        // if (value.confirmpassword == '' || value.confirmpassword == null) {
-        //     showMessage('Enter Confirm Password ', 'error');
-        //     return false;
-        // }
-        // if (value.password !== value.confirmpassword) {
-        //     showMessage('Passwords should match ', 'error');
-        //     return false;
-        // }
-        // if (value.id) {
-        //     return handleUpdate({
-        //         updateMutation: updateUser,
-        //         value,
-        //         items,
-        //         meta,
-        //         handleLocalUpdate: handleLocalRTKUpdate,
-        //         apiObjectRef: userSlice,
-        //         endpoint: 'getUsers',
-        //     });
-        // } else {
-        //     return handleCreate({
-        //         createMutation: createUser,
-        //         value,
-        //         items,
-        //         meta,
-        //         handleLocalUpdate: handleLocalRTKUpdate,
-        //         apiObjectRef: userSlice,
-        //         endpoint: 'getUsers',
-        //     });
-        // }
+
+        if (value.id) {
+            return handleUpdate({
+                updateMutation: updateUser,
+                value,
+                items,
+                meta,
+                handleLocalUpdate: handleLocalRTKUpdate,
+                apiObjectRef: userSlice,
+                endpoint: 'getUsers',
+            });
+        } else {
+            // password validation only for create
+            if (value.password == '' || value.password == null) {
+                showMessage('Enter Password', 'error');
+                return false;
+            }
+            if (value.confirm_password == '' || value.confirm_password == null) {
+                showMessage('Enter Confirm Password ', 'error');
+                return false;
+            }
+            if (value.password !== value.confirm_password) {
+                showMessage('Passwords should match ', 'error');
+                return false;
+            }
+            return handleCreate({
+                createMutation: createUser,
+                value,
+                items,
+                meta,
+                handleLocalUpdate: handleLocalRTKUpdate,
+                apiObjectRef: userSlice,
+                endpoint: 'getUsers',
+            });
+        }
     };
 
     return (

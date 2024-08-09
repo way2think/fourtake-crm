@@ -130,7 +130,7 @@ export const handleDelete = async ({ deleteMutation, item, items, meta, handleLo
     return false;
 };
 
-const handleErrorResponse = async (error: FetchBaseQueryError | Error | any) => {
+export const handleErrorResponse = async (error: FetchBaseQueryError | Error | any) => {
     // if (isFetchBaseQueryError(error)) {
     //     await Swal.fire({ title: `${error.data?.error || 'Error'}!`, text: `${error.data?.message || 'Please try after sometime'}`, icon: 'error', customClass: 'sweet-alerts' });
     //   } else if (isSerializedError(error)) {

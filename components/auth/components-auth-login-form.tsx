@@ -82,14 +82,13 @@ const ComponentsAuthLoginForm = ({ type }: { type: string }) => {
                         </span>
                     </div>
                 </div>
-                <div>
+                {/* <div>
                     <label className="flex cursor-pointer items-center justify-end">
-                        {/* <input type="checkbox" className="form-checkbox bg-white dark:bg-black" /> */}
                         <a href="/" className="text-white-dark">
                             Forget Password ?
                         </a>
                     </label>
-                </div>
+                </div> */}
                 <button type="submit" className="btn !mt-6 w-full border-0 bg-gradient-to-r from-[#005fbe] to-[#2eb9ff] uppercase text-white shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]">
                     Sign in
                 </button>

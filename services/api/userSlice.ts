@@ -44,9 +44,23 @@ export const userSlice = apiSlice.injectEndpoints({
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body,
+                body: {
+                    ...body,
+                    center: body?.center?.id ? body?.center?.id : body?.center,
+                },
             }),
             invalidatesTags: (result, error, { id }) => [{ type: 'User', id }],
+        }),
+        updateUserPassword: build.mutation({
+            query: ({ id, body }) => ({
+                method: 'PATCH',
+                url: `/user/${id}/password`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body,
+            }),
+            // invalidatesTags: (result, error, { id }) => [{ type: 'User', id }],
         }),
         deleteUser: build.mutation({
             query: (id) => ({
@@ -67,4 +81,4 @@ export const userSlice = apiSlice.injectEndpoints({
     }),
 });
 
-export const { useCreateUserMutation, useGetUsersQuery, useUpdateUserMutation, useDeleteUserMutation, useGetCurrentUserQuery, useLazyGetCurrentUserQuery } = userSlice;
+export const { useCreateUserMutation, useGetUsersQuery, useUpdateUserMutation, useUpdateUserPasswordMutation, useDeleteUserMutation, useGetCurrentUserQuery, useLazyGetCurrentUserQuery } = userSlice;
