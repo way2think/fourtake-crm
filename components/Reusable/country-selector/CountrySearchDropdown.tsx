@@ -35,12 +35,11 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
 
     useEffect(() => {
         // Initialize searchTerm with the name of the selected country (if any)
-        const selectedCountry = items.find((option: Option) => option.id === addData?.country?.id);
+        const selectedCountry = items?.find((option: Option) => option.id === addData?.country?.id);
         if (selectedCountry) {
             setSearchTerm(selectedCountry.name);
         }
     }, [addData.country, items]);
-
 
     useEffect(() => {
         if (searchTerm) {
@@ -55,10 +54,6 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
         setAddData({ ...addData, country: '' }); // Clear selected country when typing
         setIsOpen(true);
     };
-
-
-
-    
 
     const handleOptionClick = (option: Option) => {
         const index = items.findIndex((cv: any) => cv.id == option.id);

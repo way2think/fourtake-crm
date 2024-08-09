@@ -12,7 +12,7 @@ interface VisafeeEditorProps {
 
 const VisafeeEditor: React.FC<VisafeeEditorProps> = ({ title, handleInputChange, addData, setAddData }) => {
     const editor = useRef(null);
-    const [value, setValue] = useState<string>(addData[title] || '');
+    const [value, setValue] = useState<string>(addData?.[title] || '');
 
     useEffect(() => {
         const escapeHtml = (html: any) => {

@@ -13,7 +13,7 @@ const MarkdownEditor: React.FC<{ handleInputChange: any; addData: any; setAddDat
 
     return (
         <div>
-            <label htmlFor="Checklist">Checklist*</label>
+            <label htmlFor="Checklist">Additional Info:</label>
             <SimpleMDE onChange={handleChange} id="checklist" value={value} />
         </div>
     );

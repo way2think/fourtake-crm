@@ -2,6 +2,8 @@ import IconX from '@/components/icon/icon-x';
 import ComponentsFormsFileUploadMulti from '../../Reusable/file-upload/components-forms-file-upload-multi';
 import ComponentsFormsFileUploadSingle from '../../Reusable/file-upload/components-forms-file-upload-single';
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
+import VisafeeEditorJodit from '@/components/Reusable/Markdown-Editor/VisafeeEditorJodit';
+import MarkdownEditor from '@/components/Reusable/Markdown-Editor/MarkDownEditor';
 
 interface LeadEmailSendModalProps {
     isOpen: any;
@@ -59,16 +61,15 @@ const LeadEmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddD
                     </div>
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
-                        <div className="mb-5">
-                            <label htmlFor="additional_info">Additional Info</label>
-                            <textarea
-                                id="additional_info"
-                                rows={3}
-                                value={addData?.additional_info}
-                                onChange={(e) => handleInputChange(e)}
-                                placeholder="Enter Additional Info"
-                                className="form-textarea min-h-[80px] resize-none"
-                            ></textarea>
+                        <div className="mb-2">
+                            <MarkdownEditor handleInputChange={handleInputChange} addData={addData} setAddData={setAddData} />
+                        </div>
+                    </div>
+                    <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-1">
+                        <div className="mb-2">
+                            {/* <MarkdownEditor handleInputChange={handleInputChange} setAddData={setAddData} addData={addData} /> */}
+                            <label htmlFor="Checklist">Checklist*</label>
+                            <VisafeeEditorJodit title={''} handleInputChange={handleInputChange} setAddData={setAddData} addData={addData} />
                         </div>
                     </div>
                     <div className="mt-8 flex items-center justify-end">
