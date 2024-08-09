@@ -2,6 +2,7 @@ import { generateURLWithPagination } from '@/utils/rtk-http';
 import { apiSlice } from './apiSlice';
 
 export const userSlice = apiSlice.injectEndpoints({
+    overrideExisting: (module as any).hot?.status() === 'apply', // dev env, That is probably due to hot module reloading reloading the file when you apply changes to it.
     endpoints: (build) => ({
         createUser: build.mutation({
             query: ({ body }) => ({
@@ -57,7 +58,13 @@ export const userSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: (result, error, { id }) => [{ type: 'User', id }],
         }),
+        getCurrentUser: build.query({
+            query: (id) => ({
+                method: 'GET',
+                url: `/user/${id}`,
+            }),
+        }),
     }),
 });
 
-export const { useCreateUserMutation, useGetUsersQuery, useUpdateUserMutation, useDeleteUserMutation } = userSlice;
+export const { useCreateUserMutation, useGetUsersQuery, useUpdateUserMutation, useDeleteUserMutation, useGetCurrentUserQuery, useLazyGetCurrentUserQuery } = userSlice;

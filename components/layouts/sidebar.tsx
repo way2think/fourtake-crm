@@ -1,11 +1,13 @@
 'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { useDispatch, useSelector } from 'react-redux';
-import Link from 'next/link';
 import { toggleSidebar } from '@/store/theme.store';
 import AnimateHeight from 'react-animate-height';
 import { IRootState } from '@/store';
-import { useState, useEffect } from 'react';
 import IconCaretsDown from '@/components/icon/icon-carets-down';
 import IconCaretDown from '@/components/icon/icon-caret-down';
 import IconMenuNotes from '@/components/icon/menu/icon-menu-notes';
@@ -15,8 +17,11 @@ import IconMenuUsers from '@/components/icon/menu/icon-menu-users';
 import IconMenuPages from '@/components/icon/menu/icon-menu-pages';
 import { usePathname } from 'next/navigation';
 import { getTranslation } from '@/i18n';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
+import { selectUser } from '@/store/user.store';
+import { isAccessDenied } from '@/utils';
+import { User } from '@/entities/user.entity';
+import { Role } from '@/entities/role.entity';
+
 import './sidebarstyle.css';
 
 const Sidebar = () => {
@@ -29,6 +34,11 @@ const Sidebar = () => {
     const [errorSubMenu, setErrorSubMenu] = useState(false);
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
     const semidark = useSelector((state: IRootState) => state.themeConfig.semidark);
+
+    const user = useSelector(selectUser) as User;
+    // console.log(';isser', user);
+
+    const role = user?.role || 'guest';
 
     const toggleMenu = (value: string) => {
         if (value.charAt(0) === '1') {
@@ -78,7 +88,7 @@ const Sidebar = () => {
         if (window.innerWidth < 1024 && themeConfig.sidebar) {
             dispatch(toggleSidebar());
         }
-    }, [pathname]);
+    }, [dispatch, pathname, themeConfig.sidebar]);
 
     const setActiveRoute = () => {
         let allLinks = document.querySelectorAll('.sidebar ul a.active');
@@ -130,16 +140,20 @@ const Sidebar = () => {
                     </div>
                     <PerfectScrollbar className="relative h-[calc(100vh-80px)]">
                         <ul className="relative space-y-0.5 p-4 py-0 font-semibold">
-                            <li className="nav-item">
-                                <Link href="/" className="group ">
-                                    <div className="flex items-center">
-                                        <IconMenuNotes className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
-                                        <span className="group-hover:!text-[#005fbe]dark:group-hover:text-[#005fbe] text-black dark:text-[#506690] ltr:pl-3 rtl:pr-3">{t('Dashboard')}</span>
-                                    </div>
-                                </Link>
-                            </li>
-                            <li className="menu nav-item">
-                                {/* <button type="button" className={`${currentMenu === 'User Management' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('User Management')}>
+                            {isAccessDenied('/', role) && (
+                                <li className="nav-item">
+                                    <Link href="/" className="group ">
+                                        <div className="flex items-center">
+                                            <IconMenuNotes className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
+                                            <span className="group-hover:!text-[#005fbe]dark:group-hover:text-[#005fbe] text-black dark:text-[#506690] ltr:pl-3 rtl:pr-3">{t('Dashboard')}</span>
+                                        </div>
+                                    </Link>
+                                </li>
+                            )}
+
+                            {isAccessDenied('/user-list', role) && (
+                                <li className="menu nav-item">
+                                    {/* <button type="button" className={`${currentMenu === 'User Management' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('User Management')}>
                                     <div className="flex items-center">
                                         <IconMenuUsers className="shrink-0 group-hover:!text-primary" />
                                         <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('User Management')}</span>
@@ -150,25 +164,25 @@ const Sidebar = () => {
                                     </div>
                                 </button> */}
 
-                                <Link
-                                    href="/user-list"
-                                    className={`${currentMenu === 'User List' || isAciveCondition === 'active' ? 'active' : ''} nav-link nabarbuttoncustom group w-full`}
-                                    onClick={() => toggleMenu('1User List')}
-                                >
-                                    <div className="flex items-center">
-                                        <IconMenuUsers className="shrink-0 !text-[#000] " />
-                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
-                                            {/* <Link href="/user-list">User List</Link> */}
-                                            User List
-                                        </span>
-                                    </div>
-                                    {/* 
+                                    <Link
+                                        href="/user-list"
+                                        className={`${currentMenu === 'User List' || isAciveCondition === 'active' ? 'active' : ''} nav-link nabarbuttoncustom group w-full`}
+                                        onClick={() => toggleMenu('User List')}
+                                    >
+                                        <div className="flex items-center">
+                                            <IconMenuUsers className="shrink-0 !text-[#000] " />
+                                            <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
+                                                {/* <Link href="/user-list">User List</Link> */}
+                                                User List
+                                            </span>
+                                        </div>
+                                        {/* 
                                     <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
                                         <IconCaretDown />
                                     </div> */}
-                                </Link>
+                                    </Link>
 
-                                {/* <AnimateHeight duration={300} height={currentMenu === 'User Management' ? 'auto' : 0}>
+                                    {/* <AnimateHeight duration={300} height={currentMenu === 'User Management' ? 'auto' : 0}>
                                     <ul className="sub-menu text-gray-500">
                                         <li>
                                             <Link href="/user-list">{t('User List')}</Link>
@@ -181,27 +195,30 @@ const Sidebar = () => {
                                         </li>
                                     </ul>
                                 </AnimateHeight> */}
-                            </li>
-                            <li className="menu nav-item">
-                                <Link
-                                    href="/lead-list"
-                                    className={`${currentMenu === 'Lead Management' || isAciveCondition === 'active' ? 'active' : ''} nav-link group w-full`}
-                                    onClick={() => toggleMenu('1Lead Management')}
-                                >
-                                    <div className="flex items-center">
-                                        <IconMenuElements className="shrink-0 !text-[#000] " />
-                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
-                                            {/* <Link href="/lead-list">Lead Management</Link> */}
-                                            Lead Management
-                                        </span>
-                                    </div>
+                                </li>
+                            )}
 
-                                    {/* <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
+                            {isAccessDenied('/lead-list', role) && (
+                                <li className="menu nav-item">
+                                    <Link
+                                        href="/lead-list"
+                                        className={`${currentMenu === 'Lead Management' || isAciveCondition === 'active' ? 'active' : ''} nav-link group w-full`}
+                                        onClick={() => toggleMenu('Lead Management')}
+                                    >
+                                        <div className="flex items-center">
+                                            <IconMenuElements className="shrink-0 !text-[#000] " />
+                                            <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
+                                                {/* <Link href="/lead-list">Lead Management</Link> */}
+                                                Lead Management
+                                            </span>
+                                        </div>
+
+                                        {/* <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
                                         <IconCaretDown />
                                     </div>  */}
-                                </Link>
+                                    </Link>
 
-                                {/* <button
+                                    {/* <button
                                     type="button"
                                     className={`${currentMenu === 'Lead Management' ? 'active' : ''} nav-link group w-full ${clicked ? 'active' : ''}`}
                                     onClick={handleClick}
@@ -216,115 +233,124 @@ const Sidebar = () => {
                                         <IconCaretDown />
                                     </div>
                                 </button> */}
-                            </li>
+                                </li>
+                            )}
 
-                            <li className="menu nav-item">
-                                <button type="button" className={`${currentMenu === 'CMS' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('CMS')}>
-                                    <div className="flex items-center">
-                                        <IconMenuDatatables className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
-                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('CMS')}</span>
-                                    </div>
+                            {role === Role.SUPER_ADMIN && (
+                                <li className="menu nav-item">
+                                    <button type="button" className={`${currentMenu === 'CMS' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('CMS')}>
+                                        <div className="flex items-center">
+                                            <IconMenuDatatables className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
+                                            <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('CMS')}</span>
+                                        </div>
 
-                                    <div className={currentMenu !== 'CMS' ? '-rotate-90 rtl:rotate-90' : ''}>
-                                        <IconCaretDown className="!text-[#000] " />
-                                    </div>
-                                </button>
+                                        <div className={currentMenu !== 'CMS' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                            <IconCaretDown className="!text-[#000] " />
+                                        </div>
+                                    </button>
 
-                                <AnimateHeight duration={300} height={currentMenu === 'CMS' ? 'auto' : 0}>
-                                    <ul className="sub-menu text-black">
-                                        <li>
-                                            <Link href="/countries-list">Countries List</Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/visa-checklist">Visa Checklist</Link>{' '}
-                                        </li>
-                                        <li>
-                                            <Link href="/embassy-vfs">Embassy / VFS</Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/visa-types">Visa Types</Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/country-visa-type">Country Visa Types</Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/entry-types">Entry Types</Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/visa-status">Visa Status</Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/country-visa-urls">Country Visa urls</Link>
-                                        </li>
-                                    </ul>
-                                </AnimateHeight>
-                            </li>
-                            <li className="menu nav-item">
-                                <button type="button" className={`${currentMenu === 'Visa Process' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Visa Process')}>
-                                    <div className="flex items-center">
-                                        <IconMenuPages className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
-                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Visa Process')}</span>
-                                    </div>
+                                    <AnimateHeight duration={300} height={currentMenu === 'CMS' ? 'auto' : 0}>
+                                        <ul className="sub-menu text-black">
+                                            <li>
+                                                <Link href="/countries-list">Countries List</Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/visa-checklist">Visa Checklist</Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/embassy-vfs">Embassy / VFS</Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/visa-types">Visa Types</Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/country-visa-type">Country Visa Types</Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/entry-types">Entry Types</Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/visa-status">Visa Status</Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/country-visa-urls">Country Visa urls</Link>
+                                            </li>
+                                        </ul>
+                                    </AnimateHeight>
+                                </li>
+                            )}
 
-                                    <div className={currentMenu !== 'Visa Process' ? '-rotate-90 rtl:rotate-90' : ''}>
-                                        <IconCaretDown className="!text-[#000] " />
-                                    </div>
-                                </button>
+                            {(role === Role.SUPER_ADMIN || role === Role.ADMIN || role === Role.EMPLOYEE) && (
+                                <li className="menu nav-item">
+                                    <button type="button" className={`${currentMenu === 'Visa Process' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Visa Process')}>
+                                        <div className="flex items-center">
+                                            <IconMenuPages className="shrink-0 !text-[#000] group-hover:!text-[#005fbe]" />
+                                            <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Visa Process')}</span>
+                                        </div>
 
-                                <AnimateHeight duration={300} height={currentMenu === 'Visa Process' ? 'auto' : 0}>
-                                    <ul className="sub-menu text-black">
-                                        <li>
-                                            <Link href="/manage-visa">Manage Visa </Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/list-visa-applications">List Visa Applications</Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/deleted-application-list ">Deleted Application List</Link>
-                                        </li>
-                                    </ul>
-                                </AnimateHeight>
-                            </li>
-                            <li className="menu nav-item">
-                                <button type="button" className={`${currentMenu === 'Reports ' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Reports ')}>
-                                    <div className="flex items-center">
-                                        <IconMenuNotes className="shrink-0 !text-[#000]  group-hover:!text-[#005fbe]" />
-                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Reports ')}</span>
-                                    </div>
+                                        <div className={currentMenu !== 'Visa Process' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                            <IconCaretDown className="!text-[#000] " />
+                                        </div>
+                                    </button>
 
-                                    <div className={currentMenu !== 'Reports ' ? '-rotate-90 rtl:rotate-90' : ''}>
-                                        <IconCaretDown className="!text-[#000] " />
-                                    </div>
-                                </button>
+                                    <AnimateHeight duration={300} height={currentMenu === 'Visa Process' ? 'auto' : 0}>
+                                        <ul className="sub-menu text-black">
+                                            <li>
+                                                <Link href="/manage-visa">Manage Visa </Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/list-visa-applications">List Visa Applications</Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/deleted-application-list ">Deleted Application List</Link>
+                                            </li>
+                                        </ul>
+                                    </AnimateHeight>
+                                </li>
+                            )}
 
-                                <AnimateHeight duration={300} height={currentMenu === 'Reports ' ? 'auto' : 0}>
-                                    <ul className="sub-menu text-black">
-                                        <li>
-                                            <Link href="/daily-report">Daily Report</Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/finance-report">Finance Report </Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/status-wise-report">Status-wise Report </Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/payment-report  ">Payment Report </Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/out-scan">Out-scan </Link>
-                                        </li>
-                                        <li>
-                                            <Link
-                                                href="/in-scan
+                            {(role === Role.SUPER_ADMIN || role === Role.ADMIN || role === Role.EMPLOYEE) && (
+                                <li className="menu nav-item">
+                                    <button type="button" className={`${currentMenu === 'Reports ' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Reports ')}>
+                                        <div className="flex items-center">
+                                            <IconMenuNotes className="shrink-0 !text-[#000]  group-hover:!text-[#005fbe]" />
+                                            <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Reports ')}</span>
+                                        </div>
+
+                                        <div className={currentMenu !== 'Reports ' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                            <IconCaretDown className="!text-[#000] " />
+                                        </div>
+                                    </button>
+
+                                    <AnimateHeight duration={300} height={currentMenu === 'Reports ' ? 'auto' : 0}>
+                                        <ul className="sub-menu text-black">
+                                            <li>
+                                                <Link href="/daily-report">Daily Report</Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/finance-report">Finance Report </Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/status-wise-report">Status-wise Report </Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/payment-report  ">Payment Report </Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/out-scan">Out-scan </Link>
+                                            </li>
+                                            <li>
+                                                <Link
+                                                    href="/in-scan
                                              "
-                                            >
-                                                In-Scan
-                                            </Link>
-                                        </li>
-                                    </ul>
-                                </AnimateHeight>
-                            </li>
+                                                >
+                                                    In-Scan
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </AnimateHeight>
+                                </li>
+                            )}
 
                             {/* <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
                                 <IconMinus className="hidden h-5 w-4 flex-none" />

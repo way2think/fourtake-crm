@@ -2,6 +2,8 @@ import React from 'react';
 import ActionModal from '../Reusable/Modal/ActionModal';
 import IconX from '../icon/icon-x';
 import { roles } from '@/entities/role.entity';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/store/user.store';
 
 interface UserManagementActionModalProps {
     isOpen: any;
@@ -15,6 +17,10 @@ interface UserManagementActionModalProps {
 }
 
 const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData, isEdit, setIsEdit }) => {
+    const currentUser = useSelector(selectUser);
+
+    console.log('currentUser', currentUser);
+
     const handleCheckBoxChange = (e: any) => {
         const { id, checked } = e.target;
         setAddData((prev: any) => ({ ...prev, [id]: checked }));

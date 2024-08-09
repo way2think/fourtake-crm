@@ -1,15 +1,7 @@
 'use client';
 
-import { getData } from '@/api';
-import ComponentsFormsFileUploadMulti from '@/components/Reusable/file-upload/components-forms-file-upload-multi';
-import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
 import TableLayout from '@/components/layouts/table-layout';
-import { use } from 'react';
-import { Transition, Dialog } from '@headlessui/react';
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
-import IconX from '@/components/icon/icon-x';
-import Swal from 'sweetalert2';
-import { showMessage } from '@/utils/notification';
+import React from 'react';
 import UserManagementActionModal from './UserManagementActionModal';
 import Link from 'next/link';
 import { usePaginationOptions } from '@/hooks/usePaginationOptions';
@@ -28,8 +20,6 @@ const UserManagement: React.FC = () => {
 
     const { data: countries, isFetching, isLoading } = useGetUsersQuery({ page, limit, sortField, sortOrder, search });
     const { items = [], meta = {} } = countries || {};
-
-    // console.log('users', items);
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
@@ -50,6 +40,7 @@ const UserManagement: React.FC = () => {
         },
         // { accessor: 'status', textAlign: 'left', title: 'status' },
         { accessor: 'phone', textAlign: 'left', title: 'phone' },
+
         {
             accessor: 'role',
             textAlign: 'left',
@@ -64,6 +55,14 @@ const UserManagement: React.FC = () => {
             title: 'status',
             render: ({ is_active }: { is_active: boolean }) => {
                 return is_active == true ? 'Active' : 'InActive';
+            },
+        },
+        {
+            accessor: 'is_logged_in',
+            textAlign: 'left',
+            title: 'Logged In',
+            render: ({ is_logged_in }: { is_logged_in: boolean }) => {
+                return is_logged_in == true ? 'Yes' : 'No';
             },
         },
     ];

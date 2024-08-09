@@ -30,6 +30,7 @@ interface CustomUser {
     id: string;
     username: string;
     access_token: string;
+    role: string;
     // Add any other fields you expect
 }
 
@@ -112,6 +113,11 @@ export const { handlers, auth, signIn } = NextAuth({
         async session({ session, token }) {
             // console.log('token-sess', session, token);
             session.user.accessToken = token.accessToken;
+
+            // const decodedToken = jwtDecode(token.accessToken as string) as JwtPayload;
+            // console.log('doec', decodedToken);
+            if (token?.sub) session.user.id = token?.sub;
+
             return session;
         },
     },
