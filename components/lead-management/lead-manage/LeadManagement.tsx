@@ -55,23 +55,6 @@ const LeadManagement: React.FC = () => {
         { accessor: 'stage', textAlign: 'left', title: 'Stage' },
     ];
 
-    // const handleDelete = (row: any) => {
-    //     Swal.fire({
-    //         icon: 'warning',
-    //         title: 'Are you sure?',
-    //         text: "You won't be able to revert this!",
-    //         showCancelButton: true,
-    //         confirmButtonText: 'Delete',
-    //         padding: '2em',
-    //         customClass: 'sweet-alerts',
-    //     }).then((result) => {
-    //         if (result.value) {
-    //             setData(data.filter((item: any) => item.id !== row.id));
-    //             Swal.fire({ title: 'Deleted!', text: 'Your file has been deleted.', icon: 'success', customClass: 'sweet-alerts' });
-    //             return true;
-    //         }
-    //     });
-    // };
 
     const handleDeleteLead = (lead: Lead) =>
         handleDelete({
@@ -110,90 +93,7 @@ const LeadManagement: React.FC = () => {
 
     const exportColumns = ['id', 'leadname', 'email', 'contact', 'country', 'visatype', 'stateofresidence', 'emailsentdate', 'lastfollowup', 'nextfollowup', 'status'];
 
-    // const handleSubmit = (value: any) => {
-    //     if (value.name == '' || value.name == null) {
-    //         showMessage('Enter name', 'error');
-    //         return false;
-    //     }
-    //     if (value.phone == '' || value.phone == null) {
-    //         showMessage('Enter Phone', 'error');
-    //         return false;
-    //     }
-    //     if (value.country == '' || value.country == null) {
-    //         showMessage('Select Country ', 'error');
-    //         return false;
-    //     }
-    //     if (value.stateofresidence == '' || value.stateofresidence == null) {
-    //         showMessage('Select State', 'error');
-    //         return false;
-    //     }
-
-    //     if (value.id) {
-    //         //update user
-    //         let formData: any = data.find((d: any) => d.id === value.id);
-
-    //         formData.name = value.name || '';
-    //         formData.email = value.email || '';
-    //         formData.phone = value.phone || '';
-    //         formData.country = value.country || '';
-    //         formData.visatype = value.visatype || '';
-    //         formData.stateofresidence = value.stateofresidence || '';
-    //         formData.createdDate = value.createdDate || '';
-    //         formData.emailsentdate = value.emailsentdate || '';
-    //         formData.lastfollowup = value.lastfollowup || '';
-    //         formData.nextfollowupdate = value.nextfollowupdate || '';
-    //         formData.interaction = value.interaction || '';
-    //         formData.followuptime = value.followuptime || '';
-    //         formData.follupremark = value.follupremark || '';
-    //         formData.stage = value.stage || '';
-    //         formData.status = value.status || '';
-    //         formData.traveldate = value.traveldate;
-    //         formData.numberofapplicants = value.numberofapplicants || '';
-    //         formData.docpickupdate = value.docpickupdate || '';
-    //         formData.docpickupremarks = value.docpickupremarks || '';
-    //         formData.leadnote = value.leadnote || '';
-    //         formData.leadtype = value.leadtype || '';
-    //         formData.assignee = value.assignee || '';
-    //         formData.source = value.source || '';
-
-    //         return formData;
-    //     } else {
-    //         //add user
-    //         let maxUserId = data.length ? data.reduce((max: any, character: any) => (character.id > max ? character.id : max), data[0].id) : 0;
-
-    //         let formData = {
-    //             id: +maxUserId + 1,
-    //             name: value.name || '',
-    //             email: value.email || '',
-    //             phone: value.phone || '',
-    //             country: value.country || '',
-    //             visatype: value.visatype || '',
-    //             stateofresidence: value.stateofresidence || '',
-    //             createdate: value.createdate || '',
-    //             emailsentdate: value.emailsentdate || '',
-    //             lastfollowup: value.lastfollowup || '',
-    //             nextfollowupdate: value.nextfollowupdate || '',
-    //             interaction: value.interaction || '',
-    //             followuptime: value.followuptime || '',
-    //             follupremark: value.follupremark || '',
-    //             stage: value.stage || '',
-    //             status: value.status || '',
-    //             traveldate: value.traveldate || '',
-    //             numberofapplicants: value.numberofapplicants || '',
-    //             docpickupdate: value.docpickupdate || '',
-    //             docpickupremarks: value.docpickupremarks || '',
-    //             leadnote: value.leadnote || '',
-    //             leadtype: value.leadtype || '',
-    //             assignee: value.assignee || '',
-    //             source: value.source || '',
-    //         };
-
-    //         setData([...data, formData]);
-    //         return formData;
-
-    //         //   searchContacts();
-    //     }
-    // };
+   
 
     return (
         <>
@@ -218,6 +118,7 @@ const LeadManagement: React.FC = () => {
                 ActionModal={LeadManagementActionModal}
                 Filtersetting={Filtersetting}
                 handleSubmit={handleSubmit}
+
                 setSearch={setSearch}
                 setPage={setPage}
                 setLimit={setLimit}

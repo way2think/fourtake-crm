@@ -86,24 +86,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         }
     }, [addData]);
 
-    // const initialFollowUps = [
-    //     {
-    //         interactionType: 'Call',
-    //         status: 'Open',
-    //         nextFollowUp: '2024-07-01',
-    //         remarks: 'First follow-up call',
-    //         createdDate: '2024-06-01',
-    //     },
-    //     {
-    //         interactionType: 'Email',
-    //         status: 'In-progress',
-    //         nextFollowUp: '2024-07-05',
-    //         remarks: 'Sent email for document submission',
-    //         createdDate: '2024-06-05',
-    //     },
-    // ];
-
-    // console.log('addData', addData);
+    //    console.log('addData', addData);
 
     const tableColumnsFollowUp = [
         {
@@ -237,6 +220,12 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         setLeadNote('');
         setCurrentIndex(null); // Reset index when closing modal
     };
+
+    {
+        if (isMailOpen) {
+            return <LeadEmailSendModal addData={addData} isOpen={isMailOpen} setIsOpen={setIsMailOpen} setAddData={setAddData} />;
+        }
+    }
 
     const handleNoteAction = () => {
         const currentTimeInSeconds = Math.floor(Date.now() / 1000); // Convert milliseconds to seconds
@@ -507,6 +496,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         {/*  */}
                                     </div>
                                 </div>
+
                                 {/* <div className="dropdown mb-5">
                                     <label htmlFor="leadmanage">Lead Managed by</label>
                                     <select className="form-input" defaultValue="" id="assignee" value={addData?.assignee} onChange={(e) => handleInputChange(e)}>
@@ -718,7 +708,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                     </div>
                 </div>
             </ActionModal>
-            <LeadEmailSendModal isOpen={isMailOpen} setIsOpen={setIsMailOpen} handleSave={handleSave} handleInputChange={handleInputChange} setAddData={setAddData} />
+            {isMailOpen && <LeadEmailSendModal addData={addData} isOpen={isMailOpen} setIsOpen={setIsMailOpen} setAddData={setAddData} />}
         </>
     );
 };
