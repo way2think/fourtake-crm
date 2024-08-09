@@ -39,12 +39,12 @@ const ComponentsTabsJustifyCenterPills = () => {
                 <Tab.Panels>
                     <Tab.Panel>
                         <div className="active pt-5">
-                            <ComponentsAuthLoginForm />
+                            <ComponentsAuthLoginForm type="client" />
                         </div>
                     </Tab.Panel>
                     <Tab.Panel>
                         <div>
-                            <ComponentsAuthLoginForm />
+                            <ComponentsAuthLoginForm type="employee" />
                         </div>
                     </Tab.Panel>
                 </Tab.Panels>

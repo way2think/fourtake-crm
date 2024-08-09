@@ -17,6 +17,8 @@ import { Country } from '@/entities/country.entity';
 import { useGetCountryVisaTypesQuery } from '@/services/api/cms/countryVisaTypeSlice';
 import { CountryVisaType } from '@/entities/country-visa-type.entity';
 import { VisaType } from '@/entities/visa-type.entity';
+import LeadActionModal from './LeadEmailSendModal';
+import LeadEmailSendModal from './LeadEmailSendModal';
 
 interface LeadManagementActionModalProps {
     isOpen: any;
@@ -38,6 +40,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     // console.log('country: ', countryVisaTypes);
 
     const [visaTypes, setVisaTypes] = useState([]);
+    const [isMailOpen, setIsMailOpen] = useState(false);
 
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
     const [setMail, setSetEmail] = useState<string>();
@@ -468,9 +471,10 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                             onChange={(e) => setSetEmail(e.target.value)}
                                             className="form-input ltr:rounded-r-none rtl:rounded-l-none"
                                         />
-                                        <button type="button" className="btn btn-primary ltr:rounded-l-none rtl:rounded-r-none">
+                                        <button type="button" onClick={() => setIsMailOpen(true)} className="btn btn-primary ltr:rounded-l-none rtl:rounded-r-none">
                                             Send
                                         </button>
+                                        {/*  */}
                                     </div>
                                 </div>
                                 {/* <div className="dropdown mb-5">
@@ -681,6 +685,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                     </div>
                 </div>
             </ActionModal>
+            <LeadEmailSendModal isOpen={isMailOpen} setIsOpen={setIsMailOpen} handleSave={handleSave} handleInputChange={handleInputChange} setAddData={setAddData} />
         </>
     );
 };

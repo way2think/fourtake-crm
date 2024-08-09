@@ -81,7 +81,7 @@ const ComponentsFormsFileUploadSingle: React.FC<ComponentsFormsFileUploadSingleP
                                     </button>
                                 </div>
                             ))}
-                            {addData.flag && !imageList.length && (
+                            {addData?.flag && !imageList.length && (
                                 <div className="custom-file-container__image-preview relative">
                                     <img src={addData?.flag} alt="img" className="w-50 !max-h-20 rounded object-cover shadow" />
                                     <button
