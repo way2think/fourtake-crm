@@ -42,23 +42,23 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
     const [setMail, setSetEmail] = useState<string>();
     const [docPickup, setDocPickup] = useState(false);
-    const [leadNote, setLeadNote] = useState<string>(''); // Add state for the textarea
-    const [leadNotes, setLeadNotes] = useState<string[]>(addData.leadnote || []); // State for storing
+    const [leadNote, setLeadNote] = useState<any>(''); // Add state for the textarea
+    const [leadNotes, setLeadNotes] = useState<any[]>(addData.lead_note || []); // State for storing
     const [modalTitle, setModalTitle] = useState<string>('Add Note');
     const [actionButtonText, setActionButtonText] = useState<string>('Add Note');
     const [currentIndex, setCurrentIndex] = useState<number | null>(null); // Track index for editing
     const [nextFollowUp, setNextFollowUp] = useState<any>([]);
     const [isOpenNextFollowup, setIsOpenNextFollowup] = useState(false);
     const [addNextFollowUpData, setAddNextFollowUpData] = useState<any>({});
-    const [followUps, setFollowUps] = useState(addData?.followup || []);
+    const [followUps, setFollowUps] = useState(addData?.followups || []);
 
     useEffect(() => {
-        setLeadNotes(addData.leadnote || []);
-    }, [addData?.leadnote]);
+        setLeadNotes(addData.lead_note || []);
+    }, [addData?.lead_note]);
 
     useEffect(() => {
-        setFollowUps(addData.followup || []);
-    }, [addData?.followup]);
+        setFollowUps(addData.followups || []);
+    }, [addData?.followups]);
 
     useEffect(() => {
         if (addData.email) {
@@ -66,6 +66,19 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         }
         if (addData.docpickupdate) {
             //setDocPickup(true)
+        }
+    }, [addData]);
+
+    useEffect(() => {
+        if (countryVisaTypes?.items && addData?.country?.id) {
+            // const res = countryVisaTypes?.items.filter((item: any) => item?.id === addData?.country?.id).map((item: any) => item?.country_visa_types);
+            const res = countryVisaTypes?.items
+                .filter((item: any) => item?.id === addData.country.id)
+                .map((item: any) => item?.country_visa_types)
+                .flat(); // Flatten the array of arrays into a single array
+
+            console.log('res', res);
+            setVisaTypes(res);
         }
     }, [addData]);
 
@@ -86,16 +99,39 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     //     },
     // ];
 
+    console.log('addData', addData, leadNotes, 'leadNote', leadNote);
+
     const tableColumnsFollowUp = [
-        { accessor: 'followup_id', textAlign: 'left', title: 'S.NO' },
-        { accessor: '', textAlign: 'left', title: 'Next FollowUp Date & Time', render: (row: any) => `${row.followupdate}, ${row.followuptime}` },
+        {
+            accessor: 'followup_id',
+            textAlign: 'left',
+            title: 'S.NO',
+            render: (row: any) => {
+                return row.followup_id;
+            },
+        },
+        { accessor: '', textAlign: 'left', title: 'Next FollowUp Date & Time', render: (row: any) => `${row.next_followup}, ${row.followup_time}` },
         // { accessor: 'followuptime', textAlign: 'left', title: 'Time' },
-        { accessor: 'interaction', textAlign: 'left', title: 'Interaction Type' },
-        { accessor: 'remark', textAlign: 'left', title: 'Remark' },
+        {
+            accessor: 'interaction',
+            textAlign: 'left',
+            title: 'Interaction Type',
+            render: (row: any) => {
+                return row.interaction;
+            },
+        },
+        {
+            accessor: 'remark',
+            textAlign: 'left',
+            title: 'Remark',
+            render: (row: any) => {
+                return row.followup_remark;
+            },
+        },
     ];
 
     const handleLeadNoteChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-        setLeadNote(event.target.value);
+        setLeadNote({ ...leadNote, note: event.target.value });
     };
     const handleNextFollowUpChange = (e: any) => {
         const { value, id } = e.target;
@@ -105,16 +141,17 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
 
     const handleEdit = (object: any) => {
         // setIsEdit(true);
+        console.log('object', object);
         setIsOpenNextFollowup(true);
         setAddNextFollowUpData(object);
     };
 
     const handleFollowUpSave = (value: any) => {
-        if (addNextFollowUpData.followupdate == '' || addNextFollowUpData.followupdate == null) {
+        if (addNextFollowUpData.next_followup == '' || addNextFollowUpData.next_followup == null) {
             showMessage('Select Date  ', 'error');
             return false;
         }
-        if (addNextFollowUpData.followuptime == '' || addNextFollowUpData.followuptime == null) {
+        if (addNextFollowUpData.followup_time == '' || addNextFollowUpData.followup_time == null) {
             showMessage('Select Time ', 'error');
             return false;
         }
@@ -127,7 +164,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
             //update user
             const updatedData = followUps.map((d: any) => (d.followup_id === addNextFollowUpData.followup_id ? { ...d, ...addNextFollowUpData } : d));
             setFollowUps(updatedData);
-            setAddData({ ...addData, followup: updatedData });
+            setAddData({ ...addData, followups: updatedData });
             setIsOpenNextFollowup(false);
             setAddNextFollowUpData({});
             // return updatedData;
@@ -141,7 +178,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
             setFollowUps([...followUps, newFollowup]);
             setAddData({
                 ...addData,
-                followup: addData.followup ? [...addData.followup, newFollowup] : [newFollowup],
+                followups: addData.followups ? [...addData.followups, newFollowup] : [newFollowup],
             });
             setIsOpenNextFollowup(false);
             setAddNextFollowUpData({});
@@ -188,11 +225,11 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
             const updatedNotes = [...leadNotes];
             updatedNotes[currentIndex] = leadNote;
             setLeadNotes(updatedNotes);
-            setAddData({ ...addData, leadnote: updatedNotes });
+            setAddData({ ...addData, lead_note: updatedNotes });
         } else {
             const updatedNotes = [...leadNotes, leadNote];
             setLeadNotes(updatedNotes);
-            setAddData({ ...addData, leadnote: updatedNotes });
+            setAddData({ ...addData, lead_note: updatedNotes });
         }
         handleCloseModal();
     };
@@ -278,7 +315,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="dropdown mb-5">
                             <label htmlFor="residence_state">State of Residence</label>
-                            <select className="form-input" defaultValue="" id="residence_state" value={addData?.stateofresidence} onChange={(e) => handleInputChange(e)}>
+                            <select className="form-input" defaultValue="" id="residence_state" value={addData?.residence_state} onChange={(e) => handleInputChange(e)}>
                                 <option value="" disabled={true}>
                                     Select State
                                 </option>
@@ -289,7 +326,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         </div>
                         <div className="dropdown mb-5">
                             <label htmlFor="visa_type">Visa Type</label>
-                            <select className="form-input" defaultValue="" id="visa_type" value={addData?.visa_type} onChange={(e) => handleInputChange(e)}>
+                            <select className="form-input" defaultValue="" id="visa_type" value={addData?.visa_type?.id} onChange={(e) => handleInputChange(e)}>
                                 <option value="" disabled={true}>
                                     Visa Type
                                 </option>
@@ -305,10 +342,10 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <label htmlFor="numberofapplicants">No of Applicants</label>
+                            <label htmlFor="number_of_applicants">No of Applicants</label>
                             <input
-                                id="numberofapplicants"
-                                value={addData?.numberofapplicants}
+                                id="number_of_applicants"
+                                value={addData?.number_of_applicants}
                                 onChange={(e) => handleInputChange(e)}
                                 type="text"
                                 placeholder="Enter No of Applicants "
@@ -477,14 +514,14 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     <div className=" ">
                                         <ComponentsFormDatePickerBasic
                                             label="Next Follow-up Date "
-                                            id={'followupdate'}
+                                            id={'next_followup'}
                                             isEdit={isEdit}
                                             setAddData={setAddNextFollowUpData}
                                             addData={addNextFollowUpData}
                                         />
                                     </div>
                                     <div className="">
-                                        <ComponentsFormDatePickerTime id={'followuptime'} isEdit={isEdit} setAddData={setAddNextFollowUpData} addData={addNextFollowUpData} />
+                                        <ComponentsFormDatePickerTime id={'followup_time'} isEdit={isEdit} setAddData={setAddNextFollowUpData} addData={addNextFollowUpData} />
                                     </div>
                                 </div>
                                 <div className="m-5 grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -503,9 +540,9 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     <div className="mb-5">
                                         <label htmlFor="followupremark">Followup Remarks</label>
                                         <textarea
-                                            id="remark"
+                                            id="followup_remark"
                                             rows={1}
-                                            value={addNextFollowUpData?.remark}
+                                            value={addNextFollowUpData?.followup_remark}
                                             onChange={(e) => handleNextFollowUpChange(e)}
                                             placeholder="Enter FollowUp Remarks"
                                             className="form-textarea
@@ -573,9 +610,9 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     </button>
 
                                     <div className="mt-3">
-                                        {leadNotes?.map((note: string, index: number) => (
+                                        {leadNotes?.map((item: any, index: number) => (
                                             <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
-                                                <div>{note}</div>
+                                                <div>{item?.note}</div>
                                                 <div className="flex items-center">
                                                     <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
                                                         Edit
@@ -600,7 +637,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                                 <textarea
                                                     id="leadNote"
                                                     onChange={handleLeadNoteChange}
-                                                    value={leadNote}
+                                                    value={leadNote?.note}
                                                     placeholder="Enter your note here"
                                                     className="min-h-[150px] w-full rounded-lg border p-2 outline-none"
                                                 />

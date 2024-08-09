@@ -31,8 +31,22 @@ const LeadManagement: React.FC = () => {
         { accessor: 'name', textAlign: 'left', title: 'Lead Name' },
         { accessor: 'email', textAlign: 'left', title: 'Email' },
         { accessor: 'phone', textAlign: 'left', title: 'Phone no' },
-        { accessor: 'country', textAlign: 'left', title: 'Country' },
-        { accessor: 'visa_type', textAlign: 'left', title: 'Visa Type' },
+        {
+            accessor: 'country',
+            textAlign: 'left',
+            title: 'Country',
+            render: (row: any) => {
+                return row.country.name;
+            },
+        },
+        {
+            accessor: 'visa_type',
+            textAlign: 'left',
+            title: 'Visa Type',
+            render: (row: any) => {
+                return row.visa_type.name;
+            },
+        },
         // { accessor: 'stateofresidence', textAlign: 'left', title: 'State Of Residence' },
         { accessor: 'email_sent_date', textAlign: 'left', title: 'Email Sent Date' },
         // { accessor: 'lastfollowup', textAlign: 'left', title: 'Last Follow Up' },
