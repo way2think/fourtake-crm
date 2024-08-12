@@ -1,10 +1,15 @@
 'use client';
 
 import IconX from '@/components/icon/icon-x';
+import { rolesObject } from '@/entities/role.entity';
+import { User } from '@/entities/user.entity';
+import { useGetUsersQuery, useUpdateUserPasswordMutation } from '@/services/api/userSlice';
 import { showMessage } from '@/utils/notification';
+import { handleErrorResponse } from '@/utils/rtk-http';
 import { isValidEmail, isValidName, isValidPassword, isValidPhoneNumber } from '@/utils/validator';
 import { Transition, Dialog } from '@headlessui/react';
 import React, { Fragment, useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 interface PasswordActionModalProps {
     assignPassword: any;
@@ -14,31 +19,56 @@ interface PasswordActionModalProps {
 }
 
 const PasswordActionModal: React.FC<PasswordActionModalProps> = ({ assignPassword, setAssignPassword, assignPasswordValue, setAssignPasswordValue }) => {
-    // const [assignPasswordValue, setAssignPasswordValue] = useState<any>();
+    const { data: users, isFetching, isLoading, isError, error } = useGetUsersQuery({ page: 0, limit: 0 });
+    const { items = [], meta = {} } = users || {};
+
+    const [updateUserPassword, {}] = useUpdateUserPasswordMutation();
+
     const handlePasswordChange = (e: any) => {
         const { value, id } = e.target;
         setAssignPasswordValue({ ...assignPasswordValue, [id]: value });
     };
 
-    const handleChangePassword = () => {
+    const handleChangePassword = async () => {
+        console.log('assignPasswordValue', assignPasswordValue);
+
         if (assignPasswordValue.id === '') {
             showMessage('Select User', 'error');
             return true;
         }
-        if (!isValidPassword(assignPasswordValue.password)) {
-            showMessage('Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-            return true;
-        }
-        if (!isValidPassword(assignPasswordValue.confirmpassword)) {
-            showMessage('Confirm Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-            return true;
-        }
+        // if (!isValidPassword(assignPasswordValue.password)) {
+        //     showMessage('Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
+        //     return true;
+        // }
+        // if (!isValidPassword(assignPasswordValue.confirmpassword)) {
+        //     showMessage('Confirm Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
+        //     return true;
+        // }
         if (assignPasswordValue.password !== assignPasswordValue.confirmpassword) {
             showMessage('Passwords must match', 'error');
             return true;
         }
-        setAssignPassword(false);
-        setAssignPasswordValue({ id: '', password: '', confirmpassword: '' });
+
+        try {
+            const res = await updateUserPassword({
+                id: assignPasswordValue.id,
+                body: {
+                    password: assignPasswordValue.password,
+                },
+            }).unwrap();
+
+            console.log('res', res);
+
+            await Swal.fire({ title: 'Updated!', text: res.message, icon: 'success', customClass: { popup: 'sweet-alerts' } });
+
+            setAssignPassword(false);
+            setAssignPasswordValue({ id: '', password: '', confirmpassword: '' });
+        } catch (e) {
+            console.log('err', e);
+            await handleErrorResponse(e);
+            setAssignPassword(false);
+            setAssignPasswordValue({ id: '', password: '', confirmpassword: '' });
+        }
     };
 
     return (
@@ -73,14 +103,16 @@ const PasswordActionModal: React.FC<PasswordActionModalProps> = ({ assignPasswor
                                         <div className="mb-4 grid grid-cols-1 gap-5 md:grid-cols-1   ">
                                             <div className="dropdown">
                                                 <label htmlFor="center">Users</label>
-                                                <select className="form-input" onChange={(e) => handlePasswordChange(e)} id="id" defaultValue={assignPasswordValue?.id}>
+                                                <select className="form-input" onChange={(e) => handlePasswordChange(e)} id="id">
                                                     <option value="" disabled={true}>
                                                         Select User
                                                     </option>
-                                                    <option value="raji">raji </option>
-                                                    <option value="Two">sanjay</option>
-                                                    <option value="Three">jagan</option>
-                                                    <option value="Three">santhosh</option>
+                                                    {users &&
+                                                        items?.map((user: User) => (
+                                                            <option key={user.id} value={user.id}>
+                                                                {`${user.username} (${user.first_name} ${user.last_name}) - ${rolesObject[user.role]}`}
+                                                            </option>
+                                                        ))}
                                                 </select>
                                             </div>
                                         </div>

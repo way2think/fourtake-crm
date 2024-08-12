@@ -24,9 +24,8 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
         traveldate: '',
     });
     useEffect(() => {
-
         const editmode = sessionStorage.getItem('iseditmode');
-        
+
         if (editmode == 'true') {
             const data = sessionStorage.getItem('manageVisaData');
             if (data) {
@@ -34,11 +33,8 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
             }
             sessionStorage.setItem('iseditmode', 'false');
         } else {
-
             sessionStorage.setItem('manageVisaData', '');
         }
-
-
     }, []);
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
@@ -78,7 +74,6 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
     };
 
     const handleSaveUser = () => {
-        
         if (addUser.firstname == '' || addUser.firstname == null) {
             showMessage('Enter First name', 'error');
             return false;
@@ -119,18 +114,16 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
             setIsOpen(false);
             setAddUser({});
 
-           
-
             // return updatedData;
         } else {
             //add user
-            
+
             const maxUserId = applicantDetails.length ? Math.max(...applicantDetails.map((d: any) => d.id)) : 0;
             console.log(addUser);
             const newUser = {
                 ...addUser,
                 id: +maxUserId + 1,
-                isprimary: addUser.isprimary ? "Yes" : "No",
+                isprimary: addUser.isprimary ? 'Yes' : 'No',
             };
             setApplicantDetails([...applicantDetails, newUser]);
             // return newUser;
@@ -142,28 +135,25 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
         // setAddContactModal(false);
         // setIsEdit(false);
     };
-    const handleDelete = (row: any) => {
-        Swal.fire({
+    const handleDelete = async (row: any) => {
+        await Swal.fire({
             icon: 'warning',
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
             showCancelButton: true,
             confirmButtonText: 'Delete',
             padding: '2em',
-            customClass: 'sweet-alerts',
-        }).then((result) => {
+            customClass: { popup: 'sweet-alerts' },
+        }).then(async (result) => {
             if (result.value) {
                 setApplicantDetails(applicantDetails.filter((item: any) => item.id !== row.id));
-                Swal.fire({ title: 'Deleted!', text: 'Your file has been deleted.', icon: 'success', customClass: 'sweet-alerts' });
+                await Swal.fire({ title: 'Deleted!', text: 'Your file has been deleted.', icon: 'success', customClass: { popup: 'sweet-alerts' } });
                 return true;
             }
         });
     };
 
-
-
     const handleSubmit = (value: any) => {
-        
         if (addData.country == '' || addData.country == null) {
             showMessage('Select Country', 'error');
             return false;
@@ -223,15 +213,13 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
 
         //console.log(applicantDetails)
         // Check if there's more than one entry with isprimary: "Yes"
-        const primaryCount = applicantDetails.filter((applicant: { isprimary: string }) => applicant.isprimary === "Yes").length;
+        const primaryCount = applicantDetails.filter((applicant: { isprimary: string }) => applicant.isprimary === 'Yes').length;
 
         if (primaryCount > 1) {
-            alert("Please select only one primary applicant.");
+            alert('Please select only one primary applicant.');
             return;
         }
-        alert("Ok");
-
-
+        alert('Ok');
     };
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
@@ -399,7 +387,6 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
                         onClick={() => {
                             setIsOpen(false);
                             setAddData({});
-
                         }}
                         type="button"
                         className="btn btn-outline-danger ml-3"

@@ -4,6 +4,8 @@ import IconX from '../icon/icon-x';
 import { roles } from '@/entities/role.entity';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/user.store';
+import { useGetCentersQuery } from '@/services/api/centerSlice';
+import { Center } from '@/entities/center.entity';
 
 interface UserManagementActionModalProps {
     isOpen: any;
@@ -17,14 +19,18 @@ interface UserManagementActionModalProps {
 }
 
 const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData, isEdit, setIsEdit }) => {
+    const { data: centers, isLoading, isError, error } = useGetCentersQuery(undefined);
+
     const currentUser = useSelector(selectUser);
 
-    console.log('currentUser', currentUser);
+    // console.log('currentUser', currentUser);
 
     const handleCheckBoxChange = (e: any) => {
         const { id, checked } = e.target;
         setAddData((prev: any) => ({ ...prev, [id]: checked }));
     };
+
+    // console.log('centers', centers);
 
     return (
         <>
@@ -45,6 +51,20 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                 </div>
 
                 <div className="p-5">
+                    <div className="grid">
+                        <div className="mb-5">
+                            <label htmlFor="username">Username</label>
+                            <input
+                                id="username"
+                                type="text"
+                                disabled={isEdit ? true : false}
+                                placeholder="Enter Username"
+                                className="form-input"
+                                value={addData?.username}
+                                onChange={(e) => handleInputChange(e)}
+                            />
+                        </div>
+                    </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
                             <label htmlFor="firstname">First Name</label>
@@ -61,7 +81,6 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                                 <label htmlFor="email">Email</label>
                                 <input
                                     id="email"
-                                    disabled={isEdit ? true : false}
                                     value={addData?.email}
                                     onChange={(e) => handleInputChange(e)}
                                     type="tel"
@@ -83,10 +102,10 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                                 <input id="password" value={addData?.password} onChange={(e) => handleInputChange(e)} type="password" placeholder="Enter Password" className="form-input" />
                             </div>
                             <div className="mb-5">
-                                <label htmlFor="confirmpassword">Confirm Password</label>
+                                <label htmlFor="confirm_password">Confirm Password</label>
                                 <input
-                                    id="confirmpassword"
-                                    value={addData?.confirmpassword}
+                                    id="confirm_password"
+                                    value={addData?.confirm_password}
                                     onChange={(e) => handleInputChange(e)}
                                     type="password"
                                     placeholder="Enter Confirm Password"
@@ -98,16 +117,23 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                     <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="dropdown">
                             <label htmlFor="center">Center</label>
-                            <select className="form-input" defaultValue="" id="center" onChange={(e) => handleInputChange(e)} value={addData?.center}>
+                            <select
+                                className="form-input"
+                                defaultValue=""
+                                id="center"
+                                disabled={currentUser.role !== 'super_admin'}
+                                onChange={(e) => handleInputChange(e)}
+                                value={currentUser.role !== 'super_admin' ? currentUser?.center?.id : addData?.center?.id}
+                            >
                                 <option value="" disabled={true}>
                                     Select Center
                                 </option>
-                                <option value="Chennai">Chennai</option>
-                                <option value="Vellore">Vellore</option>
-                                <option value="Bengaluru">Bengaluru</option>
-                                <option value="New Delhi">New Delhi</option>
-                                <option value="Mangalore">Mangalore</option>
-                                <option value="Mumbai">Mumbai</option>
+                                {centers &&
+                                    centers?.map((center: Center) => (
+                                        <option key={center.id} value={center.id}>
+                                            {center.name}
+                                        </option>
+                                    ))}
                             </select>
                         </div>
                         <div className="dropdown">
@@ -116,18 +142,26 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                                 <option value="" disabled={true}>
                                     Select Role
                                 </option>
-                                {roles.map((role) => (
-                                    <option key={role.name} value={role.value}>
-                                        {role.name}
-                                    </option>
-                                ))}
+                                {roles
+                                    .filter((role) => currentUser.role === 'super_admin' || role.value !== 'super_admin')
+                                    .map((role) => (
+                                        <option key={role.name} value={role.value}>
+                                            {role.name}
+                                        </option>
+                                    ))}
                             </select>
                         </div>
                     </div>
                     <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5 mt-8">
                             <label className="flex cursor-pointer items-center">
-                                <input type="checkbox" id="status" onChange={(e) => handleCheckBoxChange(e)} checked={addData?.is_active || false} className="form-checkbox  bg-white dark:bg-black" />
+                                <input
+                                    type="checkbox"
+                                    id="is_active"
+                                    onChange={(e) => handleCheckBoxChange(e)}
+                                    checked={addData?.is_active || false}
+                                    className="form-checkbox  bg-white dark:bg-black"
+                                />
                                 <span className="text-white-dark">Active</span>
                             </label>
                         </div>

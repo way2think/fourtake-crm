@@ -9,13 +9,29 @@ function isValidEmail(email: string) {
     return emailRegex.test(email);
 }
 
-function isValidPassword(password: string) {
-    // Password must be 6 characters or more in length
-    // const passwordRegex = /^.{6,}$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+function isValidPassword(password: string): boolean {
+    const minLength = 6;
+    const minNumbers = /[0-9]/;
+    const minSymbols = /[!@#$%^&*(),.?":{}|<>]/;
+    const minUppercase = /[A-Z]/;
 
-    // Test the password against the regex pattern
-    return passwordRegex.test(password);
+    if (password.length < minLength) {
+        return false;
+    }
+
+    if (!minNumbers.test(password)) {
+        return false;
+    }
+
+    if (!minSymbols.test(password)) {
+        return false;
+    }
+
+    if (!minUppercase.test(password)) {
+        return false;
+    }
+
+    return true;
 }
 
 function isValidName(name: string) {

@@ -14,4 +14,6 @@ export interface User {
     address: string;
     center?: Center;
     created_at: string;
+    password?: string;
+    confirm_password?: string;
 }
