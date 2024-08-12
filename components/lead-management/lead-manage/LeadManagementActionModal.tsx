@@ -20,6 +20,9 @@ import { VisaType } from '@/entities/visa-type.entity';
 import LeadActionModal from './LeadEmailSendModal';
 import LeadEmailSendModal from './LeadEmailSendModal';
 import { stateCityData } from '@/utils/constant';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/store/user.store';
+import { User } from '@/entities/user.entity';
 
 interface LeadManagementActionModalProps {
     isOpen: any;
@@ -55,6 +58,11 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     const [isOpenNextFollowup, setIsOpenNextFollowup] = useState(false);
     const [addNextFollowUpData, setAddNextFollowUpData] = useState<any>({});
     const [followUps, setFollowUps] = useState(addData?.followups || []);
+
+    const user = useSelector(selectUser) as User;
+    console.log('user', user);
+
+    const role = user?.role || 'guest';
 
     useEffect(() => {
         setLeadNotes(addData.lead_note || []);

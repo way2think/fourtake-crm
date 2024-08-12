@@ -55,6 +55,7 @@ const LeadManagement: React.FC = () => {
         { accessor: 'stage', textAlign: 'left', title: 'Stage' },
     ];
 
+    
 
     const handleDeleteLead = (lead: Lead) =>
         handleDelete({
