@@ -90,15 +90,15 @@ export const { handlers, auth, signIn } = NextAuth({
                             },
                         });
 
-                        console.log('refresh: ', response.status, response.statusText);
+                        // console.log('refresh: ', response.status, response.statusText);
 
                         if (response.ok) {
-                            console.log('refresh1: ', response.ok);
+                            // console.log('refresh1: ', response.ok);
                             const refreshedTokens = await response.json();
                             token.accessToken = refreshedTokens.access_token;
                         } else {
                             // If refresh fails, clear the token
-                            console.log('refresh2: ', response.ok);
+                            // console.log('refresh2: ', response.ok);
                             return null;
                         }
                     } catch (error) {

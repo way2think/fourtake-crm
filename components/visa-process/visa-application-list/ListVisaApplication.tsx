@@ -13,6 +13,7 @@ import ListVisaApplicationListLine from './ListVisaApplicationListLine';
 
 const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplication }) => {
     const [data, setData] = useState(listapplication);
+
     const exportColumns = ['id', 'applydate', 'refno', 'apptype', 'applname', 'cosultantname', 'destination', 'type', 'duration', 'entry'];
 
     const tableColumns = [
@@ -144,19 +145,21 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
                         <Tab.Panels>
                             <Tab.Panel>
                                 <div className="active pt-5">
-                                    {/* <TableLayout
+                                    <TableLayout
                                         title="List Visa Application"
-                                        setData={setData}
                                         filterby="country"
                                         handleDelete={handleDelete}
                                         data={data}
-                                        totalPages={data?.length || 0}
                                         tableColumns={tableColumns}
                                         exportColumns={exportColumns}
                                         ActionModal={CountryActionModal}
                                         ActionModalListLine={ListVisaApplicationListLine}
                                         handleSubmit={handleSubmit}
-                                    /> */}
+                                        meta={undefined}
+                                        setSearch={undefined}
+                                        setPage={undefined}
+                                        setLimit={undefined}
+                                    />
                                 </div>
                             </Tab.Panel>
                             <Tab.Panel>
