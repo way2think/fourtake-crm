@@ -9,7 +9,7 @@ interface CountryVisaUrlActionModalProps {
     handleSave: any;
     addData?: any;
     handleInputChange: any;
-    setAddData: any;
+    setAddData?: any;
 }
 const CountryVisaUrlActionModal: React.FC<CountryVisaUrlActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
     const { data: countries, isFetching, isLoading } = useGetCountriesQuery({ page: 0, limit: 0 });

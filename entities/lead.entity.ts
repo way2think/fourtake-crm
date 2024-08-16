@@ -1,8 +1,10 @@
 export interface Lead {
     id?: number;
+    updated_time?: string;
     name: string;
     email: string;
     phone: string;
+    other_phone: string;
     country: string;
     visa_type: string;
     number_of_applicants: number;

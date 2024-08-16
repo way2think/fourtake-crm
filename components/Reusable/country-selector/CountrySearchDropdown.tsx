@@ -10,7 +10,7 @@ interface SearchableDropdownProps {
     addData: any;
     setAddData: any;
     handleEmbassyChange?: any;
-    items: any; // Update this to match the correct type
+    items?: any; // Update this to match the correct type
     setVisaTypes?: any;
 }
 

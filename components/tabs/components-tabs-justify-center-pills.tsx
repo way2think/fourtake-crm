@@ -18,16 +18,6 @@ const ComponentsTabsJustifyCenterPills = () => {
                     <Tab as={Fragment}>
                         {({ selected }) => (
                             <button
-                                className={`${selected ? ' w-40 bg-[#005fbe] text-white !outline-none ' : ''}
-                                                    -mb-[1px] block w-40 rounded p-3.5 py-2 before:inline-block hover:bg-[#005fbe] hover:text-white`}
-                            >
-                                Client
-                            </button>
-                        )}
-                    </Tab>
-                    <Tab as={Fragment}>
-                        {({ selected }) => (
-                            <button
                                 className={`${selected ? 'w-40  bg-[#005fbe] text-white !outline-none' : ''}
                                                     -mb-[1px] block w-40 rounded p-3.5 py-2 before:inline-block hover:bg-[#005fbe] hover:text-white`}
                             >
@@ -35,16 +25,26 @@ const ComponentsTabsJustifyCenterPills = () => {
                             </button>
                         )}
                     </Tab>
+                    <Tab as={Fragment}>
+                        {({ selected }) => (
+                            <button
+                                className={`${selected ? ' w-40 bg-[#005fbe] text-white !outline-none ' : ''}
+                                                    -mb-[1px] block w-40 rounded p-3.5 py-2 before:inline-block hover:bg-[#005fbe] hover:text-white`}
+                            >
+                                Client
+                            </button>
+                        )}
+                    </Tab>
                 </Tab.List>
                 <Tab.Panels>
                     <Tab.Panel>
                         <div className="active pt-5">
-                            <ComponentsAuthLoginForm type="client" />
+                            <ComponentsAuthLoginForm type="employee" />
                         </div>
                     </Tab.Panel>
                     <Tab.Panel>
                         <div>
-                            <ComponentsAuthLoginForm type="employee" />
+                            <ComponentsAuthLoginForm type="client" />
                         </div>
                     </Tab.Panel>
                 </Tab.Panels>

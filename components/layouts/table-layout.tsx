@@ -31,6 +31,7 @@ interface TableLayoutProps {
     setFilter?: Function;
     setPage: Function;
     setLimit: Function;
+    visaChecklistData?: any;
 }
 interface AddDataProps {
     refno?: any;
@@ -40,6 +41,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
     title,
     data,
     meta,
+    visaChecklistData,
     handleDelete,
     handleSubmit,
     tableColumns,
@@ -389,6 +391,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                 addData={addData}
                 isEdit={isEdit}
                 setIsEdit={setIsEdit}
+                visaChecklistData={visaChecklistData}
             />
 
             {/* Modal for tracking Url */}

@@ -15,20 +15,30 @@ const VisafeeEditor: React.FC<VisafeeEditorProps> = ({ title, handleInputChange,
     const [value, setValue] = useState<string>(addData?.[title] || '');
 
     useEffect(() => {
-        const escapeHtml = (html: any) => {
+        const escapeHtml = (html: string = '') => {
             return html
-                .replace(/\\/g, '\\\\') // Escape backslashes
-                .replace(/"/g, '\\"') // Escape double quotes
-                .replace(/\n/g, '\\n') // Escape new lines
-                .replace(/\r/g, '\\r'); // Escape carriage returns
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;')
+                .replace(/\\/g, '\\\\')
+                .replace(/\n/g, '\\n')
+                .replace(/\r/g, '\\r');
         };
-        const result = escapeHtml(value);
+    
+        const escapedValue = escapeHtml(value);
+        // Use escapedValue if necessary
     }, [value]);
+
+    useEffect(() => {
+        setValue(addData?.[title]);
+    }, [addData?.[title]]);
 
     const config = useMemo(
         () => ({
             readonly: false,
-            placeholder: 'Start typing...',
+            // placeholder: 'Start typing...',
         }),
         []
     );
@@ -39,7 +49,7 @@ const VisafeeEditor: React.FC<VisafeeEditorProps> = ({ title, handleInputChange,
     };
 
     return (
-        <div>
+        <div >
             {/* <label htmlFor="Checklist">Visa Fee information*</label> */}
             <JoditEditor ref={editor} value={value} config={config} onBlur={(newContent) => handleChange(newContent)} onChange={(newContent) => handleChange(newContent)} />
         </div>

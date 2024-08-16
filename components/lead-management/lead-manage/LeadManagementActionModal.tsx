@@ -1,28 +1,19 @@
 import IconX from '@/components/icon/icon-x';
-import ComponentsFormsFileUploadMulti from '../../Reusable/file-upload/components-forms-file-upload-multi';
-import ComponentsFormsFileUploadSingle from '../../Reusable/file-upload/components-forms-file-upload-single';
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import ComponentsFormDatePickerBasic from './components-form-date-picker-basic';
 import ComponentsFormDatePickerTime from './components-form-date-picker-time';
-import TableLayout from '@/components/layouts/table-layout';
 import { useEffect, useState, ChangeEvent } from 'react';
-import AddNote from '@/components/popup/LeadListAddNote';
 import IconUserPlus from '@/components/icon/icon-user-plus';
 import PaginationTable from '@/components/Reusable/Table/PaginationTable';
 import { showMessage } from '@/utils/notification';
-import { isValidEmail, isValidPhoneNumber } from '@/utils/validator';
-import { render } from '@headlessui/react/dist/utils/render';
-import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
-import { Country } from '@/entities/country.entity';
 import { useGetCountryVisaTypesQuery } from '@/services/api/cms/countryVisaTypeSlice';
-import { CountryVisaType } from '@/entities/country-visa-type.entity';
 import { VisaType } from '@/entities/visa-type.entity';
-import LeadActionModal from './LeadEmailSendModal';
 import LeadEmailSendModal from './LeadEmailSendModal';
 import { stateCityData } from '@/utils/constant';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/user.store';
 import { User } from '@/entities/user.entity';
+import { useGetAllEmployeesQuery } from '@/services/api/userSlice';
 
 interface LeadManagementActionModalProps {
     isOpen: any;
@@ -33,15 +24,16 @@ interface LeadManagementActionModalProps {
     setAddData: any;
     isEdit?: any;
     setIsEdit?: any;
+    visaChecklistData?: any;
     // followUps?: any;
     // setFollowUps?: any;
 }
-const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ isEdit, setIsEdit, isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
+const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ isEdit, setIsEdit, isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData, visaChecklistData }) => {
     // const { data: countries, isLoading, isFetching, isError, error } = useGetCountriesQuery({ page: 0, limit: 0 });
 
     const { data: countryVisaTypes } = useGetCountryVisaTypesQuery({ page: 0, limit: 0 });
 
-    // console.log('country: ', countryVisaTypes);
+    // console.log('country: ', countryVisaTypes?.items);
 
     const [visaTypes, setVisaTypes] = useState([]);
     const [isMailOpen, setIsMailOpen] = useState(false);
@@ -54,15 +46,17 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     const [modalTitle, setModalTitle] = useState<string>('Add Note');
     const [actionButtonText, setActionButtonText] = useState<string>('Add Note');
     const [currentIndex, setCurrentIndex] = useState<number | null>(null); // Track index for editing
-    const [nextFollowUp, setNextFollowUp] = useState<any>([]);
     const [isOpenNextFollowup, setIsOpenNextFollowup] = useState(false);
     const [addNextFollowUpData, setAddNextFollowUpData] = useState<any>({});
     const [followUps, setFollowUps] = useState(addData?.followups || []);
 
+    const { data: employeelist } = useGetAllEmployeesQuery({ page: 0, limit: 0 });
+    console.log('employeelist', employeelist?.items);
     const user = useSelector(selectUser) as User;
-    console.log('user', user);
 
     const role = user?.role || 'guest';
+
+    console.log('user', user, role);
 
     useEffect(() => {
         setLeadNotes(addData.lead_note || []);
@@ -77,7 +71,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
             setSetEmail(addData.email || '');
         }
         if (addData.doc_pickup_date) {
-            //setDocPickup(true)
+            setDocPickup(true);
         }
     }, [addData]);
 
@@ -88,13 +82,11 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                 .filter((item: any) => item?.id === addData.country.id)
                 .map((item: any) => item?.country_visa_types)
                 .flat(); // Flatten the array of arrays into a single array
-
-            // console.log('res', res);
             setVisaTypes(res);
         }
     }, [addData]);
 
-    //    console.log('addData', addData);
+    // console.log('addData1', addData);
 
     const tableColumnsFollowUp = [
         {
@@ -231,7 +223,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
 
     {
         if (isMailOpen) {
-            return <LeadEmailSendModal addData={addData} isOpen={isMailOpen} setIsOpen={setIsMailOpen} setAddData={setAddData} />;
+            return <LeadEmailSendModal addData={addData} isOpen={isMailOpen} setIsOpen={setIsMailOpen} setAddData={setAddData} visaChecklistData={visaChecklistData} />;
         }
     }
 
@@ -258,6 +250,8 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         handleCloseModal();
     };
 
+    console.log('addData', addData);
+
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
@@ -279,7 +273,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                 <div className="p-5">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="mb-5">
-                            <ComponentsFormDatePickerBasic label="Create Date" id={'create_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                            <ComponentsFormDatePickerBasic label="Create Date" id={'create_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} currentDate={new Date()} />
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
@@ -288,18 +282,25 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             <input id="name" type="text" onChange={(e) => handleInputChange(e)} value={addData?.name} placeholder="Enter Applicant Name" className="form-input" />
                         </div>
                         <div className="mb-5">
-                            <label htmlFor="phone">Mobile Number </label>
-                            <input id="phone" value={addData?.phone} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Mobile Number" className="form-input" />
+                            <label htmlFor="email">Email </label>
+                            <input id="email" value={addData?.email} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Email" className="form-input" />
                         </div>
                     </div>
                     <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <label htmlFor="email">Email </label>
-                            <input id="email" value={addData?.email} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Email" className="form-input" />
+                            <label htmlFor="phone">Mobile Number </label>
+                            <input id="phone" value={addData?.phone} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Mobile Number" className="form-input" />
                         </div>
+                        <div className="mb-5">
+                            <label htmlFor="other_phone">Other Mobile Number (Foreign) </label>
+                            <input id="other_phone" value={addData?.other_phone} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Other Mobile Number" className="form-input" />
+                        </div>
+                    </div>
+                    <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="dropdown mb-5">
                             <label htmlFor="country">Country</label>
                             <select
+                                // disabled={role == 'employee' ? true : false}
                                 className="form-input"
                                 defaultValue=""
                                 id="country"
@@ -334,12 +335,41 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 ))}
                             </select>
                         </div>
+                        <div className="dropdown mb-5">
+                            <label htmlFor="visa_type">Visa Type</label>
+                            <select
+                                className="form-input"
+                                defaultValue=""
+                                id="visa_type"
+                                value={addData?.visa_type?.id}
+                                disabled={role == 'employee' ? true : false}
+                                onChange={(e) => handleInputChange(e)}
+                            >
+                                <option value="" disabled={true}>
+                                    Visa Type
+                                </option>
+                                {/* <option value="Business Type">Business Visa</option>
+                                <option value="Vistor Visa">Vistor Visa</option> */}
+                                {visaTypes.map((visaType: VisaType) => (
+                                    <option key={visaType.id} value={visaType.id}>
+                                        {visaType.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="dropdown mb-5">
                             <label htmlFor="residence_state">State of Residence</label>
-                            <select className="form-input" defaultValue="" id="residence_state" value={addData?.residence_state} onChange={(e) => handleInputChange(e)}>
+                            <select
+                                className="form-input"
+                                defaultValue=""
+                                id="residence_state"
+                                value={addData?.residence_state}
+                                onChange={(e) => handleInputChange(e)}
+                                disabled={role == 'employee' ? true : false}
+                            >
                                 <option value="" disabled={true}>
                                     Select State
                                 </option>
@@ -352,18 +382,25 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 <option value="Usa">AP</option> */}
                             </select>
                         </div>
+
                         <div className="dropdown mb-5">
-                            <label htmlFor="visa_type">Visa Type</label>
-                            <select className="form-input" defaultValue="" id="visa_type" value={addData?.visa_type?.id} onChange={(e) => handleInputChange(e)}>
+                            <label htmlFor="source">Assignee</label>
+                            <select
+                                className="form-input"
+                                defaultValue=""
+                                id="assignee"
+                                value={addData?.assignee?.id}
+                                onChange={(e) => {
+                                    console.log('e.target', e.target.options[e.target.selectedIndex].innerText);
+                                    setAddData((prev: any) => ({ ...prev, assignee: { id: e.target.value, username: e.target.options[e.target.selectedIndex].innerText } }));
+                                }}
+                            >
                                 <option value="" disabled={true}>
-                                    Visa Type
+                                    Assignee
                                 </option>
-                                {/* <option value="Business Type">Business Visa</option>
-                                <option value="Vistor Visa">Vistor Visa</option> */}
-                                {visaTypes.map((visaType: VisaType) => (
-                                    <option key={visaType.id} value={visaType.id}>
-                                        {visaType.name}
-                                    </option>
+
+                                {employeelist?.items?.map((item: any) => (
+                                    <option value={item.id}>{item.username}</option>
                                 ))}
                             </select>
                         </div>
@@ -411,19 +448,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 <option value="Others">Others</option>
                             </select>
                         </div>
-
-                        <div className="dropdown mb-5">
-                            <label htmlFor="source">Assignee</label>
-                            <select className="form-input" defaultValue="" id="assignee" value={addData?.assignee} onChange={(e) => handleInputChange(e)}>
-                                <option value="" disabled={true}>
-                                    Assignee
-                                </option>
-                                <option value="Sanjay">Sanjay</option>
-                                <option value="Bujji">Bujji</option>
-                                <option value="raji">raji</option>
-                                <option value="santhosh">Santhosh</option>
-                            </select>
-                        </div>
                     </div>
 
                     {isEdit && (
@@ -461,7 +485,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         <option value="Status" disabled={true}>
                                             Status
                                         </option>
-                                        <option value="open">Open</option>
+                                        <option value="Open">Open</option>
                                         <option value="In-progress">In-progress</option>
                                         <option value="Closed">Closed</option>
                                         <option value="Done">Done</option>
@@ -471,13 +495,21 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             {docPickup && (
                                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                                     <div className="mb-5">
-                                        <ComponentsFormDatePickerBasic label="Document pickup Date" id={'doc_pickup_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                                        <ComponentsFormDatePickerBasic
+                                            label="Document pickup Date"
+                                            id={'doc_pickup_date'}
+                                            isEdit={isEdit}
+                                            setAddData={setAddData}
+                                            addData={addData}
+                                            disable={addData?.stage === 'Doc picked up'}
+                                        />
                                     </div>
                                     <div className="mb-5">
                                         <label htmlFor="doc_pickup_remark">Document PickUp Remarks</label>
                                         <textarea
                                             id="doc_pickup_remark"
                                             rows={1}
+                                            disabled={addData?.stage == 'Doc picked up' ? true : false}
                                             value={addData?.doc_pickup_remark}
                                             onChange={(e) => handleInputChange(e)}
                                             placeholder="Enter Remarks"
@@ -494,8 +526,9 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                             id="mail"
                                             type="text"
                                             placeholder="Enter Email"
-                                            value={setMail}
-                                            onChange={(e) => setSetEmail(e.target.value)}
+                                            value={addData?.email}
+                                            onChange={(e) => handleInputChange(e)}
+                                            // onChange={(e) => setSetEmail(e.target.value)}
                                             className="form-input ltr:rounded-r-none rtl:rounded-l-none"
                                         />
                                         <button type="button" onClick={() => setIsMailOpen(true)} className="btn btn-primary ltr:rounded-l-none rtl:rounded-r-none">
@@ -716,7 +749,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                     </div>
                 </div>
             </ActionModal>
-            {isMailOpen && <LeadEmailSendModal addData={addData} isOpen={isMailOpen} setIsOpen={setIsMailOpen} setAddData={setAddData} />}
+            {/* {isMailOpen && <LeadEmailSendModal addData={addData} isOpen={isMailOpen} setIsOpen={setIsMailOpen} setAddData={setAddData} visaChecklistData={visaChecklistData} />} */}
         </>
     );
 };

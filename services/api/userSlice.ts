@@ -37,6 +37,29 @@ export const userSlice = apiSlice.injectEndpoints({
                 };
             },
         }),
+
+        getAllEmployees: build.query({
+            providesTags: (result, error, arg) => (result ? [{ type: 'User', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'User', id }))] : [{ type: 'User', id: 'LIST' }]),
+            query: (args) => {
+                const url = generateURLWithPagination({
+                    endpoint: '/user/employee',
+                    page: args?.page,
+                    limit: args?.limit,
+                    sortField: args?.sortField,
+                    sortOrder: args?.sortOrder,
+                    search: args?.search,
+                    filter: args?.filter,
+                });
+
+                return {
+                    method: 'GET',
+                    url,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+            },
+        }),
         updateUser: build.mutation({
             query: ({ id, body }) => ({
                 method: 'PATCH',
@@ -81,4 +104,13 @@ export const userSlice = apiSlice.injectEndpoints({
     }),
 });
 
-export const { useCreateUserMutation, useGetUsersQuery, useUpdateUserMutation, useUpdateUserPasswordMutation, useDeleteUserMutation, useGetCurrentUserQuery, useLazyGetCurrentUserQuery } = userSlice;
+export const {
+    useCreateUserMutation,
+    useGetUsersQuery,
+    useGetAllEmployeesQuery,
+    useUpdateUserMutation,
+    useUpdateUserPasswordMutation,
+    useDeleteUserMutation,
+    useGetCurrentUserQuery,
+    useLazyGetCurrentUserQuery,
+} = userSlice;

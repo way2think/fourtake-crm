@@ -11,30 +11,31 @@ interface ComponentsFormDatePickerBasicProps {
     setAddData: (data: any) => void;
     addData: any;
     isEdit?: boolean;
+    currentDate?: any;
+    disable?: boolean;
 }
 
 const formatDate = (date: Date) => {
-    // const day = String(date.getDate()).padStart(2, '0');
-    // const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
-    // const year = date.getFullYear();
-    // return `${day}/${month}/${year}`;
-
     return date.toISOString(); // Convert to ISO 8601 string
 };
 
-const ComponentsFormDatePickerBasic: React.FC<ComponentsFormDatePickerBasicProps> = ({ label, id, setAddData, isEdit, addData }) => {
+const ComponentsFormDatePickerBasic: React.FC<ComponentsFormDatePickerBasicProps> = ({ label, id, setAddData, isEdit, addData, currentDate, disable }) => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const [date1, setDate1] = useState<string>();
     const isEmpty = (obj: object): boolean => Object.keys(obj).length === 0 && obj.constructor === Object;
-    
+
     useEffect(() => {
         if (isEdit && addData && id && addData[id]) {
             setDate1(addData[id]);
+        } else if (!isEdit && !addData[id] && currentDate) {
+            // const currentDate = formatDate(new Date());
+            setDate1(formatDate(currentDate));
+            setAddData((prevData: any) => ({
+                ...prevData,
+                [id]: formatDate(currentDate),
+            }));
         }
-        if (isEmpty(addData)) {
-            setDate1('');
-        }
-    }, [isEdit, addData, id]);
+    }, [isEdit, addData, id, setAddData]);
 
     const handleDateChange = (selectedDates: Date[]) => {
         const selectedDate = selectedDates[0];
@@ -52,6 +53,7 @@ const ComponentsFormDatePickerBasic: React.FC<ComponentsFormDatePickerBasicProps
             <label htmlFor={id}>{label}</label>
             <Flatpickr
                 value={date1 || ''}
+                disabled={disable ? true : false}
                 options={{
                     dateFormat: 'd-m-Y',
                     position: isRtl ? 'auto right' : 'auto left',

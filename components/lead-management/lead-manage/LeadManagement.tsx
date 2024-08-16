@@ -10,6 +10,9 @@ import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import type { Lead } from '@/entities/lead.entity';
 import { usePaginationOptions } from '@/hooks/usePaginationOptions';
+import { useGetVisaChecklistQuery } from '@/services/api/cms/visaChecklistSlice';
+import { showMessage } from '@/utils/notification';
+import { isValidPhoneNumber } from '@/utils/validator';
 
 const LeadManagement: React.FC = () => {
     const [createLead, {}] = useCreateLeadMutation();
@@ -18,19 +21,44 @@ const LeadManagement: React.FC = () => {
 
     const { page, limit, sortField, sortOrder, search, filter, setFilter, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
-    const { data: leads, isError, error, isFetching, isLoading } = useGetLeadsQuery({ page, limit, sortField, sortOrder, search, filter });
+    const { data: leads, isError, error, isFetching, isLoading } = useGetLeadsQuery({ page, limit, sortField: 'updated_time', sortOrder: 'DESC', search, filter });
     const { items = [], meta = {} } = leads || {};
+
+    console.log('leadData', items);
+
+    const { data: visachecklist } = useGetVisaChecklistQuery({ page: 0, limit: 0 });
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
-    // console.log('leads: ', data, isLoading, isFetching);
-    // console.log('eror: ', isError, error);
+    const getDate = (timestamp: string) => {
+        //will get date alone from  ISO 8601 format date in the format of dd-mm-yyyy
+        const dateObj = new Date(timestamp);
+
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+        const year = dateObj.getFullYear();
+
+        return `${day}-${month}-${year}`;
+    };
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
         { accessor: 'name', textAlign: 'left', title: 'Lead Name' },
         { accessor: 'email', textAlign: 'left', title: 'Email' },
-        { accessor: 'phone', textAlign: 'left', title: 'Phone no' },
+        {
+            accessor: 'phone',
+            textAlign: 'left',
+            title: 'Phone no',
+            render: (row: any) => {
+                if (row.phone && row.other_phone) {
+                    return `+91 ${row.phone}, ${row.other_phone}`;
+                } else if (row.phone && !row.other_phone) {
+                    return `+91 ${row.phone}`;
+                } else if (row.other_phone && !row.phone) {
+                    return `${row.other_phone}`;
+                }
+            },
+        },
         {
             accessor: 'country',
             textAlign: 'left',
@@ -50,12 +78,21 @@ const LeadManagement: React.FC = () => {
         // { accessor: 'stateofresidence', textAlign: 'left', title: 'State Of Residence' },
         { accessor: 'email_sent_date', textAlign: 'left', title: 'Email Sent Date' },
         // { accessor: 'lastfollowup', textAlign: 'left', title: 'Last Follow Up' },
-        { accessor: 'next_followup', textAlign: 'left', title: 'Next Follow Up' },
+        {
+            accessor: 'followups',
+            textAlign: 'left',
+            title: 'Next Follow Up',
+            render: (row: any) => {
+                if (row.followups) {
+                    const dateOnly = row.followups[row.followups.length - 1].next_followup;
+                    const time = row.followups[row.followups.length - 1].followup_time;
+                    return `${getDate(dateOnly)}, ${time}`;
+                }
+            },
+        },
         { accessor: 'status', textAlign: 'left', title: 'Status' },
         { accessor: 'stage', textAlign: 'left', title: 'Stage' },
     ];
-
-    
 
     const handleDeleteLead = (lead: Lead) =>
         handleDelete({
@@ -69,10 +106,53 @@ const LeadManagement: React.FC = () => {
         });
 
     const handleSubmit = async (value: Lead) => {
+        if (value.name == null || value.name == '') {
+            showMessage('Enter Name', 'error');
+            return false;
+        }
+
+        if ((value.phone == null || value.phone == '') && (value.other_phone == '' || value.other_phone == null)) {
+            showMessage('Enter either phone or other phone number', 'error');
+            return false;
+        }
+
+        if (value.phone && value.phone.trim() !== '') {
+            if (!isValidPhoneNumber(value.phone)) {
+                showMessage('Enter a valid phone number with exactly 10 digits.', 'error');
+                return false;
+            }
+        }
+
+        if (value.country == null || value.country == '') {
+            showMessage('Select Country', 'error');
+            return false;
+        }
+
+        if (value.visa_type == null || value.visa_type == '') {
+            showMessage('Select Visa Type', 'error');
+            return false;
+        }
+
+        if (value.residence_state == null || value.residence_state == '') {
+            showMessage('Select State', 'error');
+            return false;
+        }
+
+        if (value.travel_date == null || value.travel_date == '') {
+            showMessage('Select Travel Date', 'error');
+            return false;
+        }
+
+        if (value.assignee == null || value.assignee == '') {
+            showMessage('Select Assignee ', 'error');
+            return false;
+        }
+
         if (value.id) {
+            const updatedData = { ...value, updated_time: new Date() };
             return handleUpdate({
                 updateMutation: updateLead,
-                value,
+                value: updatedData,
                 items,
                 meta,
                 handleLocalUpdate: handleLocalRTKUpdate,
@@ -80,9 +160,10 @@ const LeadManagement: React.FC = () => {
                 endpoint: 'getLeads',
             });
         } else {
+            const updatedData = { ...value, updated_time: new Date(), stage: 'Fresh', status: 'Open' };
             return handleCreate({
                 createMutation: createLead,
-                value,
+                value: updatedData,
                 items,
                 meta,
                 handleLocalUpdate: handleLocalRTKUpdate,
@@ -93,8 +174,6 @@ const LeadManagement: React.FC = () => {
     };
 
     const exportColumns = ['id', 'leadname', 'email', 'contact', 'country', 'visatype', 'stateofresidence', 'emailsentdate', 'lastfollowup', 'nextfollowup', 'status'];
-
-   
 
     return (
         <>
@@ -119,11 +198,11 @@ const LeadManagement: React.FC = () => {
                 ActionModal={LeadManagementActionModal}
                 Filtersetting={Filtersetting}
                 handleSubmit={handleSubmit}
-
                 setSearch={setSearch}
                 setPage={setPage}
                 setLimit={setLimit}
                 setFilter={setFilter}
+                visaChecklistData={visachecklist}
             />
         </>
     );

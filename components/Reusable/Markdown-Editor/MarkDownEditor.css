@@ -6,3 +6,11 @@
 .CodeMirror {
     height: 100px !important;
 }
+
+.jodit-wysiwyg {
+    max-height: 200px;
+    overflow-y: auto !important;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
