@@ -110,6 +110,8 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
         handleCloseModal();
     };
 
+    // Add Applicant modal
+
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
@@ -156,18 +158,19 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                             </div>
                         }
                         <div className="mb-5">
-                            <label htmlFor="phone">Phone</label>
-                            <input id="phone" value={addUser?.phone} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Phone" className="form-input" />
+                            <label htmlFor="passportno">Passport No</label>
+                            <input id="passportno" value={addUser?.passportno} onChange={(e) => handleInputChange(e)} type="passportno" placeholder="Enter Passport No" className="form-input" />
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <label htmlFor="passportno">Passport No</label>
-                            <input id="passportno" value={addUser?.passportno} onChange={(e) => handleInputChange(e)} type="passportno" placeholder="Enter Passport No" className="form-input" />
+                            <label htmlFor="phone">Phone</label>
+                            <input id="phone" value={addUser?.phone} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Phone" className="form-input" />
                         </div>
                         <div className="mb-5">
-                            <ComponentsFormDatePickerBasic label="DOB" id={'dob'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
+                            <label htmlFor="other_phone">Other Phone(Foreign)</label>
+                            <input id="other_phone" value={addUser?.other_phone} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Phone" className="form-input" />
                         </div>
                     </div>
                     <div className="mb-5 grid grid-cols-1 gap-5 md:grid-cols-2 ">
@@ -218,6 +221,9 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <div className="mb-5">
+                            <ComponentsFormDatePickerBasic label="DOB" id={'dob'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
+                        </div>
                         <div className="mt-7">
                             <label className="flex cursor-pointer items-center">
                                 <input

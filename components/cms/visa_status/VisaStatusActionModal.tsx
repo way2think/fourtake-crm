@@ -34,7 +34,7 @@ const VisaStatusActionModal: React.FC<VisaStatusActionModalProps> = ({ isOpen, s
                             <input id="name" type="text" placeholder="Enter Visa Status" className="form-input" value={addData?.name} onChange={(e) => handleInputChange(e)} />
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="dropdown">
                             <label htmlFor="type">Status Type</label>
                             <select className="form-input" defaultValue="" id="type" value={addData?.type} onChange={(e) => handleInputChange(e)}>
@@ -45,6 +45,18 @@ const VisaStatusActionModal: React.FC<VisaStatusActionModalProps> = ({ isOpen, s
                                 <option value="Operation">Operation</option>
                                 <option value="News">News</option>
                             </select>
+                        </div>
+                        <div className="mt-7">
+                            <label className="flex cursor-pointer items-center">
+                                <input
+                                    type="checkbox"
+                                    id="isprimary"
+                                    onChange={(e) => handleCheckBoxChange(e)}
+                                    className="form-checkbox bg-white dark:bg-black"
+                                    checked={addData.is_active === true ? true : false}
+                                />
+                                <span className="text-black">Is Active?</span>
+                            </label>
                         </div>
                     </div>
                     <div className="mt-8 flex items-center justify-end">

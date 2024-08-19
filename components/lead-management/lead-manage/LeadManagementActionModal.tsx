@@ -250,8 +250,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         handleCloseModal();
     };
 
-    console.log('addData', addData);
-
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
@@ -600,6 +598,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                             <option value="Call">Call</option>
                                             <option value="Email">Email</option>
                                             <option value="Whatapp">Whatapp</option>
+                                            <option value="Applicant visiting">Applicant visiting</option>
                                         </select>
                                     </div>
                                     <div className="mb-5">
@@ -635,36 +634,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             {followUps?.length !== 0 && (
                                 <PaginationTable data={followUps} tableColumns={tableColumnsFollowUp} handleEdit={handleEdit} handleDelete={handleDeleteFollowUp} title="Customer Details" />
                             )}
-                            {/* Add the table here */}
-                            {/* <div className="mt-8">
-                                <h5 className="mb-4 text-lg font-bold">Follow Up History</h5>
-                                <table className="min-w-full border bg-white">
-                                    <thead>
-                                        <tr>
-                                            <th className="border-b px-4 py-2">Follow Up No</th>
-                                            <th className="border-b px-4 py-2">Interaction Type</th>
-                                            <th className="border-b px-4 py-2">Status</th>
-                                            <th className="border-b px-4 py-2">Next Follow Up</th>
-                                            <th className="border-b px-4 py-2">Remarks</th>
-                                            <th className="border-b px-4 py-2">Created Date</th>
-                                            <th className="border-b px-4 py-2">Assignee</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        Render follow-up details here
-                                        {followUps.map((followUp, index) => (
-                                            <tr key={index}>
-                                                <td className="border-b px-4 py-2">{index + 1}</td>
-                                                <td className="border-b px-4 py-2">{followUp.interactionType}</td>
-                                                <td className="border-b px-4 py-2">{followUp.status}</td>
-                                                <td className="border-b px-4 py-2">{followUp.nextFollowUp}</td>
-                                                <td className="border-b px-4 py-2">{followUp.remarks}</td>
-                                                <td className="border-b px-4 py-2">{followUp.createdDate}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div> */}
                             <div className="mt-4 grid grid-cols-1 gap-5 md:grid-cols-1">
                                 <div className="mb-5">
                                     <label htmlFor="leadnote" style={{ display: 'inline-block' }}>

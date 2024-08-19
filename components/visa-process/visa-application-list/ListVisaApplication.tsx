@@ -146,16 +146,19 @@ const ListVisaApplication: React.FC<{ listapplication: any }> = ({ listapplicati
                                 <div className="active pt-5">
                                     {/* <TableLayout
                                         title="List Visa Application"
-                                        setData={setData}
                                         filterby="country"
                                         handleDelete={handleDelete}
                                         data={data}
-                                        totalPages={data?.length || 0}
+                                        // totalPages={data?.length || 0}
                                         tableColumns={tableColumns}
                                         exportColumns={exportColumns}
                                         ActionModal={CountryActionModal}
                                         ActionModalListLine={ListVisaApplicationListLine}
                                         handleSubmit={handleSubmit}
+                                        meta={}
+                                        setSearch={}
+                                        setPage={}
+                                        setLimit={}
                                     /> */}
                                 </div>
                             </Tab.Panel>

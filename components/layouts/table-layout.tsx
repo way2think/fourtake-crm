@@ -11,7 +11,6 @@ import IconFile from '../icon/icon-zip-file';
 import PasswordActionModal from '../user-management/PasswordActionModal';
 import ReuseActionModal from '../Reusable/Modal/ActionModal';
 import { useRouter } from 'next/navigation';
-import ImportExcel from '../Reusable/import-excel/ImportExcel';
 import { PaginationMeta } from '@/types/pagination';
 
 interface TableLayoutProps {
@@ -337,6 +336,13 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                             <IconSearch className="mx-auto" />
                         </button>
                     </div>
+                   
+
+                    <div>
+                        <button type="button" className="btn btn-primary" onClick={() => updateSearch(search)}>
+                            Search
+                        </button>
+                    </div>
                     {title === 'Lead List' && (
                         <div>
                             <button type="button" className="btn btn-primary" onClick={handleFilter}>
@@ -345,12 +351,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                             </button>
                         </div>
                     )}
-
-                    <div>
-                        <button type="button" className="btn btn-primary" onClick={() => updateSearch(search)}>
-                            Search
-                        </button>
-                    </div>
                     {/* Export will be uncommented once the client has updated all the data, then will modify export all the columns to import to main db (prod)  */}
                     {/* <div>
                         <button type="button" className="btn btn-outline-primary" onClick={handleExport}>
@@ -368,7 +368,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                 <div className="table-responsive">
                     <PaginationTable
                         title={title}
-                        data={data}
+                        data={filterItem}
                         meta={meta}
                         tableColumns={tableColumns}
                         handleDelete={handleDelete}

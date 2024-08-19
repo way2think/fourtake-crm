@@ -8,6 +8,7 @@ import PaginationTable from '@/components/Reusable/Table/PaginationTable';
 import { showMessage } from '@/utils/notification';
 import { isValidEmail, isValidPhoneNumber } from '@/utils/validator';
 import Swal from 'sweetalert2';
+import { useGetAllEmployeesQuery } from '@/services/api/userSlice';
 
 const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
     const [data, setData] = useState(managevisa);
@@ -40,6 +41,8 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
     const [isEdit, setIsEdit] = useState(false);
     const [addUser, setAddUser] = useState<any>({});
     const [manageVisaData, setManageVisaData] = useState<any>(null);
+
+    const { data: employeelist } = useGetAllEmployeesQuery({ page: 0, limit: 0 });
 
     const userData = [
         {
@@ -244,16 +247,6 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
         <>
             <div className="flex items-center justify-between bg-[#fff] px-5 py-3 dark:bg-[#121c2c]">
                 <h5 className="text-lg font-bold">Manage Visa</h5>
-                {/* <button
-                    onClick={() => {
-                        setIsOpen(false);
-                        setAddData({});
-                    }}
-                    type="button"
-                    className="text-white-dark hover:text-dark"
-                >
-                    <IconX />
-                </button> */}
             </div>
 
             <div className="bg-[#fff] p-5 ">
@@ -340,6 +333,29 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
                 </div>
                 <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                     <div className="dropdown mb-5">
+                        <label htmlFor="source">Assignee</label>
+                        <select
+                            className="form-input"
+                            defaultValue=""
+                            id="assigned_to"
+                            value={addData?.assigned_to?.id}
+                            onChange={(e) => {
+                                console.log('e.target', e.target.options[e.target.selectedIndex].innerText);
+                                setAddData((prev: any) => ({ ...prev, assigned_to: { id: e.target.value, username: e.target.options[e.target.selectedIndex].innerText } }));
+                            }}
+                        >
+                            <option value="" disabled={true}>
+                                Assign to
+                            </option>
+
+                            {employeelist?.items?.map((item: any) => (
+                                <option value={item.id}>{item.username}</option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+                <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                    <div className="dropdown mb-5">
                         <label htmlFor="customertype">Customer Type</label>
                         <select className="form-input" defaultValue="" id="customertype" value={addData?.customertype || ''} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
@@ -373,7 +389,7 @@ const ManageVisa: React.FC<{ managevisa: any }> = ({ managevisa }) => {
                         onClick={() => setIsOpen(true)}
                     >
                         <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
-                        Add User
+                        Add Applicant
                     </button>
                 ) : null}
 

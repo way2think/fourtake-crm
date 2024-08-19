@@ -92,6 +92,18 @@ const LeadManagement: React.FC = () => {
         },
         { accessor: 'status', textAlign: 'left', title: 'Status' },
         { accessor: 'stage', textAlign: 'left', title: 'Stage' },
+        {
+            accessor: 'lead_type',
+            textAlign: 'left',
+            title: 'Lead Type',
+            render: (row: any) => {
+                if (row.lead_type == 'hot') {
+                    return <p style={{ color: 'red' }}>{row.lead_type}</p>;
+                } else {
+                    return row.lead_type;
+                }
+            },
+        },
     ];
 
     const handleDeleteLead = (lead: Lead) =>
