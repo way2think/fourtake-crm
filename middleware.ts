@@ -17,16 +17,9 @@ export async function middleware(request: NextRequest, response: NextResponse) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 
-    // Normalize the pathname to remove any query parameters or trailing slashes
-
     if (accessToken) {
         const { role } = jwtDecode<{ role: string }>(accessToken);
 
-        // Check if the pathname exists in the roleAccessMap and if the user's role is allowed
-
-        // if (isAccessDenied(pathname, role)) {
-        //     return NextResponse.redirect(new URL('/access-denied', request.url)); // Redirect to a 403 Forbidden page
-        // }
         const normalizedPathname = normalizePathname(pathname);
         const allowedRoles = roleAccessMap[normalizedPathname as keyof typeof roleAccessMap];
 
