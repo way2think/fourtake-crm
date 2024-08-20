@@ -51,7 +51,7 @@
     }
     .sidebar .nav-item > button.active,
     .sidebar .nav-item > a.active {
-        @apply bg-[#4361EE] text-black dark:bg-[#181f32] dark:text-white-dark;
+        @apply bg-[#2eb9fe] text-black dark:bg-[#181f32] dark:text-white-dark;
     }
 
     .sidebar .nav-item > button.active > div > span,
@@ -61,17 +61,17 @@
 
     .sidebar ul.sub-menu li button,
     .sidebar ul.sub-menu li a {
-        @apply flex w-full items-center px-9 py-2.5 before:h-0.5 before:w-2 before:rounded before:bg-gray-300 hover:bg-gray-100
-hover:text-primary hover:before:!bg-primary dark:before:bg-gray-500 dark:hover:bg-gray-900 dark:hover:text-primary ltr:before:mr-2 rtl:before:ml-2;
+        @apply flex w-full items-center px-9 py-2.5 before:h-0.5 before:w-2 before:rounded before:bg-gray-300 
+hover:text-[#2eb9fe] hover:before:!bg-[#2eb9fe] dark:before:bg-gray-500 dark:hover:bg-gray-900 dark:hover:text-primary ltr:before:mr-2 rtl:before:ml-2;
     }
     .sidebar ul.sub-menu li button.active,
     .sidebar ul.sub-menu li a.active {
-        @apply text-primary before:bg-primary;
+        @apply text-[#2eb9fe] before:bg-[#2eb9fe];
     }
 
     .sidebar .nav-item a div:first-child svg,
     .sidebar .nav-item button div:first-child svg {
-        @apply h-5 w-5 !text-black text-black/50   dark:text-white/50;
+        @apply h-5 w-5 !text-white text-black/50   dark:text-white/50;
     }
     .sidebar .nav-item a div:first-child svg,
     .sidebar .nav-item button div:first-child svg.active {
@@ -241,17 +241,17 @@ hover:text-primary hover:before:!bg-primary dark:before:bg-gray-500 dark:hover:b
     }
 
     .btn-primary {
-        @apply border-primary bg-primary text-white shadow-primary/60;
+        @apply border-[#2eb9fe] bg-[#2eb9fe] text-white shadow-[#2eb9fe];
     }
     .btn-outline-primary {
-        @apply border-primary text-primary shadow-none hover:bg-primary hover:text-white;
+        @apply border-[#2eb9fe] text-[#2eb9fe] shadow-none hover:bg-[#2eb9fe] hover:text-white;
     }
 
     .btn-secondary {
-        @apply border-secondary bg-secondary text-white shadow-secondary/60;
+        @apply border-[#2eb9fe] bg-[#2eb9fe] text-white shadow-[#2eb9fe];
     }
     .btn-outline-secondary {
-        @apply border-secondary text-secondary shadow-none hover:bg-secondary hover:text-white;
+        @apply border-[#2eb9fe] text-[#2eb9fe] shadow-none hover:bg-[#2eb9fe] hover:text-white;
     }
 
     .btn-success {
@@ -391,16 +391,16 @@ hover:text-primary hover:before:!bg-primary dark:before:bg-gray-500 dark:hover:b
     /* checkbox & radio */
     .form-radio,
     .form-checkbox {
-        @apply h-5 w-5 cursor-pointer rounded border-2 border-white-light bg-transparent text-primary !shadow-none !outline-none !ring-0 !ring-offset-0 checked:bg-[length:90%_90%] disabled:cursor-not-allowed disabled:bg-[#eee] dark:border-[#253b5c] dark:checked:border-transparent
+        @apply h-5 w-5 cursor-pointer rounded border-2 border-white-light bg-transparent text-[#2eb9fe] text-[#2eb9fe] !shadow-none !outline-none !ring-0 !ring-offset-0 checked:bg-[length:90%_90%] disabled:cursor-not-allowed disabled:bg-[#eee] dark:border-[#253b5c] dark:checked:border-transparent
       dark:disabled:bg-[#1b2e4b] ltr:mr-1.5 rtl:ml-1.5;
     }
 
     .form-checkbox.outline-primary:checked {
-        @apply border-primary bg-transparent;
+        @apply border-[#2eb9fe] bg-transparent;
         background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%234361ee' xmlns='http://www.w3.org/2000/svg'><path d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/></svg>");
     }
     .form-checkbox.outline-secondary:checked {
-        @apply border-secondary bg-transparent;
+        @apply border-[#2eb9fe] bg-transparent;
         background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%23805dca' xmlns='http://www.w3.org/2000/svg'><path d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/></svg>");
     }
     .form-checkbox.outline-success:checked {
