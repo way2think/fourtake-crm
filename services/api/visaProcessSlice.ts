@@ -1,0 +1,77 @@
+import { generateURLWithPagination } from '@/utils/rtk-http';
+import { apiSlice } from './apiSlice';
+
+export const visaProcessSlice = apiSlice.injectEndpoints({
+    endpoints: (build) => ({
+        createVisaApplicant: build.mutation({
+            query: ({ body }) => ({
+                method: 'POST',
+                url: `/visa-process`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body,
+            }),
+            invalidatesTags: [{ type: 'visaProcess', id: 'LIST' }],
+        }),
+        getVisaApplicants: build.query({
+            providesTags: (result, error, arg) =>
+                result ? [{ type: 'visaProcess', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'visaProcess', id }))] : [{ type: 'visaProcess', id: 'LIST' }],
+            query: (args) => {
+                const url = generateURLWithPagination({
+                    endpoint: '/visa-process',
+                    page: args?.page,
+                    limit: args?.limit,
+                    sortField: args?.sortField,
+                    sortOrder: args?.sortOrder,
+                    search: args?.search,
+                    filter: args?.filter,
+                });
+
+                console.log('url', url);
+
+                return {
+                    method: 'GET',
+                    url,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+            },
+        }),
+        getOneVisaApplicantGroup: build.query({
+            query: (id) => ({
+                method: 'GET',
+                url: `/visa-process/${id}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }),
+            providesTags: (result, error, id) => [{ type: 'visaProcess', id }],
+        }),
+
+        updateVisaApplicantGroup: build.mutation({
+            query: ({ id, body }) => ({
+                method: 'PATCH',
+                url: `/visa-process/${id}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body,
+            }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'visaProcess', id }],
+        }),
+        // deleteLead: build.mutation({
+        //     query: (id) => ({
+        //         method: 'DELETE',
+        //         url: `/lead/${id}`,
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //     }),
+        //     invalidatesTags: (result, error, { id }) => [{ type: 'Lead', id }],
+        // }),
+    }),
+});
+
+export const { useCreateVisaApplicantMutation, useUpdateVisaApplicantGroupMutation, useGetVisaApplicantsQuery, useGetOneVisaApplicantGroupQuery } = visaProcessSlice;

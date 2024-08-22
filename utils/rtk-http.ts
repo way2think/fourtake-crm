@@ -141,7 +141,7 @@ export const handleErrorResponse = async (error: FetchBaseQueryError | Error | a
     await Swal.fire({ title: `${error.data?.error || 'Error'}!`, text: `${error.data?.message || 'Please try after sometime'}`, icon: 'error', customClass: { popup: 'sweet-alerts' } });
 };
 
-export const generateURLWithPagination = ({ endpoint, page = 1, limit = 10, sortOrder, sortField, search, filter }: RTKPagination) => {
+export const generateURLWithPagination = ({ endpoint, page = 1, limit = 10, sortOrder, sortField, search, filter,filterbyrole }: RTKPagination) => {
     // let url = `${endpoint}&page=${page}&limit=${limit}`;
 
     // if (sortOrder) {
@@ -165,6 +165,7 @@ export const generateURLWithPagination = ({ endpoint, page = 1, limit = 10, sort
         ...(sortField && { sortField }),
         ...(search && { search }),
         ...(filter && { filter }),
+        ...(filterbyrole && { filterbyrole }),
     });
 
     return `${endpoint}?${params.toString()}`;

@@ -5,6 +5,7 @@ interface PaginationOptions {
     sortOrder?: 'ASC' | 'DESC';
     search?: string | undefined;
     filter?: string | undefined;
+    filterbyrole?: string | undefined;
 }
 
 interface InitialPaginationOptions {

@@ -26,6 +26,7 @@ export const userSlice = apiSlice.injectEndpoints({
                     sortOrder: args?.sortOrder,
                     search: args?.search,
                     filter: args?.filter,
+                    filterbyrole: args?.filterbyrole,
                 });
 
                 return {

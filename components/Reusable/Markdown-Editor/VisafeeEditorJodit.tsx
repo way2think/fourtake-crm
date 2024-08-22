@@ -15,6 +15,7 @@ const VisafeeEditor: React.FC<VisafeeEditorProps> = ({ title, handleInputChange,
     const [value, setValue] = useState<string>(addData?.[title] || '');
 
     useEffect(() => {
+       if(value){
         const escapeHtml = (html: string = '') => {
             return html
                 .replace(/&/g, '&amp;')
@@ -26,8 +27,10 @@ const VisafeeEditor: React.FC<VisafeeEditorProps> = ({ title, handleInputChange,
                 .replace(/\n/g, '\\n')
                 .replace(/\r/g, '\\r');
         };
-    
         const escapedValue = escapeHtml(value);
+       }
+    
+        
         // Use escapedValue if necessary
     }, [value]);
 

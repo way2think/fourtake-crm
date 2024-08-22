@@ -202,8 +202,14 @@ const TableLayout: React.FC<TableLayoutProps> = ({
             if (title == 'Lead List') {
                 //alert("Navigate")
                 //console.log(addData)
-                if ((addData as { status: string }).status === 'Done') {
-                    router.push(`/manage-visa`);
+                // if (addData?.status === 'Done') {
+                //     router.push({
+                //         pathname: '/manage-visa',
+                //         query: { addData: JSON.stringify(addData) },
+                //     } as unknown as string);
+                // }
+                if (addData?.status === 'Done') {
+                    router.push(`/manage-visa?addData=${encodeURIComponent(JSON.stringify(addData))}`);
                 }
             }
         }
@@ -336,7 +342,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                             <IconSearch className="mx-auto" />
                         </button>
                     </div>
-                   
 
                     <div>
                         <button type="button" className="btn btn-primary" onClick={() => updateSearch(search)}>

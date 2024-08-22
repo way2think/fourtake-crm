@@ -27,7 +27,7 @@ const ComponentsFormDatePickerBasic: React.FC<ComponentsFormDatePickerBasicProps
     useEffect(() => {
         if (isEdit && addData && id && addData[id]) {
             setDate1(addData[id]);
-        } else if (!isEdit && !addData[id] && currentDate) {
+        } else if (!isEdit && !addData?.[id] && currentDate) {
             // const currentDate = formatDate(new Date());
             setDate1(formatDate(currentDate));
             setAddData((prevData: any) => ({

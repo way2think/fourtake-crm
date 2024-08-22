@@ -50,10 +50,11 @@ const VisaStatusActionModal: React.FC<VisaStatusActionModalProps> = ({ isOpen, s
                             <label className="flex cursor-pointer items-center">
                                 <input
                                     type="checkbox"
-                                    id="isprimary"
+                                    id="is_active"
                                     onChange={(e) => handleCheckBoxChange(e)}
                                     className="form-checkbox bg-white dark:bg-black"
                                     checked={addData.is_active === true ? true : false}
+                                    
                                 />
                                 <span className="text-black">Is Active?</span>
                             </label>

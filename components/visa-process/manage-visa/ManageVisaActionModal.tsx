@@ -2,6 +2,7 @@ import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import PaginationTable from '@/components/Reusable/Table/PaginationTable';
 import IconX from '@/components/icon/icon-x';
 import ComponentsFormDatePickerBasic from '@/components/lead-management/lead-manage/components-form-date-picker-basic';
+import { useGetVisaStatusesQuery } from '@/services/api/cms/visaStatusSlice';
 import { useEffect, useState, ChangeEvent } from 'react';
 
 interface ManageVisaActionModalProps {
@@ -30,15 +31,18 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
     setApplicantDetails,
 }) => {
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
-    const [leadNote, setLeadNote] = useState<string>(''); // Add state for the textarea
-    const [leadNotes, setLeadNotes] = useState<string[]>(addUser.leadnote || []); // State for storing
+    const [userNote, setUserNote] = useState<string>(''); // Add state for the textarea
+    const [userNotes, setUserNotes] = useState<any[]>(addUser.notes || []); // State for storing
     const [modalTitle, setModalTitle] = useState<string>('Add Note');
     const [actionButtonText, setActionButtonText] = useState<string>('Add Note');
     const [currentIndex, setCurrentIndex] = useState<number | null>(null); // Track index for editing
 
+    const { data: visaStatuses } = useGetVisaStatusesQuery({ page: 0, limit: 0 });
+    // console.log('userNotes', userNotes);
+
     useEffect(() => {
-        setLeadNotes(addUser.leadnote || []);
-    }, [addUser?.leadnote]);
+        setUserNotes(addUser.notes || []);
+    }, [addUser?.notes]);
 
     const handleCheckBoxChange = (e: any) => {
         //Change it 13-07-2024
@@ -47,9 +51,9 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
 
         const { id, checked } = e.target;
 
-        if (checked && applicantDetails.some((applicant: { isprimary: string }) => applicant.isprimary === 'Yes')) {
+        if (checked && applicantDetails.some((applicant: { is_primary: boolean }) => applicant.is_primary === true)) {
             if (confirm('You already selected a Primary. Do you want to change it?')) {
-                setApplicantDetails((prevState: any[]) => prevState.map((applicant: { isprimary: string }) => (applicant.isprimary === 'Yes' ? { ...applicant, isprimary: 'No' } : applicant)));
+                setApplicantDetails((prevState: any[]) => prevState.map((applicant: { is_primary: boolean }) => (applicant.is_primary === true ? { ...applicant, is_primary: false } : applicant)));
             } else {
                 return;
             }
@@ -57,19 +61,19 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
 
         setAddUser((prevState: any) => ({
             ...prevState,
-            [id]: checked ? 'Yes' : 'No',
+            [id]: checked ? true : false,
         }));
     };
 
     const handleLeadNoteChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-        setLeadNote(event.target.value);
+        setUserNote(event.target.value);
     };
 
     const handleButtonClickShowAddNote = () => {
         setIsOpenAddNote(true);
         setModalTitle('Add Note');
         setActionButtonText('Add Note');
-        setLeadNote('');
+        setUserNote('');
 
         setCurrentIndex(null); // Reset index when adding a new note
     };
@@ -78,34 +82,43 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
         setIsOpenAddNote(true);
         setModalTitle('Edit Note');
         setActionButtonText('Save');
-        setLeadNote(leadNotes[index]);
+        setUserNote(userNotes[index]);
         setCurrentIndex(index); // Set index for editing
     };
 
     const handleDeleteNote = (index: number) => {
-        const updatedNotes = [...leadNotes];
+        const updatedNotes = [...userNotes];
         updatedNotes.splice(index, 1);
-        setLeadNotes(updatedNotes);
+        setUserNotes(updatedNotes);
     };
 
     const handleCloseModal = () => {
         setIsOpenAddNote(false);
         setModalTitle('Add Note');
         setActionButtonText('Add Note');
-        setLeadNote('');
+        setUserNote('');
         setCurrentIndex(null); // Reset index when closing modal
     };
 
     const handleNoteAction = () => {
+        const currentTimeInSeconds = Math.floor(Date.now() / 1000); // Convert milliseconds to seconds
         if (modalTitle === 'Edit Note' && currentIndex !== null) {
-            const updatedNotes = [...leadNotes];
-            updatedNotes[currentIndex] = leadNote;
-            setLeadNotes(updatedNotes);
-            setAddUser({ ...addUser, leadnote: updatedNotes });
+            const updatedNotes = [...userNotes];
+            updatedNotes[currentIndex] = {
+                note:userNote,
+                created_time: updatedNotes[currentIndex].created_time, // Retain the original created_time during edit
+            };
+            // updatedNotes[currentIndex] = userNote;
+            setUserNotes(updatedNotes);
+            setAddUser({ ...addUser, notes: updatedNotes });
         } else {
-            const updatedNotes = [...leadNotes, leadNote];
-            setLeadNotes(updatedNotes);
-            setAddUser({ ...addUser, leadnote: updatedNotes });
+            const newNote = {
+                note:userNote,
+                created_time: currentTimeInSeconds, // Set created_time in seconds when creating a new note
+            };
+            const updatedNotes = [...userNotes, newNote];
+            setUserNotes(updatedNotes);
+            setAddUser({ ...addUser, notes: updatedNotes });
         }
         handleCloseModal();
     };
@@ -133,12 +146,12 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                 <div className="p-5">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <label htmlFor="firstname">First Name</label>
-                            <input id="firstname" type="text" placeholder="Enter First Name" className="form-input" value={addUser?.firstname} onChange={(e) => handleInputChange(e)} />
+                            <label htmlFor="first_name">First Name</label>
+                            <input id="first_name" type="text" placeholder="Enter First Name" className="form-input" value={addUser?.first_name} onChange={(e) => handleInputChange(e)} />
                         </div>
                         <div className="mb-5">
-                            <label htmlFor="lastname">Last Name </label>
-                            <input id="lastname" type="text" onChange={(e) => handleInputChange(e)} value={addUser?.lastname} placeholder="Enter Last Name" className="form-input" />
+                            <label htmlFor="last_name">Last Name </label>
+                            <input id="last_name" type="text" onChange={(e) => handleInputChange(e)} value={addUser?.last_name} placeholder="Enter Last Name" className="form-input" />
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
@@ -158,8 +171,8 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                             </div>
                         }
                         <div className="mb-5">
-                            <label htmlFor="passportno">Passport No</label>
-                            <input id="passportno" value={addUser?.passportno} onChange={(e) => handleInputChange(e)} type="passportno" placeholder="Enter Passport No" className="form-input" />
+                            <label htmlFor="passport_number">Passport No</label>
+                            <input id="passport_number" value={addUser?.passport_number} onChange={(e) => handleInputChange(e)} placeholder="Enter Passport No" className="form-input" />
                         </div>
                     </div>
 
@@ -185,27 +198,26 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                             </select>
                         </div>
                         <div className="dropdown">
-                            <label htmlFor="status">Status</label>
-                            <select className="form-input" defaultValue="" id="status" onChange={(e) => handleInputChange(e)} value={addUser?.status}>
+                            <label htmlFor="visa_status">Visa Status</label>
+                            <select className="form-input" defaultValue="" id="visa_status" onChange={(e) => handleInputChange(e)} value={addUser?.visa_status}>
                                 <option value="" disabled={true}>
                                     Select Status
                                 </option>
-                                <option value="Received">Received</option>
-                                <option value="On Hold">On Hold</option>
-                                <option value="Ready for verification">Ready for verification</option>
-                                <option value="Ready for Submission">Ready for Submission</option>
-                                <option value="Out Scan to Embassy">Out Scan to Embassy</option>
+
+                                {visaStatuses?.items?.map((status: any) => (
+                                    <option value={status.id}>{status.name}</option>
+                                ))}
                             </select>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        {addUser?.status === 'Ready for Submission' && (
+                        {addUser?.visa_status === 'Ready for Submission' && (
                             <div className="mb-5">
                                 <ComponentsFormDatePickerBasic label="Out Scan to Embassy Date" id={'outscantoembassy'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
                             </div>
                         )}
 
-                        {addUser?.status === 'Out Scan to Embassy' && (
+                        {addUser?.visa_status === 'Out Scan to Embassy' && (
                             <div className="dropdown">
                                 <label htmlFor="wheresubmitted">Where Submitted?</label>
                                 <select className="form-input" defaultValue="" id="wheresubmitted" onChange={(e) => handleInputChange(e)} value={addUser?.wheresubmitted}>
@@ -228,10 +240,10 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                             <label className="flex cursor-pointer items-center">
                                 <input
                                     type="checkbox"
-                                    id="isprimary"
+                                    id="is_primary"
                                     onChange={(e) => handleCheckBoxChange(e)}
                                     className="form-checkbox bg-white dark:bg-black"
-                                    checked={addUser.isprimary === 'Yes' || applicantDetails.length == 0}
+                                    checked={addUser.is_primary === true || applicantDetails.length == 0}
                                 />
                                 <span className="text-black">Is Primary?</span>
                             </label>
@@ -240,7 +252,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1">
                         <div className="mb-5 mt-7">
-                            <label htmlFor="leadnote" style={{ display: 'inline-block' }}>
+                            <label htmlFor="notes" style={{ display: 'inline-block' }}>
                                 Note
                             </label>
                             <button className="btn btn-primary ml-5" style={{ marginLeft: '20px', display: 'inline-block' }} onClick={handleButtonClickShowAddNote}>
@@ -248,9 +260,9 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                             </button>
 
                             <div className="mt-3">
-                                {leadNotes?.map((note: string, index: number) => (
+                                {userNotes?.map((notes: any, index: number) => (
                                     <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
-                                        <div>{note}</div>
+                                        <div>{notes.note}</div>
                                         <div className="flex items-center">
                                             <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
                                                 Edit
@@ -272,9 +284,9 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                                 </div>
                                 <div className="p-5">
                                     <textarea
-                                        id="leadNote"
+                                        id="userNote"
                                         onChange={handleLeadNoteChange}
-                                        value={leadNote}
+                                        value={userNote}
                                         placeholder="Enter your note here"
                                         className="min-h-[150px] w-full rounded-lg border p-2 outline-none"
                                     />
