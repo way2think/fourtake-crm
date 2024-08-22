@@ -26,7 +26,7 @@ const Setting = () => {
             >
                 <button
                     type="button"
-                    className="absolute bottom-0 top-0 my-auto flex h-10 w-12 cursor-pointer items-center justify-center bg-primary text-white ltr:-left-12 ltr:rounded-bl-full ltr:rounded-tl-full rtl:-right-12 rtl:rounded-br-full rtl:rounded-tr-full"
+                    className="absolute bottom-0 top-0 my-auto flex h-10 w-12 cursor-pointer items-center justify-center bg-[#2eb9fe] text-white ltr:-left-12 ltr:rounded-bl-full ltr:rounded-tl-full rtl:-right-12 rtl:rounded-br-full rtl:rounded-tr-full"
                     onClick={() => setShowCustomizer(!showCustomizer)}
                 >
                     <IconSettings className="h-5 w-5 animate-[spin_3s_linear_infinite]" />
@@ -42,7 +42,7 @@ const Setting = () => {
                         <p className="text-white-dark">Set preferences that will be cookied for your live preview demonstration.</p>
                     </div>
 
-                    <div className="mb-3 rounded-md border border-dashed border-white-light p-3 dark:border-[#1b2e4b]">
+                    <div className="mb-3 rounded-md border border-dashed border-white-light p-3 dark:border-[#2eb9fe]">
                         <h5 className="mb-1 text-base leading-none dark:text-white">Color Scheme</h5>
                         <p className="text-xs text-white-dark">Overall light or dark presentation.</p>
                         <div className="mt-3 grid grid-cols-3 gap-2">
@@ -52,7 +52,7 @@ const Setting = () => {
                             </button>
 
                             <button type="button" className={`${themeConfig.theme === 'dark' ? 'btn-primary' : 'btn-outline-primary'} btn`} onClick={() => dispatch(toggleTheme('dark'))}>
-                                <IconMoon className="h-5 w-5 shrink-0 ltr:mr-2 rtl:ml-2" />
+                                <IconMoon className="h-5 w-5 shrink-0 ltr:mr-2 rtl:ml-2 " />
                                 Dark
                             </button>
 
@@ -100,10 +100,10 @@ const Setting = () => {
                                 Collapsible
                             </button>
                         </div>
-                        <div className="mt-5 text-primary">
+                        <div className="mt-5 text-[#2eb9fe]">
                             <label className="mb-0 inline-flex">
                                 <input type="checkbox" className="form-checkbox" checked={themeConfig.semidark} onChange={(e) => dispatch(toggleSemidark(e.target.checked))} />
-                                <span>Semi Dark (Sidebar & Header)</span>
+                                <span className="text-[#2eb9fe]">Semi Dark (Sidebar & Header)</span>
                             </label>
                         </div>
                     </div>
@@ -152,7 +152,7 @@ const Setting = () => {
                                     className="form-radio"
                                     onChange={() => dispatch(toggleNavbar('navbar-sticky'))}
                                 />
-                                <span>Sticky</span>
+                                <span className="text-[#2eb9fe]">Sticky</span>
                             </label>
                             <label className="mb-0 inline-flex">
                                 <input
@@ -162,7 +162,7 @@ const Setting = () => {
                                     className="form-radio"
                                     onChange={() => dispatch(toggleNavbar('navbar-floating'))}
                                 />
-                                <span>Floating</span>
+                                <span className="text-[#2eb9fe]">Floating</span>
                             </label>
                             <label className="mb-0 inline-flex">
                                 <input
@@ -172,7 +172,7 @@ const Setting = () => {
                                     className="form-radio"
                                     onChange={() => dispatch(toggleNavbar('navbar-static'))}
                                 />
-                                <span>Static</span>
+                                <span className="text-[#2eb9fe]">Static</span>
                             </label>
                         </div>
                     </div>
@@ -181,7 +181,7 @@ const Setting = () => {
                         <h5 className="mb-1 text-base leading-none dark:text-white">Router Transition</h5>
                         <p className="text-xs text-white-dark">Animation of main content.</p>
                         <div className="mt-3">
-                            <select className="form-select border-primary text-primary" value={themeConfig.animation} onChange={(e) => dispatch(toggleAnimation(e.target.value))}>
+                            <select className="form-select border-[#2eb9fe] text-pr[#2eb9fe]imary" value={themeConfig.animation} onChange={(e) => dispatch(toggleAnimation(e.target.value))}>
                                 <option value=" ">None</option>
                                 <option value="animate__fadeIn">Fade</option>
                                 <option value="animate__fadeInDown">Fade Down</option>
