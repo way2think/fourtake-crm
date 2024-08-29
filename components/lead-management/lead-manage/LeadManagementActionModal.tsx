@@ -8,12 +8,12 @@ import PaginationTable from '@/components/Reusable/Table/PaginationTable';
 import { showMessage } from '@/utils/notification';
 import { useGetCountryVisaTypesQuery } from '@/services/api/cms/countryVisaTypeSlice';
 import { VisaType } from '@/entities/visa-type.entity';
-import LeadEmailSendModal from './LeadEmailSendModal';
+import EmailSendModal from './EmailSendModal';
 import { stateCityData } from '@/utils/constant';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/user.store';
 import { User } from '@/entities/user.entity';
-import { useGetAllEmployeesQuery } from '@/services/api/userSlice';
+import { useGetAllEmployeesQuery, useGetUsersQuery } from '@/services/api/userSlice';
 
 interface LeadManagementActionModalProps {
     isOpen: any;
@@ -50,8 +50,9 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     const [addNextFollowUpData, setAddNextFollowUpData] = useState<any>({});
     const [followUps, setFollowUps] = useState(addData?.followups || []);
 
-    const { data: employeelist } = useGetAllEmployeesQuery({ page: 0, limit: 0 });
-    console.log('employeelist', employeelist?.items);
+    // const { data: employeelist } = useGetAllEmployeesQuery({ page: 0, limit: 0 });
+    const { data: assigneeList } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'employee, admin' });
+    console.log('employeelist', assigneeList?.items);
     const user = useSelector(selectUser) as User;
 
     const role = user?.role || 'guest';
@@ -223,7 +224,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
 
     {
         if (isMailOpen) {
-            return <LeadEmailSendModal addData={addData} isOpen={isMailOpen} setIsOpen={setIsMailOpen} setAddData={setAddData} visaChecklistData={visaChecklistData} />;
+            return <EmailSendModal addData={addData} isOpen={isMailOpen} setIsOpen={setIsMailOpen} setAddData={setAddData} visaChecklistData={visaChecklistData} />;
         }
     }
 
@@ -397,7 +398,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     Assignee
                                 </option>
 
-                                {employeelist?.items?.map((item: any) => (
+                                {assigneeList?.items?.map((item: any) => (
                                     <option value={item.id}>{item.username}</option>
                                 ))}
                             </select>
@@ -532,22 +533,8 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         <button type="button" onClick={() => setIsMailOpen(true)} className="btn btn-primary ltr:rounded-l-none rtl:rounded-r-none">
                                             Send
                                         </button>
-                                        {/*  */}
                                     </div>
                                 </div>
-
-                                {/* <div className="dropdown mb-5">
-                                    <label htmlFor="leadmanage">Lead Managed by</label>
-                                    <select className="form-input" defaultValue="" id="assignee" value={addData?.assignee} onChange={(e) => handleInputChange(e)}>
-                                        <option value="" disabled={true}>
-                                            Select Assignee
-                                        </option>
-                                        <option value="Sanjay">Sanjay</option>
-                                        <option value="Bujji">Bujji</option>
-                                        <option value="raji">raji</option>
-                                        <option value="santhosh">Santhosh</option>
-                                    </select>
-                                </div> */}
                             </div>
                             <button
                                 // onClick={handleSave}
@@ -718,7 +705,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                     </div>
                 </div>
             </ActionModal>
-            {/* {isMailOpen && <LeadEmailSendModal addData={addData} isOpen={isMailOpen} setIsOpen={setIsMailOpen} setAddData={setAddData} visaChecklistData={visaChecklistData} />} */}
         </>
     );
 };

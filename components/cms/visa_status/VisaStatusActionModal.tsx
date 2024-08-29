@@ -22,7 +22,14 @@ const VisaStatusActionModal: React.FC<VisaStatusActionModalProps> = ({ isOpen, s
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-xl">
                 <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
                     <h5 className="text-lg font-bold">Add Visa Status</h5>
-                    <button onClick={() => setIsOpen(false)} type="button" className="text-white-dark hover:text-dark">
+                    <button
+                        onClick={() => {
+                            setIsOpen(false);
+                            setAddData({});
+                        }}
+                        type="button"
+                        className="text-white-dark hover:text-dark"
+                    >
                         <IconX />
                     </button>
                 </div>
@@ -54,7 +61,6 @@ const VisaStatusActionModal: React.FC<VisaStatusActionModalProps> = ({ isOpen, s
                                     onChange={(e) => handleCheckBoxChange(e)}
                                     className="form-checkbox bg-white dark:bg-black"
                                     checked={addData.is_active === true ? true : false}
-                                    
                                 />
                                 <span className="text-black">Is Active?</span>
                             </label>

@@ -12,6 +12,9 @@ import PasswordActionModal from '../user-management/PasswordActionModal';
 import ReuseActionModal from '../Reusable/Modal/ActionModal';
 import { useRouter } from 'next/navigation';
 import { PaginationMeta } from '@/types/pagination';
+import { useGetOneVisaApplicantGroupQuery, useUpdateVisaApplicantGroupMutation, visaProcessSlice } from '@/services/api/visaProcessSlice';
+import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
+import { handleUpdate } from '@/utils/rtk-http';
 
 interface TableLayoutProps {
     title: string;
@@ -35,6 +38,8 @@ interface TableLayoutProps {
 interface AddDataProps {
     refno?: any;
     status?: any;
+    id?: number;
+    group_id: number;
 }
 const TableLayout: React.FC<TableLayoutProps> = ({
     title,
@@ -64,7 +69,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
 
     const [search, setSearch] = useState('');
     const [filterItem, setFilterItem] = useState(data);
-    const [addData, setAddData] = useState<AddDataProps>({});
+    const [addData, setAddData] = useState<AddDataProps | any>({});
     const [assignPasswordValue, setAssignPasswordValue] = useState<any>();
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
@@ -74,13 +79,18 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         other: '',
     });
 
-    // console.log("addData",addData)
+    // console.log('addData', addData);
 
     const [isImportOpen, setIsImportOpen] = useState(false);
     const [isOpenTrack, setIsOpenTrack] = useState(false);
     const router = useRouter();
 
     const [file, setFile] = useState<File | null>(null);
+
+    const { data: oneVisaApplicantsGroup } = useGetOneVisaApplicantGroupQuery(addData?.group_id);
+
+    const [updateVisaApplicant, {}] = useUpdateVisaApplicantGroupMutation();
+    const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -121,9 +131,15 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         setFilterItem(data);
     }, [data]);
 
+    useEffect(() => {
+        if (addData.tracking_detail && addData.id) {
+            setTrack(addData.tracking_detail);
+        }
+    }, [addData.tracking_detail]);
+
     const handleEdit = (object: any) => {
         if (title == 'List Visa Application') {
-            router.push(`/manage-visa`);
+            router.push(`/manage-visa/${object.group_id}`);
         } else {
             setIsEdit(true);
             setIsOpen(true);
@@ -139,6 +155,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         setAddData(object);
         setIsOpenTrack(true);
     };
+
+
 
     const handleTrackInputChange = (e: any) => {
         const { value, id } = e.target;
@@ -169,7 +187,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                 })
                 .join(','); // Join IDs into a comma-separated string
 
-            setAddData((prevData) => ({
+            setAddData((prevData: any) => ({
                 ...prevData,
                 [id]: selectedOptions, // Store as a comma-separated string
             }));
@@ -253,6 +271,25 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         setAddData({ ...addData, ...track });
         setIsOpenTrack(false);
         setTrack({ url: '', other: '' });
+
+        if (oneVisaApplicantsGroup) {
+            const updatedData = {
+                ...oneVisaApplicantsGroup,
+                updated_time: new Date(),
+                visa_applicants: oneVisaApplicantsGroup?.visa_applicants.map((applicant: any) => (applicant.id === addData?.id ? { ...applicant, tracking_detail: track } : applicant)),
+            };
+
+
+            return handleUpdate({
+                updateMutation: updateVisaApplicant,
+                value: updatedData,
+                items: oneVisaApplicantsGroup,
+                meta: {},
+                handleLocalUpdate: handleLocalRTKUpdate,
+                apiObjectRef: visaProcessSlice,
+                endpoint: 'getVisaApplicants',
+            });
+        }
     };
 
     const handleFilter = () => {
@@ -264,6 +301,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         // Implement the logic to handle the deletion of the row
         // console.log('Deleting row:', object);
         setIsOpenListLine(true);
+        setAddData(object);
         // You can add your deletion logic here, e.g., updating the state, making an API call, etc.
     };
 
@@ -420,7 +458,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
                             <label htmlFor="refno">Ref No</label>
-                            <input id="refno" type="text" disabled={true} value={addData?.refno && addData.refno} placeholder="Ref No" className="form-input" />
+                            <input id="refno" type="text" disabled={true} value={addData?.id} placeholder="Ref No" className="form-input" />
                         </div>
                         <div className="mb-5">
                             <label htmlFor="url">Tracking URL </label>
@@ -454,7 +492,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                 </div>
             </ReuseActionModal>
 
-            {title == 'List Visa Application' && <ActionModalListLine isOpen={isOpenlistLine} setIsOpen={setIsOpenListLine} />}
+            {title == 'List Visa Application' && <ActionModalListLine isOpen={isOpenlistLine} setIsOpen={setIsOpenListLine} addData={addData} setAddData={setAddData} />}
 
             {/* {isImportOpen && <ImportExcel isOpen={isImportOpen} setIsOpen={setIsImportOpen} />} */}
             {/* <ReuseActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} width="">

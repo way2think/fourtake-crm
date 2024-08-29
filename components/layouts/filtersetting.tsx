@@ -5,6 +5,7 @@ import ComponentsFormDatePickerBasic from '../lead-management/lead-manage/compon
 import { useGetAllEmployeesQuery } from '@/services/api/userSlice';
 import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
 import SearchableDropdown from '@/components/Reusable/country-selector/CountrySearchDropdown';
+import ComponentsFormDatePickerRange from '../lead-management/lead-manage/components-form-date-picker-range';
 
 interface FiltersettingProps {
     showCustomizer: any;
@@ -25,6 +26,7 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ data, showCustomizer, set
     const [priority, setPriority] = useState('');
     const [user, setUser] = useState('');
     const [source, setSource] = useState('');
+    const [dateFilter, setDateFilter] = useState<any>();
 
     const { data: employeelist } = useGetAllEmployeesQuery({ page: 0, limit: 0 });
     const { data: countries } = useGetCountriesQuery({ page: 0, limit: 0 });
@@ -92,6 +94,10 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ data, showCustomizer, set
                             <div className="text-left">Filter</div>
                             <div className="text-right"></div>
                         </div>
+
+                        <div>
+                                <ComponentsFormDatePickerRange setDateFilter={setDateFilter} />
+                            </div>
 
                         <div className="dropdown">
                             <label htmlFor="leadStatus">Filter Country</label>

@@ -9,14 +9,14 @@ import { mailSlice, useCreateMailMutation } from '@/services/api/mailSlice';
 import { handleCreate } from '@/utils/rtk-http';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 
-interface LeadEmailSendModalProps {
+interface ManageVisaMailSendModalProps {
     isOpen: any;
     setIsOpen: any;
     addData: any;
     setAddData: any;
     visaChecklistData: any;
 }
-const LeadEmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData, setIsOpen, addData, visaChecklistData }) => {
+const ManageVisaMailSendModal: React.FC<ManageVisaMailSendModalProps> = ({ isOpen, setAddData, setIsOpen, addData, visaChecklistData }) => {
     // console.log('CountryActionModal: ', addData);
     const [serviceCharge, setServiceCharge] = useState();
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -25,13 +25,13 @@ const LeadEmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddD
     // const { data: visaChecklistData } = useGetVisaChecklistQuery({ page: 0, limit: 0 });
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
     const fileInputRef = useRef<HTMLInputElement>(null);
-    // console.log('visaChecklist data', visaChecklistData?.items);
+    console.log('visaChecklist data', visaChecklistData?.items, addData);
 
     useEffect(() => {
         if (visaChecklistData?.items && addData) {
             let data = visaChecklistData?.items
                 .filter((item: any, index: any) => {
-                    return item.country.id == addData.country.id;
+                    return item.country.id == addData.destination_country.id;
                 })
                 .filter((item: any, index: any) => {
                     return item.visa_type.id == addData.visa_type.id;
@@ -74,7 +74,7 @@ const LeadEmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddD
 
     const handleSend = async () => {
         const combination = `<p>Hello ${addData.name}</p>
-        <p>Country: ${addData.country.name}
+        <p>Country: ${addData.destination_country.name}
         <br />
         Visa Type: ${addData.visa_type.name} </p>`;
 
@@ -87,7 +87,6 @@ const LeadEmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddD
             attachments: addData?.attachments,
             cc: addData?.cc,
         };
-
 
         return handleCreate({
             createMutation: createMail,
@@ -176,17 +175,6 @@ const LeadEmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddD
                             <label htmlFor="phone">Mail CC</label>
                             <input id="cc" value={addData?.cc || ''} onChange={(e) => handleInputChange(e)} type="tel" placeholder="Enter CC" className="form-input" />
                         </div>
-                        {/* <div className="mb-5">
-                            <label htmlFor="service_charges">Service Charges(*GST will be dditional ) </label>
-                            <input
-                                id="service_charges"
-                                value={serviceCharge}
-                                onChange={(e: any) => setServiceCharge(e.target.value)}
-                                type="tel"
-                                placeholder="Enter Service Charege"
-                                className="form-input"
-                            />
-                        </div> */}
                     </div>
 
                     <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-1">
@@ -266,4 +254,4 @@ const LeadEmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddD
     );
 };
 
-export default LeadEmailSendModal;
+export default ManageVisaMailSendModal;

@@ -113,7 +113,7 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
             <input type="text" className="form-input" value={searchTerm} onChange={handleSearchChange} onClick={handleInputClick} placeholder="Select Country" />
             {isOpen && (
                 <ul className="options-list list-group m-3">
-                    {filteredOptions.map((option) => (
+                    {filteredOptions?.map((option) => (
                         <li
                             key={option.id}
                             onClick={() => {

@@ -99,11 +99,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                 <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
                                     <IconEdit size={16} />
                                 </ActionIcon>
-                                {title !== 'dashboard' && title !== 'Country Visa Types' && (
-                                    <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
-                                        <IconTrash size={16} />
-                                    </ActionIcon>
-                                )}
+
                                 {title === 'List Visa Application' && (
                                     <>
                                         <ActionIcon
@@ -115,22 +111,26 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                             <IconTxtFile className={`size:"16"`} />
                                         </ActionIcon>
 
-                                        <ActionIcon
-                                            size="sm"
-                                            variant="subtle"
-                                            color="red"
-                                            //  onClick={() => handleDelete?.(row)}
-                                        >
-                                            <IconVerify />
-                                        </ActionIcon>
-                                        <ActionIcon
-                                            size="sm"
-                                            variant="subtle"
-                                            color="red"
-                                            //  onClick={() => handleDelete?.(row)}
-                                        >
-                                            <IconUnVerified />
-                                        </ActionIcon>
+                                        {row.visa_status === 'verified' && (
+                                            <ActionIcon
+                                                size="sm"
+                                                variant="subtle"
+                                                color="red"
+                                                //  onClick={() => handleDelete?.(row)}
+                                            >
+                                                <IconVerify />
+                                            </ActionIcon>
+                                        )}
+                                        {row.visa_status === 'unverified' && (
+                                            <ActionIcon
+                                                size="sm"
+                                                variant="subtle"
+                                                color="red"
+                                                //  onClick={() => handleDelete?.(row)}
+                                            >
+                                                <IconUnVerified />
+                                            </ActionIcon>
+                                        )}
                                         <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleListLine?.(row)}>
                                             <IconList title="Multiple Passport" />
                                         </ActionIcon>
@@ -138,6 +138,11 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                             <IconTrendingUp title="Application Tracking" />
                                         </ActionIcon>
                                     </>
+                                )}
+                                {title !== 'dashboard' && title !== 'Country Visa Types' && (
+                                    <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
+                                        <IconTrash size={16} />
+                                    </ActionIcon>
                                 )}
                             </>
                         )}

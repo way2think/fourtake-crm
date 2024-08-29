@@ -20,6 +20,8 @@ import { update } from 'lodash';
 import { useCreateVisaApplicantMutation, useGetOneVisaApplicantGroupQuery, useGetVisaApplicantsQuery, useUpdateVisaApplicantGroupMutation, visaProcessSlice } from '@/services/api/visaProcessSlice';
 import { handleCreate, handleUpdate } from '@/utils/rtk-http';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
+import { useGetVisaChecklistQuery } from '@/services/api/cms/visaChecklistSlice';
+import ManageVisaMailSendModal from './ManageVisaMailSendModal';
 
 const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const [addData, setAddData] = useState<any>({
@@ -55,25 +57,28 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
 
     const [createVisaApplicant, {}] = useCreateVisaApplicantMutation();
     const [updateVisaApplicant, {}] = useUpdateVisaApplicantGroupMutation();
-    // const [deleteLead, {}] = useDeleteLeadMutation();
+    const [isMailOpen, setIsMailOpen] = useState(false);
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
     const { data: countryVisaTypes } = useGetCountryVisaTypesQuery({ page: 0, limit: 0 });
     const { data: entryTypes } = useGetEntryTypesQuery({ page: 0, limit: 0 });
 
-    const { data: employeelist } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'employee' });
+    const { data: assigneeList } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'employee, admin', filter: 'is_active' });
     const { data: agents } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'agent' });
     const { data: corporates } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'corporate' });
     const { data: oneVisaApplicantsGroup } = useGetOneVisaApplicantGroupQuery(paramId);
     // console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup);
-    // console.log('addData', addData);
+    console.log('addData', addData);
+    console.log('addUser', addUser);
+
     const { data: visaApplicants } = useGetVisaApplicantsQuery({ page: 0, limit: 0 });
-    // const { data: oneVisaApplicantsGroup } = useGetOneVisaApplicantGroupQuery(8);
+    const { data: visachecklist } = useGetVisaChecklistQuery({ page: 0, limit: 0 });
 
     useEffect(() => {
         if (paramId) {
             setAddData(oneVisaApplicantsGroup);
+            setIsEdit(true);
         }
     }, [paramId, oneVisaApplicantsGroup]);
 
@@ -203,7 +208,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
 
         // showMessage('User has been saved successfully.');
         // setAddContactModal(false);
-        // setIsEdit(false);
+        setIsEdit(false);
     };
 
     const handleDelete = async (row: any) => {
@@ -225,8 +230,18 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     };
 
     const handleSubmit = (value: any) => {
+        if (addData.nationality == '' || addData.nationality == null) {
+            showMessage('Select Nationality', 'error');
+            return false;
+        }
+
         if (addData.destination_country == '' || addData.destination_country == null) {
             showMessage('Select Country', 'error');
+            return false;
+        }
+
+        if (addData.nationality == addData.destination_country) {
+            showMessage(' Nationality & Country cannot be same', 'error');
             return false;
         }
 
@@ -234,10 +249,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
             showMessage('Select Visa type', 'error');
             return false;
         }
-        if (addData.nationality == '' || addData.nationality == null) {
-            showMessage('Select Nationality', 'error');
-            return false;
-        }
+
         if (addData.state_of_residence == '' || addData.state_of_residence == null) {
             showMessage('Select State of Residence', 'error');
             return false;
@@ -256,41 +268,12 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
             return false;
         }
 
-        //Command Code 13-07-2024
-        // if (addData.id) {
-        //     //update user
-        //     const updatedData = data.map((d: any) => (d.id === addData.id ? { ...d, ...addData } : d));
-        //     // setAddData({});
-        //     setData(updatedData);
-
-        //     // return updatedData;
-        // } else {
-        //     //add user
-        //     const maxUserId = data.length ? Math.max(...data.map((d: any) => d.id)) : 0;
-        //     const newUser = {
-        //         ...addData,
-        //         id: +maxUserId + 1,
-        //     };
-
-        //     setData([...data, newUser]);
-        // }
-        // --------End------//
-
-        // setAddData({});
-        // setApplicantDetails([]);
-        // showMessage('User has been saved successfully.');
-        // setAddContactModal(false);
-        // setIsEdit(false);
-
-        //console.log(applicantDetails)
-        // Check if there's more than one entry with isprimary: "Yes"
         const primaryCount = applicantDetails.filter((applicant: { isprimary: string }) => applicant.isprimary === 'Yes').length;
 
         if (primaryCount > 1) {
             alert('Please select only one primary applicant.');
             return;
         }
-        alert('Ok');
 
         if (addData.id) {
             const updatedData = { ...addData, updated_time: new Date() };
@@ -309,8 +292,8 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
             return handleCreate({
                 createMutation: createVisaApplicant,
                 value: updatedData,
-                items: visaApplicants.items,
-                meta: visaApplicants.meta,
+                items: visaApplicants?.items || [],
+                meta: visaApplicants?.meta || {},
                 handleLocalUpdate: handleLocalRTKUpdate,
                 apiObjectRef: visaProcessSlice,
                 endpoint: 'getVisaApplicants',
@@ -332,16 +315,22 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         { accessor: 'last_name', textAlign: 'left', title: 'Last Name' },
         { accessor: 'email', textAlign: 'left', title: 'Email' },
         { accessor: 'phone', textAlign: 'left', title: 'phone' },
-        { accessor: 'passportno', textAlign: 'left', title: 'Passport No' },
+        { accessor: 'passport_number', textAlign: 'left', title: 'Passport No' },
         { accessor: 'dob', textAlign: 'left', title: 'DOB' },
         { accessor: 'gender', textAlign: 'left', title: 'Gender' },
-        { accessor: 'status', textAlign: 'left', title: 'status' },
+        {
+            accessor: 'visa_status',
+            textAlign: 'left',
+            title: 'status',
+            render: (row: any) => {
+                return row.visa_status.name;
+            },
+        },
     ];
 
     const handleEdit = (object: any) => {
         setIsEdit(true);
         setIsOpen(true);
-
 
         setAddUser(object);
     };
@@ -395,6 +384,12 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         setCurrentIndex(null); // Reset index when adding a new note
     };
 
+    {
+        if (isMailOpen && paramId) {
+            return <ManageVisaMailSendModal addData={addData} isOpen={isMailOpen} setIsOpen={setIsMailOpen} setAddData={setAddData} visaChecklistData={visachecklist} />;
+        }
+    }
+
     return (
         <>
             <div className="flex items-center justify-between bg-[#fff] px-5 py-3 dark:bg-[#121c2c]">
@@ -402,7 +397,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
             </div>
 
             <div className="bg-[#fff] p-5 ">
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-3 ">
                     <div className="dropdown mb-5">
                         <label htmlFor="nationality">Nationality</label>
                         <select className="form-input" defaultValue="" id="nationality" value={addData?.nationality || '75'} onChange={(e) => handleInputChange(e)}>
@@ -423,6 +418,11 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                             ))}
                         </select>
                     </div>
+
+                    <div className="mb-5">
+                        <ComponentsFormDatePickerBasic label="Apply Date" id={'apply_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} currentDate={new Date()} />
+                    </div>
+
                     <div className="mt-7">
                         <label className="flex cursor-pointer items-center">
                             <input type="checkbox" id="is_group" checked={addData?.is_group || false} onChange={(e) => handleCheckBoxChange(e)} className="form-checkbox bg-white dark:bg-black" />
@@ -535,7 +535,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                                 Assign to
                             </option>
 
-                            {employeelist?.items?.map((item: any) => (
+                            {assigneeList?.items?.map((item: any) => (
                                 <option value={item.id}>{item.username}</option>
                             ))}
                         </select>
@@ -606,6 +606,27 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                         </div>
                     )}
                 </div>
+                {paramId && (
+                    <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <div className="mb-5">
+                            <label htmlFor="mail">Email</label>
+                            <div className="flex">
+                                <input
+                                    id="mail"
+                                    type="text"
+                                    placeholder="Enter Email"
+                                    value={addData?.email}
+                                    onChange={(e) => handleInputChange(e)}
+                                    // onChange={(e) => setSetEmail(e.target.value)}
+                                    className="form-input ltr:rounded-r-none rtl:rounded-l-none"
+                                />
+                                <button type="button" onClick={() => setIsMailOpen(true)} className="btn btn-primary ltr:rounded-l-none rtl:rounded-r-none">
+                                    Send
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {addData?.is_group || applicantDetails?.length === 0 ? (
                     <button

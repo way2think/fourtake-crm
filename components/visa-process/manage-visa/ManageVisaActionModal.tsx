@@ -37,8 +37,8 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
     const [actionButtonText, setActionButtonText] = useState<string>('Add Note');
     const [currentIndex, setCurrentIndex] = useState<number | null>(null); // Track index for editing
 
-    const { data: visaStatuses } = useGetVisaStatusesQuery({ page: 0, limit: 0 });
-    // console.log('userNotes', userNotes);
+    const { data: visaStatuses } = useGetVisaStatusesQuery({ page: 0, limit: 0, filter: 'is_active' });
+   
 
     useEffect(() => {
         setUserNotes(addUser.notes || []);
@@ -105,7 +105,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
         if (modalTitle === 'Edit Note' && currentIndex !== null) {
             const updatedNotes = [...userNotes];
             updatedNotes[currentIndex] = {
-                note:userNote,
+                note: userNote,
                 created_time: updatedNotes[currentIndex].created_time, // Retain the original created_time during edit
             };
             // updatedNotes[currentIndex] = userNote;
@@ -113,7 +113,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
             setAddUser({ ...addUser, notes: updatedNotes });
         } else {
             const newNote = {
-                note:userNote,
+                note: userNote,
                 created_time: currentTimeInSeconds, // Set created_time in seconds when creating a new note
             };
             const updatedNotes = [...userNotes, newNote];
@@ -211,9 +211,9 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        {addUser?.visa_status === 'Ready for Submission' && (
+                        {addUser?.visa_status == 52  && (
                             <div className="mb-5">
-                                <ComponentsFormDatePickerBasic label="Out Scan to Embassy Date" id={'outscantoembassy'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
+                                <ComponentsFormDatePickerBasic label="Out Scan to Embassy Date" id={'outscan_to_embassy'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
                             </div>
                         )}
 

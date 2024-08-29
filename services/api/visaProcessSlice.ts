@@ -61,17 +61,29 @@ export const visaProcessSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: (result, error, { id }) => [{ type: 'visaProcess', id }],
         }),
-        // deleteLead: build.mutation({
-        //     query: (id) => ({
-        //         method: 'DELETE',
-        //         url: `/lead/${id}`,
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //     }),
-        //     invalidatesTags: (result, error, { id }) => [{ type: 'Lead', id }],
-        // }),
+        deleteApplicant: build.mutation({
+            query: (id) => ({
+                method: 'DELETE',
+                url: `/visa-process/delete/${id}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'visaProcess', id }],
+        }),
+
+        deleteGroup: build.mutation({
+            query: (id) => ({
+                method: 'DELETE',
+                url: `/visa-process/delete-group/${id}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'visaProcess', id }],
+        }),
     }),
 });
 
-export const { useCreateVisaApplicantMutation, useUpdateVisaApplicantGroupMutation, useGetVisaApplicantsQuery, useGetOneVisaApplicantGroupQuery } = visaProcessSlice;
+export const { useCreateVisaApplicantMutation, useUpdateVisaApplicantGroupMutation, useGetVisaApplicantsQuery, useGetOneVisaApplicantGroupQuery, useDeleteApplicantMutation, useDeleteGroupMutation } =
+    visaProcessSlice;
