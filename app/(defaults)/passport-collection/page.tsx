@@ -6,7 +6,7 @@ import DashboardSubmission from '@/components/submission/dashboard-submission';
 
 
 
-const submission = async () => {
+const PassportCollection = async () => {
     const session = await auth();
 
     console.log('session: ', session);
@@ -55,4 +55,4 @@ const submission = async () => {
     );
 };
 
-export default submission;
+export default PassportCollection;

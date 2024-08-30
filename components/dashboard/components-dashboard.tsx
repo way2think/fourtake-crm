@@ -1,23 +1,5 @@
 'use client';
-import Dropdown from '@/components/dropdown';
-import IconCaretsDown from '@/components/icon/icon-carets-down';
-import IconChatDots from '@/components/icon/icon-chat-dots';
-import IconChecks from '@/components/icon/icon-checks';
-import IconChrome from '@/components/icon/icon-chrome';
-import IconClock from '@/components/icon/icon-clock';
-import IconCreditCard from '@/components/icon/icon-credit-card';
-import IconFile from '@/components/icon/icon-file';
-import IconGlobe from '@/components/icon/icon-globe';
-import IconHorizontalDots from '@/components/icon/icon-horizontal-dots';
-import IconLink from '@/components/icon/icon-link';
-import IconMail from '@/components/icon/icon-mail';
-import IconPlus from '@/components/icon/icon-plus';
-import IconSafari from '@/components/icon/icon-safari';
-import IconServer from '@/components/icon/icon-server';
-import IconSquareCheck from '@/components/icon/icon-square-check';
-import IconThumbUp from '@/components/icon/icon-thumb-up';
-import IconTrendingUp from '@/components/icon/icon-trending-up';
-import IconUsersGroup from '@/components/icon/icon-users-group';
+
 import { IRootState } from '@/store';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';

@@ -3,7 +3,7 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 import NextAuth, { CredentialsSignin } from 'next-auth';
 // import { JWT } from 'next-auth/jwt';
 import { signOut as nextAuthSignOut } from 'next-auth/react';
-import { cookies } from 'next/headers';
+// import { cookies } from 'next/headers';
 
 class InvalidLoginError extends CredentialsSignin {
     constructor(message: string, code: string) {

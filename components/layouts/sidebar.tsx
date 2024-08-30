@@ -171,16 +171,19 @@ const Sidebar = () => {
                                                 <Link href="/submission">Submission</Link>
                                             </li>
                                             <li>
-                                                <Link href="/list-visa-applications">Passports Collections</Link>
+                                                <Link href="/passport-collection">Passports Collections</Link>
                                             </li>
                                             <li>
-                                                <Link href="/deleted-application-list ">Documents Pickup - lead level</Link>
+                                                <Link href="/document-pickup-lead-level">Documents Pickup - lead level</Link>
                                             </li>
                                             <li>
-                                                <Link href="/deleted-application-list ">Document Pickup - application level</Link>
+                                                <Link href="/document-pickup-application-level ">Document Pickup - application level</Link>
                                             </li>
                                             <li>
-                                                <Link href="/deleted-application-list ">Passport Drop Off</Link>
+                                                <Link href="/passport-drop-off">Passport Drop Off</Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/follow-up">Follow up</Link>
                                             </li>
                                         </ul>
                                     </AnimateHeight>
