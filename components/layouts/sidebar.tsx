@@ -23,6 +23,7 @@ import { User } from '@/entities/user.entity';
 import { Role } from '@/entities/role.entity';
 
 import './sidebarstyle.css';
+import IconHome from '../icon/icon-home';
 
 const Sidebar = () => {
     const [clicked, setClicked] = useState(false);
@@ -145,10 +146,44 @@ const Sidebar = () => {
                                 <li className="nav-item">
                                     <Link href="/" className="group ">
                                         <div className="flex items-center">
-                                            <IconMenuNotes className="shrink-0 !text-[#fff] group-hover:!text-[#005fbe]" />
-                                            <span className="group-hover:!text-[#005fbe]dark:group-hover:text-[#005fbe] text-white dark:text-[#506690] ltr:pl-3 rtl:pr-3">{t('Dashboard')}</span>
+                                            <IconHome className="shrink-0 !text-[#fff] group-hover:!text-[#005fbe]" />
+                                            <span className="group-hover:!text-[#005fbe]dark:group-hover:text-[#005fbe] text-white dark:text-[#506690] ltr:pl-3 rtl:pr-3">{t('Home')}</span>
                                         </div>
                                     </Link>
+                                </li>
+                            )}
+                            {isAccessDenied('/dashboard', role) && (
+                                <li className="menu nav-item">
+                                    <button type="button" className={`${currentMenu === 'Dashboard' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Dashboard')}>
+                                        <div className="flex items-center">
+                                            <IconMenuPages className="shrink-0 !text-[#fff] group-hover:!text-[#005fbe]" />
+                                            <span className="text-white dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">{t('Dashboard')}</span>
+                                        </div>
+
+                                        <div className={currentMenu !== 'Dashboard' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                            <IconCaretDown className="!text-[#fff] " />
+                                        </div>
+                                    </button>
+
+                                    <AnimateHeight duration={300} height={currentMenu === 'Dashboard' ? 'auto' : 0}>
+                                        <ul className="sub-menu text-white">
+                                            <li>
+                                                <Link href="/submission">Submission</Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/list-visa-applications">Passports Collections</Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/deleted-application-list ">Documents Pickup - lead level</Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/deleted-application-list ">Document Pickup - application level</Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/deleted-application-list ">Passport Drop Off</Link>
+                                            </li>
+                                        </ul>
+                                    </AnimateHeight>
                                 </li>
                             )}
 
