@@ -23,7 +23,7 @@ const ListVisaApplication = () => {
 
     const { page, limit, sortField, sortOrder, search, filter, setFilter, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10, initialFilter: 'all' });
 
-    const { data: visaApplicants, isFetching, isLoading } = useGetVisaApplicantsQuery({ page, limit, sortField: 'updated_time', sortOrder: 'DESC', search, filter });
+    const { data: visaApplicants, isFetching, isLoading } = useGetVisaApplicantsQuery({ page, limit, sortField: 'updated_time', sortOrder: 'DESC', search, filter, showDeleted: false });
     const { items = [], meta = {} } = visaApplicants || {};
 
     const [data, setData] = useState(visaApplicants);
@@ -31,12 +31,10 @@ const ListVisaApplication = () => {
 
     const transformedData = items
         .map((applicants: any) => {
-            return applicants.visa_applicants
-                .filter((item: any) => !item.is_deleted) // Filter out deleted visa applicants
-                .map((item: any) => {
-                    const { visa_applicants, id, ...rest } = applicants;
-                    return { ...item, ...rest, group_id: applicants.id };
-                });
+            return applicants.visa_applicants.map((item: any) => {
+                const { visa_applicants, id, ...rest } = applicants;
+                return { ...item, ...rest, group_id: applicants.id };
+            });
         })
         .flat();
 
@@ -62,6 +60,14 @@ const ListVisaApplication = () => {
                 } else {
                     return row.id;
                 }
+            },
+        },
+        {
+            accessor: 'is_primary',
+            textAlign: 'left',
+            title: 'Is Primary',
+            render: (row: any) => {
+                return row.is_primary ? 'Yes' : 'No';
             },
         },
         { accessor: 'customer_type', textAlign: 'left', title: 'App Type' },
@@ -115,7 +121,7 @@ const ListVisaApplication = () => {
             },
         },
     ];
-    
+
     const handleDeleteApplicant = (applicant: any) => {
         console.log('applicant', applicant);
 
@@ -134,98 +140,23 @@ const ListVisaApplication = () => {
 
     const handleDeleteGroup = (group: any) => {
         console.log('group', group);
-        // if (group.id) {
-        //     handleDelete({
-        //         deleteMutation: deleteGroup,
-        //         item: group,
-        //         items,
-        //         meta,
-        //         handleLocalUpdate: handleLocalRTKUpdate,
-        //         apiObjectRef: visaProcessSlice,
-        //         endpoint: 'getVisaProcess',
-        //     });
-        // }
+        if (group.id) {
+            handleDelete({
+                deleteMutation: deleteGroup,
+                item: group,
+                items,
+                meta,
+                handleLocalUpdate: handleLocalRTKUpdate,
+                apiObjectRef: visaProcessSlice,
+                endpoint: 'getVisaProcess',
+            });
+        }
     };
-
-    // const handleDelete = async (row: any) => {
-    //     await Swal.fire({
-    //         icon: 'warning',
-    //         title: 'Are you sure?',
-    //         text: "You won't be able to revert this!",
-    //         showCancelButton: true,
-    //         confirmButtonText: 'Delete',
-    //         padding: '2em',
-    //         customClass: { popup: 'sweet-alerts' },
-    //     }).then(async (result) => {
-    //         if (result.value) {
-    //             setData(items.filter((item: any) => item.id !== row.id));
-    //             await Swal.fire({ title: 'Deleted!', text: 'Your file has been deleted.', icon: 'success', customClass: { popup: 'sweet-alerts' } });
-    //             return true;
-    //         }
-    //     });
-    // };
 
     const [isMounted, setIsMounted] = useState(false);
     useEffect(() => {
         setIsMounted(true);
     }, []);
-
-    const handleSubmit = (value: any) => {
-        if (value.country == '' || value.country == null) {
-            showMessage('Enter country name', 'error');
-            return false;
-        }
-
-        if (value.id) {
-            //update user
-            let formData: any = items.find((d: any) => d.id === value.id);
-            formData.country = value.country;
-            formData.language = value.language;
-            formData.dailingcode = value.dailingcode;
-            formData.capital = value.capital;
-            formData.cities = value.cities;
-            formData.countrydetails = value.countrydetails;
-            formData.climate = value.climate;
-            formData.currency = value.currency;
-            formData.timezone = value.timezone;
-            formData.additionalinfo = value.additionalinfo;
-            formData.website = value.website;
-            formData.ispopular = value.ispopular;
-            formData.isoutsource = value.isoutsource;
-            formData.isjurisdiction = value.isjurisdiction;
-            formData.image = value.image;
-            formData.flag = value.flag;
-
-            return formData;
-        } else {
-            //add user
-            let maxUserId = items.length ? items.reduce((max: any, character: any) => (character.id > max ? character.id : max), items[0].id) : 0;
-
-            let formData = {
-                id: +maxUserId + 1,
-                country: value.country,
-                language: value.language,
-                dailingcode: value.dailingcode,
-                capital: value.capital,
-                cities: value.cities,
-                countrydetails: value.countrydetails,
-                climate: value.climate,
-                currency: value.currency,
-                timezone: value.timezone,
-                additionalinfo: value.additionalinfo,
-                website: value.website,
-                ispopular: value.ispopular,
-                isoutsource: value.isoutsource,
-                isjurisdiction: value.isjurisdiction,
-                image: value.image,
-                flag: value.flag,
-            };
-            setData([...items, formData]);
-            return formData;
-
-            //   searchContacts();
-        }
-    };
 
     return (
         <>
@@ -273,7 +204,7 @@ const ListVisaApplication = () => {
                                         exportColumns={exportColumns}
                                         ActionModal={CountryActionModal}
                                         ActionModalListLine={ListVisaApplicationListLine}
-                                        handleSubmit={handleSubmit}
+                                        // handleSubmit={handleSubmit}
                                         meta={meta}
                                         setSearch={setSearch}
                                         setPage={setPage}

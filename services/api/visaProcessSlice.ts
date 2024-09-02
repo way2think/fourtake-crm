@@ -26,6 +26,7 @@ export const visaProcessSlice = apiSlice.injectEndpoints({
                     sortOrder: args?.sortOrder,
                     search: args?.search,
                     filter: args?.filter,
+                    showDeleted: args?.showDeleted,
                 });
 
                 console.log('url', url);
@@ -40,7 +41,7 @@ export const visaProcessSlice = apiSlice.injectEndpoints({
             },
         }),
         getOneVisaApplicantGroup: build.query({
-            query: (id) => ({
+            query: ({ id }) => ({
                 method: 'GET',
                 url: `/visa-process/${id}`,
                 headers: {
@@ -82,8 +83,40 @@ export const visaProcessSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: (result, error, { id }) => [{ type: 'visaProcess', id }],
         }),
+        restoreApplicant: build.mutation({
+            query: ({ id }) => {
+                console.log('id in slice', id);
+                return {
+                    method: 'PATCH',
+                    url: `/visa-process/restore/${id}`,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+            },
+            invalidatesTags: (result, error, { id }) => [{ type: 'visaProcess', id }],
+        }),
+
+        restoreGroup: build.mutation({
+            query: ({ id }) => ({
+                method: 'PATCH',
+                url: `/visa-process/restore-group/${id}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'visaProcess', id }],
+        }),
     }),
 });
 
-export const { useCreateVisaApplicantMutation, useUpdateVisaApplicantGroupMutation, useGetVisaApplicantsQuery, useGetOneVisaApplicantGroupQuery, useDeleteApplicantMutation, useDeleteGroupMutation } =
-    visaProcessSlice;
+export const {
+    useCreateVisaApplicantMutation,
+    useUpdateVisaApplicantGroupMutation,
+    useGetVisaApplicantsQuery,
+    useGetOneVisaApplicantGroupQuery,
+    useDeleteApplicantMutation,
+    useDeleteGroupMutation,
+    useRestoreApplicantMutation,
+    useRestoreGroupMutation,
+} = visaProcessSlice;

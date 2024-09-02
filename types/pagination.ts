@@ -6,6 +6,7 @@ interface PaginationOptions {
     search?: string | undefined;
     filter?: string | undefined;
     filterbyrole?: string | undefined;
+    showDeleted?:string|undefined;
 }
 
 interface InitialPaginationOptions {
@@ -15,6 +16,7 @@ interface InitialPaginationOptions {
     initialSortOrder?: 'ASC' | 'DESC';
     initialSearch?: string | undefined;
     initialFilter?: string | undefined;
+
 }
 
 interface PaginationMeta {

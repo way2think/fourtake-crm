@@ -17,11 +17,19 @@ import CountrySearchDropdown from '@/components/Reusable/country-selector/Countr
 import { stateCityData } from '@/utils/constant';
 import { useGetEntryTypesQuery } from '@/services/api/cms/entryTypeSlice';
 import { update } from 'lodash';
-import { useCreateVisaApplicantMutation, useGetOneVisaApplicantGroupQuery, useGetVisaApplicantsQuery, useUpdateVisaApplicantGroupMutation, visaProcessSlice } from '@/services/api/visaProcessSlice';
-import { handleCreate, handleUpdate } from '@/utils/rtk-http';
+import {
+    useCreateVisaApplicantMutation,
+    useDeleteApplicantMutation,
+    useGetOneVisaApplicantGroupQuery,
+    useGetVisaApplicantsQuery,
+    useUpdateVisaApplicantGroupMutation,
+    visaProcessSlice,
+} from '@/services/api/visaProcessSlice';
+import { handleCreate, handleDelete, handleErrorResponse, handleUpdate } from '@/utils/rtk-http';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { useGetVisaChecklistQuery } from '@/services/api/cms/visaChecklistSlice';
 import ManageVisaMailSendModal from './ManageVisaMailSendModal';
+import { SerializedError } from '@reduxjs/toolkit';
 
 const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const [addData, setAddData] = useState<any>({
@@ -53,10 +61,13 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const [applicantDetails, setApplicantDetails] = useState<any>([]);
     const [states] = useState(Object.keys(stateCityData).sort());
     const searchParams = useSearchParams();
+
+    const router = useRouter();
     const leadData = searchParams.get('addData') ? JSON.parse(searchParams.get('addData') as string) : null;
 
     const [createVisaApplicant, {}] = useCreateVisaApplicantMutation();
     const [updateVisaApplicant, {}] = useUpdateVisaApplicantGroupMutation();
+    const [deleteApplicant, {}] = useDeleteApplicantMutation();
     const [isMailOpen, setIsMailOpen] = useState(false);
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
@@ -67,8 +78,8 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const { data: assigneeList } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'employee, admin', filter: 'is_active' });
     const { data: agents } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'agent' });
     const { data: corporates } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'corporate' });
-    const { data: oneVisaApplicantsGroup } = useGetOneVisaApplicantGroupQuery(paramId);
-    // console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup);
+    const { data: oneVisaApplicantsGroup, isError, error } = useGetOneVisaApplicantGroupQuery(paramId);
+    console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup, isError, error);
     console.log('addData', addData);
     console.log('addUser', addUser);
 
@@ -76,11 +87,38 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const { data: visachecklist } = useGetVisaChecklistQuery({ page: 0, limit: 0 });
 
     useEffect(() => {
-        if (paramId) {
-            setAddData(oneVisaApplicantsGroup);
-            setIsEdit(true);
-        }
-    }, [paramId, oneVisaApplicantsGroup]);
+        const fetchData = async () => {
+            if (paramId) {
+                if (isError) {
+                    let errorData;
+
+                    if ('data' in error && error.data && typeof error.data === 'object') {
+                        const errorMessage = (error.data as { message?: string })?.message;
+                        errorData = errorMessage || 'Data Not Found';
+                    } else {
+                        const errorMessage = (error as SerializedError)?.message;
+                        errorData = errorMessage || 'An unknown client error occurred.';
+                    }
+
+                    console.log('errorData', errorData);
+
+                    if (errorData) {
+                        router.push('/manage-visa');
+                        alert(errorData);
+                    }
+
+                    // if (errorData == 'Data Not Found') {
+                    //     await handleErrorResponse(errorData || 'Data Not Found');
+                    // }
+                } else {
+                    setAddData(oneVisaApplicantsGroup);
+                    setIsEdit(true);
+                }
+            }
+        };
+
+        fetchData();
+    }, [paramId, oneVisaApplicantsGroup, isError, error]);
 
     useEffect(() => {
         if (addData?.visa_applicants) {
@@ -211,22 +249,20 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         setIsEdit(false);
     };
 
-    const handleDelete = async (row: any) => {
-        await Swal.fire({
-            icon: 'warning',
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            showCancelButton: true,
-            confirmButtonText: 'Delete',
-            padding: '2em',
-            customClass: { popup: 'sweet-alerts' },
-        }).then(async (result) => {
-            if (result.value) {
-                setApplicantDetails(applicantDetails.filter((item: any) => item.id !== row.id));
-                await Swal.fire({ title: 'Deleted!', text: 'Your file has been deleted.', icon: 'success', customClass: { popup: 'sweet-alerts' } });
-                return true;
-            }
-        });
+    const handleDeleteApplicant = (applicant: any) => {
+        console.log('applicant', applicant);
+
+        if (applicant.id) {
+            handleDelete({
+                deleteMutation: deleteApplicant,
+                item: applicant,
+                items: visaApplicants.items,
+                meta: visaApplicants.meta,
+                handleLocalUpdate: handleLocalRTKUpdate,
+                apiObjectRef: visaProcessSlice,
+                endpoint: 'getVisaProcess',
+            });
+        }
     };
 
     const handleSubmit = (value: any) => {
@@ -640,7 +676,9 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                     </button>
                 ) : null}
 
-                {applicantDetails?.length !== 0 && <PaginationTable data={applicantDetails} tableColumns={tableColumns} handleEdit={handleEdit} handleDelete={handleDelete} title="Customer Details" />}
+                {applicantDetails?.length !== 0 && (
+                    <PaginationTable data={applicantDetails} tableColumns={tableColumns} handleEdit={handleEdit} handleDelete={handleDeleteApplicant} title="Customer Details" />
+                )}
 
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-1">
                     <div className="mb-5 mt-7">

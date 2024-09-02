@@ -12,7 +12,7 @@ import PasswordActionModal from '../user-management/PasswordActionModal';
 import ReuseActionModal from '../Reusable/Modal/ActionModal';
 import { useRouter } from 'next/navigation';
 import { PaginationMeta } from '@/types/pagination';
-import { useGetOneVisaApplicantGroupQuery, useUpdateVisaApplicantGroupMutation, visaProcessSlice } from '@/services/api/visaProcessSlice';
+import { useGetOneVisaApplicantGroupQuery, useRestoreApplicantMutation, useUpdateVisaApplicantGroupMutation, visaProcessSlice } from '@/services/api/visaProcessSlice';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleUpdate } from '@/utils/rtk-http';
 
@@ -25,7 +25,7 @@ interface TableLayoutProps {
     Filtersetting?: any;
     handleSubmit?: any;
     exportColumns?: string[];
-    handleDelete: any;
+    handleDelete?: any;
     filterby: any;
     ActionModalListLine?: any;
     setSearch: Function;
@@ -34,6 +34,7 @@ interface TableLayoutProps {
     setPage: Function;
     setLimit: Function;
     visaChecklistData?: any;
+    handleRestore?: any;
 }
 interface AddDataProps {
     refno?: any;
@@ -58,6 +59,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
     setFilter: updateFilter,
     setPage,
     setLimit,
+    handleRestore,
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
@@ -147,16 +149,10 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         }
     };
 
-    const handleRestore = (object: any) => {
-        alert(object);
-    };
-
     const handleTracking = (object: any) => {
         setAddData(object);
         setIsOpenTrack(true);
     };
-
-
 
     const handleTrackInputChange = (e: any) => {
         const { value, id } = e.target;
@@ -279,7 +275,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                 visa_applicants: oneVisaApplicantsGroup?.visa_applicants.map((applicant: any) => (applicant.id === addData?.id ? { ...applicant, tracking_detail: track } : applicant)),
             };
 
-
             return handleUpdate({
                 updateMutation: updateVisaApplicant,
                 value: updatedData,
@@ -305,13 +300,22 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         // You can add your deletion logic here, e.g., updating the state, making an API call, etc.
     };
 
+    const handleRestoreApplicant = (applicant: any) => {
+        if (applicant.id) {
+            const updatedData = filterItem.filter((item: any) => item.id !== applicant.id);
+            setFilterItem(updatedData);
+            handleRestore(applicant)
+        }
+
+    };
+
     return (
         <>
             <div className="flex flex-wrap items-center justify-between gap-4">
                 <h2 className="text-xl">{title}</h2>
                 <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
-                        {title !== 'Country Visa Types' && title !== 'Deleted Application' && title !== 'List Visa Application' && (
+                        {title !== 'Country Visa Types' && title !== 'Deleted Application' && title !== 'List Visa Application' && title !== 'Deleted Visa Application' && (
                             <div>
                                 <button type="button" className="btn btn-primary" onClick={() => setIsOpen(true)}>
                                     <IconUserPlus className="ltr:mr-2 rtl:ml-2" />

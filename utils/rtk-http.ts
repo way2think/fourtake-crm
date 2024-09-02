@@ -85,6 +85,7 @@ export const handleUpdate = async ({ updateMutation, value, items, meta, handleL
         padding: '2em',
         customClass: { popup: 'sweet-alerts' },
     });
+    console.log('object', value.id);
 
     if (result.value) {
         console.log('value', value);
@@ -141,7 +142,7 @@ export const handleErrorResponse = async (error: FetchBaseQueryError | Error | a
     await Swal.fire({ title: `${error.data?.error || 'Error'}!`, text: `${error.data?.message || 'Please try after sometime'}`, icon: 'error', customClass: { popup: 'sweet-alerts' } });
 };
 
-export const generateURLWithPagination = ({ endpoint, page = 1, limit = 10, sortOrder, sortField, search, filter,filterbyrole }: RTKPagination) => {
+export const generateURLWithPagination = ({ endpoint, page = 1, limit = 10, sortOrder, sortField, search, filter, filterbyrole, showDeleted }: RTKPagination) => {
     // let url = `${endpoint}&page=${page}&limit=${limit}`;
 
     // if (sortOrder) {
@@ -166,6 +167,7 @@ export const generateURLWithPagination = ({ endpoint, page = 1, limit = 10, sort
         ...(search && { search }),
         ...(filter && { filter }),
         ...(filterbyrole && { filterbyrole }),
+        ...(showDeleted && { showDeleted }),
     });
 
     return `${endpoint}?${params.toString()}`;

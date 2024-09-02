@@ -96,9 +96,11 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                             </>
                         ) : (
                             <>
-                                <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
+                               {title !== 'Deleted Visa Application' &&  <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
                                     <IconEdit size={16} />
-                                </ActionIcon>
+                                </ActionIcon>}
+
+
 
                                 {title === 'List Visa Application' && (
                                     <>
@@ -139,11 +141,17 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                         </ActionIcon>
                                     </>
                                 )}
-                                {title !== 'dashboard' && title !== 'Country Visa Types' && (
+                                {title !== 'dashboard' && title !== 'Country Visa Types' && title !== 'Deleted Visa Application' && (
                                     <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
                                         <IconTrash size={16} />
                                     </ActionIcon>
                                 )}
+
+                                {title === 'Deleted Visa Application' &&
+                                    <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleRestore?.(row)}>
+                                        <IconRestore size={16} />
+                                    </ActionIcon>
+                                }
                             </>
                         )}
                     </td>

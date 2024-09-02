@@ -15,6 +15,12 @@ import IconCaretDown from '../../icon/icon-caret-down';
 import IconArrowBackward from '@/components/icon/icon-arrow-backward';
 import IconArrowForward from '@/components/icon/icon-arrow-forward';
 import { useRouter } from 'next/navigation';
+import IconVerify from '@/components/icon/menu/icon-verify';
+import IconTxtFile from '@/components/icon/icon-txt-file';
+import IconUnVerified from '@/components/icon/icon-unverified';
+import IconList from '@/components/icon/icon-list';
+import IconTrendingUp from '@/components/icon/icon-trending-up';
+import IconRestore from '@/components/icon/icon-restore';
 
 interface PaginationExpandProps {
     data: any;
@@ -24,9 +30,10 @@ interface PaginationExpandProps {
     handleDeleteGroup?: (row: any) => void;
     title?: string;
     getSubData?: any; // Function to fetch sub-table data
+    handleRestoreGroup?: any;
 }
 
-const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns, handleEdit, handleDeleteApplicant, handleDeleteGroup, title, getSubData }) => {
+const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns, handleEdit, handleDeleteApplicant, handleDeleteGroup, title, getSubData, handleRestoreGroup }) => {
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
     const [page, setPage] = useState(1);
@@ -173,6 +180,7 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                         textAlign: 'right',
                         render: (row: any) => (
                             <Group gap={4} justify="right" wrap="nowrap">
+                                {' '}
                                 <ActionIcon
                                     size="sm"
                                     onClick={(e) => {
@@ -181,17 +189,19 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                                 >
                                     {expandedRows.includes(row?.id) ? <IconCaretDown className="-rotate-0" size={16} /> : <IconCaretDown className="-rotate-90" size={16} />}
                                 </ActionIcon>
-                                <ActionIcon
-                                    size="sm"
-                                    variant="subtle"
-                                    color="blue"
-                                    onClick={(e) => {
-                                        router.push(`/manage-visa/${row?.id}`);
-                                    }}
-                                >
-                                    <IconEdit size={16} />
-                                </ActionIcon>
-                                {title !== 'dashboard' && (
+                                {title !== 'Deleted Visa Application' && (
+                                    <ActionIcon
+                                        size="sm"
+                                        variant="subtle"
+                                        color="blue"
+                                        onClick={(e) => {
+                                            router.push(`/manage-visa/${row?.id}`);
+                                        }}
+                                    >
+                                        <IconEdit size={16} />
+                                    </ActionIcon>
+                                )}
+                                {title !== 'dashboard' && title !== 'Deleted Visa Application' && (
                                     <ActionIcon
                                         size="sm"
                                         variant="subtle"
@@ -201,6 +211,11 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                                         }}
                                     >
                                         <IconTrash size={16} />
+                                    </ActionIcon>
+                                )}
+                                {title === 'Deleted Visa Application' && (
+                                    <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleRestoreGroup?.(row)}>
+                                        <IconRestore size={16} />
                                     </ActionIcon>
                                 )}
                             </Group>
@@ -250,6 +265,43 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                                                 >
                                                     <IconEdit size={16} />
                                                 </ActionIcon>
+                                                {/* <>
+                                                    <ActionIcon
+                                                        size="sm"
+                                                        variant="subtle"
+                                                        color="red"
+                                                        //  onClick={() => handleDelete?.(row)}
+                                                    >
+                                                        <IconTxtFile className={`size:"16"`} />
+                                                    </ActionIcon>
+
+                                                    {subRow.visa_status === 'verified' && (
+                                                        <ActionIcon
+                                                            size="sm"
+                                                            variant="subtle"
+                                                            color="red"
+                                                            //  onClick={() => handleDelete?.(row)}
+                                                        >
+                                                            <IconVerify />
+                                                        </ActionIcon>
+                                                    )}
+                                                    {subRow.visa_status === 'unverified' && (
+                                                        <ActionIcon
+                                                            size="sm"
+                                                            variant="subtle"
+                                                            color="red"
+                                                            //  onClick={() => handleDelete?.(row)}
+                                                        >
+                                                            <IconUnVerified />
+                                                        </ActionIcon>
+                                                    )}
+                                                    <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleListLine?.(subRow)}>
+                                                        <IconList title="Multiple Passport" />
+                                                    </ActionIcon>
+                                                    <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleTracking?.(row)}>
+                                                        <IconTrendingUp title="Application Tracking" />
+                                                    </ActionIcon>
+                                                </> */}
                                                 {title !== 'dashboard' && (
                                                     <ActionIcon
                                                         size="sm"
