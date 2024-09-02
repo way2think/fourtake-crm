@@ -18,7 +18,7 @@ import { PaginationMeta } from '@/types/pagination';
 
 interface PaginationTableProps {
     title?: string;
-    data: any[];
+    data?: any[];
     meta?: PaginationMeta;
     tableColumns: any[];
     actionhide?: boolean;
@@ -108,7 +108,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                             size="sm"
                                             variant="subtle"
                                             color="red"
-                                            //  onClick={() => handleDelete?.(row)}
+                                        //  onClick={() => handleDelete?.(row)}
                                         >
                                             <IconTxtFile className={`size:"16"`} />
                                         </ActionIcon>
@@ -118,7 +118,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                                 size="sm"
                                                 variant="subtle"
                                                 color="red"
-                                                //  onClick={() => handleDelete?.(row)}
+                                            //  onClick={() => handleDelete?.(row)}
                                             >
                                                 <IconVerify />
                                             </ActionIcon>
@@ -128,7 +128,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                                 size="sm"
                                                 variant="subtle"
                                                 color="red"
-                                                //  onClick={() => handleDelete?.(row)}
+                                            //  onClick={() => handleDelete?.(row)}
                                             >
                                                 <IconUnVerified />
                                             </ActionIcon>
@@ -170,7 +170,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
     };
 
     const handlePageSizeChange = (size: number) => {
-        const newTotalPages = Math.ceil((meta ? meta?.totalItems : data.length) / size);
+        const newTotalPages = Math.ceil((meta ? meta?.totalItems : data?.length) / size);
         if (page > newTotalPages) {
             setPage(newTotalPages);
             if (updatePage) {
@@ -236,7 +236,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((row, rowIndex) => (
+                        {data?.map((row, rowIndex) => (
                             <tr key={rowIndex}>
                                 {columns.map((column, colIndex) => (
                                     <td key={colIndex}>{column.render ? column.render(row) : row[column.accessor]}</td>
@@ -249,10 +249,10 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', paddingLeft: '10px' }}>
                 <select className="table-number-dropdwon" value={pageSize} onChange={(e) => handlePageSizeChange(Number(e.target.value))}>
                     <option value={10}>10</option>
-                    <option value={15} disabled={data.length < 10}>
+                    <option value={15} disabled={data?.length < 10}>
                         15
                     </option>
-                    <option value={20} disabled={data.length < 15}>
+                    <option value={20} disabled={data?.length < 15}>
                         20
                     </option>
                 </select>

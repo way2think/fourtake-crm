@@ -1,14 +1,12 @@
-import { auth } from '@/auth';
-import ComponentsDashboard from '@/components/dashboard/components-dashboard';
-import Home from '@/components/home/home';
-import { Metadata } from 'next';
+
 import React from 'react';
+import { auth } from '@/auth';
+import DashboardSubmission from '@/components/submission/dashboard-submission';
 
-export const metadata: Metadata = {
-    title: 'Fourtake CRM',
-};
 
-const Sales = async () => {
+
+
+const PassportDropOff = async () => {
     const session = await auth();
 
     console.log('session: ', session);
@@ -52,9 +50,9 @@ const Sales = async () => {
 
     return (
         <div>
-            <Home data={data} leaddata={leaddata} passportsdata={passportsdata} applicationdata={applicationdata} dropdata={dropdata} />
+            <DashboardSubmission data={data} leaddata={leaddata} passportsdata={passportsdata} applicationdata={applicationdata} dropdata={dropdata} />
         </div>
     );
 };
 
-export default Sales;
+export default PassportDropOff;
