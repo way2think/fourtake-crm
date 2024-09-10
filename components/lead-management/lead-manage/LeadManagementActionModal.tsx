@@ -52,12 +52,12 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
 
     // const { data: employeelist } = useGetAllEmployeesQuery({ page: 0, limit: 0 });
     const { data: assigneeList } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'employee, admin' });
-    console.log('employeelist', assigneeList?.items);
+    // console.log('employeelist', assigneeList?.items);
     const user = useSelector(selectUser) as User;
 
     const role = user?.role || 'guest';
 
-    console.log('user', user, role);
+    // console.log('user', user, role);
 
     useEffect(() => {
         setLeadNotes(addData.lead_note || []);
@@ -129,7 +129,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
 
     const handleEdit = (object: any) => {
         // setIsEdit(true);
-        console.log('object', object);
         setIsOpenNextFollowup(true);
         setAddNextFollowUpData(object);
     };
@@ -243,6 +242,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
             const newNote = {
                 ...leadNote,
                 created_time: currentTimeInSeconds, // Set created_time in seconds when creating a new note
+                created_by: user.username,
             };
             const updatedNotes = [...leadNotes, newNote];
             setLeadNotes(updatedNotes);
@@ -376,9 +376,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 {states.map((state) => (
                                     <option value={state}>{state}</option>
                                 ))}
-
-                                {/* <option value="India">Kernataka</option>
-                                <option value="Usa">AP</option> */}
                             </select>
                         </div>
 
@@ -390,7 +387,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 id="assignee"
                                 value={addData?.assignee?.id}
                                 onChange={(e) => {
-                                    console.log('e.target', e.target.options[e.target.selectedIndex].innerText);
                                     setAddData((prev: any) => ({ ...prev, assignee: { id: e.target.value, username: e.target.options[e.target.selectedIndex].innerText } }));
                                 }}
                             >
@@ -447,6 +443,49 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 <option value="Others">Others</option>
                             </select>
                         </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <div className="dropdown mb-5">
+                            <label htmlFor="service_type">Service Type</label>
+                            <select
+                                className="form-input"
+                                defaultValue=""
+                                id="service_type"
+                                value={addData?.service_type}
+                                onChange={(e) => {
+                                    // handleInputChange(e);
+                                    setAddData({ ...addData, service_type: e.target.value, other_service: '' });
+                                }}
+                            >
+                                <option value="" disabled={true}>
+                                    Service Type
+                                </option>
+                                <option value="visa service">Visa Service</option>
+                                <option value="appointment/slot booking service">Appointment / Slot Booking Service</option>
+                                <option value="attestation service">Attestation Service (HRD/MEA/DM)</option>
+                                <option value="passport service">Passport Service</option>
+                                <option value="forex service">Forex Service </option>
+                                <option value="travel insurance">Travel Insurance</option>
+                                <option value="flight itinerary">Flight Itinerary</option>
+                                <option value="hotel itinerary">Hotel Itinerary</option>
+
+                                <option value="others">Others</option>
+                            </select>
+                        </div>
+                        {addData?.service_type == 'others' && (
+                            <div className="mb-5">
+                                <label htmlFor="other_service">Other Service </label>
+                                <input
+                                    id="other_service"
+                                    type="text"
+                                    onChange={(e) => handleInputChange(e)}
+                                    value={addData?.other_service}
+                                    placeholder="Enter Other Service Details"
+                                    className="form-input"
+                                />
+                            </div>
+                        )}
                     </div>
 
                     {isEdit && (
@@ -632,15 +671,39 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
 
                                     <div className="mt-3">
                                         {leadNotes?.map((item: any, index: number) => (
-                                            <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
-                                                <div>{item?.note}</div>
-                                                <div className="flex items-center">
-                                                    <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
-                                                        Edit
-                                                    </button>
-                                                    <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
-                                                        Delete
-                                                    </button>
+                                            // <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
+                                            //     <div>{item?.note}</div>
+                                            //     {(role === 'super_admin' || role === 'admin') && (
+                                            //         <div className="flex items-center">
+                                            //             <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
+                                            //                 Edit
+                                            //             </button>
+                                            //             <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
+                                            //                 Delete
+                                            //             </button>
+                                            //         </div>
+                                            //     )}
+
+                                            //     <div>Create Date: item.created_time, Created By: item.created_by</div>
+                                            // </div>
+
+                                            <div key={index} className="mt-2 flex flex-col rounded border p-2">
+                                                <div className="flex items-center justify-between">
+                                                    <div>{item?.note}</div>
+                                                    {(role === 'super_admin' || role === 'admin') && (
+                                                        <div className="flex items-center">
+                                                            <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
+                                                                Edit
+                                                            </button>
+                                                            <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
+                                                                Delete
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                <div className="mt-2 text-right font-mono text-sm text-blue-500">
+                                                    Created By: {item.created_by} - Created Date: {item.created_time}
                                                 </div>
                                             </div>
                                         ))}
@@ -665,6 +728,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                                     placeholder="Enter your note here"
                                                     className="min-h-[150px] w-full rounded-lg border p-2 outline-none"
                                                 />
+
                                                 <div className="mt-3">
                                                     <button onClick={handleNoteAction} className="btn btn-primary">
                                                         {actionButtonText}

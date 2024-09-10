@@ -41,7 +41,7 @@ export const visaProcessSlice = apiSlice.injectEndpoints({
             },
         }),
         getOneVisaApplicantGroup: build.query({
-            query: ({ id }) => ({
+            query: (id) => ({
                 method: 'GET',
                 url: `/visa-process/${id}`,
                 headers: {

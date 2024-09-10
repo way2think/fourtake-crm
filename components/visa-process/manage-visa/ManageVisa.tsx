@@ -30,6 +30,9 @@ import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { useGetVisaChecklistQuery } from '@/services/api/cms/visaChecklistSlice';
 import ManageVisaMailSendModal from './ManageVisaMailSendModal';
 import { SerializedError } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/store/user.store';
+import { User } from '@/entities/user.entity';
 
 const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const [addData, setAddData] = useState<any>({
@@ -46,8 +49,8 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
 
     //notes state
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
-    const [groupNote, setGroupNote] = useState<string>('');
-    const [groupNotes, setGroupNotes] = useState<string[]>(addData?.group_notes || []); // State for storing
+    const [groupNote, setGroupNote] = useState<any>('');
+    const [groupNotes, setGroupNotes] = useState<any[]>(addData?.group_notes || []); // State for storing
     const [modalTitle, setModalTitle] = useState<string>('Add Note');
     const [actionButtonText, setActionButtonText] = useState<string>('Add Note');
     const [currentIndex, setCurrentIndex] = useState<number | null>(null);
@@ -61,6 +64,10 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const [applicantDetails, setApplicantDetails] = useState<any>([]);
     const [states] = useState(Object.keys(stateCityData).sort());
     const searchParams = useSearchParams();
+
+    const user = useSelector(selectUser) as User;
+
+    const role = user?.role || 'guest';
 
     const router = useRouter();
     const leadData = searchParams.get('addData') ? JSON.parse(searchParams.get('addData') as string) : null;
@@ -79,7 +86,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const { data: agents } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'agent' });
     const { data: corporates } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'corporate' });
     const { data: oneVisaApplicantsGroup, isError, error } = useGetOneVisaApplicantGroupQuery(paramId);
-    console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup, isError, error);
+    console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup, isError, error, paramId);
     console.log('addData', addData);
     console.log('addUser', addUser);
 
@@ -383,16 +390,28 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         const updatedNotes = [...groupNotes];
         updatedNotes.splice(index, 1);
         setGroupNotes(updatedNotes);
+        setAddData({ ...addData, group_notes: updatedNotes });
     };
+    const currentTimeInSeconds = Math.floor(Date.now() / 1000);
 
     const handleNoteAction = () => {
         if (modalTitle === 'Edit Note' && currentIndex !== null) {
             const updatedNotes = [...groupNotes];
-            updatedNotes[currentIndex] = groupNote;
+            updatedNotes[currentIndex] = {
+                group_note: groupNote,
+                created_time: updatedNotes[currentIndex].created_time, // Retain the original created_time during edit
+            };
+
             setGroupNotes(updatedNotes);
             setAddData({ ...addData, group_notes: updatedNotes });
         } else {
-            const updatedNotes = [...groupNotes, groupNote];
+            const newNote = {
+                group_note: groupNote,
+                created_time: currentTimeInSeconds, // Set created_time in seconds when creating a new note
+                created_by: user.username,
+            };
+            // const updatedNotes = [...groupNotes, groupNote];
+            const updatedNotes = [...groupNotes, newNote];
             setGroupNotes(updatedNotes);
             setAddData({ ...addData, group_notes: updatedNotes });
         }
@@ -406,6 +425,9 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         setGroupNote('');
         setCurrentIndex(null); // Reset index when closing modal
     };
+
+    console.log('groupNote', groupNote);
+    console.log('groupNotes', groupNotes);
 
     const handleLeadNoteChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setGroupNote(event.target.value);
@@ -469,6 +491,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                 <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                     <CountrySearchDropdown
                         addData={addData}
+                        heading={'Destination Country'}
                         setAddData={setAddData}
                         //  handleEmbassyChange={handleEmbassyChange}
                         items={countryVisaTypes?.items}
@@ -690,16 +713,24 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                         </button>
 
                         <div className="mt-3">
-                            {groupNotes?.map((note: string, index: number) => (
-                                <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
-                                    <div>{note}</div>
-                                    <div className="flex items-center">
-                                        <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
-                                            Edit
-                                        </button>
-                                        <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
-                                            Delete
-                                        </button>
+                            {groupNotes?.map((item: any, index: number) => (
+                                <div key={index} className="mt-2 flex flex-col rounded border p-2">
+                                    <div className="flex items-center justify-between">
+                                        <div>{item?.group_note}</div>
+                                        {(role === 'super_admin' || role === 'admin') && (
+                                            <div className="flex items-center">
+                                                <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
+                                                    Edit
+                                                </button>
+                                                <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="mt-2 text-right font-mono text-sm text-blue-500">
+                                        Created By: {item.created_by} - Created Date: {item.created_time}
                                     </div>
                                 </div>
                             ))}
@@ -714,9 +745,9 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                             </div>
                             <div className="p-5">
                                 <textarea
-                                    id="group_notes"
+                                    id="group_note"
                                     onChange={handleLeadNoteChange}
-                                    value={groupNote}
+                                    value={groupNote?.group_note}
                                     placeholder="Enter your note here"
                                     className="min-h-[150px] w-full rounded-lg border p-2 outline-none"
                                 />

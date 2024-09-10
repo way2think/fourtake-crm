@@ -100,7 +100,7 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
             </div>
             <div className="p-5">
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                    <SearchableDropdown addData={addData} setAddData={setAddData} handleEmbassyChange={handleEmbassyChange} items={countryVisaTypes?.items} setVisaTypes={setVisaTypes} />
+                    <SearchableDropdown addData={addData} heading ="Country"  setAddData={setAddData} handleEmbassyChange={handleEmbassyChange} items={countryVisaTypes?.items} setVisaTypes={setVisaTypes} />
                     {/* <div className="dropdown">
                         <label htmlFor="country">Countries*</label>
                         <select

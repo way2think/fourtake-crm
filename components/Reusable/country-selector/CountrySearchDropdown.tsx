@@ -12,10 +12,11 @@ interface SearchableDropdownProps {
     handleEmbassyChange?: any;
     items?: any; // Update this to match the correct type
     setVisaTypes?: any;
-    title?: string;
+    title?: any;
+    heading: string;
 }
 
-const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, setAddData, handleEmbassyChange, items, setVisaTypes, title }) => {
+const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, setAddData, handleEmbassyChange, items, setVisaTypes, title, heading }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [filteredOptions, setFilteredOptions] = useState<Option[]>(items);
@@ -36,37 +37,42 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
 
     useEffect(() => {
         // Initialize searchTerm with the name of the selected country (if any)
-        const selectedCountry = items?.find((option: Option) => option.id === addData?.destination_country?.id);
+        const selectedCountry = items?.find((option: Option) => option.id == (addData?.destination_country?.id || addData?.destination_country));
         if (selectedCountry) {
             setSearchTerm(selectedCountry.name);
-            
-        const index = items.findIndex((cv: any) => cv.id == addData?.destination_country?.id);
-        if (setVisaTypes !== undefined) {
-            console.log('visaTypes', setVisaTypes);
-            setVisaTypes(items[index].country_visa_types);
+
+            const index = items.findIndex((cv: any) => cv.id == (addData?.destination_country?.id || addData?.destination_country));
+            if (setVisaTypes !== undefined) {
+    
+                setVisaTypes(items[index].country_visa_types);
+            }
         }
-        }
-        
     }, [addData?.destination_country, items]);
 
     useEffect(() => {
         // Initialize searchTerm with the name of the selected country (if any)
-        const selectedCountry = items?.find((option: Option) => option.id === addData?.country?.id);
+        const selectedCountry = items?.find((option: Option) => option.id === (addData?.[title]?.id || addData?.[title]));
+
         if (selectedCountry) {
             setSearchTerm(selectedCountry.name);
-            
-        // const index = items.findIndex((cv: any) => cv.id == addData?.country?.id);
-        // if (setVisaTypes !== undefined) {
-        //     console.log('visaTypes', setVisaTypes);
-        //     setVisaTypes(items[index].country_visa_types);
-        // }
+
+            // const index = items.findIndex((cv: any) => cv.id == addData?.country?.id);
+            // if (setVisaTypes !== undefined) {
+            //     console.log('visaTypes', setVisaTypes);
+            //     setVisaTypes(items[index].country_visa_types);
+            // }
         }
-        
-    }, [addData?.country, items]);
+    }, [addData?.[title], items]);
+
+    // useEffect(() => {
+    //     if (title) {
+    //         setSearchTerm(addData[title]);
+    //     }
+    // }, [addData]);
 
     useEffect(() => {
-        if (searchTerm) {
-            setFilteredOptions(items.filter((option: Option) => option.name.toLowerCase().includes(searchTerm.toLowerCase())));
+        if (searchTerm && items) {
+            setFilteredOptions(items?.filter((option: Option) => option.name.toLowerCase().includes(searchTerm.toLowerCase())));
         } else {
             setFilteredOptions(items);
         }
@@ -86,14 +92,14 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
     const handleOptionClick = (option: Option) => {
         const index = items.findIndex((cv: any) => cv.id == option.id);
         if (setVisaTypes !== undefined) {
-            console.log('visaTypes', setVisaTypes);
+         
             setVisaTypes(items[index].country_visa_types);
         }
         setSearchTerm(option.name);
         if (title == 'destination_country') {
             setAddData({ ...addData, destination_country: option.id });
         } else {
-            setAddData({ ...addData, country: option.id });
+            setAddData({ ...addData, [title]: option.id });
         }
 
         setIsOpen(false);
@@ -109,7 +115,7 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
 
     return (
         <div className="searchable-dropdown" ref={dropdownRef}>
-            <label htmlFor="country">Destination Country*</label>
+            <label htmlFor="country">{heading}*</label>
             <input type="text" className="form-input" value={searchTerm} onChange={handleSearchChange} onClick={handleInputClick} placeholder="Select Country" />
             {isOpen && (
                 <ul className="options-list list-group m-3">
