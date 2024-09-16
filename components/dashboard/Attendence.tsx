@@ -2,38 +2,30 @@ import IconFile from '../icon/icon-file';
 import IconLogout from '../icon/icon-logout';
 import React, { useState } from 'react';
 import { showMessage } from '@/utils/notification';
-import { stateCityData } from '@/utils/constant';
-import { useGetCountryVisaTypesQuery } from '@/services/api/cms/countryVisaTypeSlice';
-import { VisaType } from '@/entities/visa-type.entity';
-import CountrySearchDropdown from '../Reusable/country-selector/CountrySearchDropdown';
-import { useRouter } from 'next/navigation';
 
 const Attendence = () => {
-    const [states] = useState(Object.keys(stateCityData).sort());
+    function handleInputChange(e: React.ChangeEvent<HTMLSelectElement>): void {
+        throw new Error('Function not implemented.');
+    }
     const [formData, setFormData] = useState({
-        passport: 75,
-        state_of_residence: '',
+        passport: '',
+        residence: '',
         country: '',
-        visa_type: '',
+        trip: '',
     });
-    const [visaTypes, setVisaTypes] = useState([]);
-    const router = useRouter();
-    const { data: countryVisaTypes } = useGetCountryVisaTypesQuery({ page: 0, limit: 0 });
-
-    console.log('countryVisaTypes', countryVisaTypes);
 
     const [errors, setErrors] = useState({
         passport: false,
-        state_of_residence: false,
+        residence: false,
         country: false,
-        visa_type: false,
+        trip: false,
     });
 
     type FormFields = {
         passport: string;
-        state_of_residence: string;
+        residence: string;
         country: string;
-        visa_type: string;
+        trip: string;
     };
 
     type ErrorFields = {
@@ -51,13 +43,13 @@ const Attendence = () => {
             [id]: false,
         });
     };
-    // console.log('formData', formData);
+
     const handleSubmitAttendence = () => {
         const newErrors: ErrorFields = {
-            passport: formData.passport == null,
-            state_of_residence: formData.state_of_residence === '',
+            passport: formData.passport === '',
+            residence: formData.residence === '',
             country: formData.country === '',
-            visa_type: formData.visa_type === '',
+            trip: formData.trip === '',
         };
 
         setErrors(newErrors);
@@ -70,8 +62,6 @@ const Attendence = () => {
             }
         }
 
-        router.push(`/check-requirements?countryId=${formData.country}&visaTypeId=${formData.visa_type}&stateOfResidence=${formData.state_of_residence}`);
-
         // Form is valid, handle the form submission here
         console.log('Form submitted successfully with data:', formData);
         //alert('Form submitted successfully');
@@ -81,7 +71,7 @@ const Attendence = () => {
     return (
         <>
             <section className="rounded-md bg-[#fff]  p-5 shadow-lg ">
-                <h1 className="mb-2 text-left text-2xl font-bold text-[#2eb9fe]">Attendence</h1>
+                <h1 className="mb-2 text-left text-2xl font-bold text-[#005fbe]">Attendence</h1>
 
                 <div className=" grid grid-cols-1 items-center justify-between  gap-5    md:grid-cols-2">
                     <div>
@@ -100,57 +90,50 @@ const Attendence = () => {
                     <h1 className="mb-2 text-left text-2xl font-bold text-[#2eb9fe]">Dashboard</h1>
 
                     <div className=" grid grid-cols-1 items-center justify-between  gap-5 md:grid-cols-2">
-                        <div className="dropdown mb-4 mt-2">
+                        <div className="dropdown mb-5">
                             <label htmlFor="passport">I Hold a Passport From</label>
-                            <select className="form-input" defaultValue="india" id="passport" value={formData?.passport} onChange={(e) => handleInputChangeAttendence(e)}>
+                            <select className="form-input" defaultValue="" id="passport" value={formData.passport} onChange={handleInputChangeAttendence}>
                                 <option value="" disabled={true}>
-                                    Select Country
+                                    I Hold a Passport From
                                 </option>
-                                <option value="india">India</option>
+                                <option value="Canada">Canada</option>
+                                <option value="India">India</option>
+                                <option value="Usa">Usa</option>
                             </select>
                         </div>
-                        <div className="dropdown mb-4 mt-2">
-                            <label htmlFor="state_of_residence">State of Residence</label>
-                            <select className="form-input" defaultValue="" id="state_of_residence" value={formData?.state_of_residence} onChange={(e) => handleInputChangeAttendence(e)}>
+                        <div className="dropdown mb-5">
+                            <label htmlFor="residence">State of Residence</label>
+                            <select className="form-input" defaultValue="" id="residence" value={formData.residence} onChange={handleInputChangeAttendence}>
                                 <option value="" disabled={true}>
-                                    Select State
+                                    Select
                                 </option>
-
-                                {states.map((state) => (
-                                    <option value={state}>{state}</option>
-                                ))}
+                                <option value="Canada">Canada</option>
+                                <option value="India">India</option>
+                                <option value="Usa">Usa</option>
                             </select>
                         </div>
                     </div>
                     <div className=" grid grid-cols-1 items-center justify-between  gap-5 md:grid-cols-2">
-                        <CountrySearchDropdown
-                            addData={formData}
-                            setAddData={setFormData}
-                            //  handleEmbassyChange={handleEmbassyChange}
-                            items={countryVisaTypes?.items}
-                            setVisaTypes={setVisaTypes}
-                            heading="I am going to"
-                            title="country"
-                        />
-
-                        <div className="dropdown mb-5 mt-2">
-                            <label htmlFor="visa_type">My Purpose of visa_type is</label>
-                            <select
-                                className="form-input"
-                                defaultValue=""
-                                id="visa_type"
-                                // value={formData?.visa_type?.id}
-                                onChange={(e) => handleInputChangeAttendence(e)}
-                            >
+                        <div className="dropdown mb-5">
+                            <label htmlFor="country">I am going to </label>
+                            <select className="form-input" defaultValue="" id="country" value={formData.country} onChange={handleInputChangeAttendence}>
                                 <option value="" disabled={true}>
-                                    Visa Type
+                                    Select Visa Country
                                 </option>
-
-                                {visaTypes.map((visaType: VisaType) => (
-                                    <option key={visaType.id} value={visaType.id}>
-                                        {visaType.name}
-                                    </option>
-                                ))}
+                                <option value="Canada">Canada</option>
+                                <option value="India">India</option>
+                                <option value="Usa">Usa</option>
+                            </select>
+                        </div>
+                        <div className="dropdown mb-5">
+                            <label htmlFor="trip">My Purpose of trip is</label>
+                            <select className="form-input" defaultValue="" id="trip" value={formData.trip} onChange={handleInputChangeAttendence}>
+                                <option value="" disabled={true}>
+                                    Select Visa Category
+                                </option>
+                                <option value="Canada">Canada</option>
+                                <option value="India">India</option>
+                                <option value="Usa">Usa</option>
                             </select>
                         </div>
                     </div>
