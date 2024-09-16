@@ -71,7 +71,7 @@ const Attendence = () => {
     return (
         <>
             <section className="rounded-md bg-[#fff]  p-5 shadow-lg ">
-                <h1 className="mb-2 text-left text-2xl font-bold text-[#2eb9fe]">Attendence</h1>
+                <h1 className="mb-2 text-left text-2xl font-bold text-[#005fbe]">Attendence</h1>
 
                 <div className=" grid grid-cols-1 items-center justify-between  gap-5    md:grid-cols-2">
                     <div>
