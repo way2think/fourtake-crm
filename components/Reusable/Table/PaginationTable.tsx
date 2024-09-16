@@ -170,7 +170,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
     };
 
     const handlePageSizeChange = (size: number) => {
-        const newTotalPages = Math.ceil((meta ? meta?.totalItems : data?.length) / size);
+        const newTotalPages = Math.ceil((meta?.totalItems ?? data?.length ?? 0) / size);
         if (page > newTotalPages) {
             setPage(newTotalPages);
             if (updatePage) {

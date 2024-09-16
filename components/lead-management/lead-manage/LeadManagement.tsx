@@ -158,8 +158,21 @@ const LeadManagement: React.FC = () => {
             return false;
         }
 
+        if (value.service_type == null || value.service_type == '') {
+            showMessage('Select Service Type', 'error');
+        }
+        
+
+        let service_code;
+
+        if (value.service_type == 'visa service') {
+            service_code = 'VI';
+        } else {
+            service_code = 'OT';
+        }
+
         if (value.id) {
-            const updatedData = { ...value, updated_time: new Date() };
+            const updatedData = { ...value, updated_time: new Date(), service_code };
             return handleUpdate({
                 updateMutation: updateLead,
                 value: updatedData,
@@ -170,7 +183,7 @@ const LeadManagement: React.FC = () => {
                 endpoint: 'getLeads',
             });
         } else {
-            const updatedData = { ...value, updated_time: new Date(), stage: 'Fresh', status: 'Open' };
+            const updatedData = { ...value, updated_time: new Date(), stage: 'Fresh', status: 'Open', service_code };
             return handleCreate({
                 createMutation: createLead,
                 value: updatedData,

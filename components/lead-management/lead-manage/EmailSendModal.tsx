@@ -15,7 +15,7 @@ interface LeadEmailSendModalProps {
     setIsOpen: any;
     addData: any;
     setAddData: any;
-    visaChecklistData: any;
+    visaChecklistData?: any;
 }
 const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData, setIsOpen, addData, visaChecklistData }) => {
     // console.log('CountryActionModal: ', addData);
@@ -28,46 +28,66 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
     const fileInputRef = useRef<HTMLInputElement>(null);
     // console.log('visaChecklist data', visaChecklistData?.items);
 
-    const { data: visaRequirements } = useGetVisaRequirementsQuery({ countryId: '2', visaTypeId: '4', stateOfResidence: 'Kernataka' });
+    const { data: visaRequirements } = useGetVisaRequirementsQuery({
+        countryId: String(addData?.country?.id),
+        visaTypeId: String(addData?.visa_type?.id),
+        stateOfResidence: addData?.residence_state,
+    });
 
     console.log('visaRequirement ', visaRequirements);
 
     useEffect(() => {
-        if (visaChecklistData?.items && addData) {
-            let data = visaChecklistData?.items
-                .filter((item: any, index: any) => {
-                    return item.country.id == addData.country.id;
-                })
-                .filter((item: any, index: any) => {
-                    return item.visa_type.id == addData.visa_type.id;
-                });
-
-            if (data.length > 1) {
-                data = data
-                    .map((item: any) => {
-                        if (Array.isArray(item.embassy_vfs)) {
-                            const jurisdiction = item.embassy_vfs.map((vfs: any) => (vfs.jurisdiction ? vfs.jurisdiction.split(',') : null)).filter((j: any) => j && j.length > 0); // Filter non-empty arrays
-
-                            console.log('jurisdiction', jurisdiction);
-
-                            // Check if any jurisdiction matches the residence_state
-                            const hasMatchingJurisdiction = jurisdiction.some((content: string[]) => content.includes(addData?.residence_state));
-                            if (hasMatchingJurisdiction) {
-                                return item;
-                            }
-                        }
-                        return null;
-                    })
-                    .filter((item: any) => item !== null); // Remove null values from the array
-
-                console.log('filtered data', data);
-            }
-            const visaChecklist = data && data.length > 0 ? `${data[0]?.checklist || ''} ${data[0]?.fee == null || 'null' ? '' : data[0]?.fee}` : '';
+        if (visaChecklistData) {
+            const visaChecklist =
+                visaChecklistData && visaChecklistData.length > 0 ? `${visaChecklistData[0]?.checklist || ''} ${visaChecklistData[0]?.fee == null || '' ? '' : visaChecklistData[0]?.fee}` : '';
             setAddData({ ...addData, visa_checklist: visaChecklist });
-
-            console.log('data', data, visaChecklist);
         }
-    }, []);
+    }, [visaChecklistData]);
+
+    useEffect(() => {
+        if (visaRequirements) {
+            const visaChecklist =
+                visaRequirements && visaRequirements.length > 0 ? `${visaRequirements[0]?.checklist || ''} ${visaRequirements[0]?.fee == null || '' ? '' : visaRequirements[0]?.fee}` : '';
+            setAddData({ ...addData, visa_checklist: visaChecklist });
+        }
+    }, [visaRequirements]);
+
+    // useEffect(() => {
+    //     if (visaChecklistData?.items && addData) {
+    //         let data = visaChecklistData?.items
+    //             .filter((item: any, index: any) => {
+    //                 return item.country.id == addData.country.id;
+    //             })
+    //             .filter((item: any, index: any) => {
+    //                 return item.visa_type.id == addData.visa_type.id;
+    //             });
+
+    //         if (data.length > 1) {
+    //             data = data
+    //                 .map((item: any) => {
+    //                     if (Array.isArray(item.embassy_vfs)) {
+    //                         const jurisdiction = item.embassy_vfs.map((vfs: any) => (vfs.jurisdiction ? vfs.jurisdiction.split(',') : null)).filter((j: any) => j && j.length > 0); // Filter non-empty arrays
+
+    //                         console.log('jurisdiction', jurisdiction);
+
+    //                         // Check if any jurisdiction matches the residence_state
+    //                         const hasMatchingJurisdiction = jurisdiction.some((content: string[]) => content.includes(addData?.residence_state));
+    //                         if (hasMatchingJurisdiction) {
+    //                             return item;
+    //                         }
+    //                     }
+    //                     return null;
+    //                 })
+    //                 .filter((item: any) => item !== null); // Remove null values from the array
+
+    //             console.log('filtered data', data);
+    //         }
+    //         const visaChecklist = data && data.length > 0 ? `${data[0]?.checklist || ''} ${data[0]?.fee == null || 'null' ? '' : data[0]?.fee}` : '';
+    //         setAddData({ ...addData, visa_checklist: visaChecklist });
+
+    //         console.log('data', data, visaChecklist);
+    //     }
+    // }, []);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
@@ -78,10 +98,19 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
     };
 
     const handleSend = async () => {
-        const combination = `<p>Hello ${addData.name}</p>
-        <p>Country: ${addData.country.name}
-        <br />
-        Visa Type: ${addData.visa_type.name} </p>`;
+        let combination;
+        if (addData?.name && addData?.country?.name && addData?.visa_type?.name) {
+             combination = `<p>Hello ${addData.name}</p>
+            <p>Country: ${addData.country.name}
+            <br />
+            Visa Type: ${addData.visa_type.name} </p>`;
+        }
+        else{
+            combination= `<p>Hello ${addData.name}</p>
+            <p>Country:  ${visaChecklistData?.[0]?.country?.name}
+            <br />
+            Visa Type:${visaChecklistData?.[0]?.visa_type?.name} </p>`;
+        }
 
         const value = {
             to: addData?.email,
@@ -102,6 +131,7 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
             apiObjectRef: mailSlice,
             endpoint: '',
         });
+        setIsOpen(false)
     };
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -112,7 +142,7 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
             attachments: [...(prevData.attachments || []), ...files],
         }));
 
-        console.log('files', files);
+        // console.log('files', files);
 
         // Clear the input value to allow re-uploading the same file after deletion
         if (fileInputRef.current) {
@@ -141,8 +171,6 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
             fileInputRef.current.style.width = `${buttonRef.current.offsetWidth}px`;
         }
     };
-
-    // console.log('addData', addData);
 
     return (
         <>

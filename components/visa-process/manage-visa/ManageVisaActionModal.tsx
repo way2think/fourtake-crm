@@ -2,8 +2,11 @@ import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import PaginationTable from '@/components/Reusable/Table/PaginationTable';
 import IconX from '@/components/icon/icon-x';
 import ComponentsFormDatePickerBasic from '@/components/lead-management/lead-manage/components-form-date-picker-basic';
+import { User } from '@/entities/user.entity';
 import { useGetVisaStatusesQuery } from '@/services/api/cms/visaStatusSlice';
+import { selectUser } from '@/store/user.store';
 import { useEffect, useState, ChangeEvent } from 'react';
+import { useSelector } from 'react-redux';
 
 interface ManageVisaActionModalProps {
     isOpen: any;
@@ -31,14 +34,17 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
     setApplicantDetails,
 }) => {
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
-    const [userNote, setUserNote] = useState<string>(''); // Add state for the textarea
+    const [userNote, setUserNote] = useState<any>(''); // Add state for the textarea
     const [userNotes, setUserNotes] = useState<any[]>(addUser.notes || []); // State for storing
     const [modalTitle, setModalTitle] = useState<string>('Add Note');
     const [actionButtonText, setActionButtonText] = useState<string>('Add Note');
     const [currentIndex, setCurrentIndex] = useState<number | null>(null); // Track index for editing
 
+    const user = useSelector(selectUser) as User;
+
+    const role = user?.role || 'guest';
+
     const { data: visaStatuses } = useGetVisaStatusesQuery({ page: 0, limit: 0, filter: 'is_active' });
-   
 
     useEffect(() => {
         setUserNotes(addUser.notes || []);
@@ -90,6 +96,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
         const updatedNotes = [...userNotes];
         updatedNotes.splice(index, 1);
         setUserNotes(updatedNotes);
+        setAddUser({...addUser, notes:updatedNotes})
     };
 
     const handleCloseModal = () => {
@@ -114,7 +121,8 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
         } else {
             const newNote = {
                 note: userNote,
-                created_time: currentTimeInSeconds, // Set created_time in seconds when creating a new note
+                created_time: currentTimeInSeconds, // Set created_time in seconds when creating a new note 
+                created_by: user.username,
             };
             const updatedNotes = [...userNotes, newNote];
             setUserNotes(updatedNotes);
@@ -129,7 +137,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
                 <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                    <h5 className="text-lg font-bold">Add User</h5>
+                    <h5 className="text-lg font-bold">Add Applicant</h5>
                     <button
                         onClick={() => {
                             setIsOpen(false);
@@ -211,7 +219,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        {addUser?.visa_status == 52  && (
+                        {addUser?.visa_status == 52 && (
                             <div className="mb-5">
                                 <ComponentsFormDatePickerBasic label="Out Scan to Embassy Date" id={'outscan_to_embassy'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
                             </div>
@@ -260,18 +268,26 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                             </button>
 
                             <div className="mt-3">
-                                {userNotes?.map((notes: any, index: number) => (
-                                    <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
-                                        <div>{notes.note}</div>
-                                        <div className="flex items-center">
-                                            <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
-                                                Edit
-                                            </button>
-                                            <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </div>
+                                {userNotes?.map((item: any, index: number) => (
+                                     <div key={index} className="mt-2 flex flex-col rounded border p-2">
+                                     <div className="flex items-center justify-between">
+                                         <div>{item?.note}</div>
+                                         {(role === 'super_admin' || role === 'admin') && (
+                                             <div className="flex items-center">
+                                                 <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
+                                                     Edit
+                                                 </button>
+                                                 <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
+                                                     Delete
+                                                 </button>
+                                             </div>
+                                         )}
+                                     </div>
+ 
+                                     <div className="mt-2 text-right font-mono text-sm text-blue-500">
+                                         Created By: {item.created_by} - Created Date: {item.created_time}
+                                     </div>
+                                 </div>
                                 ))}
                             </div>
 
@@ -286,7 +302,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                                     <textarea
                                         id="userNote"
                                         onChange={handleLeadNoteChange}
-                                        value={userNote}
+                                        value={userNote?.note}
                                         placeholder="Enter your note here"
                                         className="min-h-[150px] w-full rounded-lg border p-2 outline-none"
                                     />

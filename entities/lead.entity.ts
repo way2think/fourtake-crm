@@ -25,4 +25,5 @@ export interface Lead {
     lead_type: string;
     assignee: string;
     source: string;
+    service_type: string;
 }

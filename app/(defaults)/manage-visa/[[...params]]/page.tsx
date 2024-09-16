@@ -17,7 +17,7 @@ interface ManageVisaPageProps {
 const ManageVisaPage = ({ params }: ManageVisaPageProps) => {
     const id = params?.params?.[0];
 
-    // console.log("id",id)
+    console.log("id",id)
 
     return <ManageVisa paramId={id} />;
 };

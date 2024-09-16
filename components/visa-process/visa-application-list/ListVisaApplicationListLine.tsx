@@ -41,6 +41,8 @@ const ListVisaApplicationListLine: React.FC<ListVisaApplicationListLineProps> = 
                 visa_applicants: oneVisaApplicantsGroup?.visa_applicants.map((applicant: any) => (applicant.id === addData?.id ? { ...applicant, multiple_passports: passports } : applicant)),
             };
             setIsOpen(false);
+            setAddData({});
+            setPassports([]);
             return handleUpdate({
                 updateMutation: updateVisaApplicant,
                 value: updatedData,
@@ -50,8 +52,6 @@ const ListVisaApplicationListLine: React.FC<ListVisaApplicationListLineProps> = 
                 apiObjectRef: visaProcessSlice,
                 endpoint: 'getVisaApplicants',
             });
-
-            
         }
     };
 
@@ -71,6 +71,8 @@ const ListVisaApplicationListLine: React.FC<ListVisaApplicationListLineProps> = 
                 <button
                     onClick={() => {
                         setIsOpen(false);
+                        setAddData({});
+                        setPassports([]);
                     }}
                     type="button"
                     className="text-white-dark hover:text-dark"
@@ -121,6 +123,8 @@ const ListVisaApplicationListLine: React.FC<ListVisaApplicationListLineProps> = 
                     <button
                         onClick={() => {
                             setIsOpen(false);
+                            setAddData({});
+                            setPassports([]);
                         }}
                         type="button"
                         className="btn btn-outline-danger"
