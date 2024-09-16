@@ -40,6 +40,8 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
     const [actionButtonText, setActionButtonText] = useState<string>('Add Note');
     const [currentIndex, setCurrentIndex] = useState<number | null>(null); // Track index for editing
 
+    console.log('addUser', addUser);
+
     const user = useSelector(selectUser) as User;
 
     const role = user?.role || 'guest';
@@ -96,7 +98,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
         const updatedNotes = [...userNotes];
         updatedNotes.splice(index, 1);
         setUserNotes(updatedNotes);
-        setAddUser({...addUser, notes:updatedNotes})
+        setAddUser({ ...addUser, notes: updatedNotes });
     };
 
     const handleCloseModal = () => {
@@ -121,7 +123,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
         } else {
             const newNote = {
                 note: userNote,
-                created_time: currentTimeInSeconds, // Set created_time in seconds when creating a new note 
+                created_time: currentTimeInSeconds, // Set created_time in seconds when creating a new note
                 created_by: user.username,
             };
             const updatedNotes = [...userNotes, newNote];
@@ -269,25 +271,25 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
 
                             <div className="mt-3">
                                 {userNotes?.map((item: any, index: number) => (
-                                     <div key={index} className="mt-2 flex flex-col rounded border p-2">
-                                     <div className="flex items-center justify-between">
-                                         <div>{item?.note}</div>
-                                         {(role === 'super_admin' || role === 'admin') && (
-                                             <div className="flex items-center">
-                                                 <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
-                                                     Edit
-                                                 </button>
-                                                 <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
-                                                     Delete
-                                                 </button>
-                                             </div>
-                                         )}
-                                     </div>
- 
-                                     <div className="mt-2 text-right font-mono text-sm text-blue-500">
-                                         Created By: {item.created_by} - Created Date: {item.created_time}
-                                     </div>
-                                 </div>
+                                    <div key={index} className="mt-2 flex flex-col rounded border p-2">
+                                        <div className="flex items-center justify-between">
+                                            <div>{item?.note}</div>
+                                            {(role === 'super_admin' || role === 'admin') && (
+                                                <div className="flex items-center">
+                                                    <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
+                                                        Edit
+                                                    </button>
+                                                    <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="mt-2 text-right font-mono text-sm text-blue-500">
+                                            Created By: {item.created_by} - Created Date: {item.created_time}
+                                        </div>
+                                    </div>
                                 ))}
                             </div>
 

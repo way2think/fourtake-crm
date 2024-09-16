@@ -23,8 +23,9 @@ const ListVisaApplication = () => {
 
     const { page, limit, sortField, sortOrder, search, filter, setFilter, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10, initialFilter: 'all' });
 
-    const { data: visaApplicants, isFetching, isLoading } = useGetVisaApplicantsQuery({ page, limit, sortField: 'updated_time', sortOrder: 'DESC', search, filter, showDeleted: false });
+    const { data: visaApplicants, isFetching, isLoading } = useGetVisaApplicantsQuery({ page, limit, sortField: 'updated_time', sortOrder: 'DESC', search, filter: 'all', showDeleted: false });
     const { items = [], meta = {} } = visaApplicants || {};
+    console.log('items', items);
 
     const [data, setData] = useState(visaApplicants);
     const exportColumns = ['id', 'applydate', 'refno', 'apptype', 'applname', 'cosultantname', 'destination', 'type', 'duration', 'entry'];
@@ -37,6 +38,12 @@ const ListVisaApplication = () => {
             });
         })
         .flat();
+
+    const onlyGroup = items.filter((group: any) => {
+        return group.is_group == true;
+    });
+
+    console.log('onlyGroup', onlyGroup);
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'SNo' },
@@ -217,8 +224,8 @@ const ListVisaApplication = () => {
                                     <div className=" pt-5">
                                         <div className="flex-auto">
                                             <PaginationExpand
-                                                getSubData={items}
-                                                data={items}
+                                                getSubData={onlyGroup}
+                                                data={onlyGroup}
                                                 tableColumns={tableColumns}
                                                 handleDeleteApplicant={handleDeleteApplicant}
                                                 handleDeleteGroup={handleDeleteGroup}

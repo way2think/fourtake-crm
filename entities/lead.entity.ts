@@ -8,7 +8,7 @@ export interface Lead {
     country: string;
     visa_type: string;
     number_of_applicants: number;
-    residence_state: string;
+    state_of_residence: string;
     create_date: string; // $date-time
     email_sent_date: string; // $date-time
     last_followup: string; // $date-time
@@ -23,7 +23,7 @@ export interface Lead {
     doc_pickup_remark: string;
     lead_note: string;
     lead_type: string;
-    assignee: string;
+    assigned_to: string;
     source: string;
     service_type: string;
 }

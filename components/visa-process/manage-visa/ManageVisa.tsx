@@ -238,11 +238,12 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         } else {
             //add user
 
+            const primary = applicantDetails.length == 0 ? true : addUser.is_primary;
             const maxUserId = applicantDetails.length ? Math.max(...applicantDetails.map((d: any) => d.id)) : 0;
             const newUser = {
                 ...addUser,
                 temp_id: +maxUserId + 1,
-                // is_primary: addUser.is_primary,
+                is_primary: primary,
             };
             setApplicantDetails([...applicantDetails, newUser]);
             // return newUser;
@@ -269,6 +270,13 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                 apiObjectRef: visaProcessSlice,
                 endpoint: 'getVisaProcess',
             });
+        } else {
+            if (applicant.temp_id) {
+                const updatedItem = applicantDetails.filter((item: any) => {
+                    item.id !== applicant.temp_id;
+                });
+                setApplicantDetails(updatedItem);
+            }
         }
     };
 
@@ -307,11 +315,20 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         }
 
         if (applicantDetails.length == 0) {
-            showMessage('Add User Details', 'error');
+            showMessage('Add Applicant Details', 'error');
             return false;
         }
 
-        const primaryCount = applicantDetails.filter((applicant: { isprimary: string }) => applicant.isprimary === 'Yes').length;
+        if (addData.is_group == true) {
+            if (applicantDetails.length < 2) {
+                showMessage('Atleat Two  Applicant shoul be added in group ', 'error');
+                return false;
+            }
+        }
+
+        console.log('primary country', applicantDetails);
+
+        const primaryCount = applicantDetails.filter((applicant: { is_primary: boolean }) => applicant.is_primary === true).length;
 
         if (primaryCount > 1) {
             alert('Please select only one primary applicant.');
@@ -320,6 +337,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
 
         if (addData.id) {
             const updatedData = { ...addData, updated_time: new Date() };
+            // router.push('/list-visa-applications');
             return handleUpdate({
                 updateMutation: updateVisaApplicant,
                 value: updatedData,
@@ -330,8 +348,8 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                 endpoint: 'getVisaApplicants',
             });
         } else {
-            const updatedData = { ...addData, updated_time: new Date(), stage: 'Fresh', status: 'Open' };
-
+            const updatedData = { ...addData, updated_time: new Date(), stage: 'Fresh', status: 'Open', is_deleted: false };
+            // router.push('/list-visa-applications');
             return handleCreate({
                 createMutation: createVisaApplicant,
                 value: updatedData,
@@ -374,7 +392,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const handleEdit = (object: any) => {
         setIsEdit(true);
         setIsOpen(true);
-
+        console.log('object', object);
         setAddUser(object);
     };
 
@@ -426,9 +444,6 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         setCurrentIndex(null); // Reset index when closing modal
     };
 
-    console.log('groupNote', groupNote);
-    console.log('groupNotes', groupNotes);
-
     const handleLeadNoteChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setGroupNote(event.target.value);
     };
@@ -453,7 +468,6 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
             <div className="flex items-center justify-between bg-[#fff] px-5 py-3 dark:bg-[#121c2c]">
                 <h5 className="text-lg font-bold">Manage Visa</h5>
             </div>
-
             <div className="bg-[#fff] p-5 ">
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-3 ">
                     <div className="dropdown mb-5">
@@ -521,7 +535,6 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                         </select>
                     </div>
                 </div>
-
                 <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                     <div className="dropdown mb-5">
                         <label htmlFor="state_of_residence">State of Residence</label>

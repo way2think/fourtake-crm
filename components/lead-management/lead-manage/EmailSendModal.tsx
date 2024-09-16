@@ -31,7 +31,7 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
     const { data: visaRequirements } = useGetVisaRequirementsQuery({
         countryId: String(addData?.country?.id),
         visaTypeId: String(addData?.visa_type?.id),
-        stateOfResidence: addData?.residence_state,
+        stateOfResidence: addData?.state_of_residence,
     });
 
     console.log('visaRequirement ', visaRequirements);

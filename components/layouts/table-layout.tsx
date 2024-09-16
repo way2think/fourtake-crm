@@ -15,6 +15,10 @@ import { PaginationMeta } from '@/types/pagination';
 import { useGetOneVisaApplicantGroupQuery, useRestoreApplicantMutation, useUpdateVisaApplicantGroupMutation, visaProcessSlice } from '@/services/api/visaProcessSlice';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleUpdate } from '@/utils/rtk-http';
+import { useGetVisaRequirementsQuery } from '@/services/api/dashboardSlice';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
+import EmailSendModal from '../lead-management/lead-manage/EmailSendModal';
 
 interface TableLayoutProps {
     title: string;
@@ -81,8 +85,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         other: '',
     });
 
-    // console.log('addData', addData);
-
     const [isImportOpen, setIsImportOpen] = useState(false);
     const [isOpenTrack, setIsOpenTrack] = useState(false);
     const router = useRouter();
@@ -90,6 +92,12 @@ const TableLayout: React.FC<TableLayoutProps> = ({
     const [file, setFile] = useState<File | null>(null);
 
     const { data: oneVisaApplicantsGroup } = useGetOneVisaApplicantGroupQuery(addData?.group_id);
+    const { data: visaRequirements } = useGetVisaRequirementsQuery({
+        countryId: String(addData?.country?.id),
+        visaTypeId: String(addData?.visa_type?.id),
+        stateOfResidence: addData?.state_of_residence,
+    });
+    console.log('addData', addData, visaRequirements);
 
     const [updateVisaApplicant, {}] = useUpdateVisaApplicantGroupMutation();
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
@@ -154,11 +162,38 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         setIsOpenTrack(true);
     };
 
+    const handleDocChecklist = (row: any) => {
+        router.push(`/check-requirements?countryId=${row.destination_country.id}&visaTypeId=${row.visa_type.id}&stateOfResidence=${row.state_of_residence}`);
+
+        // if (visaRequirements && visaRequirements.length > 0) {
+        //     const checklist = visaRequirements[0]?.checklist || [];
+
+        //     // Create a new jsPDF document
+        //     const doc = new jsPDF('portrait', 'pt', 'a4');
+
+        //     // Set font size and add title
+        //     doc.setFontSize(16);
+        //     doc.text('Visa Requirements Checklist', 40, 50);
+
+        //     // Add checklist items
+        //     doc.setFontSize(12);
+        //     checklist.forEach((item: any, index: any) => {
+        //         doc.text(`${index + 1}. ${item}`, 40, 80 + index * 20); // Adjust spacing as needed
+        //     });
+
+        //     // Save or display the PDF
+        //     const pdfBlob = doc.output('blob');
+        //     const pdfUrl = URL.createObjectURL(pdfBlob);
+        //     window.open(pdfUrl, '_blank'); // Open the PDF in a new tab
+        // }
+    };
+
     const handleTrackInputChange = (e: any) => {
         const { value, id } = e.target;
 
         setTrack({ ...track, [id]: value });
     };
+
     const handleInputChange = (e: any) => {
         const { value, id, options } = e.target;
 
@@ -213,6 +248,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
 
             //Navigate to Manage Visa Page
             //console.log(title)
+
             if (title == 'Lead List') {
                 //alert("Navigate")
                 //console.log(addData)
@@ -304,9 +340,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         if (applicant.id) {
             const updatedData = filterItem.filter((item: any) => item.id !== applicant.id);
             setFilterItem(updatedData);
-            handleRestore(applicant)
+            handleRestore(applicant);
         }
-
     };
 
     return (
@@ -425,6 +460,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                         handleTracking={handleTracking}
                         setPage={setPage}
                         setLimit={setLimit}
+                        handleDocChecklist={handleDocChecklist}
                     />
                 </div>
             </div>

@@ -91,37 +91,5 @@ const ComponentsFormDatePickerRange: React.FC<ComponentsFormDatePickerRangeProps
     );
 };
 
-// const FilterableTable: React.FC = () => {
-//     const [dateFilter, setDateFilter] = useState([
-//         { id: 1, applydate: '2022-07-06', name: 'Record 1' },
-//         { id: 2, applydate: '2022-07-15', name: 'Record 2' },
-//         { id: 3, applydate: '2022-08-01', name: 'Record 3' },
-//         // Add more records as needed
-//     ]);
-
-//     return (
-//         <div>
-//             <ComponentsFormDatePickerRange setDateFilter={setDateFilter} dateFilter={dateFilter} />
-//             <table className="table-auto w-full mt-5">
-//                 <thead>
-//                     <tr>
-//                         <th className="px-4 py-2">ID</th>
-//                         <th className="px-4 py-2">Apply Date</th>
-//                         <th className="px-4 py-2">Name</th>
-//                     </tr>
-//                 </thead>
-//                 <tbody>
-//                     {dateFilter.map((record: any) => (
-//                         <tr key={record.id}>
-//                             <td className="border px-4 py-2">{record.id}</td>
-//                             <td className="border px-4 py-2">{record.applydate}</td>
-//                             <td className="border px-4 py-2">{record.name}</td>
-//                         </tr>
-//                     ))}
-//                 </tbody>
-//             </table>
-//         </div>
-//     );
-// };
 
 export default ComponentsFormDatePickerRange;

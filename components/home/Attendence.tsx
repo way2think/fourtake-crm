@@ -12,7 +12,7 @@ const Attendence = () => {
     const [states] = useState(Object.keys(stateCityData).sort());
     const [formData, setFormData] = useState({
         passport: 75,
-        residence_state: '',
+        state_of_residence: '',
         country: '',
         visa_type: '',
     });
@@ -20,21 +20,23 @@ const Attendence = () => {
     const router = useRouter();
     const { data: countryVisaTypes } = useGetCountryVisaTypesQuery({ page: 0, limit: 0 });
 
+    console.log('countryVisaTypes', countryVisaTypes);
+
     const [errors, setErrors] = useState({
         passport: false,
-        residence_state: false,
+        state_of_residence: false,
         country: false,
         visa_type: false,
     });
 
     type FormFields = {
         passport: string;
-        residence_state: string;
+        state_of_residence: string;
         country: string;
         visa_type: string;
     };
 
-     type ErrorFields = {
+    type ErrorFields = {
         [key in keyof FormFields]: boolean;
     };
 
@@ -53,7 +55,7 @@ const Attendence = () => {
     const handleSubmitAttendence = () => {
         const newErrors: ErrorFields = {
             passport: formData.passport == null,
-            residence_state: formData.residence_state === '',
+            state_of_residence: formData.state_of_residence === '',
             country: formData.country === '',
             visa_type: formData.visa_type === '',
         };
@@ -68,7 +70,7 @@ const Attendence = () => {
             }
         }
 
-        router.push(`/check-requirements?countryId=${formData.country}&visaTypeId=${formData.visa_type}&stateOfResidence=${formData.residence_state}`);
+        router.push(`/check-requirements?countryId=${formData.country}&visaTypeId=${formData.visa_type}&stateOfResidence=${formData.state_of_residence}`);
 
         // Form is valid, handle the form submission here
         console.log('Form submitted successfully with data:', formData);
@@ -100,7 +102,7 @@ const Attendence = () => {
                     <div className=" grid grid-cols-1 items-center justify-between  gap-5 md:grid-cols-2">
                         <div className="dropdown mb-4 mt-2">
                             <label htmlFor="passport">I Hold a Passport From</label>
-                            <select className="form-input" defaultValue="india" id="residence_state" value={formData?.passport} onChange={(e) => handleInputChangeAttendence(e)}>
+                            <select className="form-input" defaultValue="india" id="passport" value={formData?.passport} onChange={(e) => handleInputChangeAttendence(e)}>
                                 <option value="" disabled={true}>
                                     Select Country
                                 </option>
@@ -108,8 +110,8 @@ const Attendence = () => {
                             </select>
                         </div>
                         <div className="dropdown mb-4 mt-2">
-                            <label htmlFor="residence_state">State of Residence</label>
-                            <select className="form-input" defaultValue="" id="residence_state" value={formData?.residence_state} onChange={(e) => handleInputChangeAttendence(e)}>
+                            <label htmlFor="state_of_residence">State of Residence</label>
+                            <select className="form-input" defaultValue="" id="state_of_residence" value={formData?.state_of_residence} onChange={(e) => handleInputChangeAttendence(e)}>
                                 <option value="" disabled={true}>
                                     Select State
                                 </option>

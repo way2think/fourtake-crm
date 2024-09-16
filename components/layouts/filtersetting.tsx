@@ -43,7 +43,7 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ data, showCustomizer, set
         status: leadStatus,
         stage: leadStage,
         priority,
-        assignee: user,
+        assigned_to: user,
         source,
         fromDate: dateFilter?.split(' to ')[0],
         toDate: dateFilter?.split(' to ')[1],
@@ -175,7 +175,7 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ data, showCustomizer, set
                         status={leadStatus}
                         stage={leadStage}
                         priority={priority}
-                        assignee={user}
+                        assigned_to={user}
                         source={source}
                         fromDate={dateFilter?.split(' to ')[0]}
                         toDate={dateFilter?.split(' to ')[1]}

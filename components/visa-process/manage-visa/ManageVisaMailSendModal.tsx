@@ -8,6 +8,7 @@ import { useGetVisaChecklistQuery } from '@/services/api/cms/visaChecklistSlice'
 import { mailSlice, useCreateMailMutation } from '@/services/api/mailSlice';
 import { handleCreate } from '@/utils/rtk-http';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
+import { useGetVisaRequirementsQuery } from '@/services/api/dashboardSlice';
 
 interface ManageVisaMailSendModalProps {
     isOpen: any;
@@ -27,42 +28,64 @@ const ManageVisaMailSendModal: React.FC<ManageVisaMailSendModalProps> = ({ isOpe
     const fileInputRef = useRef<HTMLInputElement>(null);
     console.log('visaChecklist data', visaChecklistData?.items, addData);
 
+    const { data: visaRequirements } = useGetVisaRequirementsQuery({
+        countryId: String(addData?.destination_country?.id),
+        visaTypeId: String(addData?.visa_type?.id),
+        stateOfResidence: addData?.state_of_residence,
+    });
+
     useEffect(() => {
-        if (visaChecklistData?.items && addData) {
-            let data = visaChecklistData?.items
-                .filter((item: any, index: any) => {
-                    return item.country.id == addData.destination_country.id;
-                })
-                .filter((item: any, index: any) => {
-                    return item.visa_type.id == addData.visa_type.id;
-                });
-
-            if (data.length > 1) {
-                data = data
-                    .map((item: any) => {
-                        if (Array.isArray(item.embassy_vfs)) {
-                            const jurisdiction = item.embassy_vfs.map((vfs: any) => (vfs.jurisdiction ? vfs.jurisdiction.split(',') : null)).filter((j: any) => j && j.length > 0); // Filter non-empty arrays
-
-                            console.log('jurisdiction', jurisdiction);
-
-                            // Check if any jurisdiction matches the residence_state
-                            const hasMatchingJurisdiction = jurisdiction.some((content: string[]) => content.includes(addData?.residence_state));
-                            if (hasMatchingJurisdiction) {
-                                return item;
-                            }
-                        }
-                        return null;
-                    })
-                    .filter((item: any) => item !== null); // Remove null values from the array
-
-                console.log('filtered data', data);
-            }
-            const visaChecklist = data && data.length > 0 ? `${data[0]?.checklist || ''} ${data[0]?.fee == null || 'null' ? '' : data[0]?.fee}` : '';
+        if (visaChecklistData) {
+            const visaChecklist =
+                visaChecklistData && visaChecklistData.length > 0 ? `${visaChecklistData[0]?.checklist || ''} ${visaChecklistData[0]?.fee == null || '' ? '' : visaChecklistData[0]?.fee}` : '';
             setAddData({ ...addData, visa_checklist: visaChecklist });
-
-            console.log('data', data, visaChecklist);
         }
-    }, []);
+    }, [visaChecklistData]);
+
+    useEffect(() => {
+        if (visaRequirements) {
+            const visaChecklist =
+                visaRequirements && visaRequirements.length > 0 ? `${visaRequirements[0]?.checklist || ''} ${visaRequirements[0]?.fee == null || '' ? '' : visaRequirements[0]?.fee}` : '';
+            setAddData({ ...addData, visa_checklist: visaChecklist });
+        }
+    }, [visaRequirements]);
+
+    // useEffect(() => {
+    //     if (visaChecklistData?.items && addData) {
+    //         let data = visaChecklistData?.items
+    //             .filter((item: any, index: any) => {
+    //                 return item.country.id == addData.destination_country.id;
+    //             })
+    //             .filter((item: any, index: any) => {
+    //                 return item.visa_type.id == addData.visa_type.id;
+    //             });
+
+    //         if (data.length > 1) {
+    //             data = data
+    //                 .map((item: any) => {
+    //                     if (Array.isArray(item.embassy_vfs)) {
+    //                         const jurisdiction = item.embassy_vfs.map((vfs: any) => (vfs.jurisdiction ? vfs.jurisdiction.split(',') : null)).filter((j: any) => j && j.length > 0); // Filter non-empty arrays
+
+    //                         console.log('jurisdiction', jurisdiction);
+
+    //                         // Check if any jurisdiction matches the state_of_residence
+    //                         const hasMatchingJurisdiction = jurisdiction.some((content: string[]) => content.includes(addData?.state_of_residence));
+    //                         if (hasMatchingJurisdiction) {
+    //                             return item;
+    //                         }
+    //                     }
+    //                     return null;
+    //                 })
+    //                 .filter((item: any) => item !== null); // Remove null values from the array
+
+    //             console.log('filtered data', data);
+    //         }
+    //         const visaChecklist = data && data.length > 0 ? `${data[0]?.checklist || ''} ${data[0]?.fee == null || 'null' ? '' : data[0]?.fee}` : '';
+    //         setAddData({ ...addData, visa_checklist: visaChecklist });
+
+    //         console.log('data', data, visaChecklist);
+    //     }
+    // }, []);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;

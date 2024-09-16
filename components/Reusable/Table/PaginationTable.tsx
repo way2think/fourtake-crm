@@ -30,6 +30,7 @@ interface PaginationTableProps {
     handleTracking?: (row: any) => void;
     setPage?: Function;
     setLimit?: Function;
+    handleDocChecklist?: Function;
 }
 
 interface Row {
@@ -50,6 +51,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
     handleListLine,
     setPage: updatePage,
     setLimit: updatePageLimit,
+    handleDocChecklist,
 }) => {
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
@@ -96,20 +98,15 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                             </>
                         ) : (
                             <>
-                               {title !== 'Deleted Visa Application' &&  <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
-                                    <IconEdit size={16} />
-                                </ActionIcon>}
-
-
+                                {title !== 'Deleted Visa Application' && (
+                                    <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
+                                        <IconEdit size={16} />
+                                    </ActionIcon>
+                                )}
 
                                 {title === 'List Visa Application' && (
                                     <>
-                                        <ActionIcon
-                                            size="sm"
-                                            variant="subtle"
-                                            color="red"
-                                        //  onClick={() => handleDelete?.(row)}
-                                        >
+                                        <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDocChecklist?.(row)}>
                                             <IconTxtFile className={`size:"16"`} />
                                         </ActionIcon>
 
@@ -118,7 +115,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                                 size="sm"
                                                 variant="subtle"
                                                 color="red"
-                                            //  onClick={() => handleDelete?.(row)}
+                                                //  onClick={() => handleDelete?.(row)}
                                             >
                                                 <IconVerify />
                                             </ActionIcon>
@@ -128,7 +125,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                                 size="sm"
                                                 variant="subtle"
                                                 color="red"
-                                            //  onClick={() => handleDelete?.(row)}
+                                                //  onClick={() => handleDelete?.(row)}
                                             >
                                                 <IconUnVerified />
                                             </ActionIcon>
@@ -147,11 +144,11 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                     </ActionIcon>
                                 )}
 
-                                {title === 'Deleted Visa Application' &&
+                                {title === 'Deleted Visa Application' && (
                                     <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleRestore?.(row)}>
                                         <IconRestore size={16} />
                                     </ActionIcon>
-                                }
+                                )}
                             </>
                         )}
                     </td>

@@ -26,7 +26,7 @@ const DashboardCheck = () => {
     });
 
     const [checkData, setCheckData] = useState({
-        residence_state: '',
+        state_of_residence: '',
         destination_country: '',
         visa_type: '',
     });
@@ -35,6 +35,7 @@ const DashboardCheck = () => {
     useEffect(() => {
         setIsMounted(true);
     }, []);
+    
     let countryId, visaTypeId, stateOfResidence, urlSearchParams;
 
     const [addData, setAddData] = useState<any>({
@@ -65,7 +66,7 @@ const DashboardCheck = () => {
         visaTypeId: queryParams.visaTypeId,
         stateOfResidence: queryParams.stateOfResidence,
     });
-    // console.log('visaRequirement ', visaRequirements);
+    console.log('visaRequirement ', visaRequirements);
     const { data: countryVisaTypes } = useGetCountryVisaTypesQuery({ page: 0, limit: 0 });
 
     const user = useSelector(selectUser);
@@ -87,7 +88,7 @@ const DashboardCheck = () => {
             setCheckData({
                 destination_country: urlParams.get('countryId') || '',
                 visa_type: urlParams.get('visaTypeId') || '',
-                residence_state: urlParams.get('stateOfResidence') || '',
+                state_of_residence: urlParams.get('stateOfResidence') || '',
             });
         }
     }, [window.location.href]);
@@ -108,7 +109,7 @@ const DashboardCheck = () => {
     };
 
     const handleSubmitChecklist = () => {
-        if (checkData.residence_state == '') {
+        if (checkData.state_of_residence == '') {
             showMessage('Select State', 'error');
         }
         if (checkData.visa_type == '') {
@@ -119,7 +120,7 @@ const DashboardCheck = () => {
         }
 
         // Update the URLs
-        const newUrl = `/check-requirements?countryId=${checkData.destination_country}&visaTypeId=${checkData.visa_type}&stateOfResidence=${checkData.residence_state}`;
+        const newUrl = `/check-requirements?countryId=${checkData.destination_country}&visaTypeId=${checkData.visa_type}&stateOfResidence=${checkData.state_of_residence}`;
         router.push(newUrl);
 
         // Force page reload with the new URL
@@ -129,6 +130,22 @@ const DashboardCheck = () => {
         //alert('Form submitted successfully');
         showMessage('Form submitted successfully.');
     };
+
+    const sanitizeHtmlString = (htmlString: any) => {
+        // Replace escaped characters with normal ones (optional)
+        if (typeof htmlString !== 'string') {
+            // If it's not a string, try converting it to a string
+            console.log('not a string');
+            htmlString = String(htmlString);
+        }
+        return htmlString
+            .replace(/\\r\\n/g, '') // Remove newlines
+            .replace(/\\"/g, '"'); // Unescape quotes
+    };
+
+    // if (visaRequirements) {
+    //     console.log('parse(visaRequirements?.[0]?.fee)', visaRequirements?.[0]?.fee, '1', sanitizeHtmlString(visaRequirements?.[0]?.fee));
+    // }
 
     return (
         <>
@@ -174,7 +191,7 @@ const DashboardCheck = () => {
                     </div>
                     <div className="dropdown mb-5 mr-1">
                         <label htmlFor="state_of_residence"> Select State</label>
-                        <select className="form-input" defaultValue="" id="residence_state" value={checkData?.residence_state} onChange={(e) => handleInputChange(e)}>
+                        <select className="form-input" defaultValue="" id="state_of_residence" value={checkData?.state_of_residence} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
                                 Select State
                             </option>
@@ -188,7 +205,7 @@ const DashboardCheck = () => {
                     <button type="button" className="btn btn-primary ltr:ml-2 rtl:mr-4" onClick={handleSubmitChecklist}>
                         Submit
                     </button>
-                    {role === 'super_admin' &&
+                    {role === 'super_admin' && (
                         <>
                             <div className="mb-5 mr-1">
                                 <label htmlFor="mail">Email</label>
@@ -198,7 +215,7 @@ const DashboardCheck = () => {
                                 Send
                             </button>
                         </>
-                    }
+                    )}
                 </div>
                 {isMounted && (
                     <Tab.Group>
@@ -283,7 +300,11 @@ const DashboardCheck = () => {
                             <Tab.Panel>
                                 <div className=" p-3 pt-5">
                                     <h4 className="mb-4 text-xl font-semibold">Fee Details</h4>
-                                    <div style={{ border: '1px solid grey' }}>{typeof visaRequirements?.[0]?.fee === 'string' && parse(visaRequirements?.[0]?.fee)}</div>
+                                    {/* <div style={{ border: '1px solid grey' }}> */}
+                                    {typeof visaRequirements?.[0]?.fee === 'string' && parse(sanitizeHtmlString(visaRequirements?.[0]?.fee))}
+                                    
+                                    {/* </div> */}
+
                                     <h4 className="my-4 text-xl font-semibold">Disclaimer</h4>
                                     <ul>
                                         <li className="mb-4 ">
@@ -371,6 +392,7 @@ const DashboardCheck = () => {
                             <Tab.Panel>
                                 <div className="mt-3">
                                     <h4 className="text-2xl">Processing Time</h4>
+                                    <p>{visaRequirements?.[0]?.embassy_vfs?.[0]?.processing_time}</p>
                                 </div>
                             </Tab.Panel>
                             <Tab.Panel>

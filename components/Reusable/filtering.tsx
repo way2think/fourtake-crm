@@ -8,13 +8,13 @@ interface FilteringProps {
     status: string;
     stage: string;
     priority: string;
-    assignee: any;
+    assigned_to: any;
     source: string;
     fromDate: any;
     toDate: any;
 }
 
-const Filtering: React.FC<FilteringProps> = ({ country, status, stage, priority, assignee, source, fromDate, toDate, setFilterItem }) => {
+const Filtering: React.FC<FilteringProps> = ({ country, status, stage, priority, assigned_to, source, fromDate, toDate, setFilterItem }) => {
     const { page, limit, sortField, sortOrder, search, filter, setFilter, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
     const {
         data: leads,
@@ -29,7 +29,7 @@ const Filtering: React.FC<FilteringProps> = ({ country, status, stage, priority,
         status,
         stage,
         priority,
-        assignee,
+        assigned_to,
         source,
         fromDate,
         toDate,

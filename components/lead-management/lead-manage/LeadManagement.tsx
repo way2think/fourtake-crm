@@ -143,7 +143,7 @@ const LeadManagement: React.FC = () => {
             return false;
         }
 
-        if (value.residence_state == null || value.residence_state == '') {
+        if (value.state_of_residence == null || value.state_of_residence == '') {
             showMessage('Select State', 'error');
             return false;
         }
@@ -153,7 +153,7 @@ const LeadManagement: React.FC = () => {
             return false;
         }
 
-        if (value.assignee == null || value.assignee == '') {
+        if (value.assigned_to == null || value.assigned_to == '') {
             showMessage('Select Assignee ', 'error');
             return false;
         }

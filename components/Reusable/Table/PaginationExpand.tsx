@@ -50,7 +50,7 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
         other: '',
     });
 
-    console.log('subData', getSubData, getSubData?.visa_applicants);
+    console.log('subData',data, getSubData, getSubData?.visa_applicants);
     // Calculate the start and end index for the current page
     const startIndex = (page - 1) * recordsPerPage;
     const endIndex = startIndex + recordsPerPage;
@@ -213,6 +213,11 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
         }
     };
 
+    const handleDocChecklist = (row: any) => {
+        console.log('row', row);
+        router.push(`/check-requirements?countryId=${row.destination_country.id}&visaTypeId=${row.visa_type.id}&stateOfResidence=${row.state_of_residence}`);
+    };
+
     return (
         <>
             <div className="datatables bg-[#]">
@@ -330,12 +335,7 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                                                         <IconEdit size={16} />
                                                     </ActionIcon>
                                                     <>
-                                                        <ActionIcon
-                                                            size="sm"
-                                                            variant="subtle"
-                                                            color="red"
-                                                            //  onClick={() => handleDelete?.(row)}
-                                                        >
+                                                        <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDocChecklist?.(record)}>
                                                             <IconTxtFile className={`size:"16"`} />
                                                         </ActionIcon>
 
