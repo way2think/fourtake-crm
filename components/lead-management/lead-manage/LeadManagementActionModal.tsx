@@ -346,13 +346,12 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 <option value="flight itinerary">Flight Itinerary</option>
                                 <option value="hotel itinerary"> Hotel Itinerary </option>
                                 <option value="photographs">Photographs</option>
-                                <option value="courier ">Courier </option>
+                                <option value="courier">Courier </option>
                                 <option value="passport collection">Passport Collection</option>
                                 <option value="documents pickup & delivery">Documents Pickup & Delivery</option>
                                 <option value="visa application submission & collection - applicants">Visa Application Submission & Collection - Applicants</option>
                                 <option value="visa application submission & collection - associate partners B2B">Visa Application Submission & Collection - Associate Partners B2B</option>
-                                <option value="H.DS-160 Form">H.DS-160 Form </option>
-                                <option value="photographs">Photographs</option>
+                                <option value="DS-160 Form">DS-160 Form </option>
 
                                 <option value="others">Others</option>
                             </select>
@@ -802,6 +801,17 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         className="form-input"
                                     />
                                 </div>
+                                <div className="mb-5">
+                                    <label htmlFor="currency_volume">Currency Volume Required</label>
+                                    <input
+                                        id="currency_volume"
+                                        type="text"
+                                        onChange={(e) => handleInputChange(e)}
+                                        value={addData?.currency_volume}
+                                        placeholder="Enter details "
+                                        className="form-input"
+                                    />
+                                </div>
                             </div>
                             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                                 <div className="dropdown mb-5">
@@ -853,10 +863,21 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         </>
                     )}
 
-                    <div className="mb-5">
-                        <label htmlFor="commission_earned">Fee & other details</label>
-                        <input id="other_details" type="text" onChange={(e) => handleInputChange(e)} value={addData?.other_details} placeholder="Enter Other details " className="form-input" />
-                    </div>
+                    {(addData.service_type == 'flight itinerary' ||
+                        addData.service_type == 'hotel itinerary' ||
+                        addData.service_type == 'photographs' ||
+                        addData.service_type == 'courier' ||
+                        addData.service_type == 'passport collection' ||
+                        addData.service_type == 'documents pickup & delivery' ||
+                        addData.service_type == 'visa application submission & collection - applicants' ||
+                        addData.service_type == 'visa application submission & collection - associate partners B2B' ||
+                        addData.service_type == 'DS-160 Form' ||
+                        addData.service_type == 'others') && (
+                        <div className="mb-5">
+                            <label htmlFor="commission_earned">Fee & other details</label>
+                            <input id="other_details" type="text" onChange={(e) => handleInputChange(e)} value={addData?.other_details} placeholder="Enter Other details " className="form-input" />
+                        </div>
+                    )}
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                         <div className="dropdown mb-5">
