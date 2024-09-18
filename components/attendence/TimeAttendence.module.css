@@ -1,0 +1,22 @@
+@tailwind components;
+
+@layer components {
+    .headingtime {
+        @apply text-[22px] text-[#000];
+    }
+    .timesheet {
+        @apply text-[22px] text-[#000];
+    }
+    .pay {
+        @apply mb-2 flex items-center justify-between;
+    }
+    .overallpay {
+        @apply mt-5 border border-[#bbbbbb] py-3 px-1;
+    }
+    .day {
+        @apply cursor-pointer border-r border-[#fff] bg-[#49A829] px-2 py-2 text-[#fff];
+    }
+    .leaveday {
+        @apply cursor-pointer border-r border-[#fff] bg-[#FEECE5] px-2 py-2 text-[#DC3227];
+    }
+}
