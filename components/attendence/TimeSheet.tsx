@@ -4,6 +4,8 @@ import ComponentsFormDatePickerRange from '../Reusable/range/components-form-dat
 import ComponentsAppsCalendar from './components-apps-calendar'
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
+import UserList from '../user-management/UserList';
+import ListAttendanceTable from './ListAttendanceTable';
 
 function TimeSheet() {
     return (
@@ -17,7 +19,7 @@ function TimeSheet() {
                     <p>Start of Pay: <b>1 Sep</b> </p>
                     <p>End of Pay: <b>30 Sep</b> </p>
                 </div>
-                <div className="flex justify-evenly items-center mb-10">
+                <div className="flex justify-evenly items-center mb-10 container-fluid">
                     <Tippy content="working" placement="bottom">
                         <p className={classes.day}>1</p>
                     </Tippy>
@@ -59,6 +61,8 @@ function TimeSheet() {
 
             </div>
             {/* <ComponentsAppsCalendar /> */}
+            <ListAttendanceTable />
+
         </div>
     )
 }

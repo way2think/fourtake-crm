@@ -32,7 +32,7 @@ const TabsAttendence = () => {
                                 className={`${selected ? '  rounded-none  border-[#005fbe] border-b-2 text-[#005fbe] !outline-none ' : ''}
                                                     -mb-[1px] block  rounded p-3.5 py-2 before:inline-block hover:border-[#005fbe] hover:text-[#005fbe] `}
                             >
-                                Client
+                                Time-off Request
                             </button>
                         )}
                     </Tab>

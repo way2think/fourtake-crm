@@ -3,7 +3,7 @@
 import React from 'react';
 import TableLayout from '@/components/layouts/table-layout';
 import Filtersetting from '@/components/layouts/filtersetting';
-import LeadManagementActionModal from './LeadManagementActionModal';
+import LeadManagementActionModal from '../../components/lead-management/lead-manage/LeadManagementActionModal';
 import Link from 'next/link';
 import { leadSlice, useGetLeadsQuery, useDeleteLeadMutation, useCreateLeadMutation, useUpdateLeadMutation } from '@/services/api/leadSlice';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
@@ -14,7 +14,7 @@ import { useGetVisaChecklistQuery } from '@/services/api/cms/visaChecklistSlice'
 import { showMessage } from '@/utils/notification';
 import { isValidPhoneNumber } from '@/utils/validator';
 
-const LeadManagement: React.FC = () => {
+const ListAttendanceTable: React.FC = () => {
     const [createLead, { }] = useCreateLeadMutation();
     const [updateLead, { }] = useUpdateLeadMutation();
     const [deleteLead, { }] = useDeleteLeadMutation();
@@ -41,67 +41,55 @@ const LeadManagement: React.FC = () => {
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
-        { accessor: 'name', textAlign: 'left', title: 'Lead Name' },
-        { accessor: 'email', textAlign: 'left', title: 'Email' },
+        { accessor: 'name', textAlign: 'left', title: 'Name' },
+        { accessor: 'type', textAlign: 'left', title: 'Type' },
         {
-            accessor: 'phone',
+            accessor: 'regular',
             textAlign: 'left',
-            title: 'Phone no',
-            render: (row: any) => {
-                if (row.phone && row.other_phone) {
-                    return `+91 ${row.phone}, ${row.other_phone}`;
-                } else if (row.phone && !row.other_phone) {
-                    return `+91 ${row.phone}`;
-                } else if (row.other_phone && !row.phone) {
-                    return `${row.other_phone}`;
-                }
-            },
+            title: 'Regular',
+            // render: (row: any) => {
+            //     if (row.phone && row.other_phone) {
+            //         return `+91 ${row.phone}, ${row.other_phone}`;
+            //     } else if (row.phone && !row.other_phone) {
+            //         return `+91 ${row.phone}`;
+            //     } else if (row.other_phone && !row.phone) {
+            //         return `${row.other_phone}`;
+            //     }
+            // },
         },
         {
-            accessor: 'country',
+            accessor: 'overtime',
             textAlign: 'left',
-            title: 'Country',
-            render: (row: any) => {
-                return row.country?.name;
-            },
+            title: 'OverTime',
+            // render: (row: any) => {
+            //     return row.country?.name;
+            // },
         },
         {
-            accessor: 'visa_type',
+            accessor: 'sickleave',
             textAlign: 'left',
-            title: 'Visa Type',
-            render: (row: any) => {
-                return row.visa_type.name;
-            },
+            title: 'Sick Leave',
+            // render: (row: any) => {
+            //     return row.visa_type.name;
         },
+
         // { accessor: 'stateofresidence', textAlign: 'left', title: 'State Of Residence' },
-        { accessor: 'email_sent_date', textAlign: 'left', title: 'Email Sent Date' },
+        { accessor: 'pot', textAlign: 'left', title: 'POT' },
         // { accessor: 'lastfollowup', textAlign: 'left', title: 'Last Follow Up' },
         {
-            accessor: 'followups',
+            accessor: 'paid holiday',
             textAlign: 'left',
-            title: 'Next Follow Up',
-            render: (row: any) => {
-                if (row.followups) {
-                    const dateOnly = row.followups[row.followups.length - 1].next_followup;
-                    const time = row.followups[row.followups.length - 1].followup_time;
-                    return `${getDate(dateOnly)}, ${time}`;
-                }
-            },
+            title: 'Paid Holiday',
+            // render: (row: any) => {
+            //     if (row.followups) {
+            //         const dateOnly = row.followups[row.followups.length - 1].next_followup;
+            //         const time = row.followups[row.followups.length - 1].followup_time;
+            //         return `${getDate(dateOnly)}, ${time}`;
+            //     }
+            // },
         },
-        { accessor: 'status', textAlign: 'left', title: 'Status' },
-        { accessor: 'stage', textAlign: 'left', title: 'Stage' },
-        {
-            accessor: 'lead_type',
-            textAlign: 'left',
-            title: 'Lead Type',
-            render: (row: any) => {
-                if (row.lead_type == 'hot') {
-                    return <p style={{ color: 'red' }}>{row.lead_type}</p>;
-                } else {
-                    return row.lead_type;
-                }
-            },
-        },
+        { accessor: 'totalhour', textAlign: 'left', title: 'Total Hour' },
+
     ];
 
     const handleDeleteLead = (lead: Lead) =>
@@ -200,35 +188,27 @@ const LeadManagement: React.FC = () => {
 
     return (
         <>
-            <ul className="mb-3 flex space-x-2 rtl:space-x-reverse">
-                <li>
-                    <Link href="/" className="text-primary hover:underline">
-                        Lead Management
-                    </Link>
-                </li>
-                <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
-                    <span>Lead List</span>
-                </li>
-            </ul>
-            <TableLayout
-                title="Lead List"
-                filterby="country"
-                handleDelete={handleDeleteLead}
-                data={items}
-                meta={meta}
-                tableColumns={tableColumns}
-                exportColumns={exportColumns}
-                ActionModal={LeadManagementActionModal}
-                Filtersetting={Filtersetting}
-                handleSubmit={handleSubmit}
-                setSearch={setSearch}
-                setPage={setPage}
-                setLimit={setLimit}
-                setFilter={setFilter}
-                visaChecklistData={visachecklist}
-            />
+            <div className='mt-5'>
+                <TableLayout
+                    title="Time Sheet"
+                    filterby="country"
+                    handleDelete={handleDeleteLead}
+                    data={items}
+                    meta={meta}
+                    tableColumns={tableColumns}
+                    exportColumns={exportColumns}
+                    ActionModal={LeadManagementActionModal}
+                    Filtersetting={Filtersetting}
+                    handleSubmit={handleSubmit}
+                    setSearch={setSearch}
+                    setPage={setPage}
+                    setLimit={setLimit}
+                    setFilter={setFilter}
+                    visaChecklistData={visachecklist}
+                />
+            </div>
         </>
     );
 };
 
-export default LeadManagement;
+export default ListAttendanceTable;
