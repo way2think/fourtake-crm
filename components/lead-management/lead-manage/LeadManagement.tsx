@@ -15,9 +15,9 @@ import { showMessage } from '@/utils/notification';
 import { isValidPhoneNumber } from '@/utils/validator';
 
 const LeadManagement: React.FC = () => {
-    const [createLead, {}] = useCreateLeadMutation();
-    const [updateLead, {}] = useUpdateLeadMutation();
-    const [deleteLead, {}] = useDeleteLeadMutation();
+    const [createLead, { }] = useCreateLeadMutation();
+    const [updateLead, { }] = useUpdateLeadMutation();
+    const [deleteLead, { }] = useDeleteLeadMutation();
 
     const { page, limit, sortField, sortOrder, search, filter, setFilter, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 

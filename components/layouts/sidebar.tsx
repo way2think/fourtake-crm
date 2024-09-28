@@ -24,6 +24,7 @@ import { Role } from '@/entities/role.entity';
 
 import './sidebarstyle.css';
 import IconHome from '../icon/icon-home';
+import IconBook from '../icon/icon-book';
 
 const Sidebar = () => {
     const [clicked, setClicked] = useState(false);
@@ -388,6 +389,44 @@ const Sidebar = () => {
                                             </li>
                                         </ul>
                                     </AnimateHeight>
+                                </li>
+                            )}
+
+                            {isAccessDenied('/list-attendence', role) && (
+                                <li className="menu nav-item">
+                                    <Link
+                                        href="/list-attendence"
+                                        className={`${currentMenu === 'Attendence' || isAciveCondition === 'active' ? 'active' : ''} nav-link group w-full`}
+                                        onClick={() => toggleMenu('Lead Management')}
+                                    >
+                                        <div className="flex items-center">
+                                            <IconBook className="shrink-0 !text-[#fff] " />
+                                            <span className="text-white dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
+                                                {/* <Link href="/lead-list">Lead Management</Link> */}
+                                                Attendence
+                                            </span>
+                                        </div>
+
+                                        {/* <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                        <IconCaretDown />
+                                    </div>  */}
+                                    </Link>
+
+                                    {/* <button
+                                    type="button"
+                                    className={`${currentMenu === 'Lead Management' ? 'active' : ''} nav-link group w-full ${clicked ? 'active' : ''}`}
+                                    onClick={handleClick}
+                                >
+                                    <div className="flex items-center">
+                                        <IconMenuElements className="shrink-0 !text-[#fff] group-hover:!text-[#005fbe]" />
+                                        <span className="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
+                                            <Link href="/lead-list">Lead Management</Link>
+                                        </span>
+                                    </div>
+                                    <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                        <IconCaretDown />
+                                    </div>
+                                </button> */}
                                 </li>
                             )}
 
