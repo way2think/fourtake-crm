@@ -19,6 +19,8 @@ interface ManageVisaActionModalProps {
     setIsEdit?: any;
     applicantDetails?: any;
     setApplicantDetails?: any;
+    addData: any;
+    paramId:any;
 }
 
 const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
@@ -32,6 +34,8 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
     setIsEdit,
     applicantDetails,
     setApplicantDetails,
+    addData,
+    paramId
 }) => {
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
     const [userNote, setUserNote] = useState<any>(''); // Add state for the textarea
@@ -39,6 +43,11 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
     const [modalTitle, setModalTitle] = useState<string>('Add Note');
     const [actionButtonText, setActionButtonText] = useState<string>('Add Note');
     const [currentIndex, setCurrentIndex] = useState<number | null>(null); // Track index for editing
+    const [isDocPickUp, setIsDocPickUp] = useState(false);
+    const [isOutScan, setIsOutScan] = useState(false);
+    const [isCourier, setIsCourier] = useState(false);
+    const [isInScan, setIsInScan] = useState(false);
+    const [isSubmit, setIsSubmit] = useState(false);
 
     console.log('addUser', addUser);
 
@@ -49,8 +58,42 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
     const { data: visaStatuses } = useGetVisaStatusesQuery({ page: 0, limit: 0, filter: 'is_active' });
 
     useEffect(() => {
+        if ((addData?.visa_applicants == null || addData?.visa_applicants.length > 0) && addData?.visa_status) {
+            setAddUser({ ...addUser, visa_status: addData.visa_status || addData.visa_status.id });
+        }
+
+
+        
+    }, [addData?.visa_status]);
+
+    useEffect(() => {
         setUserNotes(addUser.notes || []);
     }, [addUser?.notes]);
+
+    useEffect(() => {
+        if (addUser?.visa_status == '54' || addUser?.visa_status?.name == 'Document PickUp') {
+            setIsDocPickUp(true);
+        }
+        if (addUser?.visa_status == '52' || addUser?.visa_status?.name == 'OutScan to Embassy') {
+            setIsOutScan(true);
+            setIsInScan(true);
+        }
+
+        if (addData?.visa_status == '5' || addData?.visa_status?.name == 'submitted') {
+            setIsSubmit(true);
+        }
+
+        if (
+            addUser?.visa_status == '56' ||
+            addUser?.visa_status == '57' ||
+            addUser?.visa_status == '58' ||
+            addUser?.visa_status?.id == '56' ||
+            addUser?.visa_status?.id == '57' ||
+            addUser?.visa_status?.id == '58'
+        ) {
+            setIsCourier(true);
+        }
+    }, [addUser?.visa_status]);
 
     const handleCheckBoxChange = (e: any) => {
         //Change it 13-07-2024
@@ -207,7 +250,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                                 <option value="Male">Male</option>
                             </select>
                         </div>
-                        <div className="dropdown">
+                       { paramId && <div className="dropdown">
                             <label htmlFor="visa_status">Visa Status</label>
                             <select className="form-input" defaultValue="" id="visa_status" onChange={(e) => handleInputChange(e)} value={addUser?.visa_status}>
                                 <option value="" disabled={true}>
@@ -218,28 +261,73 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                                     <option value={status.id}>{status.name}</option>
                                 ))}
                             </select>
-                        </div>
+                        </div>}
                     </div>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        {addUser?.visa_status == 52 && (
+                    <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        {isCourier && (
                             <div className="mb-5">
-                                <ComponentsFormDatePickerBasic label="Out Scan to Embassy Date" id={'outscan_to_embassy'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
+                                <label htmlFor="courier_tracking_no">Courier Tracking No.</label>
+                                <input
+                                    id="courier_tracking_no"
+                                    value={addUser?.courier_tracking_no}
+                                    onChange={(e) => handleInputChange(e)}
+                                    placeholder="Enter Courier Tracking No"
+                                    className="form-input"
+                                />
                             </div>
                         )}
+                    </div>
+                    {(addUser?.visa_status == '54' || isDocPickUp) && (
+                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                            <div className="mb-5">
+                                <ComponentsFormDatePickerBasic label="Document pickup Date" id={'doc_pickup_date'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
+                            </div>
+                            <div className="mb-5">
+                                <label htmlFor="doc_pickup_remark">Document PickUp Remarks</label>
+                                <textarea
+                                    id="doc_pickup_remark"
+                                    rows={1}
+                                    value={addUser?.doc_pickup_remark}
+                                    onChange={(e) => handleInputChange(e)}
+                                    placeholder="Enter Remarks"
+                                    className="form-textarea min-h-[10px] resize-none"
+                                ></textarea>
+                            </div>
+                        </div>
+                    )}
 
-                        {addUser?.visa_status === 'Out Scan to Embassy' && (
-                            <div className="dropdown">
-                                <label htmlFor="wheresubmitted">Where Submitted?</label>
-                                <select className="form-input" defaultValue="" id="wheresubmitted" onChange={(e) => handleInputChange(e)} value={addUser?.wheresubmitted}>
-                                    <option value="" disabled={true}>
-                                        WhereSubmitted?
-                                    </option>
-                                    <option value="VFS Bangalore">VFS Bangalore</option>
-                                    <option value="VFS Chennai">VFS Chennai</option>
-                                    <option value="Travel1">Travel1</option>
-                                </select>
-                            </div>
-                        )}
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <>
+                            {isOutScan && (
+                                <div className="mb-5">
+                                    <ComponentsFormDatePickerBasic label="OutScan to Embassy" id={'outscan_to_embassy_date'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
+                                </div>
+                            )}
+
+                            {isSubmit && (
+                                <div className="dropdown">
+                                    <label htmlFor="where_submitted">Where Submitted</label>
+                                    <select className="form-input" defaultValue="" id="where_submitted" onChange={(e) => handleInputChange(e)} value={addUser?.where_submitted}>
+                                        <option value="" disabled={true}>
+                                            Select Option
+                                        </option>
+                                        <option value="vfs bangalore">VFS Bangalore</option>;<option value="vfs mumbai">VFS Mumbai</option>;<option value="vfs kolkata">VFS Kolkata</option>;
+                                        <option value="vfs Hyderabad">VFS Hyderabad</option>;<option value="vfs dehli">VFS Dehli</option>;<option value="online">Online</option>;
+                                        <option value="vendor">Vendor</option>;
+                                    </select>
+                                </div>
+                            )}
+                        </>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <>
+                            {isInScan && (
+                                <div className="mb-5">
+                                    <ComponentsFormDatePickerBasic label="In Scan from Embassy" id={'inscan_from_embassy_date'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
+                                </div>
+                            )}
+                        </>
                     </div>
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">

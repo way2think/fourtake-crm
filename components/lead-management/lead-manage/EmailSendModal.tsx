@@ -29,12 +29,12 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
     // console.log('visaChecklist data', visaChecklistData?.items);
 
     const { data: visaRequirements } = useGetVisaRequirementsQuery({
-        countryId: String(addData?.country?.id),
-        visaTypeId: String(addData?.visa_type?.id),
-        stateOfResidence: addData?.state_of_residence,
+        countryId: String(addData?.country?.id) || String(addData?.countryId),
+        visaTypeId: String(addData?.visa_type?.id) || String(addData?.visaTypeId),
+        stateOfResidence: addData?.state_of_residence || String(addData?.stateOfResidence),
     });
 
-    console.log('visaRequirement ', visaRequirements);
+    console.log('visaRequirement1 ', visaRequirements, addData);
 
     useEffect(() => {
         if (visaChecklistData) {
@@ -100,13 +100,12 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
     const handleSend = async () => {
         let combination;
         if (addData?.name && addData?.country?.name && addData?.visa_type?.name) {
-             combination = `<p>Hello ${addData.name}</p>
+            combination = `<p>Hello ${addData.name}</p>
             <p>Country: ${addData.country.name}
             <br />
             Visa Type: ${addData.visa_type.name} </p>`;
-        }
-        else{
-            combination= `<p>Hello ${addData.name}</p>
+        } else {
+            combination = `<p>Hello ${addData.name}</p>
             <p>Country:  ${visaChecklistData?.[0]?.country?.name}
             <br />
             Visa Type:${visaChecklistData?.[0]?.visa_type?.name} </p>`;
@@ -131,7 +130,7 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
             apiObjectRef: mailSlice,
             endpoint: '',
         });
-        setIsOpen(false)
+        setIsOpen(false);
     };
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -181,7 +180,7 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
                         onClick={() => {
                             setIsOpen(false);
                             setAddData((prevData: any) => {
-                                const { visa_checklist, cc, additional_info, attachments, ...rest } = prevData;
+                                const { cc, additional_info, attachments, ...rest } = prevData;
                                 return rest;
                             });
                         }}

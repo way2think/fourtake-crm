@@ -58,19 +58,20 @@ const LeadManagement: React.FC = () => {
             },
         },
         {
-            accessor: 'country',
+            accessor: 'destination_country',
             textAlign: 'left',
             title: 'Country',
             render: (row: any) => {
-                return row.country.name;
+                return row.destination_country.name;
             },
         },
         {
             accessor: 'visa_type',
+            
             textAlign: 'left',
             title: 'Visa Type',
             render: (row: any) => {
-                return row.visa_type.name;
+                return row?.visa_type?.name;
             },
         },
         // { accessor: 'stateofresidence', textAlign: 'left', title: 'State Of Residence' },
@@ -133,23 +134,8 @@ const LeadManagement: React.FC = () => {
             }
         }
 
-        if (value.country == null || value.country == '') {
-            showMessage('Select Country', 'error');
-            return false;
-        }
-
-        if (value.visa_type == null || value.visa_type == '') {
-            showMessage('Select Visa Type', 'error');
-            return false;
-        }
-
-        if (value.state_of_residence == null || value.state_of_residence == '') {
-            showMessage('Select State', 'error');
-            return false;
-        }
-
-        if (value.travel_date == null || value.travel_date == '') {
-            showMessage('Select Travel Date', 'error');
+        if (value.service_type == null || value.service_type == '') {
+            showMessage('Select Service Type', 'error');
             return false;
         }
 
@@ -158,10 +144,157 @@ const LeadManagement: React.FC = () => {
             return false;
         }
 
-        if (value.service_type == null || value.service_type == '') {
-            showMessage('Select Service Type', 'error');
+        if (value.service_type == 'visa service' || value.service_type == 'appointment/slot booking service' || value.service_type == 'forex service') {
+            if (value.destination_country == null || value.destination_country == '') {
+                showMessage('Select Country', 'error');
+                return false;
+            }
         }
-        
+
+        if (value.service_type == 'visa service' || value.service_type == 'appointment/slot booking service') {
+            if (value.visa_type == null || value.visa_type == '') {
+                showMessage('Select Visa Type', 'error');
+                return false;
+            }
+        }
+
+        if (value.service_type == 'appointment/slot booking service' || value.service_type == 'travel insurance') {
+            if (value.date_range == null) {
+                showMessage('Select Date Range', 'error');
+                return false;
+            }
+        }
+
+        if (value.service_type == 'appointment/slot booking service') {
+            if (value.location == null || value.location == '') {
+                showMessage('Select Location', 'error');
+                return false;
+            }
+
+            if (value.location == null || value.location == '') {
+                showMessage('Select Location', 'error');
+                return false;
+            }
+        }
+
+        if (value.service_type == 'visa service') {
+            if (value.state_of_residence == null || value.state_of_residence == '') {
+                showMessage('Select State', 'error');
+                return false;
+            }
+
+            if (value.travel_date == null || value.travel_date == '') {
+                showMessage('Select Travel Date', 'error');
+                return false;
+            }
+        }
+
+        if (value.service_type == 'attestation service') {
+            if (value.attestation_document == '' || value.attestation_document == null) {
+                showMessage('Select Attestation Document ', 'error');
+                return false;
+            }
+
+            if (value.attestation_service_type == '' || value.attestation_service_type == null) {
+                showMessage('Select Attestation Service Type ', 'error');
+                return false;
+            }
+
+            if (value.attestation_document !== '' || value.attestation_document !== null) {
+                value.attestation_document = [value.attestation_document];
+            }
+
+            if (value.attestation_service_type !== '' || value.attestation_service_type !== null) {
+                value.attestation_service_type = [value.attestation_service_type];
+            }
+        }
+
+        if (value.service_type == 'passport service') {
+            if (value.passport_service_type == null || value.passport_service_type == '') {
+                showMessage('Select Passport Service Type ', 'error');
+                return false;
+            }
+            if (value.passport_service_category == null || value.passport_service_category == '') {
+                showMessage('Select Passport Category', 'error');
+                return false;
+            }
+
+            if (value.passport_size == null || value.passport_size == '') {
+                showMessage('Select Passport Size', 'error');
+                return false;
+            }
+        }
+
+        if (value.service_type == 'forex service') {
+            if (value.currency_exchange_from == null || value.currency_exchange_from == '') {
+                showMessage('Enter Currency Exchange from', 'error');
+                return false;
+            }
+
+            if (value.currency_volume == null || value.currency_volume == '') {
+                showMessage('Enter Currency Volume', 'error');
+                return false;
+            }
+
+            if (value.valid_visa == null || value.valid_visa == '') {
+                showMessage('Select Valid visa ', 'error');
+                return false;
+            }
+
+            if (value.exchange_mode == null || value.exchange_mode == '') {
+                showMessage('Select Exchange Mode', 'error');
+                return false;
+            }
+        }
+
+        if (value.service_type == 'travel insurance') {
+            if (value.insurance_plan == null || value.insurance_plan == '') {
+                showMessage('Select Insurance Plan', 'error');
+                return false;
+            }
+            if (value.trip_type == null || value.trip_type == '') {
+                showMessage('Select Trip type', 'error');
+                return false;
+            }
+
+            if (value.ped == null || value.ped == '') {
+                showMessage('Select PED', 'error');
+                return false;
+            }
+            if (value.travellers_count == null || value.travellers_count == '') {
+                showMessage('Select Travellers Count', 'error');
+                return false;
+            }
+            if (value.eldest_age == null || value.eldest_age == '') {
+                showMessage('Select Eldest Age', 'error');
+                return false;
+            }
+
+            if (value.sum_insured == null || value.sum_insured == '') {
+                showMessage('Select Sum Insured', 'error');
+                return false;
+            }
+        }
+
+        console.log('value submit', value);
+
+        if (
+            value.service_type == 'flight itinerary' ||
+            value.service_type == 'hotel itinerary' ||
+            value.service_type == 'photographs' ||
+            value.service_type == 'courier' ||
+            value.service_type == 'passport collection' ||
+            value.service_type == 'documents pickup & delivery' ||
+            value.service_type == 'visa application submission & collection - applicants' ||
+            value.service_type == 'visa application submission & collection - associate partners B2B' ||
+            value.service_type == 'DS-160 Form' ||
+            value.service_type == 'others'
+        ) {
+            if (value.other_details == null || value.other_details == '') {
+                showMessage('Enter Fee & Other Details', 'error');
+                return false;
+            }
+        }
 
         let service_code;
 
@@ -196,7 +329,7 @@ const LeadManagement: React.FC = () => {
         }
     };
 
-    const exportColumns = ['id', 'leadname', 'email', 'contact', 'country', 'visatype', 'stateofresidence', 'emailsentdate', 'lastfollowup', 'nextfollowup', 'status'];
+    const exportColumns = ['id', 'leadname', 'email', 'contact', 'destination_country', 'visatype', 'stateofresidence', 'emailsentdate', 'lastfollowup', 'nextfollowup', 'status'];
 
     return (
         <>
@@ -212,7 +345,7 @@ const LeadManagement: React.FC = () => {
             </ul>
             <TableLayout
                 title="Lead List"
-                filterby="country"
+                filterby="destination_country"
                 handleDelete={handleDeleteLead}
                 data={items}
                 meta={meta}

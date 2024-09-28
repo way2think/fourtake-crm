@@ -39,14 +39,15 @@ const ListVisaApplication = () => {
         })
         .flat();
 
+
     const onlyGroup = items.filter((group: any) => {
         return group.is_group == true;
     });
 
-    console.log('onlyGroup', onlyGroup);
+
 
     const tableColumns = [
-        { accessor: 'id', textAlign: 'left', title: 'SNo' },
+        // { accessor: 'id', textAlign: 'left', title: 'SNo' },
         {
             accessor: 'apply_date',
             textAlign: 'left',
@@ -62,11 +63,7 @@ const ListVisaApplication = () => {
             textAlign: 'left',
             title: 'ReferenceNo',
             render: (row: any) => {
-                if (row.is_group) {
-                    return `${row.id} -  ${row.group_id}`;
-                } else {
-                    return row.id;
-                }
+                return row.id;
             },
         },
         {
@@ -74,7 +71,16 @@ const ListVisaApplication = () => {
             textAlign: 'left',
             title: 'Is Primary',
             render: (row: any) => {
-                return row.is_primary ? 'Yes' : 'No';
+                let primaryAndCount = row.is_primary ? 'Yes' : 'No';
+
+                if (row.is_group && items && row.is_primary) {
+                    const foundItem = items.find((item: any) => item.id === row.group_id);
+                    if (foundItem && foundItem.visa_applicants) {
+                        primaryAndCount += `  (${foundItem.visa_applicants.length})`;
+                    }
+                }
+
+                return primaryAndCount;
             },
         },
         { accessor: 'customer_type', textAlign: 'left', title: 'App Type' },

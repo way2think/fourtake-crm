@@ -50,7 +50,7 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
         other: '',
     });
 
-    console.log('subData',data, getSubData, getSubData?.visa_applicants);
+    console.log('subData', data, getSubData, getSubData?.visa_applicants);
     // Calculate the start and end index for the current page
     const startIndex = (page - 1) * recordsPerPage;
     const endIndex = startIndex + recordsPerPage;
@@ -79,7 +79,15 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
     };
 
     const tableGroupColumn: any = [
-        { accessor: 'id', textAlign: 'left', title: 'Group Id' },
+        {
+            accessor: 'id',
+            textAlign: 'left',
+            title: 'Group Id',
+            render: (row: any) => {
+                console.log('group data', row);
+                return `${row.id} (${row?.visa_applicants?.length})`;
+            },
+        },
         // { accessor: 'applydate', textAlign: 'left', title: 'Apply Date' },
         { accessor: 'customer_type', textAlign: 'left', title: 'App Type' },
         {

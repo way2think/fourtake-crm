@@ -17,6 +17,8 @@ export const leadSlice = apiSlice.injectEndpoints({
         getLeads: build.query({
             providesTags: (result, error, arg) => (result ? [{ type: 'Lead', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'Lead', id }))] : [{ type: 'Lead', id: 'LIST' }]),
             query: (args) => {
+
+                console.log("country details",args.country)
                 const url = generateURLWithPagination({
                     endpoint: '/lead',
                     page: args?.page,
@@ -25,6 +27,14 @@ export const leadSlice = apiSlice.injectEndpoints({
                     sortOrder: args?.sortOrder,
                     search: args?.search,
                     filter: args?.filter,
+                    country: args?.country,
+                    status: args?.status,
+                    stage: args?.stage,
+                    priority: args?.priority,
+                    assigned_to: args?.assigned_to,
+                    source: args?.source,
+                    fromDate: args?.fromDate,
+                    toDate: args?.toDate,
                 });
 
                 console.log('url', url);
@@ -62,4 +72,4 @@ export const leadSlice = apiSlice.injectEndpoints({
     }),
 });
 
-export const { useCreateLeadMutation, useUpdateLeadMutation, useGetLeadsQuery, useDeleteLeadMutation } = leadSlice;
+export const { useCreateLeadMutation, useUpdateLeadMutation, useGetLeadsQuery, useLazyGetLeadsQuery, useDeleteLeadMutation } = leadSlice;

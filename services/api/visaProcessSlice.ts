@@ -27,9 +27,10 @@ export const visaProcessSlice = apiSlice.injectEndpoints({
                     search: args?.search,
                     filter: args?.filter,
                     showDeleted: args?.showDeleted,
+                    filterByLeadid: args?.filterByLeadid,
                 });
-
-                console.log('url', url);
+                // console.log('args', args);
+                console.log('url1', url);
 
                 return {
                     method: 'GET',
@@ -53,8 +54,8 @@ export const visaProcessSlice = apiSlice.injectEndpoints({
 
         updateVisaApplicantGroup: build.mutation({
             query: ({ id, body }) => ({
-                method: 'PATCH',
-                url: `/visa-process/${id}`,
+                method: 'PUT',
+                url: `/visa-process/${encodeURIComponent(id)}`,
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -114,6 +115,7 @@ export const {
     useCreateVisaApplicantMutation,
     useUpdateVisaApplicantGroupMutation,
     useGetVisaApplicantsQuery,
+    useLazyGetVisaApplicantsQuery,
     useGetOneVisaApplicantGroupQuery,
     useDeleteApplicantMutation,
     useDeleteGroupMutation,

@@ -11,6 +11,9 @@ import { showMessage } from '@/utils/notification';
 import Swal from 'sweetalert2';
 import ReportTableLayout from '@/components/layouts/report-table-layout';
 import Link from 'next/link';
+import { useGetDailyReportQuery } from '@/services/api/reportSlice';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/store/user.store';
 
 const DailyReport: React.FC<{ dailyreportdata: any }> = ({ dailyreportdata }) => {
     const [formData, setFormData] = useState({
@@ -18,8 +21,10 @@ const DailyReport: React.FC<{ dailyreportdata: any }> = ({ dailyreportdata }) =>
         input2: '',
         input3: '',
     });
+    const user: any = useSelector(selectUser);
 
     const [data, setData] = useState(dailyreportdata);
+
     // const { data, isError, error } = use(getServerData());
     // // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
     // // console.log('dataaaa: ', data);
@@ -39,13 +44,33 @@ const DailyReport: React.FC<{ dailyreportdata: any }> = ({ dailyreportdata }) =>
     // ];
 
     const tableColumns = [
-        { accessor: 'id', textAlign: 'left', title: 'S.NO' },
-        { accessor: 'applydate', textAlign: 'left', title: 'Apply Date' },
-        { accessor: 'referenceno', textAlign: 'left', title: 'Reference No' },
-        { accessor: 'servicetype', textAlign: 'left', title: 'Service Type' },
-        { accessor: 'applicantname', textAlign: 'left', title: 'Applicant Name' },
-        { accessor: 'consultantname', textAlign: 'left', title: 'Consultant Name' },
-        { accessor: 'destination', textAlign: 'left', title: 'Destination ' },
+        { accessor: 'id', textAlign: 'left', title: 'Refno' },
+        { accessor: 'apply_date', textAlign: 'left', title: 'Apply Date' },
+        // { accessor: 'servicetype', textAlign: 'left', title: 'Service Type' },
+        {
+            accessor: 'name',
+            textAlign: 'left',
+            title: 'Applicant Name',
+            render: (row: any) => {
+                return `${row.first_name} ${row.last_name}`;
+            },
+        },
+        {
+            accessor: 'consultantname',
+            textAlign: 'left',
+            title: 'Consultant Name',
+            render: (row: any) => {
+                return row.assigned_to.username;
+            },
+        },
+        {
+            accessor: 'destination',
+            textAlign: 'left',
+            title: 'Destination ',
+            render: (row: any) => {
+                return row.destination_country.name;
+            },
+        },
         { accessor: 'visafee', textAlign: 'left', title: 'Visa Fee' },
         { accessor: 'vfsothers', textAlign: 'left', title: 'VFs/Others' },
         { accessor: 'charges', textAlign: 'left', title: 'H/C - handling charges' },

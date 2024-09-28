@@ -149,7 +149,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
 
     const handleEdit = (object: any) => {
         if (title == 'List Visa Application') {
-            router.push(`/manage-visa/${object.group_id}`);
+            router.push(`/manage-visa/${encodeURIComponent(object.group_id)}`);
         } else {
             setIsEdit(true);
             setIsOpen(true);
@@ -246,7 +246,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
             setIsOpen(false);
             setAddData({ refno: '', status: '' });
 
-            //Navigate to Manage Visa Page
+           console.log("isSuccess",isSuccess)
             //console.log(title)
 
             if (title == 'Lead List') {
@@ -258,6 +258,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                 //         query: { addData: JSON.stringify(addData) },
                 //     } as unknown as string);
                 // }
+                 //Navigate to Manage Visa Page
                 if (addData?.status === 'Done') {
                     router.push(`/manage-visa?addData=${encodeURIComponent(JSON.stringify(addData))}`);
                 }

@@ -35,7 +35,7 @@ const DashboardCheck = () => {
     useEffect(() => {
         setIsMounted(true);
     }, []);
-    
+
     let countryId, visaTypeId, stateOfResidence, urlSearchParams;
 
     const [addData, setAddData] = useState<any>({
@@ -72,6 +72,9 @@ const DashboardCheck = () => {
     const user = useSelector(selectUser);
 
     const role = user?.role || 'guest';
+
+    const visaChecklistItems =
+        visaRequirements && visaRequirements.length > 0 ? `${visaRequirements[0]?.checklist || ''} ${visaRequirements[0]?.fee == null || '' ? '' : visaRequirements[0]?.fee}` : '';
 
     useEffect(() => {
         // Ensure the code runs client-side
@@ -211,7 +214,14 @@ const DashboardCheck = () => {
                                 <label htmlFor="mail">Email</label>
                                 <input id="mail" type="mail" placeholder="Enter Email" className="form-input" />
                             </div>
-                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => setIsOpenMail(true)}>
+                            <button
+                                type="button"
+                                className="btn btn-primary ltr:ml-4 rtl:mr-4"
+                                onClick={() => {
+                                    setIsOpenMail(true);
+                                    setAddData({ ...addData, visa_checklist: visaChecklistItems });
+                                }}
+                            >
                                 Send
                             </button>
                         </>
@@ -302,7 +312,7 @@ const DashboardCheck = () => {
                                     <h4 className="mb-4 text-xl font-semibold">Fee Details</h4>
                                     {/* <div style={{ border: '1px solid grey' }}> */}
                                     {typeof visaRequirements?.[0]?.fee === 'string' && parse(sanitizeHtmlString(visaRequirements?.[0]?.fee))}
-                                    
+
                                     {/* </div> */}
 
                                     <h4 className="my-4 text-xl font-semibold">Disclaimer</h4>

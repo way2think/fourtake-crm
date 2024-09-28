@@ -33,6 +33,9 @@ import { SerializedError } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/user.store';
 import { User } from '@/entities/user.entity';
+import { useGetVisaStatusesQuery } from '@/services/api/cms/visaStatusSlice';
+import ComponentsFormsSelectMultiselect from '@/components/Reusable/select/components-forms-select-multiselect';
+import ComponentsFormDateAndTimePicker from '@/components/lead-management/lead-manage/components-from-date-and-time-picker';
 
 const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const [addData, setAddData] = useState<any>({
@@ -63,9 +66,19 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const [visaTypes, setVisaTypes] = useState([]);
     const [applicantDetails, setApplicantDetails] = useState<any>([]);
     const [states] = useState(Object.keys(stateCityData).sort());
+    const [isDocPickUp, setIsDocPickUp] = useState(false);
+    const [isOutScan, setIsOutScan] = useState(false);
+    const [isCourier, setIsCourier] = useState(false);
+    const [isInScan, setIsInScan] = useState(false);
+    const [isSubmit, setIsSubmit] = useState(false);
+    const [showStatus, setShowStatus] = useState(true);
+    const [resetTrigger, setResetTrigger] = useState(false);
+
     const searchParams = useSearchParams();
 
-    const user = useSelector(selectUser) as User;
+    const user:any = useSelector(selectUser) as User;
+
+    console.log('user in manage visa', user);
 
     const role = user?.role || 'guest';
 
@@ -81,17 +94,44 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
 
     const { data: countryVisaTypes } = useGetCountryVisaTypesQuery({ page: 0, limit: 0 });
     const { data: entryTypes } = useGetEntryTypesQuery({ page: 0, limit: 0 });
+    const { data: visaStatuses } = useGetVisaStatusesQuery({ page: 0, limit: 0, filter: 'is_active' });
 
     const { data: assigneeList } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'employee, admin', filter: 'is_active' });
     const { data: agents } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'agent' });
     const { data: corporates } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'corporate' });
     const { data: oneVisaApplicantsGroup, isError, error } = useGetOneVisaApplicantGroupQuery(paramId);
-    console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup, isError, error, paramId);
+    // console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup, isError, error, paramId);
+
     console.log('addData', addData);
     console.log('addUser', addUser);
+    console.log('applicantDetails', applicantDetails);
 
     const { data: visaApplicants } = useGetVisaApplicantsQuery({ page: 0, limit: 0 });
     const { data: visachecklist } = useGetVisaChecklistQuery({ page: 0, limit: 0 });
+
+    useEffect(() => {
+        if (addData?.visa_status == '54' || addData?.visa_status?.name == 'Document PickUp') {
+            setIsDocPickUp(true);
+        }
+        if (addData?.visa_status == '52' || addData?.visa_status?.name == 'OutScan to Embassy') {
+            setIsOutScan(true);
+            setIsInScan(true);
+        }
+
+        if (addData?.visa_status == '5' || addData?.visa_status?.name == 'submitted') {
+            setIsSubmit(true);
+        }
+        if (
+            addData?.visa_status == '56' ||
+            addData?.visa_status == '57' ||
+            addData?.visa_status == '58' ||
+            addData?.visa_status?.id == '56' ||
+            addData?.visa_status?.id == '57' ||
+            addData?.visa_status?.id == '58'
+        ) {
+            setIsCourier(true);
+        }
+    }, [addData?.visa_status]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -139,7 +179,24 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         }
     }, [addData?.group_notes]);
 
-    // console.log('applicantDetails', applicantDetails);
+    useEffect(() => {
+        if (applicantDetails.length == 1 && (!addData.visa_status || addData.visa_status === '')) {
+            setAddData({ ...addData, visa_status: applicantDetails[0].visa_status });
+        }
+        const sameStatus = applicantDetails.length > 1 && applicantDetails.every((item: any) => item?.visa_status?.id === applicantDetails[0]?.visa_status?.id);
+
+        if (!sameStatus && addData.visa_status !== String) {
+            setAddData((prevData: any) => ({
+                ...prevData,
+                visa_status: '',
+            }));
+        } else {
+            setAddData((prevData: any) => ({
+                ...prevData,
+                visa_status: applicantDetails[0].visa_status,
+            }));
+        }
+    }, [applicantDetails]);
 
     useEffect(() => {
         const editmode = sessionStorage.getItem('iseditmode');
@@ -155,20 +212,11 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         }
     }, []);
 
-    const userData = [
-        {
-            id: 1,
-            apptype: 'Google',
-            firstname: 'sam',
-            lastname: 'james',
-            email: 'alan@gmail.com',
-            gender: 'Male',
-            status: 'Received',
-            phone: '9874563215',
-            passportno: '7895dfsf58df',
-            dob: '13/06/2024',
-        },
-    ];
+    const statusApplyToOptions =
+        applicantDetails?.map((item: any) => ({
+            value: `${item.first_name} ${item.last_name}`,
+            label: `${item.first_name} ${item.last_name}`,
+        })) || [];
 
     const handleInputChange = (e: any) => {
         const { value, id } = e.target;
@@ -214,18 +262,17 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
             showMessage('Select DOB ', 'error');
             return false;
         }
-        if (addUser.visa_status == '' || addUser.visa_status == null) {
-            showMessage('Select Status ', 'error');
-            return false;
-        }
+        // if (addUser.visa_status == '' || addUser.visa_status == null) {
+        //     showMessage('Select Status ', 'error');
+        //     return false;
+        // }
 
         if (addUser.id || addUser.temp_id) {
             //update user
             let updatedData;
             if (!addUser.id) {
                 updatedData = applicantDetails.map((d: any) => (d.temp_id === addUser.temp_id ? { ...d, ...addUser } : d));
-            }
-            {
+            } else {
                 updatedData = applicantDetails.map((d: any) => (d.id === addUser.id ? { ...d, ...addUser } : d));
             }
 
@@ -239,11 +286,12 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
             //add user
 
             const primary = applicantDetails.length == 0 ? true : addUser.is_primary;
-            const maxUserId = applicantDetails.length ? Math.max(...applicantDetails.map((d: any) => d.id)) : 0;
+            const maxUserId = applicantDetails.length ? Math.max(...applicantDetails.map((d: any) => d.temp_id || d.id)) : 0;
             const newUser = {
                 ...addUser,
                 temp_id: +maxUserId + 1,
                 is_primary: primary,
+                visa_status: '3',
             };
             setApplicantDetails([...applicantDetails, newUser]);
             // return newUser;
@@ -258,8 +306,6 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     };
 
     const handleDeleteApplicant = (applicant: any) => {
-        console.log('applicant', applicant);
-
         if (applicant.id) {
             handleDelete({
                 deleteMutation: deleteApplicant,
@@ -280,7 +326,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         }
     };
 
-    const handleSubmit = (value: any) => {
+    const handleSubmit = async (value: any) => {
         if (addData.nationality == '' || addData.nationality == null) {
             showMessage('Select Nationality', 'error');
             return false;
@@ -326,17 +372,16 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
             }
         }
 
-        console.log('primary country', applicantDetails);
-
+        // setResetTrigger((prev) => !prev);
         const primaryCount = applicantDetails.filter((applicant: { is_primary: boolean }) => applicant.is_primary === true).length;
 
         if (primaryCount > 1) {
             alert('Please select only one primary applicant.');
             return;
         }
-
+        const { visa_status, status_apply_to, ...rest } = addData;
         if (addData.id) {
-            const updatedData = { ...addData, updated_time: new Date() };
+            const updatedData = { ...rest, updated_time: new Date() };
             // router.push('/list-visa-applications');
             return handleUpdate({
                 updateMutation: updateVisaApplicant,
@@ -348,9 +393,9 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                 endpoint: 'getVisaApplicants',
             });
         } else {
-            const updatedData = { ...addData, updated_time: new Date(), stage: 'Fresh', status: 'Open', is_deleted: false };
+            const updatedData = { ...rest, updated_time: new Date(), stage: 'Fresh', status: 'Open', is_deleted: false, center: user?.center.id };
             // router.push('/list-visa-applications');
-            return handleCreate({
+            const creationResponse = await handleCreate({
                 createMutation: createVisaApplicant,
                 value: updatedData,
                 items: visaApplicants?.items || [],
@@ -358,7 +403,16 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                 handleLocalUpdate: handleLocalRTKUpdate,
                 apiObjectRef: visaProcessSlice,
                 endpoint: 'getVisaApplicants',
+                title: 'manage visa',
+                router: router,
             });
+
+            if (creationResponse) {
+                router.push(`/manage-visa/${encodeURIComponent(creationResponse.groupId)}`);
+                console.log('createionResponse', creationResponse);
+            } else {
+                console.log('Creation was canceled or failed.');
+            }
         }
     };
 
@@ -377,7 +431,14 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         { accessor: 'email', textAlign: 'left', title: 'Email' },
         { accessor: 'phone', textAlign: 'left', title: 'phone' },
         { accessor: 'passport_number', textAlign: 'left', title: 'Passport No' },
-        { accessor: 'dob', textAlign: 'left', title: 'DOB' },
+        {
+            accessor: 'dob',
+            textAlign: 'left',
+            title: 'DOB',
+            render: (row: any) => {
+                return new Date(row.dob)?.toISOString().split('T')[0];
+            },
+        },
         { accessor: 'gender', textAlign: 'left', title: 'Gender' },
         {
             accessor: 'visa_status',
@@ -392,7 +453,6 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const handleEdit = (object: any) => {
         setIsEdit(true);
         setIsOpen(true);
-        console.log('object', object);
         setAddUser(object);
     };
 
@@ -455,6 +515,63 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         setGroupNote('');
 
         setCurrentIndex(null); // Reset index when adding a new note
+    };
+
+    const handleGlobalStatusChange = (e: any) => {
+        const selectedVisaStatus = e.target.value;
+
+        let updatedVisaApplicants = applicantDetails;
+        let matchedApplicants: any[] = [];
+        console.log('Selected Visa Status ID:', selectedVisaStatus);
+
+        if (addData?.status_apply_to) {
+            const globalStatus = addData?.status_apply_to.split(',');
+            console.log('globalStatus', globalStatus);
+
+            // Initialize an empty array to collect all matched applicants
+            let allMatchedApplicants: any[] = [];
+
+            matchedApplicants = globalStatus.flatMap((statusItem: string) => {
+                const trimmedStatusItem = statusItem.trim().toLowerCase(); // Trim and convert to lowercase
+
+                const matchedApplicantsList = applicantDetails.filter((applicant: any) => {
+                    const fullName = `${applicant.first_name} ${applicant.last_name}`.trim().toLowerCase(); // Trim and convert to lowercase
+                    const isMatch = fullName === trimmedStatusItem;
+                    console.log('Comparing', { statusItem: trimmedStatusItem, fullName, isMatch }); // Detailed logging
+                    return isMatch;
+                });
+
+                // Accumulate matched applicants in the allMatchedApplicants array
+                allMatchedApplicants = [...allMatchedApplicants, ...matchedApplicantsList];
+
+                // Update visa_status for all matched applicants
+                if (matchedApplicantsList.length > 0) {
+                    updatedVisaApplicants = updatedVisaApplicants.map((applicant: any) => {
+                        if (
+                            matchedApplicantsList.some(
+                                (matchedApplicant: any) =>
+                                    `${matchedApplicant.first_name} ${matchedApplicant.last_name}`.trim().toLowerCase() === `${applicant.first_name} ${applicant.last_name}`.trim().toLowerCase()
+                            )
+                        ) {
+                            return { ...applicant, visa_status: selectedVisaStatus };
+                        }
+                        return applicant;
+                    });
+                }
+
+                return matchedApplicantsList; // Return the list of matched applicants
+            });
+
+            console.log('matchedApplicants', allMatchedApplicants);
+        }
+
+        // Update state after gathering all matched and updated data
+        setApplicantDetails(updatedVisaApplicants);
+        setAddData({
+            ...addData,
+            visa_applicants: updatedVisaApplicants,
+            visa_status: e.target.value, // Update visa status
+        });
     };
 
     {
@@ -535,6 +652,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                         </select>
                     </div>
                 </div>
+
                 <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                     <div className="dropdown mb-5">
                         <label htmlFor="state_of_residence">State of Residence</label>
@@ -573,6 +691,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                         </select>
                     </div>
                 </div>
+
                 <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                     <div className="dropdown mb-5">
                         <label htmlFor="entry_type">Entry Type</label>
@@ -589,9 +708,10 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                         <ComponentsFormDatePickerBasic label="Travel Date" id="travel_date" isEdit={addData?.travel_date ? true : false} setAddData={setAddData} addData={addData} />
                     </div>
                 </div>
-                <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
+
+                <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-3 ">
                     <div className="dropdown mb-5">
-                        <label htmlFor="source">Assignee</label>
+                        <label htmlFor="source">Assigned to</label>
                         <select
                             className="form-input"
                             defaultValue=""
@@ -612,8 +732,133 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                             ))}
                         </select>
                     </div>
+
+                    {paramId && addData?.is_group && (
+                        <>
+                            <div className="dropdown">
+                                <label htmlFor="visa_status">Global Visa Status</label>
+                                <select
+                                    className="form-input"
+                                    defaultValue=""
+                                    id="visa_status"
+                                    onChange={(e) => {
+                                        // handleInputChange(e);
+                                        handleGlobalStatusChange(e);
+                                    }}
+                                    value={addData?.visa_status?.id || addData?.visa_status || ''}
+                                >
+                                    <option value="" disabled={true}>
+                                        Select Status
+                                    </option>
+
+                                    {visaStatuses?.items?.map((status: any) => {
+                                        return (
+                                            <option value={status.id} key={status.id}>
+                                                {status.name}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                            </div>
+
+                            <div className="dropdown">
+                                <label htmlFor="status_apply_to">Status Apply to</label>
+                                <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-1 ">
+                                    <ComponentsFormsSelectMultiselect addData={addData} options={statusApplyToOptions} setAddData={setAddData} id={'status_apply_to'} resetTrigger={resetTrigger} />
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
+
                 <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                    {isCourier && (
+                        <div className="mb-5">
+                            <label htmlFor="courier_tracking_no">Courier Tracking No.</label>
+                            <input
+                                id="courier_tracking_no"
+                                value={addUser?.courier_tracking_no}
+                                onChange={(e) => handleInputChange(e)}
+                                placeholder="Enter Courier Tracking No"
+                                className="form-input"
+                            />
+                        </div>
+                    )}
+                </div>
+
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                    {addData?.visa_status == '53' && (
+                        <div className="mb-5">
+                            <ComponentsFormDateAndTimePicker label="Passport Collection Date" id={'passport_collection_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                        </div>
+                    )}
+                    {addData?.visa_status == '55' && (
+                        <div className="mb-5">
+                            <ComponentsFormDateAndTimePicker label="Passport DropOff Date" id={'passport_dropoff_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                        </div>
+                    )}
+                </div>
+
+                {(addData?.visa_status == '54' || isDocPickUp) && (
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <div className="mb-5">
+                            <ComponentsFormDateAndTimePicker label="Document pickup Date" id={'doc_pickup_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+
+                            {/* <ComponentsFormDatePickerBasic label="Document pickup Date" id={'doc_pickup_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} /> */}
+                        </div>
+                        <div className="mb-5">
+                            <label htmlFor="doc_pickup_remark">Document PickUp Remarks</label>
+                            <textarea
+                                id="doc_pickup_remark"
+                                rows={1}
+                                value={addData?.doc_pickup_remark}
+                                onChange={(e) => handleInputChange(e)}
+                                placeholder="Enter Remarks"
+                                className="form-textarea min-h-[10px] resize-none"
+                            ></textarea>
+                        </div>
+                    </div>
+                )}
+
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                    <>
+                        {isOutScan && (
+                            <div className="mb-5">
+                                {/* <ComponentsFormDatePickerBasic label="OutScan to Embassy" id={'outscan_to_embassy_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} /> */}
+
+                                <ComponentsFormDateAndTimePicker label="OutScan to Embassy" id={'outscan_to_embassy_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                            </div>
+                        )}
+
+                        {isSubmit && (
+                            <div className="dropdown">
+                                <label htmlFor="where_submitted">Where Submitted</label>
+                                <select className="form-input" defaultValue="" id="where_submitted" onChange={(e) => handleInputChange(e)} value={addUser?.where_submitted}>
+                                    <option value="" disabled={true}>
+                                        Select Option
+                                    </option>
+                                    <option value="vfs bangalore">VFS Bangalore</option>;<option value="vfs mumbai">VFS Mumbai</option>;<option value="vfs kolkata">VFS Kolkata</option>;
+                                    <option value="vfs Hyderabad">VFS Hyderabad</option>;<option value="vfs dehli">VFS Dehli</option>;<option value="online">Online</option>;
+                                    <option value="vendor">Vendor</option>;
+                                </select>
+                            </div>
+                        )}
+                    </>
+                </div>
+
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                    <>
+                        {isInScan && (
+                            <div className="mb-5">
+                                <ComponentsFormDateAndTimePicker label="In Scan from Embassy" id={'inscan_from_embassy_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+
+                                {/* <ComponentsFormDatePickerBasic label="In Scan from Embassy" id={'inscan_from_embassy_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} /> */}
+                            </div>
+                        )}
+                    </>
+                </div>
+
+                <div className="mb-2 mt-5 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                     <div className="dropdown mb-5">
                         <label htmlFor="customer_type">Customer Type</label>
                         <select
@@ -802,6 +1047,8 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                 setIsEdit={setIsEdit}
                 applicantDetails={applicantDetails}
                 setApplicantDetails={setApplicantDetails}
+                addData={addData}
+                paramId={paramId}
             />
         </>
     );

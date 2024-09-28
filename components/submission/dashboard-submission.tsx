@@ -55,8 +55,9 @@ const DashboardSubmission: React.FC<DashboardProps> = ({ data, leaddata, passpor
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'Ref no' },
+        { accessor: 'apply_date', textAlign: 'left', title: 'Apply Date' },
         { accessor: 'applicantname', textAlign: 'left', title: 'Applicant Name' },
-        { accessor: 'destination', textAlign: 'left', title: 'Destination' },
+        { accessor: 'passport_number', textAlign: 'left', title: 'Passport Number' },
         // { accessor: 'visatype', textAlign: 'left', title: 'Type' },
     ];
 

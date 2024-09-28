@@ -3,6 +3,7 @@ import { isFetchBaseQueryError, isSerializedError } from '@/utils/validator';
 import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta, MutationDefinition } from '@reduxjs/toolkit/dist/query/react';
 import { MutationTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks';
 import { RTKPagination } from '@/types/rtk-api';
+import { useRouter } from 'next/router';
 
 interface HandleLocalUpdateParams {
     apiObjectRef: any;
@@ -20,6 +21,8 @@ interface HandleCreateParams {
     apiObjectRef: any;
     endpoint: string;
     args?: any;
+    title?: any;
+    router?:any;
 }
 
 interface HandleUpdateParams {
@@ -44,7 +47,8 @@ interface HandleDeleteParams {
     args?: any;
 }
 
-export const handleCreate = async ({ createMutation, value, items, meta, handleLocalUpdate, apiObjectRef, endpoint, args = undefined }: HandleCreateParams): Promise<boolean> => {
+export const handleCreate = async ({ createMutation, value, items, meta, handleLocalUpdate, apiObjectRef, endpoint, args = undefined, title,router }: HandleCreateParams): Promise<boolean|any> => {
+    
     const result = await Swal.fire({
         icon: 'warning',
         title: 'Are you sure?',
@@ -55,10 +59,10 @@ export const handleCreate = async ({ createMutation, value, items, meta, handleL
         customClass: { popup: 'sweet-alerts' },
     });
 
-    // console.log('value: ', value);
 
     if (result.value) {
         const res = await createMutation({ body: { ...value } });
+        console.log('create value: ', res);
         if ('error' in res) {
             await handleErrorResponse(res.error);
             return false;
@@ -69,7 +73,11 @@ export const handleCreate = async ({ createMutation, value, items, meta, handleL
             // handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta: updatedMeta, args } });
             await Swal.fire({ title: 'Created!', text: res.data.message, icon: 'success', customClass: { popup: 'sweet-alerts' } });
             // refetch();
-            return true;
+            // if (title === 'manage visa' && res) {
+            //     router.push(`/manage-visa/${encodeURIComponent(res.data.groupId)}`);
+
+            // }
+            return res;
         }
     }
     return false;
@@ -142,7 +150,28 @@ export const handleErrorResponse = async (error: FetchBaseQueryError | Error | a
     await Swal.fire({ title: `${error.data?.error || 'Error'}!`, text: `${error.data?.message || 'Please try after sometime'}`, icon: 'error', customClass: { popup: 'sweet-alerts' } });
 };
 
-export const generateURLWithPagination = ({ endpoint, page = 1, limit = 10, sortOrder, sortField, search, filter, filterbyrole, showDeleted }: RTKPagination) => {
+export const generateURLWithPagination = ({
+    endpoint,
+    page = 1,
+    limit = 10,
+    sortOrder,
+    sortField,
+    search,
+    filter,
+    filterbyrole,
+    showDeleted,
+    country,
+    status,
+    stage,
+    priority,
+    assigned_to,
+    source,
+    fromDate,
+    toDate,
+    filterByLeadid,
+    filterByCenter,
+    filterByUser
+}: RTKPagination) => {
     // let url = `${endpoint}&page=${page}&limit=${limit}`;
 
     // if (sortOrder) {
@@ -168,6 +197,18 @@ export const generateURLWithPagination = ({ endpoint, page = 1, limit = 10, sort
         ...(filter && { filter }),
         ...(filterbyrole && { filterbyrole }),
         ...(showDeleted && { showDeleted }),
+        ...(country && { country: String(country) }), // Ensure country is a string
+        ...(status && { status: String(status) }), // Add status, stage, and other optional params
+        ...(stage && { stage: String(stage) }),
+        ...(priority && { priority: String(priority) }),
+        ...(assigned_to && { assigned_to: String(assigned_to) }),
+        ...(source && { source: String(source) }),
+        ...(fromDate && { fromDate }),
+        ...(toDate && { toDate }),
+        ...(filterByLeadid && { filterByLeadid }),
+        ...(filterByCenter && { filterByCenter }),
+        ...(filterByUser && { filterByUser }),
+
     });
 
     return `${endpoint}?${params.toString()}`;

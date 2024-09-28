@@ -8,7 +8,10 @@ interface ComponentsFormDatePickerRangeProps {
     // setDateFilter: any;
     // dateFilter: any[];
     // data: any;
+    addData?: any;
+    setAddData?: any;
     setDateFilter: (value: any) => void;
+    title?: any;
 }
 
 const getTodayDateRange = () => {
@@ -21,11 +24,19 @@ const getTodayDateRange = () => {
     return `${year}-${month}-${day} to ${year}-${month}-${day}`;
 };
 
-const ComponentsFormDatePickerRange: React.FC<ComponentsFormDatePickerRangeProps> = ({ setDateFilter }) => {
+const ComponentsFormDatePickerRange: React.FC<ComponentsFormDatePickerRangeProps> = ({ setDateFilter, setAddData, addData,title }) => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
-    const [date3, setDate3] = useState<string>(()=>getTodayDateRange());
+    const [date3, setDate3] = useState<any>(() => {
+        title == 'lead filter' ? ' ' : addData?.date_range || getTodayDateRange();
+    });
     //const [date3, setDate3] = useState<string>('');
     const [dateRange, setDateRange] = useState<Date[]>([]);
+
+    useEffect(() => {
+        if (addData?.date_range) {
+            setDate3(addData?.date_range);
+        }
+    }, [addData?.date_range]);
 
     // Update records based on date3 change
     // useEffect(() => {
@@ -49,7 +60,6 @@ const ComponentsFormDatePickerRange: React.FC<ComponentsFormDatePickerRangeProps
     // console.log("date filter", dateFilter)
 
     const handleDateChange = (selectedDates: Date[]) => {
-        
         setDateRange(selectedDates);
 
         if (selectedDates.length === 2) {
@@ -65,12 +75,14 @@ const ComponentsFormDatePickerRange: React.FC<ComponentsFormDatePickerRangeProps
 
             const formattedDate = `${formattedStartDate} to ${formattedEndDate}`;
             setDateFilter(formattedDate);
+            if(setAddData){
+                setAddData((prev: any) => ({ ...prev, date_range: formattedDate }));
+            }
+           
         } else {
             setDateFilter(null); // No date range selected, reset filter
         }
     };
-
-   
 
     return (
         <div className="mb-5">
@@ -87,9 +99,7 @@ const ComponentsFormDatePickerRange: React.FC<ComponentsFormDatePickerRangeProps
                 onChange={handleDateChange}
             />
         </div>
-
     );
 };
-
 
 export default ComponentsFormDatePickerRange;

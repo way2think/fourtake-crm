@@ -17,6 +17,8 @@ import { useGetAllEmployeesQuery, useGetUsersQuery } from '@/services/api/userSl
 import ComponentsFormDatePickerRange from './components-form-date-picker-range';
 import ComponentsFormsSelectMultiselect from '@/components/Reusable/select/components-forms-select-multiselect';
 import IconInfoCircle from '@/components/icon/icon-info-circle';
+import { useLazyGetVisaApplicantsQuery } from '@/services/api/visaProcessSlice';
+import { useRouter } from 'next/navigation';
 
 interface LeadManagementActionModalProps {
     isOpen: any;
@@ -30,6 +32,11 @@ interface LeadManagementActionModalProps {
     visaChecklistData?: any;
     // followUps?: any;
     // setFollowUps?: any;
+}
+
+interface OptionType {
+    value: string;
+    label: string;
 }
 const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ isEdit, setIsEdit, isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData, visaChecklistData }) => {
     // const { data: countries, isLoading, isFetching, isError, error } = useGetCountriesQuery({ page: 0, limit: 0 });
@@ -53,15 +60,19 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     const [addNextFollowUpData, setAddNextFollowUpData] = useState<any>({});
     const [followUps, setFollowUps] = useState(addData?.followups || []);
     const [dateFilter, setDateFilter] = useState<any>();
+    const [buttonContent, setButtonContent] = useState('');
+    const [visaApplicationId, setVisaApplicationId] = useState<string | any>();
 
     // const { data: employeelist } = useGetAllEmployeesQuery({ page: 0, limit: 0 });
     const { data: assigneeList } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'employee, admin' });
     // console.log('employeelist', assigneeList?.items);
     const user = useSelector(selectUser) as User;
+    const [getLeadIdByFilter, {}] = useLazyGetVisaApplicantsQuery();
 
     const role = user?.role || 'guest';
+    const router = useRouter();
 
-    const attestation_document_options = [
+    const attestation_document_options: OptionType[] = [
         { value: 'education certificate ', label: 'Education Certificate ' },
         { value: 'marriage certificate', label: 'Marriage Certificate' },
         { value: 'PCC', label: 'PCC' },
@@ -70,7 +81,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         { value: 'POA ', label: 'POA' },
     ];
 
-    const attestation_servicetype_options = [
+    const attestation_servicetype_options: OptionType[] = [
         { value: 'public notary', label: 'Public Notary' },
         { value: 'SDM', label: 'SDM (Sub Divisional Magistrate)' },
         { value: 'HRD', label: 'HRD Att.' },
@@ -100,17 +111,40 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     }, [addData]);
 
     useEffect(() => {
-        if (countryVisaTypes?.items && addData?.country?.id) {
+        if (countryVisaTypes?.items && addData?.destination_country?.id) {
             // const res = countryVisaTypes?.items.filter((item: any) => item?.id === addData?.country?.id).map((item: any) => item?.country_visa_types);
             const res = countryVisaTypes?.items
-                .filter((item: any) => item?.id === addData.country.id)
+                .filter((item: any) => item?.id === addData?.destination_country.id)
                 .map((item: any) => item?.country_visa_types)
                 .flat(); // Flatten the array of arrays into a single array
             setVisaTypes(res);
         }
     }, [addData]);
 
-    // console.log('addData1', addData);
+    useEffect(() => {
+        const leadIdFilter = { filterByLeadid: addData?.id };
+        console.log('leadIdFilter', leadIdFilter); //
+        if (addData.status === 'Done') {
+            getLeadIdByFilter(leadIdFilter)
+                .unwrap()
+                .then((response) => {
+                    console.log('response', response);
+                    if (response.items.length == 1) {
+                        setButtonContent('Edit');
+                        setVisaApplicationId(response.items[0].id);
+                    }
+
+                    if (response.items.length > 1) {
+                        setButtonContent('Create');
+                    }
+                })
+                .catch((error) => {
+                    console.log('error', error);
+                });
+        }
+    }, [addData.status, addData.id]);
+
+    console.log('addData1', addData);
 
     const tableColumnsFollowUp = [
         {
@@ -274,7 +308,14 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         handleCloseModal();
     };
 
-    console.log('service type', addData.service_type);
+    const handleStatusButtonClick = () => {
+        if (buttonContent == 'Create') {
+            router.push('/manage-visa');
+        }
+        if (buttonContent == 'Edit') {
+            router.push(`/manage-visa/${encodeURIComponent(visaApplicationId)}`);
+        }
+    };
 
     return (
         <>
@@ -335,7 +376,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 }}
                             >
                                 <option value="" disabled={true}>
-                                    Service Type
+                                    Select Service Type
                                 </option>
                                 <option value="visa service">Visa Service</option>
                                 <option value="appointment/slot booking service">Appointment / Slot Booking Service</option>
@@ -363,13 +404,13 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             addData.service_type == 'attestation service' ||
                             addData.service_type == 'forex service') && (
                             <div className="dropdown mb-5">
-                                <label htmlFor="country">{addData.service_type == 'forex service' ? ' Currency Required' : 'Country'}</label>
+                                <label htmlFor="destination_country">{addData.service_type == 'forex service' ? ' Currency Required' : 'Country'} </label>
                                 <select
                                     // disabled={role == 'employee' ? true : false}
                                     className="form-input"
                                     defaultValue=""
-                                    id="country"
-                                    value={addData?.country?.id}
+                                    id="destination_country"
+                                    value={addData?.destination_country?.id}
                                     onChange={(e) => {
                                         // console.log('e', e.target.value);
                                         const { items } = countryVisaTypes;
@@ -449,27 +490,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         ))}
                                     </select>
                                 </div>
-
-                                <div className="dropdown mb-5">
-                                    <label htmlFor="assigned_to">Assignee</label>
-                                    <select
-                                        className="form-input"
-                                        defaultValue=""
-                                        id="assigned_to"
-                                        value={addData?.assigned_to?.id}
-                                        onChange={(e) => {
-                                            setAddData((prev: any) => ({ ...prev, assigned_to: { id: e.target.value, username: e.target.options[e.target.selectedIndex].innerText } }));
-                                        }}
-                                    >
-                                        <option value="" disabled={true}>
-                                            Assigned to
-                                        </option>
-
-                                        {assigneeList?.items?.map((item: any) => (
-                                            <option value={item.id}>{item.username}</option>
-                                        ))}
-                                    </select>
-                                </div>
                             </div>
 
                             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
@@ -493,6 +513,27 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         </>
                     )}
 
+                    <div className="dropdown mb-5">
+                        <label htmlFor="assigned_to">Assignee</label>
+                        <select
+                            className="form-input"
+                            defaultValue=""
+                            id="assigned_to"
+                            value={addData?.assigned_to?.id}
+                            onChange={(e) => {
+                                setAddData((prev: any) => ({ ...prev, assigned_to: { id: e.target.value, username: e.target.options[e.target.selectedIndex].innerText } }));
+                            }}
+                        >
+                            <option value="" disabled={true}>
+                                Assigned to
+                            </option>
+
+                            {assigneeList?.items?.map((item: any) => (
+                                <option value={item.id}>{item.username}</option>
+                            ))}
+                        </select>
+                    </div>
+
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         {addData?.service_type == 'others' && (
                             <div className="mb-5">
@@ -508,39 +549,36 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             </div>
                         )}
                     </div>
+                    {(addData.service_type == 'appointment/slot booking service' || addData.service_type == 'travel insurance') && (
+                        <div className="mb-5">
+                            <ComponentsFormDatePickerRange setAddData={setAddData} setDateFilter={setDateFilter} addData={addData} />
+                        </div>
+                    )}
                     {addData.service_type == 'appointment/slot booking service' && (
                         <>
                             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                                {addData.service_type == 'appointment/slot booking service' && (
-                                    <>
-                                        <div className="mb-5">
-                                            <ComponentsFormDatePickerRange setDateFilter={setDateFilter} />
-                                        </div>
-
-                                        <div className="dropdown mb-5">
-                                            <label htmlFor="location">Location</label>
-                                            <select
-                                                className="form-input"
-                                                defaultValue=""
-                                                id="location"
-                                                value={addData?.location}
-                                                onChange={(e) => {
-                                                    // handleInputChange(e);
-                                                    setAddData({ ...addData, location: e.target.value, other_service: '' });
-                                                }}
-                                            >
-                                                <option value="" disabled={true}>
-                                                    Select Location
-                                                </option>
-                                                <option value="new delhi ">New Delhi </option>
-                                                <option value="mumbai">Mumbai </option>
-                                                <option value="kolkata">Kolkata </option>
-                                                <option value="hyderabad">Hyderabad</option>
-                                                <option value="chennai">Chennai </option>
-                                            </select>
-                                        </div>
-                                    </>
-                                )}
+                                <div className="dropdown mb-5">
+                                    <label htmlFor="location">Location</label>
+                                    <select
+                                        className="form-input"
+                                        defaultValue=""
+                                        id="location"
+                                        value={addData?.location}
+                                        onChange={(e) => {
+                                            // handleInputChange(e);
+                                            setAddData({ ...addData, location: e.target.value, other_service: '' });
+                                        }}
+                                    >
+                                        <option value="" disabled={true}>
+                                            Select Location
+                                        </option>
+                                        <option value="new delhi ">New Delhi </option>
+                                        <option value="mumbai">Mumbai </option>
+                                        <option value="kolkata">Kolkata </option>
+                                        <option value="hyderabad">Hyderabad</option>
+                                        <option value="chennai">Chennai </option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -560,8 +598,11 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     <input
                                         id="security_question1"
                                         type="text"
-                                        onChange={(e) => handleInputChange(e)}
-                                        value={addData?.security_question1}
+                                        onChange={(e) => {
+                                            setAddData({ ...addData, security_questions: { ...addData.security_questions, question1: e.target.value } });
+                                            // handleInputChange(e);
+                                        }}
+                                        value={addData?.security_questions?.question1}
                                         placeholder="Enter Security Question 1"
                                         className="form-input"
                                     />
@@ -569,10 +610,13 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 <div className="mb-5">
                                     <label htmlFor="security_question1_answer">Security Question 1 Answer</label>
                                     <input
-                                        id="security_question1_answer"
+                                        id=" "
                                         type="text"
-                                        onChange={(e) => handleInputChange(e)}
-                                        value={addData?.security_question1_answer}
+                                        onChange={(e) => {
+                                            setAddData({ ...addData, security_questions: { ...addData.security_questions, answer1: e.target.value } });
+                                            //  handleInputChange(e)
+                                        }}
+                                        value={addData?.security_questions?.answer1}
                                         placeholder="Enter Security Answer 1"
                                         className="form-input"
                                     />
@@ -585,8 +629,11 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     <input
                                         id="security_question2"
                                         type="text"
-                                        onChange={(e) => handleInputChange(e)}
-                                        value={addData?.security_question2}
+                                        onChange={(e) => {
+                                            setAddData({ ...addData, security_questions: { ...addData.security_questions, question2: e.target.value } });
+                                            //  handleInputChange(e)
+                                        }}
+                                        value={addData?.security_questions?.question2}
                                         placeholder="Enter Security Question 2"
                                         className="form-input"
                                     />
@@ -596,8 +643,11 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     <input
                                         id="security_question2_answer"
                                         type="text"
-                                        onChange={(e) => handleInputChange(e)}
-                                        value={addData?.security_question1_answer}
+                                        onChange={(e) => {
+                                            setAddData({ ...addData, security_questions: { ...addData.security_questions, answer2: e.target.value } });
+                                            //  handleInputChange(e)
+                                        }}
+                                        value={addData?.security_questions?.answer2}
                                         placeholder="Enter Security Answer 2"
                                         className="form-input"
                                     />
@@ -610,8 +660,11 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     <input
                                         id="security_question3"
                                         type="text"
-                                        onChange={(e) => handleInputChange(e)}
-                                        value={addData?.security_question3}
+                                        onChange={(e) => {
+                                            setAddData({ ...addData, security_questions: { ...addData.security_questions, question3: e.target.value } });
+                                            //  handleInputChange(e)
+                                        }}
+                                        value={addData?.security_questions?.question3}
                                         placeholder="Enter Security Question 3"
                                         className="form-input"
                                     />
@@ -621,8 +674,11 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     <input
                                         id="security_question3_answer"
                                         type="text"
-                                        onChange={(e) => handleInputChange(e)}
-                                        value={addData?.security_question3_answer}
+                                        onChange={(e) => {
+                                            setAddData({ ...addData, security_questions: { ...addData.security_questions, answer3: e.target.value } });
+                                            //  handleInputChange(e)
+                                        }}
+                                        value={addData?.security_questions?.answer3}
                                         placeholder="Enter Security Answer 3"
                                         className="form-input"
                                     />
@@ -734,11 +790,8 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 </div>
                             </div>
                             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                                <div className="mb-5">
-                                    <ComponentsFormDatePickerRange setDateFilter={setDateFilter} />
-                                </div>
                                 <div className="dropdown mb-5">
-                                    <label htmlFor="trip_type">PED </label>
+                                    <label htmlFor="ped">PED </label>
                                     <select className="form-input" defaultValue="" id="ped" value={addData?.ped} onChange={(e) => handleInputChange(e)}>
                                         <option value="" disabled={true}>
                                             Select option
@@ -747,8 +800,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         <option value="no">NO</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                                 <div className="dropdown mb-5">
                                     <label htmlFor="travellers_count">Travellers Count </label>
                                     <select className="form-input" defaultValue="" id="travellers_count" value={addData?.travellers_count} onChange={(e) => handleInputChange(e)}>
@@ -767,7 +818,8 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         <option value="10">10</option>
                                     </select>
                                 </div>
-
+                            </div>
+                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                                 <div className="dropdown mb-5">
                                     <label htmlFor="eldest_age">Age of Eldest Member </label>
                                     <select className="form-input" defaultValue="" id="eldest_age" value={addData?.eldest_age} onChange={(e) => handleInputChange(e)}>
@@ -781,6 +833,18 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         <option value="76 Years - 80 Years">76 Years - 80 Years</option>
                                         <option value="81 Years - 85 Years">81 Years - 85 Years</option>
                                         <option value="Greater than 85 Years">Greater than 85 Years</option>
+                                    </select>
+                                </div>
+                                <div className="dropdown mb-5">
+                                    <label htmlFor="sum_insured">Sum Insured</label>
+                                    <select className="form-input" defaultValue="" id="sum_insured" value={addData?.sum_insured} onChange={(e) => handleInputChange(e)}>
+                                        <option value="" disabled={true}>
+                                            Select Sum Insured
+                                        </option>
+                                        <option value="50000 USD">50000 USD </option>
+                                        <option value="100000 USD">100000 USD </option>
+                                        <option value="200000 USD">200000 USD </option>
+                                        <option value="500000 USD">500000 USD </option>
                                     </select>
                                 </div>
                             </div>
@@ -814,18 +878,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 </div>
                             </div>
                             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                                <div className="dropdown mb-5">
-                                    <label htmlFor="sum_insured">Sum Insured</label>
-                                    <select className="form-input" defaultValue="" id="sum_insured" value={addData?.sum_insured} onChange={(e) => handleInputChange(e)}>
-                                        <option value="" disabled={true}>
-                                            Select Sum Insured
-                                        </option>
-                                        <option value="50000 USD">50000 USD </option>
-                                        <option value="100000 USD">100000 USD </option>
-                                        <option value="200000 USD">200000 USD </option>
-                                        <option value="500000 USD">500000 USD </option>
-                                    </select>
-                                </div>
                                 <div className="dropdown mb-5">
                                     <label htmlFor="valid_visa">Destination Country Valid Visa </label>
                                     <select className="form-input" defaultValue="" id="valid_visa" value={addData?.valid_visa} onChange={(e) => handleInputChange(e)}>
@@ -874,7 +926,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         addData.service_type == 'DS-160 Form' ||
                         addData.service_type == 'others') && (
                         <div className="mb-5">
-                            <label htmlFor="commission_earned">Fee & other details</label>
+                            <label htmlFor="other_details">Fee & other details</label>
                             <input id="other_details" type="text" onChange={(e) => handleInputChange(e)} value={addData?.other_details} placeholder="Enter Other details " className="form-input" />
                         </div>
                     )}
@@ -908,7 +960,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
 
                     {isEdit && (
                         <>
-                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                            <div className="grid grid-cols-1 gap-5 md:grid-cols-3 ">
                                 {addData?.service_type == 'visa service' && (
                                     <div className="dropdown mb-5">
                                         <label htmlFor="stage">Stage</label>
@@ -949,6 +1001,13 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         <option value="Done">Done</option>
                                     </select>
                                 </div>
+                                {addData?.status == 'Done' && (
+                                    <div className="mt-7">
+                                        <button type="button" onClick={handleStatusButtonClick} className="btn btn-primary ">
+                                            {buttonContent}
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                             {addData?.service_type == 'visa service' && (
                                 <>

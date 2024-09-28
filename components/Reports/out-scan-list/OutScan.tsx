@@ -14,28 +14,27 @@ import Link from 'next/link';
 
 const OutScan: React.FC<{ outscanlistdata: any }> = ({ outscanlistdata }) => {
     const [data, setData] = useState(outscanlistdata);
-    // const { data, isError, error } = use(getServerData());
-    // // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
-    // // console.log('dataaaa: ', data);
-    // if (isError) {
-    //     console.log(error.message);
-    // }
-
-    // const data = [
-    //     {
-    //         id: 1,
-    //         visatype: 'Business',
-    //     },
-    //     {
-    //         id: 2,
-    //         visatype: 'Tourist',
-    //     },
-    // ];
 
     const tableColumns = [
-        { accessor: 'id', textAlign: 'left', title: 'S.NO' },
-        { accessor: 'consultantname', textAlign: 'left', title: 'Consultant Name' },
-        { accessor: 'noofapplicant', textAlign: 'left', title: 'No of applicant' },
+        { accessor: 'id', textAlign: 'left', title: 'Refno' },
+        { accessor: 'apply_date', textAlign: 'left', title: 'Apply Date' },
+        {
+            accessor: 'name',
+            textAlign: 'left',
+            title: 'Applicant Name',
+            render: (row: any) => {
+                return `${row?.first_name} ${row?.last_name}`;
+            },
+        },
+        {
+            accessor: 'consultantname',
+            textAlign: 'left',
+            title: 'Consultant Name',
+            render: (row: any) => {
+                return row?.assigned_to?.username;
+            },
+        },
+        // { accessor: 'noofapplicant', textAlign: 'left', title: 'No of applicant' },
         { accessor: 'visafee', textAlign: 'left', title: 'Visa Fee' },
         { accessor: 'vfsothers', textAlign: 'left', title: 'VFs/Others' },
         { accessor: 'charges', textAlign: 'left', title: 'H/C - handling charges' },
