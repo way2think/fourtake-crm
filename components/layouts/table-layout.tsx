@@ -32,7 +32,7 @@ interface TableLayoutProps {
     handleDelete?: any;
     filterby: any;
     ActionModalListLine?: any;
-    setSearch: Function;
+    setSearch?: Function;
     filter?: string;
     setFilter?: Function;
     setPage: Function;

@@ -1,4 +1,5 @@
 export interface Lead {
+    country: null;
     id?: number;
     updated_time?: string;
     name: string;

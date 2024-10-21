@@ -4,6 +4,8 @@ import { Tab } from '@headlessui/react';
 import React, { Fragment, useEffect, useState } from 'react';
 import ComponentsAuthLoginForm from '../auth/components-auth-login-form';
 import TimeSheet from '../attendence/TimeSheet';
+import ListAttendanceTable from '../attendence/ListAttendanceTable';
+import TimeOffRequestTable from '../attendence/TimeOffRequestTable';
 
 const TabsAttendence = () => {
     // const [isMounted, setIsMounted] = useState(false);
@@ -15,11 +17,11 @@ const TabsAttendence = () => {
         <div className="mb-5">
             {/* {isMounted && ( */}
             <Tab.Group>
-                <Tab.List className="mt-3 border-b border-[#bbb] flex flex-wrap justify-start space-x-2 rtl:space-x-reverse">
+                <Tab.List className="mt-3 flex flex-wrap justify-start space-x-2 border-b border-[#bbb] rtl:space-x-reverse">
                     <Tab as={Fragment}>
                         {({ selected }) => (
                             <button
-                                className={`${selected ? 'rounded-none  border-[#005fbe] border-b-2 text-[#005fbe]  !outline-none' : ''}
+                                className={`${selected ? 'rounded-none  border-b-2 border-[#005fbe] text-[#005fbe]  !outline-none' : ''}
                                                     -mb-[1px] block  rounded p-3.5 py-2 before:inline-block hover:border-[#005fbe] hover:text-[#005fbe]`}
                             >
                                 Time Sheet
@@ -29,7 +31,7 @@ const TabsAttendence = () => {
                     <Tab as={Fragment}>
                         {({ selected }) => (
                             <button
-                                className={`${selected ? '  rounded-none  border-[#005fbe] border-b-2 text-[#005fbe] !outline-none ' : ''}
+                                className={`${selected ? '  rounded-none  border-b-2 border-[#005fbe] text-[#005fbe] !outline-none ' : ''}
                                                     -mb-[1px] block  rounded p-3.5 py-2 before:inline-block hover:border-[#005fbe] hover:text-[#005fbe] `}
                             >
                                 Time-off Request
@@ -44,8 +46,8 @@ const TabsAttendence = () => {
                         </div>
                     </Tab.Panel>
                     <Tab.Panel>
-                        <div className='pt-5'>
-                            time sheet
+                        <div className="pt-5">
+                            <TimeOffRequestTable />
                         </div>
                     </Tab.Panel>
                 </Tab.Panels>
