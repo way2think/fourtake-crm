@@ -115,11 +115,8 @@ const LeadManagement: React.FC = () => {
             endpoint: 'getLeads',
         });
 
-
-
     const handleSubmit = async (value: Lead) => {
-
-        console.log("value",value)
+        console.log('value', value);
         if (value.name == null || value.name == '') {
             showMessage('Enter Name', 'error');
             return false;
@@ -331,6 +328,8 @@ const LeadManagement: React.FC = () => {
     };
 
     const exportColumns = ['id', 'leadname', 'email', 'contact', 'destination_country', 'visatype', 'stateofresidence', 'emailsentdate', 'lastfollowup', 'nextfollowup', 'status'];
+
+    console.log('leads:::::, ', leads);
 
     return (
         <>
