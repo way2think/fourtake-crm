@@ -8,7 +8,7 @@ import { useDeleteApplicantMutation, useDeleteGroupMutation, useGetVisaApplicant
 import CountryActionModal from '@/components/cms/countries/CountryActionModal';
 import TableLayout from '@/components/layouts/table-layout';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
-import {  handleUpdate } from '@/utils/rtk-http';
+import { handleUpdate } from '@/utils/rtk-http';
 
 const DeletedApplication = () => {
     const [restoreApplicant, {}] = useRestoreApplicantMutation();
@@ -20,6 +20,8 @@ const DeletedApplication = () => {
 
     const { data: visaApplicants, isFetching, isLoading } = useGetVisaApplicantsQuery({ page, limit, sortField: 'updated_time', sortOrder: 'DESC', search, filter, showDeleted: true });
     const { items = [], meta = {} } = visaApplicants || {};
+
+    console.log('deleted Application list', visaApplicants);
 
     const [data, setData] = useState(visaApplicants);
     const exportColumns = ['id', 'applydate', 'refno', 'apptype', 'applname', 'cosultantname', 'destination', 'type', 'duration', 'entry'];
@@ -109,17 +111,31 @@ const DeletedApplication = () => {
         },
     ];
 
-    const handleRestore = (object: any) => {
-        transformedData = transformedData.filter((item: any) => item.id !== object.id);
-        handleUpdate({
-            updateMutation: restoreApplicant,
-            value: object,
-            items,
-            meta,
-            handleLocalUpdate: handleLocalRTKUpdate,
-            apiObjectRef: visaProcessSlice,
-            endpoint: 'getVisaApplicants',
-        });
+    const handleRestoreApplicant = (applicant: any) => {
+        console.log('restoring applicant', applicant);
+    
+        if (applicant.id && applicant.is_group) {
+            handleUpdate({
+                updateMutation: restoreApplicant,
+                value: applicant,
+                items,
+                meta,
+                handleLocalUpdate: handleLocalRTKUpdate,
+                apiObjectRef: visaProcessSlice,
+                endpoint: 'getVisaApplicants',
+            });
+        } else if (applicant.id && !applicant.is_group) {
+            const applicantData = { ...applicant, id: applicant.group_id };
+            handleUpdate({
+                updateMutation: restoreApplicantGroup,
+                value: applicantData,
+                items,
+                meta,
+                handleLocalUpdate: handleLocalRTKUpdate,
+                apiObjectRef: visaProcessSlice,
+                endpoint: 'getVisaApplicants',
+            });
+        }
     };
 
     const handleRestoreGroup = (object: any) => {
@@ -184,7 +200,7 @@ const DeletedApplication = () => {
                                         tableColumns={tableColumns}
                                         exportColumns={exportColumns}
                                         ActionModal={CountryActionModal}
-                                        handleRestore={handleRestore}
+                                        handleRestore={handleRestoreApplicant}
                                         // ActionModalListLine={ListVisaApplicationListLine}
                                         // handleSubmit={handleSubmit}
                                         meta={meta}
@@ -199,7 +215,7 @@ const DeletedApplication = () => {
                                     <div className=" pt-5">
                                         <div className="flex-auto">
                                             <PaginationExpand
-                                            title="Deleted Visa Application"
+                                                title="Deleted Visa Application"
                                                 getSubData={items}
                                                 data={items}
                                                 tableColumns={tableColumns}

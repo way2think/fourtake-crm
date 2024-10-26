@@ -101,8 +101,8 @@ export const handleUpdate = async ({ updateMutation, value, items, meta, handleL
             return false;
         } else {
             // console.log('result,value', value, args);
-            const updatedItems = items.map((item) => (item.id === value.id ? { ...item, ...value } : item));
-            handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta }, args });
+            // const updatedItems = items.map((item) => (item.id === value.id ? { ...item, ...value } : item));
+            // handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta }, args });
             await Swal.fire({ title: 'Updated!', text: res.data.message, icon: 'success', customClass: { popup: 'sweet-alerts' } });
             return true;
         }

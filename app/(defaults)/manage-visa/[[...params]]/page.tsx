@@ -10,14 +10,15 @@ export const metadata: Metadata = {
 
 interface ManageVisaPageProps {
     params: {
-        params?: string[]; // Optional array for catch-all route
+        params?: any[]; // Optional array for catch-all route
     };
 }
 
 const ManageVisaPage = ({ params }: ManageVisaPageProps) => {
-    const id = params?.params?.[0];
+    // const id = params?.params?.[0];
+    const id = params.params ? encodeURIComponent(params.params.join('/')) : '';
 
-    console.log("id",id)
+    console.log('id', id);
 
     return <ManageVisa paramId={id} />;
 };

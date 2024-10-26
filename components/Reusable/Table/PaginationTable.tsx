@@ -18,7 +18,7 @@ import { PaginationMeta } from '@/types/pagination';
 
 interface PaginationTableProps {
     title?: string;
-    data?: any[];
+    data?: any;
     meta?: PaginationMeta;
     tableColumns: any[];
     actionhide?: boolean;
@@ -233,7 +233,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.map((row, rowIndex) => (
+                        {data?.map((row: any, rowIndex: any) => (
                             <tr key={rowIndex}>
                                 {columns.map((column, colIndex) => (
                                     <td key={colIndex}>{column.render ? column.render(row) : row[column.accessor]}</td>

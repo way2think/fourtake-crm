@@ -76,7 +76,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
 
     const searchParams = useSearchParams();
 
-    const user:any = useSelector(selectUser) as User;
+    const user: any = useSelector(selectUser) as User;
 
     console.log('user in manage visa', user);
 
@@ -100,10 +100,12 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const { data: agents } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'agent' });
     const { data: corporates } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'corporate' });
     const { data: oneVisaApplicantsGroup, isError, error } = useGetOneVisaApplicantGroupQuery(paramId);
-    // console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup, isError, error, paramId);
+    console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup, isError, error, paramId);
 
     console.log('addData', addData);
+
     console.log('addUser', addUser);
+
     console.log('applicantDetails', applicantDetails);
 
     const { data: visaApplicants } = useGetVisaApplicantsQuery({ page: 0, limit: 0 });

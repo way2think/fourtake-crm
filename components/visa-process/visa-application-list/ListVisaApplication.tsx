@@ -39,12 +39,9 @@ const ListVisaApplication = () => {
         })
         .flat();
 
-
     const onlyGroup = items.filter((group: any) => {
         return group.is_group == true;
     });
-
-
 
     const tableColumns = [
         // { accessor: 'id', textAlign: 'left', title: 'SNo' },
@@ -138,10 +135,21 @@ const ListVisaApplication = () => {
     const handleDeleteApplicant = (applicant: any) => {
         console.log('applicant', applicant);
 
-        if (applicant.id) {
+        if (applicant.id && applicant.is_group) {
             handleDelete({
                 deleteMutation: deleteApplicant,
                 item: applicant,
+                items,
+                meta,
+                handleLocalUpdate: handleLocalRTKUpdate,
+                apiObjectRef: visaProcessSlice,
+                endpoint: 'getVisaProcess',
+            });
+        } else if (applicant.id && !applicant.is_group) {
+            const applicantData = { ...applicant, id: applicant.group_id };
+            handleDelete({
+                deleteMutation: deleteGroup,
+                item: applicantData,
                 items,
                 meta,
                 handleLocalUpdate: handleLocalRTKUpdate,
@@ -153,6 +161,7 @@ const ListVisaApplication = () => {
 
     const handleDeleteGroup = (group: any) => {
         console.log('group', group);
+
         if (group.id) {
             handleDelete({
                 deleteMutation: deleteGroup,
