@@ -72,6 +72,12 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     const role = user?.role || 'guest';
     const router = useRouter();
 
+    useEffect(() => {
+        if (!isEdit) {
+            setAddData({ ...addData, service_type: 'visa service' });
+        }
+    }, []);
+
     const attestation_document_options: OptionType[] = [
         { value: 'education certificate ', label: 'Education Certificate ' },
         { value: 'marriage certificate', label: 'Marriage Certificate' },
@@ -174,6 +180,21 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
             },
         },
     ];
+
+    const timeStampFormat = (time: any) => {
+        const timestamp = time * 1000;
+
+        // Create a new Date object
+        const date = new Date(timestamp);
+
+        // Extract day, month, and year
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Months are zero-based, so add 1
+        const year = date.getFullYear();
+
+        const formattedDate = `${day}/${month}/${year}`;
+        return formattedDate;
+    };
 
     const handleLeadNoteChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setLeadNote({ ...leadNote, note: event.target.value });
@@ -325,7 +346,9 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                     <button
                         onClick={() => {
                             setIsOpen(false);
-                            setAddData({});
+                            setAddData(() => {
+                                return !isEdit && { service_type: 'visa service' };
+                            });
                             setIsEdit(false);
                         }}
                         type="button"
@@ -367,7 +390,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             <label htmlFor="service_type">Service Type</label>
                             <select
                                 className="form-input"
-                                defaultValue=""
+                                // defaultValue="visa service"
                                 id="service_type"
                                 value={addData?.service_type}
                                 onChange={(e) => {
@@ -1187,7 +1210,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                                 </div>
 
                                                 <div className="mt-2 text-right font-mono text-sm text-blue-500">
-                                                    Created By: {item.created_by} - Created Date: {item.created_time}
+                                                    Created By: {item.created_by} - Created Date: {timeStampFormat(item.created_time)}
                                                 </div>
                                             </div>
                                         ))}
@@ -1240,7 +1263,9 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         <button
                             onClick={() => {
                                 setIsOpen(false);
-                                setAddData({});
+                                setAddData(() => {
+                                    return !isEdit && { service_type: 'visa service' };
+                                });
                                 setIsEdit(false);
                             }}
                             type="button"

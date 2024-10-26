@@ -1,5 +1,5 @@
 export interface Lead {
-    id?: number;
+    id?: any;
     updated_time?: string;
     name: string;
     email: string;
@@ -44,5 +44,5 @@ export interface Lead {
     travellers_count: string;
     eldest_age: string;
     sum_insured: string;
-    other_details:string;
+    other_details: string;
 }

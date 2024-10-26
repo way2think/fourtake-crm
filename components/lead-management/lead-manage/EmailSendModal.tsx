@@ -180,7 +180,7 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
                         onClick={() => {
                             setIsOpen(false);
                             setAddData((prevData: any) => {
-                                const { cc, additional_info, attachments, ...rest } = prevData;
+                                const { cc, additional_info, attachments, visa_checklist, ...rest } = prevData;
                                 return rest;
                             });
                         }}

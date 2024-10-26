@@ -22,7 +22,7 @@ interface HandleCreateParams {
     endpoint: string;
     args?: any;
     title?: any;
-    router?:any;
+    router?: any;
 }
 
 interface HandleUpdateParams {
@@ -47,8 +47,7 @@ interface HandleDeleteParams {
     args?: any;
 }
 
-export const handleCreate = async ({ createMutation, value, items, meta, handleLocalUpdate, apiObjectRef, endpoint, args = undefined, title,router }: HandleCreateParams): Promise<boolean|any> => {
-    
+export const handleCreate = async ({ createMutation, value, items, meta, handleLocalUpdate, apiObjectRef, endpoint, args = undefined, title, router }: HandleCreateParams): Promise<boolean | any> => {
     const result = await Swal.fire({
         icon: 'warning',
         title: 'Are you sure?',
@@ -58,7 +57,6 @@ export const handleCreate = async ({ createMutation, value, items, meta, handleL
         padding: '2em',
         customClass: { popup: 'sweet-alerts' },
     });
-
 
     if (result.value) {
         const res = await createMutation({ body: { ...value } });
@@ -97,14 +95,14 @@ export const handleUpdate = async ({ updateMutation, value, items, meta, handleL
 
     if (result.value) {
         console.log('value', value);
-        const res = await updateMutation({ id: value.id, body: { ...value } });
+        const res = await updateMutation({ id: encodeURIComponent(value.id), body: { ...value } });
         if ('error' in res) {
             await handleErrorResponse(res.error);
             return false;
         } else {
             // console.log('result,value', value, args);
-            // const updatedItems = items.map((item) => (item.id === value.id ? { ...item, ...value } : item));
-            // handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta }, args });
+            const updatedItems = items.map((item) => (item.id === value.id ? { ...item, ...value } : item));
+            handleLocalUpdate({ apiObjectRef, endpoint, updateReceipe: { items: updatedItems, meta }, args });
             await Swal.fire({ title: 'Updated!', text: res.data.message, icon: 'success', customClass: { popup: 'sweet-alerts' } });
             return true;
         }
@@ -124,7 +122,8 @@ export const handleDelete = async ({ deleteMutation, item, items, meta, handleLo
     });
 
     if (result.value) {
-        const res = await deleteMutation(item.id);
+        const res = await deleteMutation (encodeURIComponent(item.id))
+        // const res = await deleteMutation(item.id);
         if ('error' in res) {
             await handleErrorResponse(res.error);
             return false;
@@ -170,7 +169,7 @@ export const generateURLWithPagination = ({
     toDate,
     filterByLeadid,
     filterByCenter,
-    filterByUser
+    filterByUser,
 }: RTKPagination) => {
     // let url = `${endpoint}&page=${page}&limit=${limit}`;
 
@@ -208,7 +207,6 @@ export const generateURLWithPagination = ({
         ...(filterByLeadid && { filterByLeadid }),
         ...(filterByCenter && { filterByCenter }),
         ...(filterByUser && { filterByUser }),
-
     });
 
     return `${endpoint}?${params.toString()}`;

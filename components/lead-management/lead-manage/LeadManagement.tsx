@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import TableLayout from '@/components/layouts/table-layout';
 import Filtersetting from '@/components/layouts/filtersetting';
@@ -15,9 +14,9 @@ import { showMessage } from '@/utils/notification';
 import { isValidPhoneNumber } from '@/utils/validator';
 
 const LeadManagement: React.FC = () => {
-    const [createLead, { }] = useCreateLeadMutation();
-    const [updateLead, { }] = useUpdateLeadMutation();
-    const [deleteLead, { }] = useDeleteLeadMutation();
+    const [createLead, {}] = useCreateLeadMutation();
+    const [updateLead, {}] = useUpdateLeadMutation();
+    const [deleteLead, {}] = useDeleteLeadMutation();
 
     const { page, limit, sortField, sortOrder, search, filter, setFilter, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
@@ -67,7 +66,7 @@ const LeadManagement: React.FC = () => {
         },
         {
             accessor: 'visa_type',
-            
+
             textAlign: 'left',
             title: 'Visa Type',
             render: (row: any) => {
@@ -116,7 +115,11 @@ const LeadManagement: React.FC = () => {
             endpoint: 'getLeads',
         });
 
+
+
     const handleSubmit = async (value: Lead) => {
+
+        console.log("value",value)
         if (value.name == null || value.name == '') {
             showMessage('Enter Name', 'error');
             return false;
@@ -275,8 +278,6 @@ const LeadManagement: React.FC = () => {
                 return false;
             }
         }
-
-        console.log('value submit', value);
 
         if (
             value.service_type == 'flight itinerary' ||
