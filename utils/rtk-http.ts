@@ -122,7 +122,7 @@ export const handleDelete = async ({ deleteMutation, item, items, meta, handleLo
     });
 
     if (result.value) {
-        const res = await deleteMutation (encodeURIComponent(item.id))
+        const res = await deleteMutation(encodeURIComponent(item.id));
         // const res = await deleteMutation(item.id);
         if ('error' in res) {
             await handleErrorResponse(res.error);

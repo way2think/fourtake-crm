@@ -8,7 +8,6 @@ export const metadata: Metadata = {
 //     return await getData({ endpoint: 'http://localhost:5001/center' });
 // };
 const LeadList = () => {
- 
     return (
         // <Suspense fallback={<p>Loading...</p>}>
         <LeadManagement />

@@ -399,7 +399,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                 }}
                             >
                                 <option value="" disabled={true}>
-                                    Select Service Type
+                                    -- Select Service Type --
                                 </option>
                                 <option value="visa service">Visa Service</option>
                                 <option value="appointment/slot booking service">Appointment / Slot Booking Service</option>
@@ -427,7 +427,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             addData.service_type == 'attestation service' ||
                             addData.service_type == 'forex service') && (
                             <div className="dropdown mb-5">
-                                <label htmlFor="destination_country">{addData.service_type == 'forex service' ? ' Currency Required' : 'Country'} </label>
+                                <label htmlFor="destination_country">{addData.service_type == 'forex service' ? ' Currency Required' : 'Destination Country'} </label>
                                 <select
                                     // disabled={role == 'employee' ? true : false}
                                     className="form-input"
@@ -445,7 +445,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     }}
                                 >
                                     <option value="" disabled={true}>
-                                        Country
+                                        -- Select Country --
                                     </option>
                                     {/* <option value="Canada">Canada</option>
                                 <option value="India">India</option>
@@ -477,7 +477,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     onChange={(e) => handleInputChange(e)}
                                 >
                                     <option value="" disabled={true}>
-                                        Visa Type
+                                        -- Select Visa Type --
                                     </option>
                                     {/* <option value="Business Type">Business Visa</option>
                                 <option value="Vistor Visa">Vistor Visa</option> */}
