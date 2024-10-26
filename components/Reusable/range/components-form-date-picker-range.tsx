@@ -22,7 +22,7 @@ const ComponentsFormDatePickerRange = () => {
                         position: isRtl ? 'auto right' : 'auto left',
                     }}
                     defaultValue={date3}
-                    className="form-input w-[230px]"
+                    className="form-input w-full"
                     onChange={(date3) => setDate3(date3)}
                 />
             </div>

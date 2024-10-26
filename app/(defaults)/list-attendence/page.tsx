@@ -12,7 +12,11 @@ export const metadata: Metadata = {
 };
 
 const ListAttendence = () => {
-    return <><TimeAttendence /></>;
+    return (
+        <>
+            <TimeAttendence />
+        </>
+    );
 };
 
 export default ListAttendence;
