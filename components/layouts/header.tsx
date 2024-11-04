@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { IRootState } from '@/store';
@@ -37,6 +37,9 @@ import { signOut } from 'next-auth/react';
 import Cookies from 'js-cookie';
 import { useLogoutMutation } from '@/services/api/apiSlice';
 import { showMessage } from '@/utils/notification';
+import { selectUser } from '@/store/user.store';
+import { User } from '@/entities/user.entity';
+import { formatRole } from '@/utils/helpers';
 
 const Header = () => {
     const pathname = usePathname();
@@ -149,6 +152,8 @@ const Header = () => {
 
     const [search, setSearch] = useState(false);
 
+    const user = useSelector(selectUser) as User;
+
     const [logoutMutation, {}] = useLogoutMutation();
 
     const logoutHandler = async (e: any) => {
@@ -237,7 +242,7 @@ const Header = () => {
                                 <IconSearch className="mx-auto h-4.5 w-4.5 dark:text-[#d0d2d6]" />
                             </button>
                         </div> */}
-                        <div>
+                        {/* <div>
                             {themeConfig.theme === 'light' ? (
                                 <button
                                     className={`${
@@ -273,7 +278,7 @@ const Header = () => {
                                     <IconLaptop />
                                 </button>
                             )}
-                        </div>
+                        </div> */}
                         {/* <div className="dropdown shrink-0">
                             <Dropdown
                                 offset={[0, 8]}
@@ -302,7 +307,7 @@ const Header = () => {
                                 </ul>
                             </Dropdown>
                         </div> */}
-                        <div className="dropdown shrink-0">
+                        {/* <div className="dropdown shrink-0">
                             <Dropdown
                                 offset={[0, 8]}
                                 placement={`${isRtl ? 'bottom-start' : 'bottom-end'}`}
@@ -356,7 +361,7 @@ const Header = () => {
                                     )}
                                 </ul>
                             </Dropdown>
-                        </div>
+                        </div> */}
                         <div className="dropdown shrink-0">
                             <Dropdown
                                 offset={[0, 8]}
@@ -436,24 +441,27 @@ const Header = () => {
                                 offset={[0, 8]}
                                 placement={`${isRtl ? 'bottom-start' : 'bottom-end'}`}
                                 btnClassName="relative group block"
-                                button={<img className="h-9 w-9 rounded-full object-cover saturate-50 group-hover:saturate-100" src="/assets/images/user-profile.jpeg" alt="userProfile" />}
+                                button={<img className="h-9 w-9 rounded-full object-cover saturate-50 group-hover:saturate-100" src="/assets/images/user-profile.png" alt="userProfile" />}
                             >
-                                <ul className="w-[230px] !py-0 font-semibold text-dark dark:text-white-dark dark:text-white-light/90">
+                                <ul className="w-[250px] !py-0 font-semibold text-dark dark:text-white-dark dark:text-white-light/90">
                                     <li>
                                         <div className="flex items-center px-4 py-4">
-                                            <img className="h-10 w-10 rounded-md object-cover" src="/assets/images/user-profile.jpeg" alt="userProfile" />
+                                            <img className="h-10 w-10 rounded-md object-cover" src="/assets/images/user-profile.png" alt="userProfile" />
                                             <div className="truncate ltr:pl-4 rtl:pr-4">
                                                 <h4 className="text-base">
-                                                    John Doe
-                                                    <span className="rounded bg-success-light px-1 text-xs text-success ltr:ml-2 rtl:ml-2">Pro</span>
+                                                    {`${user?.first_name} ${user?.last_name}`}
+                                                    {/* <span className="rounded bg-success-light px-1 text-xs text-success ltr:ml-2 rtl:ml-2">{user?.role}</span> */}
                                                 </h4>
-                                                <button type="button" className="text-black/60 hover:text-primary dark:text-dark-light/60 dark:hover:text-white">
-                                                    johndoe@gmail.com
+                                                <h3 className="text-xs">
+                                                    Role: <span className="rounded bg-success-light px-1 text-xs text-success ltr:ml-2 rtl:ml-2">{formatRole(user?.role)}</span>
+                                                </h3>
+                                                <button type="button" className="text-xs text-black/60 hover:text-primary dark:text-dark-light/60 dark:hover:text-white">
+                                                    {user?.email}
                                                 </button>
                                             </div>
                                         </div>
                                     </li>
-                                    <li>
+                                    {/* <li>
                                         <Link href="/users/profile" className="dark:hover:text-white">
                                             <IconUser className="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" />
                                             Profile
@@ -470,7 +478,7 @@ const Header = () => {
                                             <IconLockDots className="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" />
                                             Lock Screen
                                         </Link>
-                                    </li>
+                                    </li> */}
                                     <li className="border-t border-white-light dark:border-white-light/10">
                                         <button
                                             onClick={logoutHandler}
