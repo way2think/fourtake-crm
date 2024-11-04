@@ -51,7 +51,9 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
         other: '',
     });
 
-    console.log('subData', data, getSubData, getSubData?.visa_applicants);
+    console.log('data: ', data);
+
+    // console.log('subData', data, getSubData, getSubData?.visa_applicants);
     // Calculate the start and end index for the current page
     const startIndex = (page - 1) * recordsPerPage;
     const endIndex = startIndex + recordsPerPage;
@@ -70,7 +72,7 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
-    console.log('expandedRows', expandedRows);
+    // console.log('expandedRows', expandedRows);
     useEffect(() => {
         if (addData?.tracking_detail && addData?.id) {
             setTrack(addData.tracking_detail);
@@ -313,8 +315,8 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                     page={page}
                     onPageChange={setPage}
                     rowExpansion={{
-                        isExpanded: (row: any) => expandedRows.includes(row.id),
-                        content: ({ record }) => (
+                        // isExpanded: (row: any) => expandedRows.includes(row.id),
+                        content: ({ record }: { record: any }) => (
                             <div>
                                 <Table>
                                     <thead>
@@ -327,7 +329,7 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {record.visa_applicants?.map((subRow: any, index: number) => (
+                                        {record?.visa_applicants?.map((subRow: any, index: number) => (
                                             <tr key={index}>
                                                 {tableApplicantColumns.map((column: any, colIndex: number) => (
                                                     <td key={colIndex} className="p-2" style={{ textAlign: column.textAlign }}>

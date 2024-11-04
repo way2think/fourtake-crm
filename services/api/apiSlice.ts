@@ -1,3 +1,4 @@
+import { SessionAuth } from '@/types/auth';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getSession } from 'next-auth/react';
 
@@ -6,7 +7,7 @@ export const apiSlice = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.API_BASE_URL}`,
         prepareHeaders: async (headers) => {
-            const session = await getSession();
+            const session: SessionAuth | null = await getSession();
             // console.log('session-rtk', session);
             if (session?.user?.accessToken) {
                 headers.set('Authorization', `Bearer ${session.user.accessToken}`);
