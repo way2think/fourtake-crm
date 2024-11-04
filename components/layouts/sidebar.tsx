@@ -394,23 +394,16 @@ const Sidebar = () => {
 
                             {isAccessDenied('/list-attendence', role) && (
                                 <li className="menu nav-item">
-                                    <Link
+                                    {/* <Link
                                         href="/list-attendence"
                                         className={`${currentMenu === 'Attendence' || isAciveCondition === 'active' ? 'active' : ''} nav-link group w-full`}
                                         onClick={() => toggleMenu('Lead Management')}
                                     >
                                         <div className="flex items-center">
                                             <IconBook className="shrink-0 !text-[#fff] " />
-                                            <span className="text-white dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
-                                                {/* <Link href="/lead-list">Lead Management</Link> */}
-                                                Attendence
-                                            </span>
+                                            <span className="text-white dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">Attendence</span>
                                         </div>
-
-                                        {/* <div className={currentMenu !== 'User Management' ? '-rotate-90 rtl:rotate-90' : ''}>
-                                        <IconCaretDown />
-                                    </div>  */}
-                                    </Link>
+                                    </Link> */}
 
                                     {/* <button
                                     type="button"
