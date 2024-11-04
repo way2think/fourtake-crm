@@ -114,7 +114,7 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
         const value = {
             to: addData?.email,
             subject: 'Visa Checklist',
-            from: 'svsdummy@gmail.com',
+            from: 'info@fourtakevisas.com',
             visa_checklist: `${combination}  ${addData?.visa_checklist}  ${addData?.additional_info}`,
             // additional_info: addData?.additional_info,
             attachments: addData?.attachments,

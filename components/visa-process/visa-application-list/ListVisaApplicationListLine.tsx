@@ -20,18 +20,19 @@ interface ListVisaApplicationListLineProps {
 const ListVisaApplicationListLine: React.FC<ListVisaApplicationListLineProps> = ({ isOpen, setIsOpen, addData, setAddData }) => {
     const [passports, setPassports] = useState<string[]>([]);
 
-    const { data: oneVisaApplicantsGroup } = useGetOneVisaApplicantGroupQuery(addData?.group_id);
-
-    // console.log('addData in list application', addData, oneVisaApplicantsGroup);
+    const { data: oneVisaApplicantsGroup } = useGetOneVisaApplicantGroupQuery(encodeURIComponent(addData?.group_id), {
+        skip: !addData?.group_id,
+    });
 
     const [updateVisaApplicant, {}] = useUpdateVisaApplicantGroupMutation();
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
     useEffect(() => {
-        if (addData?.multiple_passports) {
-            setPassports(addData.multiple_passports);
+        if (oneVisaApplicantsGroup) {
+            const multiplePassports = oneVisaApplicantsGroup?.visa_applicants.find((item: any) => item.id === addData.id)?.multiple_passports;
+            setPassports(Array.isArray(multiplePassports) ? multiplePassports : []); // Ensure it's an array
         }
-    }, [addData?.multiple_passports]);
+    }, [oneVisaApplicantsGroup, addData?.id]);
 
     const handleMultiplePassportSave = () => {
         if (oneVisaApplicantsGroup) {
@@ -58,7 +59,7 @@ const ListVisaApplicationListLine: React.FC<ListVisaApplicationListLineProps> = 
     const handleInputChangeMultiple = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const { value } = e.target;
         setPassports((prevPassports) => {
-            const newPassports = [...prevPassports];
+            const newPassports = Array.isArray(prevPassports) ? [...prevPassports] : []; // Ensure prevPassports is an array
             newPassports[index] = value;
             return newPassports;
         });
@@ -84,11 +85,11 @@ const ListVisaApplicationListLine: React.FC<ListVisaApplicationListLineProps> = 
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                     <div className="mb-5">
                         <label htmlFor="refno">Reference No</label>
-                        <input id="refno" type="text" placeholder="Enter Reference No" className="form-input" disabled value={'12345678'} />
+                        <input id="refno" type="text" placeholder="Enter Reference No" className="form-input" disabled value={addData?.id} />
                     </div>
                     <div className="mb-5">
                         <label htmlFor="passport_number">Passport No</label>
-                        <input id="passport_number" type="text" placeholder="Enter Passport No" className="form-input" disabled value={'PS12L458'} />
+                        <input id="passport_number" type="text" placeholder="Enter Passport No" className="form-input" disabled value={addData?.passport_number} />
                     </div>
                 </div>
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -98,7 +99,7 @@ const ListVisaApplicationListLine: React.FC<ListVisaApplicationListLineProps> = 
                             <input
                                 id={`passport_${index + 1}`}
                                 type="text"
-                                value={passports[index] || ''}
+                                value={passports?.[index] || ''}
                                 placeholder={`Enter Passport ${index + 1}`}
                                 className="form-input"
                                 onChange={(e) => handleInputChangeMultiple(e, index)}

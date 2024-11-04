@@ -91,7 +91,10 @@ const TableLayout: React.FC<TableLayoutProps> = ({
 
     const [file, setFile] = useState<File | null>(null);
 
-    const { data: oneVisaApplicantsGroup } = useGetOneVisaApplicantGroupQuery(addData?.group_id);
+    const { data: oneVisaApplicantsGroup } = useGetOneVisaApplicantGroupQuery(encodeURIComponent(addData?.group_id), {
+        skip: !addData?.group_id,
+    });
+
     const { data: visaRequirements } = useGetVisaRequirementsQuery({
         countryId: String(addData?.country?.id),
         visaTypeId: String(addData?.visa_type?.id),
@@ -304,7 +307,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         setAddData({ ...addData, ...track });
         setIsOpenTrack(false);
         setTrack({ url: '', other: '' });
-
+        console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup);
         if (oneVisaApplicantsGroup) {
             const updatedData = {
                 ...oneVisaApplicantsGroup,

@@ -2,7 +2,7 @@ import { generateURLWithPagination } from '@/utils/rtk-http';
 import { apiSlice } from './apiSlice';
 
 export const mailSlice = apiSlice.injectEndpoints({
-    overrideExisting: (module as any).hot?.status() === 'apply', // dev env, That is probably due to hot module reloading reloading the file when you apply changes to it.
+    overrideExisting: (module as any).hot?.status() === 'apply', // dev env, That is probably due to hot module reloading  the file when you apply changes to it.
     endpoints: (build) => ({
         createMail: build.mutation({
             query: ({ body }) => {

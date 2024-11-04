@@ -2,6 +2,7 @@ import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import PaginationTable from '@/components/Reusable/Table/PaginationTable';
 import IconX from '@/components/icon/icon-x';
 import ComponentsFormDatePickerBasic from '@/components/lead-management/lead-manage/components-form-date-picker-basic';
+import ComponentsFormDateAndTimePicker from '@/components/lead-management/lead-manage/components-from-date-and-time-picker';
 import { User } from '@/entities/user.entity';
 import { useGetVisaStatusesQuery } from '@/services/api/cms/visaStatusSlice';
 import { selectUser } from '@/store/user.store';
@@ -20,7 +21,7 @@ interface ManageVisaActionModalProps {
     applicantDetails?: any;
     setApplicantDetails?: any;
     addData: any;
-    paramId:any;
+    paramId: any;
 }
 
 const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
@@ -35,7 +36,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
     applicantDetails,
     setApplicantDetails,
     addData,
-    paramId
+    paramId,
 }) => {
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
     const [userNote, setUserNote] = useState<any>(''); // Add state for the textarea
@@ -61,9 +62,6 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
         if ((addData?.visa_applicants == null || addData?.visa_applicants.length > 0) && addData?.visa_status) {
             setAddUser({ ...addUser, visa_status: addData.visa_status || addData.visa_status.id });
         }
-
-
-        
     }, [addData?.visa_status]);
 
     useEffect(() => {
@@ -250,18 +248,20 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                                 <option value="Male">Male</option>
                             </select>
                         </div>
-                       { paramId && <div className="dropdown">
-                            <label htmlFor="visa_status">Visa Status</label>
-                            <select className="form-input" defaultValue="" id="visa_status" onChange={(e) => handleInputChange(e)} value={addUser?.visa_status}>
-                                <option value="" disabled={true}>
-                                    Select Status
-                                </option>
+                        {paramId && (
+                            <div className="dropdown">
+                                <label htmlFor="visa_status">Visa Status</label>
+                                <select className="form-input" defaultValue="" id="visa_status" onChange={(e) => handleInputChange(e)} value={addUser?.visa_status?.id || addUser?.visa_status}>
+                                    <option value="" disabled={true}>
+                                        Select Status
+                                    </option>
 
-                                {visaStatuses?.items?.map((status: any) => (
-                                    <option value={status.id}>{status.name}</option>
-                                ))}
-                            </select>
-                        </div>}
+                                    {visaStatuses?.items?.map((status: any) => (
+                                        <option value={status.id}>{status.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
                     </div>
                     <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         {isCourier && (
@@ -280,7 +280,9 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                     {(addUser?.visa_status == '54' || isDocPickUp) && (
                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                             <div className="mb-5">
-                                <ComponentsFormDatePickerBasic label="Document pickup Date" id={'doc_pickup_date'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
+                                <ComponentsFormDateAndTimePicker label="Document pickup Date" id={'doc_pickup_date'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
+
+                                {/* <ComponentsFormDatePickerBasic label="Document pickup Date" id={'doc_pickup_date'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} /> */}
                             </div>
                             <div className="mb-5">
                                 <label htmlFor="doc_pickup_remark">Document PickUp Remarks</label>
@@ -296,14 +298,36 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                         </div>
                     )}
 
+                    {isEdit && (
+                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                            <>
+                                <div className="mb-5">
+                                    <ComponentsFormDateAndTimePicker
+                                        label="OutScan to Embassy"
+                                        id={'outscan_to_embassy_date'}
+                                        isEdit={isEdit}
+                                        setAddData={setAddUser}
+                                        addData={addUser}
+                                        updateUser={true}
+                                    />
+                                </div>
+
+                                <div className="mb-5">
+                                    <ComponentsFormDateAndTimePicker
+                                        label="In Scan from Embassy"
+                                        id={'inscan_from_embassy_date'}
+                                        isEdit={isEdit}
+                                        setAddData={setAddUser}
+                                        addData={addUser}
+                                        updateUser={true}
+                                    />
+                                </div>
+                            </>
+                        </div>
+                    )}
+
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <>
-                            {isOutScan && (
-                                <div className="mb-5">
-                                    <ComponentsFormDatePickerBasic label="OutScan to Embassy" id={'outscan_to_embassy_date'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
-                                </div>
-                            )}
-
                             {isSubmit && (
                                 <div className="dropdown">
                                     <label htmlFor="where_submitted">Where Submitted</label>
@@ -312,19 +336,9 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                                             Select Option
                                         </option>
                                         <option value="vfs bangalore">VFS Bangalore</option>;<option value="vfs mumbai">VFS Mumbai</option>;<option value="vfs kolkata">VFS Kolkata</option>;
-                                        <option value="vfs Hyderabad">VFS Hyderabad</option>;<option value="vfs dehli">VFS Dehli</option>;<option value="online">Online</option>;
+                                        <option value="vfs Hyderabad">VFS Hyderabad</option>;<option value="vfs dehli">VFS Dehli</option>;<option value="online">Online </option>;
                                         <option value="vendor">Vendor</option>;
                                     </select>
-                                </div>
-                            )}
-                        </>
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        <>
-                            {isInScan && (
-                                <div className="mb-5">
-                                    <ComponentsFormDatePickerBasic label="In Scan from Embassy" id={'inscan_from_embassy_date'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
                                 </div>
                             )}
                         </>

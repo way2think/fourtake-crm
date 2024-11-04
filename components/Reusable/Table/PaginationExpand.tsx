@@ -61,7 +61,9 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
     const [isOpenTrack, setIsOpenTrack] = useState(false);
     const [addData, setAddData] = useState<any>();
 
-    const { data: oneVisaApplicantsGroup } = useGetOneVisaApplicantGroupQuery(addData?.group_id);
+    const { data: oneVisaApplicantsGroup } = useGetOneVisaApplicantGroupQuery(encodeURIComponent(addData?.group_id), {
+        skip: !addData?.group_id,
+    });
 
     const [updateVisaApplicant, {}] = useUpdateVisaApplicantGroupMutation();
 
