@@ -9,11 +9,12 @@ import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import type { Country as CountryEntity } from '@/entities/country.entity';
 import { usePaginationOptions } from '@/hooks/usePaginationOptions';
+import LoadingSpinner from '@/components/Reusable/LoadingSpinner/LoadingSpinner';
 
 const Country: React.FC = () => {
-    const [createCountry, {}] = useCreateCountryMutation();
-    const [updateCountry, {}] = useUpdateCountryMutation();
-    const [deleteCountry, {}] = useDeleteCountryMutation();
+    const [createCountry, { isLoading: isCreateLoading }] = useCreateCountryMutation();
+    const [updateCountry, { isLoading: isUpdateLoading }] = useUpdateCountryMutation();
+    const [deleteCountry, { isLoading: isDeleteLoading }] = useDeleteCountryMutation();
 
     const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
@@ -39,7 +40,6 @@ const Country: React.FC = () => {
             apiObjectRef: countrySlice,
             endpoint: 'getCountries',
         });
-
 
     const handleSubmit = async (value: CountryEntity) => {
         if (value.name === '' || value.name == null) {
@@ -71,6 +71,8 @@ const Country: React.FC = () => {
 
     return (
         <>
+            {(isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
+
             <TableLayout
                 title="Country"
                 filterby="name"

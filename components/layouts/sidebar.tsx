@@ -313,7 +313,7 @@ const Sidebar = () => {
                                                 <Link href="/visa-status">Visa Status</Link>
                                             </li>
                                             <li>
-                                                <Link href="/country-visa-urls">Country Visa urls</Link>
+                                                <Link href="/country-visa-urls">Country Visa Urls</Link>
                                             </li>
                                         </ul>
                                     </AnimateHeight>

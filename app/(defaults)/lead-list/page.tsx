@@ -4,15 +4,7 @@ import LeadManagement from '@/components/lead-management/lead-manage/LeadManagem
 export const metadata: Metadata = {
     title: 'Lead List',
 };
-// const getServerData = async () => {
-//     return await getData({ endpoint: 'http://localhost:5001/center' });
-// };
-const LeadList = () => {
-    return (
-        // <Suspense fallback={<p>Loading...</p>}>
-        <LeadManagement />
-        // </Suspense>
-    );
-};
+
+const LeadList = () => <LeadManagement />;
 
 export default LeadList;
