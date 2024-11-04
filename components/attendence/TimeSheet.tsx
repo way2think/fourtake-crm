@@ -1,7 +1,7 @@
 import React from 'react'
 import classes from "./TimeAttendence.module.css"
 import ComponentsFormDatePickerRange from '../Reusable/range/components-form-date-picker-range'
-import ComponentsAppsCalendar from './components-apps-calendar'
+
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import UserList from '../user-management/UserList';
@@ -60,7 +60,6 @@ function TimeSheet() {
                 </div>
 
             </div>
-            {/* <ComponentsAppsCalendar /> */}
             <ListAttendanceTable />
 
         </div>
