@@ -26,10 +26,10 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
     // const { data: visaChecklistData } = useGetVisaChecklistQuery({ page: 0, limit: 0 });
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
     const fileInputRef = useRef<HTMLInputElement>(null);
-    // console.log('visaChecklist data', visaChecklistData?.items);
+    console.log('visaChecklist data', visaChecklistData);
 
     const { data: visaRequirements } = useGetVisaRequirementsQuery({
-        countryId: String(addData?.country?.id) || String(addData?.countryId),
+        countryId: String(addData?.destination_country?.id) || String(addData?.destination_country),
         visaTypeId: String(addData?.visa_type?.id) || String(addData?.visaTypeId),
         stateOfResidence: addData?.state_of_residence || String(addData?.stateOfResidence),
     });

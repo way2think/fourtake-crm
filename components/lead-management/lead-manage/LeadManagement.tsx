@@ -24,6 +24,7 @@ const LeadManagement: React.FC = () => {
     const { items = [], meta = {} } = leads || {};
 
     const { data: visachecklist } = useGetVisaChecklistQuery({ page: 0, limit: 0 });
+    console.log("visaChecklist",visachecklist)
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
