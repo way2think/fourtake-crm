@@ -110,8 +110,9 @@ export const { handlers, auth, signIn } = NextAuth({
 
             return token;
         },
-        async session({ session, token }) {
+        async session({ session, token }: any) {
             // console.log('token-sess', session, token);
+
             session.user.accessToken = token.accessToken;
 
             // const decodedToken = jwtDecode(token.accessToken as string) as JwtPayload;

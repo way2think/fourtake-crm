@@ -113,7 +113,7 @@ const DeletedApplication = () => {
 
     const handleRestoreApplicant = (applicant: any) => {
         console.log('restoring applicant', applicant);
-    
+
         if (applicant.id && applicant.is_group) {
             handleUpdate({
                 updateMutation: restoreApplicant,
