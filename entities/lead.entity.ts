@@ -4,6 +4,7 @@ export interface Lead {
     name: string;
     email: string;
     phone: string;
+    country?: any; // added for build error
     other_phone: string;
     destination_country: string;
     visa_type: string;

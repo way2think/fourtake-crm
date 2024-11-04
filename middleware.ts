@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { jwtDecode } from 'jwt-decode';
 import { isAccessDenied, normalizePathname, roleAccessMap } from './utils';
+import { SessionAuth } from './types/auth';
 
 export async function middleware(request: NextRequest, response: NextResponse) {
-    const session = await auth();
+    const session: SessionAuth | null = await auth();
 
     // console.log('sess', session);
     const { pathname } = request.nextUrl;

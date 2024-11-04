@@ -15,9 +15,9 @@ import { showMessage } from '@/utils/notification';
 import { isValidPhoneNumber } from '@/utils/validator';
 
 const ListAttendanceTable: React.FC = () => {
-    const [createLead, { }] = useCreateLeadMutation();
-    const [updateLead, { }] = useUpdateLeadMutation();
-    const [deleteLead, { }] = useDeleteLeadMutation();
+    const [createLead, {}] = useCreateLeadMutation();
+    const [updateLead, {}] = useUpdateLeadMutation();
+    const [deleteLead, {}] = useDeleteLeadMutation();
 
     const { page, limit, sortField, sortOrder, search, filter, setFilter, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
@@ -89,7 +89,6 @@ const ListAttendanceTable: React.FC = () => {
             // },
         },
         { accessor: 'totalhour', textAlign: 'left', title: 'Total Hour' },
-
     ];
 
     const handleDeleteLead = (lead: Lead) =>
@@ -121,7 +120,7 @@ const ListAttendanceTable: React.FC = () => {
             }
         }
 
-        if (value.country == null || value.country == '') {
+        if (value?.country == null || value?.country == '') {
             showMessage('Select Country', 'error');
             return false;
         }
@@ -149,7 +148,6 @@ const ListAttendanceTable: React.FC = () => {
         if (value.service_type == null || value.service_type == '') {
             showMessage('Select Service Type', 'error');
         }
-
 
         let service_code;
 
@@ -188,7 +186,7 @@ const ListAttendanceTable: React.FC = () => {
 
     return (
         <>
-            <div className='mt-5'>
+            <div className="mt-5">
                 <TableLayout
                     title="Time Sheet"
                     filterby="country"
