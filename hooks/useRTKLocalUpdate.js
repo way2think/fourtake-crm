@@ -21,6 +21,7 @@ const useRTKLocalUpdate = () => {
 
                     if (isArray) {
                         const index = draft.findIndex((item) => item.id === updateReceipe.id);
+                        console.log('index in rtk', index);
                         if (index !== -1) {
                             draft[index] = updateReceipe;
                         }

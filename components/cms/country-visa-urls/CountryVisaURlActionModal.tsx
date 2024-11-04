@@ -9,7 +9,7 @@ interface CountryVisaUrlActionModalProps {
     handleSave: any;
     addData?: any;
     handleInputChange: any;
-    setAddData: any;
+    setAddData?: any;
 }
 const CountryVisaUrlActionModal: React.FC<CountryVisaUrlActionModalProps> = ({ isOpen, setAddData, handleInputChange, setIsOpen, handleSave, addData }) => {
     const { data: countries, isFetching, isLoading } = useGetCountriesQuery({ page: 0, limit: 0 });
@@ -33,7 +33,7 @@ const CountryVisaUrlActionModal: React.FC<CountryVisaUrlActionModalProps> = ({ i
                 </div>
 
                 <div className="p-5">
-                    <SearchableDropdown addData={addData} setAddData={setAddData} />
+                    <SearchableDropdown addData={addData} setAddData={setAddData} heading ="Country" />
                     {/* <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="dropdown mb-5">
                             <label htmlFor="country">Country</label>

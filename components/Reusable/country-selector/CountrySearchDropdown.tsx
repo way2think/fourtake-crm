@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '@/components/Reusable/country-selector/CountrySearchDropdown.css';
-import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
 
 interface Option {
     id: number | string;
@@ -8,16 +7,16 @@ interface Option {
 }
 
 interface SearchableDropdownProps {
-    // options: Option[];
     addData: any;
     setAddData: any;
     handleEmbassyChange?: any;
+    items?: any; // Update this to match the correct type
+    setVisaTypes?: any;
+    title?: any;
+    heading: string;
 }
 
-const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, setAddData, handleEmbassyChange }) => {
-    const { data: countries, isLoading, isFetching } = useGetCountriesQuery({ page: 0, limit: 0 });
-    const { items = [], meta = {} } = countries || {};
-
+const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, setAddData, handleEmbassyChange, items, setVisaTypes, title, heading }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [filteredOptions, setFilteredOptions] = useState<Option[]>(items);
@@ -38,15 +37,42 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
 
     useEffect(() => {
         // Initialize searchTerm with the name of the selected country (if any)
-        const selectedCountry = items.find((option: Option) => option.id === addData?.country?.id);
+        const selectedCountry = items?.find((option: Option) => option.id == (addData?.destination_country?.id || addData?.destination_country));
         if (selectedCountry) {
             setSearchTerm(selectedCountry.name);
+
+            const index = items.findIndex((cv: any) => cv.id == (addData?.destination_country?.id || addData?.destination_country));
+            if (setVisaTypes !== undefined) {
+    
+                setVisaTypes(items[index].country_visa_types);
+            }
         }
-    }, [addData.country, items]);
+    }, [addData?.destination_country, items]);
 
     useEffect(() => {
-        if (searchTerm) {
-            setFilteredOptions(items.filter((option: Option) => option.name.toLowerCase().includes(searchTerm.toLowerCase())));
+        // Initialize searchTerm with the name of the selected country (if any)
+        const selectedCountry = items?.find((option: Option) => option.id === (addData?.[title]?.id || addData?.[title]));
+
+        if (selectedCountry) {
+            setSearchTerm(selectedCountry.name);
+
+            // const index = items.findIndex((cv: any) => cv.id == addData?.country?.id);
+            // if (setVisaTypes !== undefined) {
+            //     console.log('visaTypes', setVisaTypes);
+            //     setVisaTypes(items[index].country_visa_types);
+            // }
+        }
+    }, [addData?.[title], items]);
+
+    // useEffect(() => {
+    //     if (title) {
+    //         setSearchTerm(addData[title]);
+    //     }
+    // }, [addData]);
+
+    useEffect(() => {
+        if (searchTerm && items) {
+            setFilteredOptions(items?.filter((option: Option) => option.name.toLowerCase().includes(searchTerm.toLowerCase())));
         } else {
             setFilteredOptions(items);
         }
@@ -54,13 +80,28 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
-        setAddData({ ...addData, country: '' }); // Clear selected country when typing
+        if (title == 'destination_country') {
+            setAddData({ ...addData, destination_country: '' });
+        } else {
+            setAddData({ ...addData, destination_country: '' }); // Clear selected country when typing
+        }
+
         setIsOpen(true);
     };
 
     const handleOptionClick = (option: Option) => {
+        const index = items.findIndex((cv: any) => cv.id == option.id);
+        if (setVisaTypes !== undefined) {
+         
+            setVisaTypes(items[index].country_visa_types);
+        }
         setSearchTerm(option.name);
-        setAddData({ ...addData, country: option.id });
+        if (title == 'destination_country') {
+            setAddData({ ...addData, destination_country: option.id });
+        } else {
+            setAddData({ ...addData, [title]: option.id });
+        }
+
         setIsOpen(false);
         if (handleEmbassyChange) {
             handleEmbassyChange(option);
@@ -74,12 +115,17 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
 
     return (
         <div className="searchable-dropdown" ref={dropdownRef}>
-            <label htmlFor="country">Countries*</label>
+            <label htmlFor="country">{heading}*</label>
             <input type="text" className="form-input" value={searchTerm} onChange={handleSearchChange} onClick={handleInputClick} placeholder="Select Country" />
             {isOpen && (
                 <ul className="options-list list-group m-3">
-                    {filteredOptions.map((option) => (
-                        <li key={option.id} onClick={() => handleOptionClick(option)}>
+                    {filteredOptions?.map((option) => (
+                        <li
+                            key={option.id}
+                            onClick={() => {
+                                handleOptionClick(option);
+                            }}
+                        >
                             {option.name}
                         </li>
                     ))}

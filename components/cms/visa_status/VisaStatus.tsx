@@ -27,6 +27,14 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
         { accessor: 'id', textAlign: 'left', title: 'ID' },
         { accessor: 'name', textAlign: 'left', title: 'Visa Status' },
         { accessor: 'type', textAlign: 'left', title: 'Status Type' },
+        {
+            accessor: 'is_active',
+            textAlign: 'left',
+            title: 'Is Active',
+            render: (row: any) => {
+                return row.is_active ? 'Yes' : 'No';
+            },
+        },
     ];
 
     const handleDeleteVisaStatus = (visastatus: VisaStatus) =>

@@ -5,13 +5,34 @@ import { IRootState } from '@/store';
 import { toggleRTL, toggleTheme, toggleMenu, toggleLayout, toggleAnimation, toggleNavbar, toggleSemidark } from '@/store/theme.store';
 import Loading from '@/components/layouts/loading';
 import { getTranslation } from '@/i18n';
+import { useSession } from 'next-auth/react';
+import { useLazyGetCurrentUserQuery } from './services/api/userSlice';
+import { setCurrentUser } from './store/user.store';
 
 function App({ children }: PropsWithChildren) {
-    
-    const themeConfig = useSelector((state: IRootState) => state.themeConfig);
     const dispatch = useDispatch();
+
+    const themeConfig = useSelector((state: IRootState) => state.themeConfig);
+
     const { initLocale } = getTranslation();
     const [isLoading, setIsLoading] = useState(true);
+    const { data, status, update } = useSession();
+
+    const [getCurrentUser, { isError, isFetching, isLoading: isGetCurrentUserLoading, error, data: currentUser, isSuccess }] = useLazyGetCurrentUserQuery();
+
+    useEffect(() => {
+        const userId = data?.user?.id;
+        if (userId && status === 'authenticated') {
+            // console.log('id:', userId);
+            getCurrentUser(userId);
+        }
+    }, [data?.user?.id, getCurrentUser, status]);
+
+    useEffect(() => {
+        if (isSuccess && currentUser) {
+            dispatch(setCurrentUser(currentUser));
+        }
+    }, [currentUser, dispatch, isSuccess]);
 
     useEffect(() => {
         dispatch(toggleTheme(localStorage.getItem('theme') || themeConfig.theme));
@@ -26,6 +47,8 @@ function App({ children }: PropsWithChildren) {
 
         setIsLoading(false);
     }, [dispatch, initLocale, themeConfig.theme, themeConfig.menu, themeConfig.layout, themeConfig.rtlClass, themeConfig.animation, themeConfig.navbar, themeConfig.locale, themeConfig.semidark]);
+
+    // const checkSessionToken = async () => {};
 
     return (
         <div

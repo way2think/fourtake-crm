@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Select, { components, StylesConfig } from 'react-select';
 
 interface OptionType {
@@ -12,12 +12,42 @@ interface ComponentsFormsSelectMultiselectProps {
     setAddData: any;
     id: string;
     addData: any;
+    resetTrigger?: any;
 }
 
-const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselectProps> = ({ options, addData, setAddData, id }) => {
+const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselectProps> = ({ options, addData, setAddData, id, resetTrigger }) => {
     const [selectedOptions, setSelectedOptions] = useState<OptionType[]>([]);
+    const [isFirstRender, setIsFirstRender] = useState(true);
+    const isInitialMount = useRef(true);
 
-    console.log('addData', addData.jurisdiction);
+    useEffect(() => {
+        setSelectedOptions([]);
+        setAddData((prev: any) => ({ ...prev, [id]: [] }));
+    }, [resetTrigger]);
+
+    // useEffect(() => {
+    //     if (id == 'status_apply_to' && isFirstRender) {
+    //         const defaultSelectedOptions = options; // Select all options by default
+    //         setSelectedOptions(defaultSelectedOptions);
+
+    //         const getValue = options.map((item: any) => item.value).join(', ');
+    //         setAddData((prev: any) => ({ ...prev, [id]: getValue }));
+    //         setIsFirstRender(false);
+    //     }
+    // }, [options, id, setAddData, isFirstRender]);
+
+    useEffect(() => {
+        if (isInitialMount.current && id === 'status_apply_to' && options.length > 0) {
+            const defaultSelectedOptions = options; // Select all options by default
+            setSelectedOptions(defaultSelectedOptions);
+
+            const getValue = options.map((item:any) => item.value).join(', ');
+            setAddData((prev: any) => ({ ...prev, [id]: getValue }));
+
+            isInitialMount.current = false; // Mark the initial load as done
+        }
+    }, [options, id, setAddData]);
+
     console.log('selectedOptions', selectedOptions);
 
     // useEffect(() => {
@@ -41,6 +71,11 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
             setSelectedOptions([]);
         }
     }, []);
+
+    useEffect(() => {
+        setSelectedOptions([]);
+        setAddData((prev: any) => ({ ...prev, [id]: [] }));
+    }, [resetTrigger]);
 
     const handleChange = (selected: any) => {
         console.log('selected options', selected);

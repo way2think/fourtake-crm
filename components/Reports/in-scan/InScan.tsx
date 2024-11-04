@@ -32,10 +32,28 @@ const InScan: React.FC<{ inscanlistdata: any }> = ({ inscanlistdata }) => {
     //     },
     // ];
 
+  
+
     const tableColumns = [
-        { accessor: 'id', textAlign: 'left', title: 'S.NO' },
-        { accessor: 'consultantname', textAlign: 'left', title: 'Consultant Name' },
-        { accessor: 'noofapplicant', textAlign: 'left', title: 'No of applicant' },
+        { accessor: 'id', textAlign: 'left', title: 'Refno' },
+        { accessor: 'apply_date', textAlign: 'left', title: 'Apply Date' },
+        {
+            accessor: 'name',
+            textAlign: 'left',
+            title: 'Applicant Name',
+            render: (row: any) => {
+                return `${row?.first_name} ${row?.last_name}`;
+            },
+        },
+        {
+            accessor: 'consultantname',
+            textAlign: 'left',
+            title: 'Consultant Name',
+            render: (row: any) => {
+                return row?.assigned_to?.username;
+            },
+        },
+        // { accessor: 'noofapplicant', textAlign: 'left', title: 'No of applicant' },
         { accessor: 'visafee', textAlign: 'left', title: 'Visa Fee' },
         { accessor: 'vfsothers', textAlign: 'left', title: 'VFs/Others' },
         { accessor: 'charges', textAlign: 'left', title: 'H/C - handling charges' },
@@ -70,19 +88,19 @@ const InScan: React.FC<{ inscanlistdata: any }> = ({ inscanlistdata }) => {
             return formData;
         }
     };
-    const handleDelete = (row: any) => {
-        Swal.fire({
+    const handleDelete = async (row: any) => {
+        await Swal.fire({
             icon: 'warning',
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
             showCancelButton: true,
             confirmButtonText: 'Delete',
             padding: '2em',
-            customClass: 'sweet-alerts',
-        }).then((result) => {
+            customClass: { popup: 'sweet-alerts' },
+        }).then(async (result) => {
             if (result.value) {
                 setData(data.filter((item: any) => item.id !== row.id));
-                Swal.fire({ title: 'Deleted!', text: 'Your file has been deleted.', icon: 'success', customClass: 'sweet-alerts' });
+                await Swal.fire({ title: 'Deleted!', text: 'Your file has been deleted.', icon: 'success', customClass: { popup: 'sweet-alerts' } });
                 return true;
             }
         });

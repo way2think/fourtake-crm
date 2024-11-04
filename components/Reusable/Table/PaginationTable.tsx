@@ -18,7 +18,7 @@ import { PaginationMeta } from '@/types/pagination';
 
 interface PaginationTableProps {
     title?: string;
-    data: any[];
+    data?: any;
     meta?: PaginationMeta;
     tableColumns: any[];
     actionhide?: boolean;
@@ -30,6 +30,7 @@ interface PaginationTableProps {
     handleTracking?: (row: any) => void;
     setPage?: Function;
     setLimit?: Function;
+    handleDocChecklist?: Function;
 }
 
 interface Row {
@@ -50,13 +51,15 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
     handleListLine,
     setPage: updatePage,
     setLimit: updatePageLimit,
+    handleDocChecklist,
 }) => {
     const PAGE_SIZES = [10, 15, 20];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
     const [page, setPage] = useState(meta?.currentPage || 1);
 
     const paginationPages = usePagination(meta ? { currentPage: page, pageSize: meta?.itemsPerPage, totalCount: meta?.totalItems } : { currentPage: 1, pageSize: 10, totalCount: 1 }); // to generate page numbers
-    // console.log('meta: ', meta, data);
+
+    // console.log('paginationPages: ', paginationPages, meta?.totalItems);
 
     // const totalPages = useMemo(() => Math.ceil(data.length / pageSize), [data.length, pageSize]);
     const totalPages = 100;
@@ -95,41 +98,38 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                             </>
                         ) : (
                             <>
-                                <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
-                                    <IconEdit size={16} />
-                                </ActionIcon>
-                                {title !== 'dashboard' && title !== 'Country Visa Types' && (
-                                    <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
-                                        <IconTrash size={16} />
+                                {title !== 'Deleted Visa Application' && (
+                                    <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
+                                        <IconEdit size={16} />
                                     </ActionIcon>
                                 )}
+
                                 {title === 'List Visa Application' && (
                                     <>
-                                        <ActionIcon
-                                            size="sm"
-                                            variant="subtle"
-                                            color="red"
-                                            //  onClick={() => handleDelete?.(row)}
-                                        >
+                                        <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDocChecklist?.(row)}>
                                             <IconTxtFile className={`size:"16"`} />
                                         </ActionIcon>
 
-                                        <ActionIcon
-                                            size="sm"
-                                            variant="subtle"
-                                            color="red"
-                                            //  onClick={() => handleDelete?.(row)}
-                                        >
-                                            <IconVerify />
-                                        </ActionIcon>
-                                        <ActionIcon
-                                            size="sm"
-                                            variant="subtle"
-                                            color="red"
-                                            //  onClick={() => handleDelete?.(row)}
-                                        >
-                                            <IconUnVerified />
-                                        </ActionIcon>
+                                        {row.visa_status === 'verified' && (
+                                            <ActionIcon
+                                                size="sm"
+                                                variant="subtle"
+                                                color="red"
+                                                //  onClick={() => handleDelete?.(row)}
+                                            >
+                                                <IconVerify />
+                                            </ActionIcon>
+                                        )}
+                                        {row.visa_status === 'unverified' && (
+                                            <ActionIcon
+                                                size="sm"
+                                                variant="subtle"
+                                                color="red"
+                                                //  onClick={() => handleDelete?.(row)}
+                                            >
+                                                <IconUnVerified />
+                                            </ActionIcon>
+                                        )}
                                         <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleListLine?.(row)}>
                                             <IconList title="Multiple Passport" />
                                         </ActionIcon>
@@ -137,6 +137,17 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                             <IconTrendingUp title="Application Tracking" />
                                         </ActionIcon>
                                     </>
+                                )}
+                                {title !== 'dashboard' && title !== 'Country Visa Types' && title !== 'Deleted Visa Application' && (
+                                    <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
+                                        <IconTrash size={16} />
+                                    </ActionIcon>
+                                )}
+
+                                {title === 'Deleted Visa Application' && (
+                                    <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleRestore?.(row)}>
+                                        <IconRestore size={16} />
+                                    </ActionIcon>
                                 )}
                             </>
                         )}
@@ -156,7 +167,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
     };
 
     const handlePageSizeChange = (size: number) => {
-        const newTotalPages = Math.ceil((meta ? meta?.totalItems : data.length) / size);
+        const newTotalPages = Math.ceil((meta?.totalItems ?? data?.length ?? 0) / size);
         if (page > newTotalPages) {
             setPage(newTotalPages);
             if (updatePage) {
@@ -168,6 +179,8 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
             updatePageLimit(size);
         }
     };
+
+    const lastPage = paginationPages?.[paginationPages.length - 1] ?? null;
 
     // const renderPageNumbers = () => {
     //     const pageNumbers = [];
@@ -220,7 +233,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((row, rowIndex) => (
+                        {data?.map((row: any, rowIndex: any) => (
                             <tr key={rowIndex}>
                                 {columns.map((column, colIndex) => (
                                     <td key={colIndex}>{column.render ? column.render(row) : row[column.accessor]}</td>
@@ -233,10 +246,10 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', paddingLeft: '10px' }}>
                 <select className="table-number-dropdwon" value={pageSize} onChange={(e) => handlePageSizeChange(Number(e.target.value))}>
                     <option value={10}>10</option>
-                    <option value={15} disabled={data.length < 10}>
+                    <option value={15} disabled={data?.length < 10}>
                         15
                     </option>
-                    <option value={20} disabled={data.length < 15}>
+                    <option value={20} disabled={data?.length < 15}>
                         20
                     </option>
                 </select>
@@ -255,7 +268,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                     {paginationPages?.map((page) => (
                         <button
                             key={page}
-                            onClick={() => handlePageChange(page)}
+                            onClick={page !== '...' ? () => handlePageChange(page) : undefined}
                             style={{
                                 marginRight: '8px',
                                 backgroundColor: meta?.currentPage === page ? '#ddd' : '#fff',
@@ -267,16 +280,19 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                             {page}
                         </button>
                     ))}
-                    <button
-                        onClick={() => handlePageChange(page + 1)}
-                        disabled={page === totalPages}
-                        style={{
-                            marginRight: '8px',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        <IconCaretDown className="-rotate-90 rtl:rotate-90" size={16} />
-                    </button>
+
+                    {
+                        <button
+                            onClick={page === lastPage ? undefined : () => handlePageChange(page + 1)}
+                            disabled={page === totalPages}
+                            style={{
+                                marginRight: '8px',
+                                cursor: 'pointer',
+                            }}
+                        >
+                            <IconCaretDown className="-rotate-90 rtl:rotate-90" size={16} />
+                        </button>
+                    }
                 </div>
             </div>
         </div>

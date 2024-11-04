@@ -1,72 +1,91 @@
 'use client';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import IconSearch from '../icon/icon-search';
-import ComponentsFormDatePickerBasic from '../lead-management/lead-manage/components-form-date-picker-basic';
+import { useEffect, useState } from 'react';
+import ComponentsFormDatePickerRange from '../lead-management/lead-manage/components-form-date-picker-range';
+import { useGetAllEmployeesQuery, useGetUsersQuery } from '@/services/api/userSlice';
+import { useGetCountriesQuery } from '@/services/api/cms/countrySlice';
+import { useGetLeadsQuery, useLazyGetLeadsQuery } from '@/services/api/leadSlice';
+import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 
 interface FiltersettingProps {
     showCustomizer: any;
     setShowCustomizer: any;
     setFilterItem: any;
     data: any;
-    setFilterTitle?:any;
+    setFilterTitle?: any;
 }
 
-const Filtersetting: React.FC<FiltersettingProps> = ({ data, showCustomizer, setFilterTitle,setFilterItem, setShowCustomizer }) => {
+const Filtersetting: React.FC<FiltersettingProps> = ({ data, showCustomizer, setFilterTitle, setFilterItem, setShowCustomizer }) => {
     // State for all form fields
-    // const [startDate, setStartDate] = useState(null);
-    // const [endDate, setEndDate] = useState(null);
-    // const [followUp, setFollowUp] = useState('');
-    // const [country, setCountry] = useState('');
+    const [country, setCountry] = useState('');
     const [leadStatus, setLeadStatus] = useState('');
     const [leadStage, setLeadStage] = useState('');
     const [priority, setPriority] = useState('');
     const [user, setUser] = useState('');
     const [source, setSource] = useState('');
+    const [dateFilter, setDateFilter] = useState<any>();
+    const [filterFetch, setFilterFetch] = useState(false);
+    const [addData, setAddData] = useState("");
+
+    console.log('addData,dateFilter', addData, dateFilter);
+
+    // const { data: employeelist } = useGetAllEmployeesQuery({ page: 0, limit: 0 });
+    const { data: assigneeList } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'employee, admin' });
+    const { data: countries } = useGetCountriesQuery({ page: 0, limit: 0 });
+
+    const { page, limit, sortField, sortOrder, search, filter, setFilter, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
+    const [getLeadsByFilter, {}] = useLazyGetLeadsQuery();
+
+    // console.log('leads', leads);
+    console.log('filter options', country);
 
     // Handler to clear all fields
     const handleClear = () => {
-        // setStartDate(null);
-        // setEndDate(null);
-        // setFollowUp('');
-        // setCountry('');
         setLeadStatus('');
         setLeadStage('');
         setPriority('');
         setUser('');
         setSource('');
+        setCountry('');
         setFilterItem(data);
         setShowCustomizer(false);
-        setFilterTitle("Filter")
+        setFilterTitle('Filter');
+        setDateFilter('')
+        setAddData('')
     };
 
-    const handleFilter = () => {
-        let filteredData = data;
+    // useEffect(() => {
+    //     if (!isFetching && !isLoading && leads) {
+    //         setFilterItem(leads.items);
+    //     }
+    // }, [leads, isFetching, isLoading, setFilterItem]);
 
-        if (leadStage) {
-            filteredData = filteredData.filter((item: any) => item.stage === leadStage);
-        }
-        if (leadStatus) {
-            filteredData = filteredData.filter((item: any) => item.status === leadStatus);
-        }
-        if (priority) {
-            filteredData = filteredData.filter((item: any) => item.leadtype === priority);
-        }
-        if (user) {
-            filteredData = filteredData.filter((item: any) => item.assignee === user);
-        }
-        if (source) {
-            filteredData = filteredData.filter((item: any) => item.source === source);
-        }
-
-        setFilterItem(filteredData);
-        console.log('filter', filteredData);
+    const handleApplyFilter = async () => {
         setShowCustomizer(false);
+        setFilterFetch(true);
+        console.log('country id', country);
+        const result = await getLeadsByFilter({
+            page,
+            limit,
+            sortField,
+            sortOrder,
+            country: String(country),
+            status: leadStatus,
+            stage: leadStage,
+            priority,
+            assigned_to: user,
+            source,
+            fromDate: dateFilter?.split(' to ')[0],
+            toDate: dateFilter?.split(' to ')[1],
+        }).unwrap();
+
+        setFilterItem(result.items);
+
+        console.log('result', result);
     };
 
     return (
         <div>
             <div className={`${(showCustomizer && '!block') || ''} fixed inset-0 z-[51] hidden bg-[black]/60 px-4 transition-[display]`} onClick={() => setShowCustomizer(false)}></div>
-
             <nav
                 className={`${
                     (showCustomizer && 'ltr:!right-0 rtl:!left-0') || ''
@@ -79,6 +98,22 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ data, showCustomizer, set
                             <div className="text-right"></div>
                         </div>
 
+                        <div>
+                            <ComponentsFormDatePickerRange  title="lead filter" setDateFilter={setDateFilter} setAddData={setAddData} addData={addData}  />
+                        </div>
+
+                        <div className="dropdown">
+                            <label htmlFor="leadStatus">Filter Country</label>
+                            <select className="form-input" value={country} onChange={(e) => setCountry(e.target.value)}>
+                                <option value="">Select Country</option>
+                                {countries?.items.map((country: any) => (
+                                    <option key={country.id} value={country.id}>
+                                        {country.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
                         <div className="dropdown">
                             <label htmlFor="leadStatus">Filter Lead Status</label>
                             <select className="form-input" value={leadStatus} onChange={(e) => setLeadStatus(e.target.value)}>
@@ -86,7 +121,7 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ data, showCustomizer, set
                                 <option value="open">Open</option>
                                 <option value="In-progress">In-progress</option>
                                 <option value="Closed">Closed</option>
-                                <option value="Done ">Done </option>
+                                <option value="Done">Done</option>
                             </select>
                         </div>
                         <div className="dropdown">
@@ -113,11 +148,12 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ data, showCustomizer, set
                         <div className="dropdown">
                             <label htmlFor="user">Filter by Assignee</label>
                             <select className="form-input" value={user} onChange={(e) => setUser(e.target.value)}>
-                            <option value="">Select Assignee</option>
-                                <option value="Sanjay">Sanjay</option>
-                                <option value="buji">Bujji</option>
-                                <option value="raji">raji</option>
-                                <option value="santhosh">Santhosh</option>
+                                <option value="">Select Assignee</option>
+                                {assigneeList?.items?.map((item: any) => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.username}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div className="dropdown">
@@ -131,7 +167,7 @@ const Filtersetting: React.FC<FiltersettingProps> = ({ data, showCustomizer, set
                             </select>
                         </div>
                         <div className="mt-8 flex items-center justify-end">
-                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => handleFilter()}>
+                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={handleApplyFilter}>
                                 Apply
                             </button>
                             <button type="button" className="btn btn-outline-danger ltr:ml-4 rtl:mr-4" onClick={handleClear}>

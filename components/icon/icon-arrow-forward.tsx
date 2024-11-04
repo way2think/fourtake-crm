@@ -2,6 +2,7 @@ import { FC } from 'react';
 
 interface IconArrowForwardProps {
     className?: string;
+    size?: any;
 }
 
 const IconArrowForward: FC<IconArrowForwardProps> = ({ className }) => {

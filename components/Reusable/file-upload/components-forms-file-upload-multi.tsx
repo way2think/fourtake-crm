@@ -49,7 +49,7 @@ const ComponentsFormsFileUploadSingle: React.FC<ComponentsFormsFileUploadSingleP
         <div className="mb-5">
             <div className="custom-file-container" data-upload-id="myFirstImage">
                 <div className="label-container flex items-center justify-between">
-                    <label>Flag</label>
+                    <label>Image</label>
                     <button type="button" className="custom-file-container__image-clear text-2xl" title="Clear Image" onClick={clearImages}>
                         ×
                     </button>
@@ -81,7 +81,7 @@ const ComponentsFormsFileUploadSingle: React.FC<ComponentsFormsFileUploadSingleP
                                     </button>
                                 </div>
                             ))}
-                            {addData.image && !imageList.length && (
+                            {addData?.image && !imageList.length && (
                                 <div className="custom-file-container__image-preview relative">
                                     <img src={addData?.image} alt="img" className="w-50 !max-h-20 rounded object-cover shadow" />
                                     <button

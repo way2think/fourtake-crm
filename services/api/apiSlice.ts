@@ -1,11 +1,20 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getSession } from 'next-auth/react';
 
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.API_BASE_URL}`,
+        prepareHeaders: async (headers) => {
+            const session = await getSession();
+            // console.log('session-rtk', session);
+            if (session?.user?.accessToken) {
+                headers.set('Authorization', `Bearer ${session.user.accessToken}`);
+            }
+            return headers;
+        },
     }),
-    tagTypes: ['Country', 'VisaChecklist', 'CountryVisaType', 'EmbassyVfs', 'VisaType', 'VisaStatus', 'EntryType', 'CountryVisaUrl', 'Lead'],
+    tagTypes: ['User', 'Center', 'Country', 'VisaChecklist', 'CountryVisaType', 'EmbassyVfs', 'VisaType', 'VisaStatus', 'EntryType', 'CountryVisaUrl', 'Lead', 'Mail', 'visaProcess', 'Dashboard'],
     endpoints: (builder) => ({
         signUp: builder.mutation({
             query: (credentials) => ({
@@ -47,7 +56,15 @@ export const apiSlice = createApi({
                 body: { email },
             }),
         }),
+        logout: builder.mutation({
+            query: ({}) => {
+                return {
+                    url: '/auth/logout',
+                    method: 'GET',
+                };
+            },
+        }),
     }),
 });
 
-export const { useSigninWithEmailAndPasswordMutation, useSignUpMutation, useForgotPassWordMutation, useResendVerificationMutation } = apiSlice;
+export const { useLogoutMutation, useSigninWithEmailAndPasswordMutation, useSignUpMutation, useForgotPassWordMutation, useResendVerificationMutation } = apiSlice;

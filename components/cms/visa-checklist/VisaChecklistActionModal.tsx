@@ -7,6 +7,7 @@ import { useGetEmbassyVfsQuery } from '@/services/api/cms/embassyVfsSlice';
 import { useGetVisaTypesQuery } from '@/services/api/cms/visaTypeSlice';
 import { useEffect, useMemo, useState } from 'react';
 import SearchableDropdown from '../../Reusable/country-selector/CountrySearchDropdown';
+import { useGetCountryVisaTypesQuery } from '@/services/api/cms/countryVisaTypeSlice';
 
 interface VisaChecklistActionModalProps {
     isOpen: any;
@@ -21,19 +22,35 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
     const [embassyFilter, setEmbassyFilter] = useState<any>([]);
     const { data: countries, isLoading, isFetching } = useGetCountriesQuery({ page: 0, limit: 0 });
     const { items = [], meta = {} } = countries || {};
+    const [visaTypes, setVisaTypes] = useState([]);
     // const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 0 });
-
-    const { data: visatypes } = useGetVisaTypesQuery({ page: 0, limit: 0, sortField: 'id' });
     const { data: embassy } = useGetEmbassyVfsQuery({ page: 0, limit: 0 });
 
-    console.log('addData', addData);
+    const { data: countryVisaTypes } = useGetCountryVisaTypesQuery({ page: 0, limit: 0 });
+
     const embassyData = useMemo(() => {
         return embassy?.items?.map((item: any) => item.type === 'embassy' && item);
     }, [embassy]);
+    // console.log('countryVisaTypes.itmes', countryVisaTypes?.items);
 
     useEffect(() => {
-        if (addData?.country?.id) {
-            const filteredEmbassies = embassyData.filter((item: any) => item?.country?.id === +addData.country.id);
+        if (countryVisaTypes?.items && addData?.country?.id) {
+            // const res = countryVisaTypes?.items.filter((item: any) => item?.id === addData?.country?.id).map((item: any) => item?.country_visa_types);
+            const res = countryVisaTypes?.items
+                .filter((item: any) => item?.id === addData.country.id)
+                .map((item: any) => item?.country_visa_types)
+                .flat(); // Flatten the array of arrays into a single array
+ 
+            setVisaTypes(res);
+        }
+    }, [addData]);
+
+
+
+
+    useEffect(() => {
+        if (addData?.country?.id ) {
+            const filteredEmbassies = embassyData?.filter((item: any) => item?.country?.id === +addData.country.id);
             setEmbassyFilter(filteredEmbassies);
         }
     }, [addData, embassyData]);
@@ -83,7 +100,7 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
             </div>
             <div className="p-5">
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                    <SearchableDropdown addData={addData} setAddData={setAddData} handleEmbassyChange={handleEmbassyChange} />
+                    <SearchableDropdown addData={addData} heading ="Country"  setAddData={setAddData} handleEmbassyChange={handleEmbassyChange} items={countryVisaTypes?.items} setVisaTypes={setVisaTypes} />
                     {/* <div className="dropdown">
                         <label htmlFor="country">Countries*</label>
                         <select
@@ -112,7 +129,7 @@ const VisaChecklistActionModal: React.FC<VisaChecklistActionModalProps> = ({ isO
                             <option value="" disabled>
                                 Select Visa Type
                             </option>
-                            {visatypes?.items?.map((type: any) => (
+                            {visaTypes?.map((type: any) => (
                                 <option key={type.id} value={type.id}>
                                     {type.name}
                                 </option>

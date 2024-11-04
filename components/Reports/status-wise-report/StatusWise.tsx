@@ -63,19 +63,19 @@ const StatusWise: React.FC<{ statuswisedata: any }> = ({ statuswisedata }) => {
             return formData;
         }
     };
-    const handleDelete = (row: any) => {
-        Swal.fire({
+    const handleDelete = async (row: any) => {
+        await Swal.fire({
             icon: 'warning',
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
             showCancelButton: true,
             confirmButtonText: 'Delete',
             padding: '2em',
-            customClass: 'sweet-alerts',
-        }).then((result) => {
+            customClass: { popup: 'sweet-alerts' },
+        }).then(async (result) => {
             if (result.value) {
                 setData(data.filter((item: any) => item.id !== row.id));
-                Swal.fire({ title: 'Deleted!', text: 'Your file has been deleted.', icon: 'success', customClass: 'sweet-alerts' });
+                await Swal.fire({ title: 'Deleted!', text: 'Your file has been deleted.', icon: 'success', customClass: { popup: 'sweet-alerts' } });
                 return true;
             }
         });

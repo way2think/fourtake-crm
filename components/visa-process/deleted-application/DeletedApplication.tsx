@@ -1,53 +1,152 @@
 'use client';
-import CountryActionModal from '@/components/cms/countries/CountryActionModal';
-import TableLayout from '@/components/layouts/table-layout';
-import { showMessage } from '@/utils/notification';
-
-import Swal from 'sweetalert2';
-
 import { Tab } from '@headlessui/react';
 import React, { Fragment, useEffect, useState } from 'react';
+import PaginationExpand from '@/components/Reusable/Table/PaginationExpand';
+import PaginationTable from '@/components/Reusable/Table/PaginationTable';
+import { usePaginationOptions } from '@/hooks/usePaginationOptions';
+import { useDeleteApplicantMutation, useDeleteGroupMutation, useGetVisaApplicantsQuery, useRestoreApplicantMutation, useRestoreGroupMutation, visaProcessSlice } from '@/services/api/visaProcessSlice';
+import CountryActionModal from '@/components/cms/countries/CountryActionModal';
+import TableLayout from '@/components/layouts/table-layout';
+import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
+import { handleUpdate } from '@/utils/rtk-http';
 
-const DeletedApplication: React.FC<{ listapplication: any }> = ({ listapplication }) => {
-    const [data, setData] = useState(listapplication);
+const DeletedApplication = () => {
+    const [restoreApplicant, {}] = useRestoreApplicantMutation();
+    const [restoreApplicantGroup, {}] = useRestoreGroupMutation();
+
+    const [handleLocalRTKUpdate] = useRTKLocalUpdate();
+
+    const { page, limit, sortField, sortOrder, search, filter, setFilter, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10, initialFilter: 'all' });
+
+    const { data: visaApplicants, isFetching, isLoading } = useGetVisaApplicantsQuery({ page, limit, sortField: 'updated_time', sortOrder: 'DESC', search, filter, showDeleted: true });
+    const { items = [], meta = {} } = visaApplicants || {};
+
+    console.log('deleted Application list', visaApplicants);
+
+    const [data, setData] = useState(visaApplicants);
     const exportColumns = ['id', 'applydate', 'refno', 'apptype', 'applname', 'cosultantname', 'destination', 'type', 'duration', 'entry'];
+
+    let transformedData = items
+        .map((applicants: any) => {
+            return applicants.visa_applicants.map((item: any) => {
+                const { visa_applicants, id, ...rest } = applicants;
+                return { ...item, ...rest, group_id: applicants.id };
+            });
+        })
+        .flat();
+
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'SNo' },
-        { accessor: 'country', textAlign: 'left', title: 'Apply Date' },
-        { accessor: 'country', textAlign: 'left', title: 'ReferenceNo' },
-        { accessor: 'country', textAlign: 'left', title: 'App Type' },
-        { accessor: 'country', textAlign: 'left', title: 'Applicant Name' },
-        { accessor: 'country', textAlign: 'left', title: 'Consultant Name' },
-        { accessor: 'country', textAlign: 'left', title: 'Destination' },
-        { accessor: 'country', textAlign: 'left', title: 'Type' },
-        { accessor: 'country', textAlign: 'left', title: 'Duration' },
-        { accessor: 'country', textAlign: 'left', title: 'Entry' },
-        // { accessor: 'phone', textAlign: 'left' },
-        // { accessor: 'email', textAlign: 'left' },
-        // { accessor: 'address', textAlign: 'left' },
+        {
+            accessor: 'apply_date',
+            textAlign: 'left',
+            title: 'Apply Date',
+            render: (row: any) => {
+                const dateObject = new Date(row.apply_date);
+
+                return dateObject.toLocaleDateString('en-GB');
+            },
+        },
+        {
+            accessor: 'id',
+            textAlign: 'left',
+            title: 'ReferenceNo',
+            render: (row: any) => {
+                if (row.is_group) {
+                    return `${row.id} -  ${row.group_id}`;
+                } else {
+                    return row.id;
+                }
+            },
+        },
+        { accessor: 'customer_type', textAlign: 'left', title: 'App Type' },
+        {
+            accessor: 'first_name',
+            textAlign: 'left',
+            title: 'Applicant Name',
+            render: (row: any) => {
+                return `${row.first_name} ${row.last_name}`;
+            },
+        },
+        {
+            accessor: 'assigned_to',
+            textAlign: 'left',
+            title: 'Assigned To',
+            render: (row: any) => {
+                return row.assigned_to.username;
+            },
+        },
+        {
+            accessor: 'destination_country',
+            textAlign: 'left',
+            title: 'Destination',
+            render: (row: any) => {
+                return row.destination_country.name;
+            },
+        },
+        {
+            accessor: 'visa_type',
+            textAlign: 'left',
+            title: 'Type',
+            render: (row: any) => {
+                return row.visa_type.name;
+            },
+        },
+        { accessor: 'visa_duration', textAlign: 'left', title: 'Duration' },
         // {
-        //     accessor: 'is_active',
+        //     accessor: 'entry',
         //     textAlign: 'left',
-        //     render: ({ is_active }: { is_active: any }) => {
-        //         return is_active;
+        //     title: 'Entry',
+        //     render: (row: any) => {
+        //         return row.entry_type.name;
         //     },
         // },
+        {
+            accessor: 'visa_status',
+            textAlign: 'left',
+            title: 'Status',
+            render: (row: any) => {
+                return row.visa_status.name;
+            },
+        },
     ];
-    const handleDelete = (row: any) => {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            showCancelButton: true,
-            confirmButtonText: 'Delete',
-            padding: '2em',
-            customClass: 'sweet-alerts',
-        }).then((result) => {
-            if (result.value) {
-                setData(data.filter((item: any) => item.id !== row.id));
-                Swal.fire({ title: 'Deleted!', text: 'Your file has been deleted.', icon: 'success', customClass: 'sweet-alerts' });
-                return true;
-            }
+
+    const handleRestoreApplicant = (applicant: any) => {
+        console.log('restoring applicant', applicant);
+    
+        if (applicant.id && applicant.is_group) {
+            handleUpdate({
+                updateMutation: restoreApplicant,
+                value: applicant,
+                items,
+                meta,
+                handleLocalUpdate: handleLocalRTKUpdate,
+                apiObjectRef: visaProcessSlice,
+                endpoint: 'getVisaApplicants',
+            });
+        } else if (applicant.id && !applicant.is_group) {
+            const applicantData = { ...applicant, id: applicant.group_id };
+            handleUpdate({
+                updateMutation: restoreApplicantGroup,
+                value: applicantData,
+                items,
+                meta,
+                handleLocalUpdate: handleLocalRTKUpdate,
+                apiObjectRef: visaProcessSlice,
+                endpoint: 'getVisaApplicants',
+            });
+        }
+    };
+
+    const handleRestoreGroup = (object: any) => {
+        handleUpdate({
+            updateMutation: restoreApplicantGroup,
+            value: object,
+            items,
+            meta,
+            handleLocalUpdate: handleLocalRTKUpdate,
+            apiObjectRef: visaProcessSlice,
+            endpoint: 'getVisaApplicants',
         });
     };
 
@@ -56,117 +155,82 @@ const DeletedApplication: React.FC<{ listapplication: any }> = ({ listapplicatio
         setIsMounted(true);
     }, []);
 
-    const handleSubmit = (value: any) => {
-        if (value.country == '' || value.country == null) {
-            showMessage('Enter country name', 'error');
-            return false;
-        }
-        // if (!isValidName(params.lastname)) {
-        //     showMessage('Last Name is required.', 'error');
-        //     return true;
-        // }
-        // if (!isValidEmail(params.email)) {
-        //     showMessage('Invalid Email.', 'error');
-        //     return true;
-        // }
-        // if (params.center == '') {
-        //     showMessage('Select Center', 'error');
-        //     return true;
-        // }
-
-        // if (params.phone?.length < 0 || params.phone?.length > 10) {
-        //     showMessage('Invalid phone number', 'error');
-        //     return true;
-        // }
-        // if (!isValidPassword(params.password)) {
-        //     showMessage('Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-        //     return true;
-        // }
-        // if (!isValidPassword(params.confirmpassword)) {
-        //     showMessage('Confirm Password must be at least 6 characters long and include at least 1 number, 1 symbol, and 1 uppercase letter', 'error');
-        //     return true;
-        // }
-        // if (params.password !== params.confirmpassword) {
-        //     showMessage('Passwords must match', 'error');
-        //     return true;
-        // }
-        // if (params.designation === '') {
-        //     showMessage('Designation is required.', 'error');
-        //     return true;
-        // }
-
-        // if (params.address == '') {
-        //     showMessage('Enter Address', 'error');
-        //     return true;
-        // }
-
-        if (value.id) {
-            //update user
-            let formData: any = data.find((d: any) => d.id === value.id);
-            formData.country = value.country;
-            formData.language = value.language;
-            formData.dailingcode = value.dailingcode;
-            formData.capital = value.capital;
-            formData.cities = value.cities;
-            formData.countrydetails = value.countrydetails;
-            formData.climate = value.climate;
-            formData.currency = value.currency;
-            formData.timezone = value.timezone;
-            formData.additionalinfo = value.additionalinfo;
-            formData.website = value.website;
-            formData.ispopular = value.ispopular;
-            formData.isoutsource = value.isoutsource;
-            formData.isjurisdiction = value.isjurisdiction;
-            formData.image = value.image;
-            formData.flag = value.flag;
-
-            return formData;
-        } else {
-            //add user
-            let maxUserId = data.length ? data.reduce((max: any, character: any) => (character.id > max ? character.id : max), data[0].id) : 0;
-
-            let formData = {
-                id: +maxUserId + 1,
-                country: value.country,
-                language: value.language,
-                dailingcode: value.dailingcode,
-                capital: value.capital,
-                cities: value.cities,
-                countrydetails: value.countrydetails,
-                climate: value.climate,
-                currency: value.currency,
-                timezone: value.timezone,
-                additionalinfo: value.additionalinfo,
-                website: value.website,
-                ispopular: value.ispopular,
-                isoutsource: value.isoutsource,
-                isjurisdiction: value.isjurisdiction,
-                image: value.image,
-                flag: value.flag,
-            };
-            setData([...data, formData]);
-            return formData;
-
-            //   searchContacts();
-        }
-
-        // showMessage('User has been saved successfully.');
-        // setAddContactModal(false);
-        // setIsEdit(false);
-    };
-
     return (
         <>
-            {/* <TableLayout
-                title="Deleted Application"
-                filterby="country"
-                handleDelete={handleDelete}
-                data={data}
-                tableColumns={tableColumns}
-                exportColumns={exportColumns}
-                ActionModal={CountryActionModal}
-                handleSubmit={handleSubmit}
-            /> */}
+            <div className="mb-5">
+                {isMounted && (
+                    <Tab.Group>
+                        <Tab.List className="mt-3 flex flex-wrap">
+                            <Tab as={Fragment}>
+                                {({ selected }) => (
+                                    <button
+                                        className={`${selected ? 'bg-primary text-white !outline-none' : ''}' -mb-[1px] block rounded p-3.5 py-2 hover:bg-primary hover:text-white ltr:mr-2 rtl:ml-2`}
+                                    >
+                                        All
+                                    </button>
+                                )}
+                            </Tab>
+                            <Tab as={Fragment}>
+                                {({ selected }) => (
+                                    <button
+                                        className={`${selected ? 'bg-primary text-white !outline-none' : ''} -mb-[1px] block rounded p-3.5 py-2 hover:bg-primary hover:text-white ltr:mr-2 rtl:ml-2`}
+                                    >
+                                        Group
+                                    </button>
+                                )}
+                            </Tab>
+                            {/* <Tab as={Fragment}>
+                            {({ selected }) => (
+                                <button className={`${selected ? 'bg-primary text-white !outline-none' : ''} -mb-[1px] block rounded p-3.5 py-2 hover:bg-primary hover:text-white ltr:mr-2 rtl:ml-2`}>
+                                    Contact
+                                </button>
+                            )}
+                        </Tab> */}
+                            {/* <Tab className="pointer-events-none -mb-[1px] block rounded p-3.5 py-2 text-white-light dark:text-dark">Disabled</Tab> */}
+                        </Tab.List>
+                        <Tab.Panels>
+                            <Tab.Panel>
+                                <div className="active pt-5">
+                                    <TableLayout
+                                        title="Deleted Visa Application"
+                                        filterby="country"
+                                        // handleDelete={handleDeleteApplicant}
+                                        data={transformedData}
+                                        // totalPages={items?.length || 0}
+                                        tableColumns={tableColumns}
+                                        exportColumns={exportColumns}
+                                        ActionModal={CountryActionModal}
+                                        handleRestore={handleRestoreApplicant}
+                                        // ActionModalListLine={ListVisaApplicationListLine}
+                                        // handleSubmit={handleSubmit}
+                                        meta={meta}
+                                        setSearch={setSearch}
+                                        setPage={setPage}
+                                        setLimit={setLimit}
+                                    />
+                                </div>
+                            </Tab.Panel>
+                            <Tab.Panel>
+                                <div>
+                                    <div className=" pt-5">
+                                        <div className="flex-auto">
+                                            <PaginationExpand
+                                                title="Deleted Visa Application"
+                                                getSubData={items}
+                                                data={items}
+                                                tableColumns={tableColumns}
+                                                handleRestoreGroup={handleRestoreGroup}
+                                                // handleDeleteApplicant={handleDeleteApplicant}
+                                                // handleDeleteGroup={handleDeleteGroup}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </Tab.Panel>
+                        </Tab.Panels>
+                    </Tab.Group>
+                )}
+            </div>
         </>
     );
 };

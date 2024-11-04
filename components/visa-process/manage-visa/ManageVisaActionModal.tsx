@@ -2,7 +2,12 @@ import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import PaginationTable from '@/components/Reusable/Table/PaginationTable';
 import IconX from '@/components/icon/icon-x';
 import ComponentsFormDatePickerBasic from '@/components/lead-management/lead-manage/components-form-date-picker-basic';
+import ComponentsFormDateAndTimePicker from '@/components/lead-management/lead-manage/components-from-date-and-time-picker';
+import { User } from '@/entities/user.entity';
+import { useGetVisaStatusesQuery } from '@/services/api/cms/visaStatusSlice';
+import { selectUser } from '@/store/user.store';
 import { useEffect, useState, ChangeEvent } from 'react';
+import { useSelector } from 'react-redux';
 
 interface ManageVisaActionModalProps {
     isOpen: any;
@@ -15,6 +20,8 @@ interface ManageVisaActionModalProps {
     setIsEdit?: any;
     applicantDetails?: any;
     setApplicantDetails?: any;
+    addData: any;
+    paramId: any;
 }
 
 const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
@@ -28,17 +35,63 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
     setIsEdit,
     applicantDetails,
     setApplicantDetails,
+    addData,
+    paramId,
 }) => {
     const [isOpenAddNote, setIsOpenAddNote] = useState(false);
-    const [leadNote, setLeadNote] = useState<string>(''); // Add state for the textarea
-    const [leadNotes, setLeadNotes] = useState<string[]>(addUser.leadnote || []); // State for storing
+    const [userNote, setUserNote] = useState<any>(''); // Add state for the textarea
+    const [userNotes, setUserNotes] = useState<any[]>(addUser.notes || []); // State for storing
     const [modalTitle, setModalTitle] = useState<string>('Add Note');
     const [actionButtonText, setActionButtonText] = useState<string>('Add Note');
     const [currentIndex, setCurrentIndex] = useState<number | null>(null); // Track index for editing
+    const [isDocPickUp, setIsDocPickUp] = useState(false);
+    const [isOutScan, setIsOutScan] = useState(false);
+    const [isCourier, setIsCourier] = useState(false);
+    const [isInScan, setIsInScan] = useState(false);
+    const [isSubmit, setIsSubmit] = useState(false);
+
+    console.log('addUser', addUser);
+
+    const user = useSelector(selectUser) as User;
+
+    const role = user?.role || 'guest';
+
+    const { data: visaStatuses } = useGetVisaStatusesQuery({ page: 0, limit: 0, filter: 'is_active' });
 
     useEffect(() => {
-        setLeadNotes(addUser.leadnote || []);
-    }, [addUser?.leadnote]);
+        if ((addData?.visa_applicants == null || addData?.visa_applicants.length > 0) && addData?.visa_status) {
+            setAddUser({ ...addUser, visa_status: addData.visa_status || addData.visa_status.id });
+        }
+    }, [addData?.visa_status]);
+
+    useEffect(() => {
+        setUserNotes(addUser.notes || []);
+    }, [addUser?.notes]);
+
+    useEffect(() => {
+        if (addUser?.visa_status == '54' || addUser?.visa_status?.name == 'Document PickUp') {
+            setIsDocPickUp(true);
+        }
+        if (addUser?.visa_status == '52' || addUser?.visa_status?.name == 'OutScan to Embassy') {
+            setIsOutScan(true);
+            setIsInScan(true);
+        }
+
+        if (addData?.visa_status == '5' || addData?.visa_status?.name == 'submitted') {
+            setIsSubmit(true);
+        }
+
+        if (
+            addUser?.visa_status == '56' ||
+            addUser?.visa_status == '57' ||
+            addUser?.visa_status == '58' ||
+            addUser?.visa_status?.id == '56' ||
+            addUser?.visa_status?.id == '57' ||
+            addUser?.visa_status?.id == '58'
+        ) {
+            setIsCourier(true);
+        }
+    }, [addUser?.visa_status]);
 
     const handleCheckBoxChange = (e: any) => {
         //Change it 13-07-2024
@@ -47,9 +100,9 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
 
         const { id, checked } = e.target;
 
-        if (checked && applicantDetails.some((applicant: { isprimary: string }) => applicant.isprimary === 'Yes')) {
+        if (checked && applicantDetails.some((applicant: { is_primary: boolean }) => applicant.is_primary === true)) {
             if (confirm('You already selected a Primary. Do you want to change it?')) {
-                setApplicantDetails((prevState: any[]) => prevState.map((applicant: { isprimary: string }) => (applicant.isprimary === 'Yes' ? { ...applicant, isprimary: 'No' } : applicant)));
+                setApplicantDetails((prevState: any[]) => prevState.map((applicant: { is_primary: boolean }) => (applicant.is_primary === true ? { ...applicant, is_primary: false } : applicant)));
             } else {
                 return;
             }
@@ -57,19 +110,19 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
 
         setAddUser((prevState: any) => ({
             ...prevState,
-            [id]: checked ? 'Yes' : 'No',
+            [id]: checked ? true : false,
         }));
     };
 
     const handleLeadNoteChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-        setLeadNote(event.target.value);
+        setUserNote(event.target.value);
     };
 
     const handleButtonClickShowAddNote = () => {
         setIsOpenAddNote(true);
         setModalTitle('Add Note');
         setActionButtonText('Add Note');
-        setLeadNote('');
+        setUserNote('');
 
         setCurrentIndex(null); // Reset index when adding a new note
     };
@@ -78,43 +131,56 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
         setIsOpenAddNote(true);
         setModalTitle('Edit Note');
         setActionButtonText('Save');
-        setLeadNote(leadNotes[index]);
+        setUserNote(userNotes[index]);
         setCurrentIndex(index); // Set index for editing
     };
 
     const handleDeleteNote = (index: number) => {
-        const updatedNotes = [...leadNotes];
+        const updatedNotes = [...userNotes];
         updatedNotes.splice(index, 1);
-        setLeadNotes(updatedNotes);
+        setUserNotes(updatedNotes);
+        setAddUser({ ...addUser, notes: updatedNotes });
     };
 
     const handleCloseModal = () => {
         setIsOpenAddNote(false);
         setModalTitle('Add Note');
         setActionButtonText('Add Note');
-        setLeadNote('');
+        setUserNote('');
         setCurrentIndex(null); // Reset index when closing modal
     };
 
     const handleNoteAction = () => {
+        const currentTimeInSeconds = Math.floor(Date.now() / 1000); // Convert milliseconds to seconds
         if (modalTitle === 'Edit Note' && currentIndex !== null) {
-            const updatedNotes = [...leadNotes];
-            updatedNotes[currentIndex] = leadNote;
-            setLeadNotes(updatedNotes);
-            setAddUser({ ...addUser, leadnote: updatedNotes });
+            const updatedNotes = [...userNotes];
+            updatedNotes[currentIndex] = {
+                note: userNote,
+                created_time: updatedNotes[currentIndex].created_time, // Retain the original created_time during edit
+            };
+            // updatedNotes[currentIndex] = userNote;
+            setUserNotes(updatedNotes);
+            setAddUser({ ...addUser, notes: updatedNotes });
         } else {
-            const updatedNotes = [...leadNotes, leadNote];
-            setLeadNotes(updatedNotes);
-            setAddUser({ ...addUser, leadnote: updatedNotes });
+            const newNote = {
+                note: userNote,
+                created_time: currentTimeInSeconds, // Set created_time in seconds when creating a new note
+                created_by: user.username,
+            };
+            const updatedNotes = [...userNotes, newNote];
+            setUserNotes(updatedNotes);
+            setAddUser({ ...addUser, notes: updatedNotes });
         }
         handleCloseModal();
     };
+
+    // Add Applicant modal
 
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
                 <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                    <h5 className="text-lg font-bold">Add User</h5>
+                    <h5 className="text-lg font-bold">Add Applicant</h5>
                     <button
                         onClick={() => {
                             setIsOpen(false);
@@ -131,12 +197,12 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                 <div className="p-5">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <label htmlFor="firstname">First Name</label>
-                            <input id="firstname" type="text" placeholder="Enter First Name" className="form-input" value={addUser?.firstname} onChange={(e) => handleInputChange(e)} />
+                            <label htmlFor="first_name">First Name</label>
+                            <input id="first_name" type="text" placeholder="Enter First Name" className="form-input" value={addUser?.first_name} onChange={(e) => handleInputChange(e)} />
                         </div>
                         <div className="mb-5">
-                            <label htmlFor="lastname">Last Name </label>
-                            <input id="lastname" type="text" onChange={(e) => handleInputChange(e)} value={addUser?.lastname} placeholder="Enter Last Name" className="form-input" />
+                            <label htmlFor="last_name">Last Name </label>
+                            <input id="last_name" type="text" onChange={(e) => handleInputChange(e)} value={addUser?.last_name} placeholder="Enter Last Name" className="form-input" />
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
@@ -156,18 +222,19 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                             </div>
                         }
                         <div className="mb-5">
-                            <label htmlFor="phone">Phone</label>
-                            <input id="phone" value={addUser?.phone} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Phone" className="form-input" />
+                            <label htmlFor="passport_number">Passport No</label>
+                            <input id="passport_number" value={addUser?.passport_number} onChange={(e) => handleInputChange(e)} placeholder="Enter Passport No" className="form-input" />
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <label htmlFor="passportno">Passport No</label>
-                            <input id="passportno" value={addUser?.passportno} onChange={(e) => handleInputChange(e)} type="passportno" placeholder="Enter Passport No" className="form-input" />
+                            <label htmlFor="phone">Phone</label>
+                            <input id="phone" value={addUser?.phone} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Phone" className="form-input" />
                         </div>
                         <div className="mb-5">
-                            <ComponentsFormDatePickerBasic label="DOB" id={'dob'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
+                            <label htmlFor="other_phone">Other Phone(Foreign)</label>
+                            <input id="other_phone" value={addUser?.other_phone} onChange={(e) => handleInputChange(e)} type="text" placeholder="Enter Phone" className="form-input" />
                         </div>
                     </div>
                     <div className="mb-5 grid grid-cols-1 gap-5 md:grid-cols-2 ">
@@ -181,51 +248,114 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                                 <option value="Male">Male</option>
                             </select>
                         </div>
-                        <div className="dropdown">
-                            <label htmlFor="status">Status</label>
-                            <select className="form-input" defaultValue="" id="status" onChange={(e) => handleInputChange(e)} value={addUser?.status}>
-                                <option value="" disabled={true}>
-                                    Select Status
-                                </option>
-                                <option value="Received">Received</option>
-                                <option value="On Hold">On Hold</option>
-                                <option value="Ready for verification">Ready for verification</option>
-                                <option value="Ready for Submission">Ready for Submission</option>
-                                <option value="Out Scan to Embassy">Out Scan to Embassy</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                        {addUser?.status === 'Ready for Submission' && (
-                            <div className="mb-5">
-                                <ComponentsFormDatePickerBasic label="Out Scan to Embassy Date" id={'outscantoembassy'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
-                            </div>
-                        )}
-
-                        {addUser?.status === 'Out Scan to Embassy' && (
+                        {paramId && (
                             <div className="dropdown">
-                                <label htmlFor="wheresubmitted">Where Submitted?</label>
-                                <select className="form-input" defaultValue="" id="wheresubmitted" onChange={(e) => handleInputChange(e)} value={addUser?.wheresubmitted}>
+                                <label htmlFor="visa_status">Visa Status</label>
+                                <select className="form-input" defaultValue="" id="visa_status" onChange={(e) => handleInputChange(e)} value={addUser?.visa_status?.id || addUser?.visa_status}>
                                     <option value="" disabled={true}>
-                                        WhereSubmitted?
+                                        Select Status
                                     </option>
-                                    <option value="VFS Bangalore">VFS Bangalore</option>
-                                    <option value="VFS Chennai">VFS Chennai</option>
-                                    <option value="Travel1">Travel1</option>
+
+                                    {visaStatuses?.items?.map((status: any) => (
+                                        <option value={status.id}>{status.name}</option>
+                                    ))}
                                 </select>
                             </div>
                         )}
                     </div>
+                    <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        {isCourier && (
+                            <div className="mb-5">
+                                <label htmlFor="courier_tracking_no">Courier Tracking No.</label>
+                                <input
+                                    id="courier_tracking_no"
+                                    value={addUser?.courier_tracking_no}
+                                    onChange={(e) => handleInputChange(e)}
+                                    placeholder="Enter Courier Tracking No"
+                                    className="form-input"
+                                />
+                            </div>
+                        )}
+                    </div>
+                    {(addUser?.visa_status == '54' || isDocPickUp) && (
+                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                            <div className="mb-5">
+                                <ComponentsFormDateAndTimePicker label="Document pickup Date" id={'doc_pickup_date'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
+
+                                {/* <ComponentsFormDatePickerBasic label="Document pickup Date" id={'doc_pickup_date'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} /> */}
+                            </div>
+                            <div className="mb-5">
+                                <label htmlFor="doc_pickup_remark">Document PickUp Remarks</label>
+                                <textarea
+                                    id="doc_pickup_remark"
+                                    rows={1}
+                                    value={addUser?.doc_pickup_remark}
+                                    onChange={(e) => handleInputChange(e)}
+                                    placeholder="Enter Remarks"
+                                    className="form-textarea min-h-[10px] resize-none"
+                                ></textarea>
+                            </div>
+                        </div>
+                    )}
+
+                    {isEdit && (
+                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                            <>
+                                <div className="mb-5">
+                                    <ComponentsFormDateAndTimePicker
+                                        label="OutScan to Embassy"
+                                        id={'outscan_to_embassy_date'}
+                                        isEdit={isEdit}
+                                        setAddData={setAddUser}
+                                        addData={addUser}
+                                        updateUser={true}
+                                    />
+                                </div>
+
+                                <div className="mb-5">
+                                    <ComponentsFormDateAndTimePicker
+                                        label="In Scan from Embassy"
+                                        id={'inscan_from_embassy_date'}
+                                        isEdit={isEdit}
+                                        setAddData={setAddUser}
+                                        addData={addUser}
+                                        updateUser={true}
+                                    />
+                                </div>
+                            </>
+                        </div>
+                    )}
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <>
+                            {isSubmit && (
+                                <div className="dropdown">
+                                    <label htmlFor="where_submitted">Where Submitted</label>
+                                    <select className="form-input" defaultValue="" id="where_submitted" onChange={(e) => handleInputChange(e)} value={addUser?.where_submitted}>
+                                        <option value="" disabled={true}>
+                                            Select Option
+                                        </option>
+                                        <option value="vfs bangalore">VFS Bangalore</option>;<option value="vfs mumbai">VFS Mumbai</option>;<option value="vfs kolkata">VFS Kolkata</option>;
+                                        <option value="vfs Hyderabad">VFS Hyderabad</option>;<option value="vfs dehli">VFS Dehli</option>;<option value="online">Online </option>;
+                                        <option value="vendor">Vendor</option>;
+                                    </select>
+                                </div>
+                            )}
+                        </>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <div className="mb-5">
+                            <ComponentsFormDatePickerBasic label="DOB" id={'dob'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
+                        </div>
                         <div className="mt-7">
                             <label className="flex cursor-pointer items-center">
                                 <input
                                     type="checkbox"
-                                    id="isprimary"
+                                    id="is_primary"
                                     onChange={(e) => handleCheckBoxChange(e)}
                                     className="form-checkbox bg-white dark:bg-black"
-                                    checked={addUser.isprimary === 'Yes' || applicantDetails.length == 0}
+                                    checked={addUser.is_primary === true || applicantDetails.length == 0}
                                 />
                                 <span className="text-black">Is Primary?</span>
                             </label>
@@ -234,7 +364,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1">
                         <div className="mb-5 mt-7">
-                            <label htmlFor="leadnote" style={{ display: 'inline-block' }}>
+                            <label htmlFor="notes" style={{ display: 'inline-block' }}>
                                 Note
                             </label>
                             <button className="btn btn-primary ml-5" style={{ marginLeft: '20px', display: 'inline-block' }} onClick={handleButtonClickShowAddNote}>
@@ -242,16 +372,24 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                             </button>
 
                             <div className="mt-3">
-                                {leadNotes?.map((note: string, index: number) => (
-                                    <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
-                                        <div>{note}</div>
-                                        <div className="flex items-center">
-                                            <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
-                                                Edit
-                                            </button>
-                                            <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
-                                                Delete
-                                            </button>
+                                {userNotes?.map((item: any, index: number) => (
+                                    <div key={index} className="mt-2 flex flex-col rounded border p-2">
+                                        <div className="flex items-center justify-between">
+                                            <div>{item?.note}</div>
+                                            {(role === 'super_admin' || role === 'admin') && (
+                                                <div className="flex items-center">
+                                                    <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
+                                                        Edit
+                                                    </button>
+                                                    <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="mt-2 text-right font-mono text-sm text-blue-500">
+                                            Created By: {item.created_by} - Created Date: {item.created_time}
                                         </div>
                                     </div>
                                 ))}
@@ -266,9 +404,9 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                                 </div>
                                 <div className="p-5">
                                     <textarea
-                                        id="leadNote"
+                                        id="userNote"
                                         onChange={handleLeadNoteChange}
-                                        value={leadNote}
+                                        value={userNote?.note}
                                         placeholder="Enter your note here"
                                         className="min-h-[150px] w-full rounded-lg border p-2 outline-none"
                                     />

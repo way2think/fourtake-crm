@@ -14,6 +14,13 @@ import CountryActionModal from '../cms/countries/CountryActionModal';
 import IconFile from '../icon/icon-zip-file';
 import ComponentsFormDatePickerRange from '../lead-management/lead-manage/components-form-date-picker-range';
 import CountView from '../popup/StatusWiseReportCountView';
+import { useGetUsersQuery } from '@/services/api/userSlice';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/store/user.store';
+import { useGetCentersQuery } from '@/services/api/centerSlice';
+import { Center } from '@/entities/center.entity';
+import { useGetDailyReportQuery, useLazyGetDailyReportQuery, useLazyGetInScanReportQuery, useLazyGetOutScanReportQuery } from '@/services/api/reportSlice';
+import { showMessage } from '@/utils/notification';
 
 interface ReportTableLayoutProps {
     title: string;
@@ -34,9 +41,6 @@ interface ReportTableLayoutProps {
     };
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
-interface AddData {
-    [key: string]: string;
-}
 
 const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, totalPages, handleDelete, handleSubmit, tableColumns, exportColumns, Filtersetting, formData, handleChange }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +48,7 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
     const [isEdit, setIsEdit] = useState(false);
     const [search, setSearch] = useState('');
     const [filterItem, setFilterItem] = useState<any>();
-    const [addData, setAddData] = useState<AddData>({});
+    const [addData, setAddData] = useState<any>();
     const [showCustomizer, setShowCustomizer] = useState(false);
     const [dateFilter, setDateFilter] = useState<any>();
     const [tableData, setTableData] = useState<{ name: string; value: number }[]>([]);
@@ -62,6 +66,20 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
         }[]
     >([]);
 
+    const { data: assigneeList } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'employee, admin', filter: 'is_active' });
+    const currentUser: any = useSelector(selectUser);
+    const [triggerGetDailyReport, { data: dailyReportData, isLoading }] = useLazyGetDailyReportQuery();
+
+    const [triggerGetOutScanReport, { data: outScanReportData }] = useLazyGetOutScanReportQuery();
+
+    const [triggerGetInScanReport, { data: inScanReportData }] = useLazyGetInScanReportQuery();
+
+    console.log('inScanReportData', inScanReportData?.items);
+
+    const { data: centers, isError, error } = useGetCentersQuery({ page: 0, limit: 0 });
+
+    console.log('addData in report table', addData);
+
     // useEffect(() => {
     //     // console.log('datefi', dateFilter);
     //     // if (dateFilter && Object.keys(addData).length === 0) {
@@ -71,6 +89,48 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
     //         setFilterItem(dateFilter);
     //     }
     // }, [dateFilter]);
+
+    useEffect(() => {
+        if (dailyReportData) {
+            const transformedData = dailyReportData.items
+                .map((applicants: any) => {
+                    return applicants.visa_applicants.map((item: any) => {
+                        const { visa_applicants, id, ...rest } = applicants;
+                        return { ...item, ...rest, group_id: applicants.id };
+                    });
+                })
+                .flat();
+            setFilterItem(transformedData);
+        }
+    }, [dailyReportData]);
+
+    useEffect(() => {
+        if (outScanReportData) {
+            const transformedData = outScanReportData.items
+                .map((applicants: any) => {
+                    return applicants.visa_applicants.map((item: any) => {
+                        const { visa_applicants, id, ...rest } = applicants;
+                        return { ...item, ...rest, group_id: applicants.id };
+                    });
+                })
+                .flat();
+            setFilterItem(transformedData);
+        }
+    }, [outScanReportData]);
+
+    useEffect(() => {
+        if (inScanReportData) {
+            const transformedData = inScanReportData.items
+                .map((applicants: any) => {
+                    return applicants.visa_applicants.map((item: any) => {
+                        const { visa_applicants, id, ...rest } = applicants;
+                        return { ...item, ...rest, group_id: applicants.id };
+                    });
+                })
+                .flat();
+            setFilterItem(transformedData);
+        }
+    }, [inScanReportData]);
 
     const tableColumnss = [
         { accessor: 'referenceno', textAlign: 'left', title: 'ReferenceNo' },
@@ -169,79 +229,92 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
         setShowCustomizer(true);
     };
     console.log('filter item', filterItem, addData);
-    const handleSubmitReport = () => {
+    const handleSubmitReport = async () => {
         let requiredFields: string[] = [];
         let dataFilter = data;
 
         if (title == 'Daily Report') {
-            requiredFields = ['user', 'center'];
+            requiredFields = ['assigned_to'];
         }
         if (title == 'Finance Report' || title == 'Payment Report') {
-            requiredFields = ['Select_Center'];
+            requiredFields = ['center'];
         }
         if (title == 'Status Wise Report') {
-            requiredFields = ['Select_User', 'Select_Center', 'Select_Employee'];
+            requiredFields = ['assigned_to', 'center', 'Select_Employee'];
         }
         if (title == 'Out Scan' || title == 'In Scan') {
             requiredFields = [];
         }
-
-        //const requiredFields = ['Select_User', 'Select_Center', 'Select_Employee'];
-        /*
-        let allFieldsInvalid = true;
-        for (let field of requiredFields) {
-            if (addData[field] && addData[field].length > 1) {
-                allFieldsInvalid = false;
-                break;
-
+        let missingFields: any = [];
+        requiredFields.forEach((field) => {
+            if (!addData[field]) {
+                missingFields.push(field);
             }
-        }
+        });
 
-        if (allFieldsInvalid) {
-            const formattedField = requiredFields.map(field => field.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase())).join(' or ');
-            alert(`${formattedField} Is Required`);
-            return;
-        }
-        */
-        if (!addData.center && !addData.user && !dateFilter) {
+        // Validate if required fields or dateFilter is missing
+        if (missingFields.length > 0 && !dateFilter) {
             setFilterItem(null);
+            const missingFieldsString = missingFields.join(', ');
+            showMessage(`Please select the following fields: ${missingFieldsString}`, 'error');
+        } else if (!dateFilter && missingFields.length === 0 && !addData) {
+            showMessage('Please select a date', 'error');
         } else {
+            const queryParams: any = {};
+
             if (addData?.center) {
-                dataFilter = dataFilter.filter((item: any) => item.center === addData.center);
+                queryParams.filterByCenter = addData.center;
             }
-
-            if (addData?.user) {
-                dataFilter = dataFilter.filter((item: any) => item.consultantname === addData.user);
+            if (!addData?.center) {
+                queryParams.filterByCenter = currentUser?.center?.id;
             }
-
-            // if (dateFilter) {
-            //     dataFilter = dataFilter.filter((item: any) => {
-            //         return dateFilter.some((dateItem: any) => dateItem.id === item.id);
-            //     });
-            // }
-
+            if (addData?.assigned_to) {
+                queryParams.filterByUser = addData.assigned_to;
+            }
             if (dateFilter) {
                 if (typeof dateFilter === 'string' && dateFilter.includes(' to ')) {
                     const [startDateStr, endDateStr] = dateFilter.split(' to ');
-                    const startDate = new Date(startDateStr);
-                    const endDate = new Date(endDateStr);
-
-                    dataFilter = dataFilter.filter((item: any) => {
-                        const itemDate = new Date(item.applydate);
-                        return itemDate >= startDate && itemDate <= endDate;
-                    });
+                    queryParams.fromDate = startDateStr;
+                    queryParams.toDate = endDateStr;
                 } else {
-                    const selectedDate = new Date(dateFilter);
-                    dataFilter = dataFilter.filter((item: any) => {
-                        const itemDate = new Date(item.applydate);
-                        return itemDate.toISOString().split('T')[0] === selectedDate.toISOString().split('T')[0];
-                    });
+                    queryParams.date = dateFilter;
                 }
             }
 
-            //console.log("dataFiler", dataFilter)
+            if (title == 'Daily Report') {
+                await triggerGetDailyReport(queryParams);
+            }
 
-            setFilterItem(dataFilter);
+            if (title === 'Out Scan') {
+                await triggerGetOutScanReport(queryParams);
+            }
+
+            if (title === 'In Scan') {
+                await triggerGetInScanReport(queryParams);
+            }
+
+            console.log('queryparams', queryParams);
+
+            // if (dateFilter) {
+            //     if (typeof dateFilter === 'string' && dateFilter.includes(' to ')) {
+            //         const [startDateStr, endDateStr] = dateFilter.split(' to ');
+            //         const startDate = new Date(startDateStr);
+            //         const endDate = new Date(endDateStr);
+
+            //         dataFilter = dataFilter.filter((item: any) => {
+            //             const itemDate = new Date(item.applydate);
+            //             return itemDate >= startDate && itemDate <= endDate;
+            //         });
+            //     } else {
+            //         const selectedDate = new Date(dateFilter);
+            //         dataFilter = dataFilter.filter((item: any) => {
+            //             const itemDate = new Date(item.applydate);
+            //             return itemDate.toISOString().split('T')[0] === selectedDate.toISOString().split('T')[0];
+            //         });
+            //     }
+            // }
+
+            //console.log("dataFiler", dataFilter)
 
             // Proceed with form submission or other logic
             //console.log('Form data is valid:', addData);
@@ -288,49 +361,55 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                 <div className="mt-5 ">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-3 ">
                         {title !== 'Finance Report' && title !== 'Payment Report' && title !== 'Out Scan' && title !== 'In Scan' && title !== 'Status Wise Report' && (
-                            <div className="mb-5">
-                                <div className="dropdown">
-                                    <label htmlFor="leadStatus">Select User</label>
-                                    <select id="user" className="form-input" onChange={(e) => handleInputChange(e)}>
-                                        <option value="">Select User</option>
-                                        <option value="sanjay">Sanjay</option>
-                                        <option value="jagan">Jagan</option>
-                                        <option value="raji">Raji</option>
-                                        <option value="santhosh">Santhosh</option>
-                                    </select>
-                                </div>
+                            <div className="dropdown mb-5">
+                                <label htmlFor="source">Assigned to</label>
+                                <select
+                                    className="form-input"
+                                    defaultValue=""
+                                    id="assigned_to"
+                                    value={addData?.assigned_to?.id}
+                                    onChange={(e) => {
+                                        // console.log('e.target', e.target.options[e.target.selectedIndex].innerText);
+                                        handleInputChange(e);
+                                        // setAddData((prev: any) => ({ ...prev, assigned_to: { id: e.target.value, username: e.target.options[e.target.selectedIndex].innerText } }));
+                                    }}
+                                >
+                                    <option value="" disabled={true}>
+                                        Assign to
+                                    </option>
+                                    <option value="all" >
+                                        All
+                                    </option>
+
+                                    {assigneeList?.items?.map((item: any) => (
+                                        <option value={item.id}>{item.username}</option>
+                                    ))}
+                                </select>
                             </div>
                         )}
                         {title !== 'Out Scan' && title !== 'In Scan' && title !== 'Status Wise Report' && (
-                            <div className="mb-5">
-                                <div className="dropdown">
-                                    <label htmlFor="leadStatus">Select Center </label>
-                                    <select id="center" className="form-input" onChange={handleInputChange}>
-                                        <option value="">Select Center</option>
-                                        <option value="Chennai">Chennai</option>
-                                        <option value="New Delhi">New Delhi</option>
-                                        <option value="Mumbai">Mumbai</option>
-                                        <option value="Bangaluru">Bangaluru</option>
-                                        <option value="Hyderabad">Hyderabad</option>
-                                    </select>
-                                </div>
+                            <div className="dropdown">
+                                <label htmlFor="center">Center</label>
+                                <select
+                                    className="form-input"
+                                    defaultValue=""
+                                    id="center"
+                                    disabled={currentUser.role !== 'super_admin'}
+                                    onChange={(e) => handleInputChange(e)}
+                                    value={currentUser.role !== 'super_admin' ? currentUser?.center?.id : addData?.center?.id}
+                                >
+                                    <option value="" disabled={true}>
+                                        Select Center
+                                    </option>
+                                    {centers &&
+                                        centers?.map((center: Center) => (
+                                            <option key={center.id} value={center.id}>
+                                                {center.name}
+                                            </option>
+                                        ))}
+                                </select>
                             </div>
                         )}
-                        {/* {title !== 'Finance Report' && title !== 'Daily Report' && title !== 'Payment Report' && title !== 'Out Scan' && title !== 'In Scan' && (
-                            <div className="mb-5">
-                                <div className="dropdown">
-                                    <label htmlFor="employee">Select Employee </label>
-                                    <select id="consultantname" className="form-input" onChange={handleInputChange}>
-                                        <option value="">[-Employee-]</option>
-                                        <option value="Sanjay">Sanjay</option>
-                                        <option value="Jagadish Delhi">Jagadish</option>
-                                        <option value="Raji">Raji</option>
-                                        <option value="Akhil">Akhil</option>
-                                        <option value="Franklin">Franklin</option>
-                                    </select>
-                                </div>
-                            </div>
-                        )} */}
                     </div>
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">

@@ -1,143 +1,136 @@
 'use client';
 
-import { getData } from '@/api';
-import ComponentsFormsFileUploadMulti from '@/components/Reusable/file-upload/components-forms-file-upload-multi';
-import ComponentsFormsFileUploadSingle from '@/components/Reusable/file-upload/components-forms-file-upload-single';
 import TableLayout from '@/components/layouts/table-layout';
-import { use } from 'react';
-import { Transition, Dialog } from '@headlessui/react';
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
-import IconX from '@/components/icon/icon-x';
-import Swal from 'sweetalert2';
-import { showMessage } from '@/utils/notification';
+import React from 'react';
 import UserManagementActionModal from './UserManagementActionModal';
 import Link from 'next/link';
+import { usePaginationOptions } from '@/hooks/usePaginationOptions';
+import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
+import { useCreateUserMutation, useDeleteUserMutation, useGetUsersQuery, userSlice, useUpdateUserMutation } from '@/services/api/userSlice';
+import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
+import { rolesObject } from '@/entities/role.entity';
+import { showMessage } from '@/utils/notification';
+import { User } from '@/entities/user.entity';
 
-// const getServerData = async () => {
-//     return await getData({ endpoint: 'http://localhost:5001/center' });
-// };
-const UserManagement: React.FC<{ userdata: any }> = ({ userdata }) => {
-    const [data, setData] = useState(userdata);
-    // const { data, isError, error } = use(getServerData());
-    // const { data, isError, error } = await getData({ endpoint: 'http://localhost:5001/center' });
-    // // console.log('dataaaa: ', data);
-    // if (isError) {
-    //     console.log(error.message);
-    // }
+const UserManagement: React.FC = () => {
+    const [createUser, {}] = useCreateUserMutation();
+    const [updateUser, {}] = useUpdateUserMutation();
+    const [deleteUser, {}] = useDeleteUserMutation();
 
-    // userid: '1',
-    // usertype: 'Business',
-    // firstname: 'alan',
-    // lastname: 'james',
-    // email: 'alan@gmail.com',
-    // center: 'Bangalore',
-    // status: 'active',
-    // phone: '9874563215',
-    // password: 'way2think',
-    // confirmpassword: 'way2think',
-    // address: 'No.21 NY Street',
+    const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
-    // const getUser = async () => {
-    //     try {
-    //         const response = await getData({ endpoint: 'user' });
-    //         if (!response.isError) {
-    //             console.log('User data:', response.data);
-    //         } else {
-    //             console.error('Error fetching user data:', response.error);
-    //         }
-    //     } catch (error) {
-    //         console.error('Unexpected error:', error);
-    //     }
-    // };
+    const { data: countries, isFetching, isLoading } = useGetUsersQuery({ page, limit, sortField, sortOrder, search });
+    const { items = [], meta = {} } = countries || {};
+
+    const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
     const tableColumns = [
-        { accessor: 'id', textAlign: 'left', title: 'ID' },
+        { accessor: 'username', textAlign: 'left', title: 'Username' },
 
-        { accessor: 'firstname', textAlign: 'left', title: 'First Name' },
-        { accessor: 'lastname', textAlign: 'left', title: 'Last Name' },
-        { accessor: 'apptype', textAlign: 'left', title: 'Applicant Type' },
+        { accessor: 'first_name', textAlign: 'left', title: 'First Name' },
+        { accessor: 'last_name', textAlign: 'left', title: 'Last Name' },
+        // { accessor: 'apptype', textAlign: 'left', title: 'Applicant Type' },
         // { accessor: 'email', textAlign: 'left', title: 'Email' },
-        { accessor: 'center', textAlign: 'left', title: 'Center' },
+        {
+            accessor: 'center',
+            textAlign: 'left',
+            title: 'Center',
+            render: ({ center }: { center: any }) => {
+                return center.name;
+            },
+        },
         // { accessor: 'status', textAlign: 'left', title: 'status' },
         { accessor: 'phone', textAlign: 'left', title: 'phone' },
-        { accessor: 'role', textAlign: 'left', title: 'Role' },
+
+        {
+            accessor: 'role',
+            textAlign: 'left',
+            title: 'Role',
+            render: ({ role }: { role: string }) => {
+                return rolesObject[role];
+            },
+        },
         {
             accessor: 'status',
             textAlign: 'left',
             title: 'status',
-            render: ({ status }: { status: any }) => {
-                return status == true ? 'Active' : 'InActive';
+            render: ({ is_active }: { is_active: boolean }) => {
+                return is_active == true ? 'Active' : 'InActive';
+            },
+        },
+        {
+            accessor: 'is_logged_in',
+            textAlign: 'left',
+            title: 'Logged In',
+            render: ({ is_logged_in }: { is_logged_in: boolean }) => {
+                return is_logged_in == true ? 'Yes' : 'No';
             },
         },
     ];
 
-    const handleDelete = (row: any) => {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            showCancelButton: true,
-            confirmButtonText: 'Delete',
-            padding: '2em',
-            customClass: 'sweet-alerts',
-        }).then((result) => {
-            if (result.value) {
-                setData(data.filter((item: any) => item.id !== row.id));
-                Swal.fire({ title: 'Deleted!', text: 'Your file has been deleted.', icon: 'success', customClass: 'sweet-alerts' });
-                return true;
-            }
+    const exportColumns = ['id', 'first_name', 'last_name', 'email', 'center', 'status', 'phone', 'address'];
+
+    const handleDeleteUser = (user: User) =>
+        handleDelete({
+            deleteMutation: deleteUser,
+            item: user,
+            items,
+            meta,
+            handleLocalUpdate: handleLocalRTKUpdate,
+            apiObjectRef: userSlice,
+            endpoint: 'getUsers',
         });
-    };
 
-    const exportColumns = ['id', 'apptype', 'firstname', 'lastname', 'email', 'center', 'status', 'phone', 'address'];
-
-    const handleSubmit = (value: any) => {
-        if (value.firstname == '' || value.firstname == null) {
+    const handleSubmit = (value: User) => {
+        if (value.first_name == '' || value.first_name == null) {
             showMessage('Enter First name', 'error');
             return false;
         }
-
-        if (value.lastname == '' || value.lastname == null) {
+        if (value.last_name == '' || value.last_name == null) {
             showMessage('Enter Last name', 'error');
             return false;
         }
-        if (value.email == '' || value.email == null) {
+        if (value.username == '' || value.username == null) {
             showMessage('Enter Email', 'error');
             return false;
         }
-        if (value.password == '' || value.password == null) {
-            showMessage('Enter Password', 'error');
-            return false;
-        }
-        if (value.confirmpassword == '' || value.confirmpassword == null) {
-            showMessage('Enter Confirm Password ', 'error');
-            return false;
-        }
-        if (value.password !== value.confirmpassword) {
-            showMessage('Passwords should match ', 'error');
-            return false;
-        }
+
+        console.log('value: ', value);
 
         if (value.id) {
-            //update user
-            const updatedData = data.map((d: any) => (d.id === value.id ? { ...d, ...value } : d));
-            setData(updatedData);
-
-            return updatedData;
+            return handleUpdate({
+                updateMutation: updateUser,
+                value,
+                items,
+                meta,
+                handleLocalUpdate: handleLocalRTKUpdate,
+                apiObjectRef: userSlice,
+                endpoint: 'getUsers',
+            });
         } else {
-            //add user
-            const maxUserId = data.length ? Math.max(...data.map((d: any) => d.id)) : 0;
-            const newUser = {
-                ...value,
-                id: +maxUserId + 1,
-            };
-            setData([...data, newUser]);
-            return newUser;
+            // password validation only for create
+            if (value.password == '' || value.password == null) {
+                showMessage('Enter Password', 'error');
+                return false;
+            }
+            if (value.confirm_password == '' || value.confirm_password == null) {
+                showMessage('Enter Confirm Password ', 'error');
+                return false;
+            }
+            if (value.password !== value.confirm_password) {
+                showMessage('Passwords should match ', 'error');
+                return false;
+            }
+            return handleCreate({
+                createMutation: createUser,
+                value,
+                items,
+                meta,
+                handleLocalUpdate: handleLocalRTKUpdate,
+                apiObjectRef: userSlice,
+                endpoint: 'getUsers',
+            });
         }
-
-        // showMessage('User has been saved successfully.');
-        // setAddContactModal(false);
-        // setIsEdit(false);
     };
 
     return (
@@ -152,16 +145,21 @@ const UserManagement: React.FC<{ userdata: any }> = ({ userdata }) => {
                     <span>User List</span>
                 </li>
             </ul>
-            {/* <TableLayout
+
+            <TableLayout
                 title="User"
                 filterby="firstname"
-                handleDelete={handleDelete}
-                data={data}
+                handleDelete={handleDeleteUser}
                 tableColumns={tableColumns}
                 exportColumns={exportColumns}
                 ActionModal={UserManagementActionModal}
                 handleSubmit={handleSubmit}
-            /> */}
+                data={items}
+                meta={meta}
+                setSearch={setSearch}
+                setPage={setPage}
+                setLimit={setLimit}
+            />
         </>
     );
 };

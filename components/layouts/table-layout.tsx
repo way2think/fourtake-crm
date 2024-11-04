@@ -11,8 +11,14 @@ import IconFile from '../icon/icon-zip-file';
 import PasswordActionModal from '../user-management/PasswordActionModal';
 import ReuseActionModal from '../Reusable/Modal/ActionModal';
 import { useRouter } from 'next/navigation';
-import ImportExcel from '../Reusable/import-excel/ImportExcel';
 import { PaginationMeta } from '@/types/pagination';
+import { useGetOneVisaApplicantGroupQuery, useRestoreApplicantMutation, useUpdateVisaApplicantGroupMutation, visaProcessSlice } from '@/services/api/visaProcessSlice';
+import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
+import { handleUpdate } from '@/utils/rtk-http';
+import { useGetVisaRequirementsQuery } from '@/services/api/dashboardSlice';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
+import EmailSendModal from '../lead-management/lead-manage/EmailSendModal';
 
 interface TableLayoutProps {
     title: string;
@@ -23,23 +29,28 @@ interface TableLayoutProps {
     Filtersetting?: any;
     handleSubmit?: any;
     exportColumns?: string[];
-    handleDelete: any;
+    handleDelete?: any;
     filterby: any;
     ActionModalListLine?: any;
-    setSearch: Function;
+    setSearch?: any;
     filter?: string;
     setFilter?: Function;
     setPage: Function;
     setLimit: Function;
+    visaChecklistData?: any;
+    handleRestore?: any;
 }
 interface AddDataProps {
     refno?: any;
     status?: any;
+    id?: number;
+    group_id: number;
 }
 const TableLayout: React.FC<TableLayoutProps> = ({
     title,
     data,
     meta,
+    visaChecklistData,
     handleDelete,
     handleSubmit,
     tableColumns,
@@ -52,6 +63,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
     setFilter: updateFilter,
     setPage,
     setLimit,
+    handleRestore,
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
@@ -61,9 +73,9 @@ const TableLayout: React.FC<TableLayoutProps> = ({
 
     const [isOpenlistLine, setIsOpenListLine] = useState(false);
 
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState<any>('');
     const [filterItem, setFilterItem] = useState(data);
-    const [addData, setAddData] = useState<AddDataProps>({});
+    const [addData, setAddData] = useState<AddDataProps | any>({});
     const [assignPasswordValue, setAssignPasswordValue] = useState<any>();
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
@@ -73,13 +85,25 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         other: '',
     });
 
-    console.log("addData",addData)
-
     const [isImportOpen, setIsImportOpen] = useState(false);
     const [isOpenTrack, setIsOpenTrack] = useState(false);
     const router = useRouter();
 
     const [file, setFile] = useState<File | null>(null);
+
+    const { data: oneVisaApplicantsGroup } = useGetOneVisaApplicantGroupQuery(encodeURIComponent(addData?.group_id), {
+        skip: !addData?.group_id,
+    });
+
+    const { data: visaRequirements } = useGetVisaRequirementsQuery({
+        countryId: String(addData?.country?.id),
+        visaTypeId: String(addData?.visa_type?.id),
+        stateOfResidence: addData?.state_of_residence,
+    });
+    console.log('addData', addData, visaRequirements);
+
+    const [updateVisaApplicant, {}] = useUpdateVisaApplicantGroupMutation();
+    const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -120,9 +144,15 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         setFilterItem(data);
     }, [data]);
 
+    useEffect(() => {
+        if (addData.tracking_detail && addData.id) {
+            setTrack(addData.tracking_detail);
+        }
+    }, [addData.tracking_detail]);
+
     const handleEdit = (object: any) => {
         if (title == 'List Visa Application') {
-            router.push(`/manage-visa`);
+            router.push(`/manage-visa/${object.group_id}`);
         } else {
             setIsEdit(true);
             setIsOpen(true);
@@ -130,13 +160,35 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         }
     };
 
-    const handleRestore = (object: any) => {
-        alert(object);
-    };
-
     const handleTracking = (object: any) => {
         setAddData(object);
         setIsOpenTrack(true);
+    };
+
+    const handleDocChecklist = (row: any) => {
+        router.push(`/check-requirements?countryId=${row.destination_country.id}&visaTypeId=${row.visa_type.id}&stateOfResidence=${row.state_of_residence}`);
+
+        // if (visaRequirements && visaRequirements.length > 0) {
+        //     const checklist = visaRequirements[0]?.checklist || [];
+
+        //     // Create a new jsPDF document
+        //     const doc = new jsPDF('portrait', 'pt', 'a4');
+
+        //     // Set font size and add title
+        //     doc.setFontSize(16);
+        //     doc.text('Visa Requirements Checklist', 40, 50);
+
+        //     // Add checklist items
+        //     doc.setFontSize(12);
+        //     checklist.forEach((item: any, index: any) => {
+        //         doc.text(`${index + 1}. ${item}`, 40, 80 + index * 20); // Adjust spacing as needed
+        //     });
+
+        //     // Save or display the PDF
+        //     const pdfBlob = doc.output('blob');
+        //     const pdfUrl = URL.createObjectURL(pdfBlob);
+        //     window.open(pdfUrl, '_blank'); // Open the PDF in a new tab
+        // }
     };
 
     const handleTrackInputChange = (e: any) => {
@@ -144,6 +196,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
 
         setTrack({ ...track, [id]: value });
     };
+
     const handleInputChange = (e: any) => {
         const { value, id, options } = e.target;
 
@@ -168,7 +221,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                 })
                 .join(','); // Join IDs into a comma-separated string
 
-            setAddData((prevData) => ({
+            setAddData((prevData: any) => ({
                 ...prevData,
                 [id]: selectedOptions, // Store as a comma-separated string
             }));
@@ -196,13 +249,21 @@ const TableLayout: React.FC<TableLayoutProps> = ({
             setIsOpen(false);
             setAddData({ refno: '', status: '' });
 
-            //Navigate to Manage Visa Page
+            console.log('isSuccess', isSuccess);
             //console.log(title)
+
             if (title == 'Lead List') {
                 //alert("Navigate")
                 //console.log(addData)
-                if ((addData as { status: string }).status === 'Done') {
-                    router.push(`/manage-visa`);
+                // if (addData?.status === 'Done') {
+                //     router.push({
+                //         pathname: '/manage-visa',
+                //         query: { addData: JSON.stringify(addData) },
+                //     } as unknown as string);
+                // }
+                //Navigate to Manage Visa Page
+                if (addData?.status === 'Done') {
+                    router.push(`/manage-visa?addData=${encodeURIComponent(JSON.stringify(addData))}`);
                 }
             }
         }
@@ -222,7 +283,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
             const worksheet = workbook.Sheets[firstSheetName];
             const parsedData = XLSX.utils.sheet_to_json(worksheet);
             // setData(parsedData);
-            console.log('import data', parsedData);
+            // console.log('import data', parsedData);
         };
 
         reader.readAsArrayBuffer(file);
@@ -246,6 +307,24 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         setAddData({ ...addData, ...track });
         setIsOpenTrack(false);
         setTrack({ url: '', other: '' });
+        console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup);
+        if (oneVisaApplicantsGroup) {
+            const updatedData = {
+                ...oneVisaApplicantsGroup,
+                updated_time: new Date(),
+                visa_applicants: oneVisaApplicantsGroup?.visa_applicants.map((applicant: any) => (applicant.id === addData?.id ? { ...applicant, tracking_detail: track } : applicant)),
+            };
+
+            return handleUpdate({
+                updateMutation: updateVisaApplicant,
+                value: updatedData,
+                items: oneVisaApplicantsGroup,
+                meta: {},
+                handleLocalUpdate: handleLocalRTKUpdate,
+                apiObjectRef: visaProcessSlice,
+                endpoint: 'getVisaApplicants',
+            });
+        }
     };
 
     const handleFilter = () => {
@@ -257,7 +336,16 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         // Implement the logic to handle the deletion of the row
         // console.log('Deleting row:', object);
         setIsOpenListLine(true);
+        setAddData(object);
         // You can add your deletion logic here, e.g., updating the state, making an API call, etc.
+    };
+
+    const handleRestoreApplicant = (applicant: any) => {
+        if (applicant.id) {
+            const updatedData = filterItem.filter((item: any) => item.id !== applicant.id);
+            setFilterItem(updatedData);
+            handleRestore(applicant);
+        }
     };
 
     return (
@@ -266,7 +354,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                 <h2 className="text-xl">{title}</h2>
                 <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
-                        {title !== 'Country Visa Types' && title !== 'Deleted Application' && title !== 'List Visa Application' && (
+                        {title !== 'Country Visa Types' && title !== 'Deleted Application' && title !== 'List Visa Application' && title !== 'Deleted Visa Application' && (
                             <div>
                                 <button type="button" className="btn btn-primary" onClick={() => setIsOpen(true)}>
                                     <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
@@ -335,6 +423,12 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                             <IconSearch className="mx-auto" />
                         </button>
                     </div>
+
+                    <div>
+                        <button type="button" className="btn btn-primary" onClick={() => updateSearch(search)}>
+                            Search
+                        </button>
+                    </div>
                     {title === 'Lead List' && (
                         <div>
                             <button type="button" className="btn btn-primary" onClick={handleFilter}>
@@ -343,12 +437,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                             </button>
                         </div>
                     )}
-
-                    <div>
-                        <button type="button" className="btn btn-primary" onClick={() => updateSearch(search)}>
-                            Search
-                        </button>
-                    </div>
                     {/* Export will be uncommented once the client has updated all the data, then will modify export all the columns to import to main db (prod)  */}
                     {/* <div>
                         <button type="button" className="btn btn-outline-primary" onClick={handleExport}>
@@ -366,7 +454,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                 <div className="table-responsive">
                     <PaginationTable
                         title={title}
-                        data={data}
+                        data={filterItem}
                         meta={meta}
                         tableColumns={tableColumns}
                         handleDelete={handleDelete}
@@ -376,6 +464,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                         handleTracking={handleTracking}
                         setPage={setPage}
                         setLimit={setLimit}
+                        handleDocChecklist={handleDocChecklist}
                     />
                 </div>
             </div>
@@ -389,6 +478,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                 addData={addData}
                 isEdit={isEdit}
                 setIsEdit={setIsEdit}
+                visaChecklistData={visaChecklistData}
             />
 
             {/* Modal for tracking Url */}
@@ -412,7 +502,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
                             <label htmlFor="refno">Ref No</label>
-                            <input id="refno" type="text" disabled={true} value={addData?.refno && addData.refno} placeholder="Ref No" className="form-input" />
+                            <input id="refno" type="text" disabled={true} value={addData?.id} placeholder="Ref No" className="form-input" />
                         </div>
                         <div className="mb-5">
                             <label htmlFor="url">Tracking URL </label>
@@ -446,7 +536,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                 </div>
             </ReuseActionModal>
 
-            {title == 'List Visa Application' && <ActionModalListLine isOpen={isOpenlistLine} setIsOpen={setIsOpenListLine} />}
+            {title == 'List Visa Application' && <ActionModalListLine isOpen={isOpenlistLine} setIsOpen={setIsOpenListLine} addData={addData} setAddData={setAddData} />}
 
             {/* {isImportOpen && <ImportExcel isOpen={isImportOpen} setIsOpen={setIsImportOpen} />} */}
             {/* <ReuseActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} width="">

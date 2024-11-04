@@ -31,45 +31,7 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
 
     const { data: countries, isLoading, isFetching } = useGetCountriesQuery(undefined);
     const { items = [], meta = {} } = countries || {};
-    const options1 = [
-        'Andaman and Nicobar Islands',
-        'Andhra Pradesh',
-        'Arunachal Pradesh',
-        'Assam',
-        'Bihar',
-        'Chandigarh',
-        'Chhattisgarh',
-        'Dadra and Nagar Haveli',
-        'Daman and Diu',
-        'Delhi',
-        'Goa',
-        'Gujarat',
-        'Haryana',
-        'Himachal Pradesh',
-        'Jammu and Kashmir',
-        'Jharkhand',
-        'Karnataka',
-        'Kerala',
-        'Madhya Pradesh',
-        'Maharashtra',
-        'Meghalaya',
-        'Mizoram',
-        'Mumbai',
-        'Nagaland',
-        'Orissa',
-        'Puducherry',
-        'Punjab',
-        'Rajasthan',
-        'Sikkim',
-        'Tamil Nadu',
-        'Telangana',
-        'Tripura',
-        'Uttar Pradesh',
-        'Uttarakhand',
-        'Uttaranchal',
-        'Uttarakhand',
-        'West Bengal',
-    ];
+    
 
     const options: OptionType[] = [
         { value: 'Andaman and Nicobar Islands', label: 'Andaman and Nicobar Islands' },
@@ -109,7 +71,6 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
         { value: 'Uttaranchal', label: 'Uttaranchal' },
         { value: 'West Bengal', label: 'West Bengal' },
     ];
-
 
     useEffect(() => {
         if (addData?.state) {
@@ -153,7 +114,7 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                 </div>
 
                 <div className="p-5">
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-3 ">
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="dropdown">
                             <label htmlFor="type">Embassy / VFS</label>
                             <select className="form-input" defaultValue="" id="type" onChange={(e) => handleInputChange(e)} value={addData?.type}>
@@ -164,7 +125,7 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                                 <option value="vfs">VFS</option>
                             </select>
                         </div>
-                        <SearchableDropdown addData={addData} setAddData={setAddData} />
+                        <SearchableDropdown addData={addData} setAddData={setAddData} items={items} heading ="Country"  />
                         {/* <div className="dropdown">
                             <label htmlFor="visacountry"> Country</label>
                             <select className="form-input" defaultValue="" id="country" onChange={(e) => handleInputChange(e)} value={addData?.country?.id}>
@@ -178,6 +139,8 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                                 ))}
                             </select>
                         </div> */}
+                    </div>
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-1 ">
                         <div className="dropdown">
                             <label htmlFor="jurisdiction">Jurisdiction</label>
                             <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-1 ">
