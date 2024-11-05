@@ -8,11 +8,12 @@ import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import { EntryType } from '@/entities/entry-type.entity';
 import { usePaginationOptions } from '@/hooks/usePaginationOptions';
+import LoadingSpinner from '@/components/Reusable/LoadingSpinner/LoadingSpinner';
 
 const EntryTypes: React.FC = () => {
-    const [createEntryType, {}] = useCreateEntryTypeMutation();
-    const [updateEntryType, {}] = useUpdateEntryTypeMutation();
-    const [deleteEntryType, {}] = useDeleteEntryTypeMutation();
+    const [createEntryType, { isLoading: isCreateLoading }] = useCreateEntryTypeMutation();
+    const [updateEntryType, { isLoading: isUpdateLoading }] = useUpdateEntryTypeMutation();
+    const [deleteEntryType, { isLoading: isDeleteLoading }] = useDeleteEntryTypeMutation();
 
     const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
@@ -99,6 +100,8 @@ const EntryTypes: React.FC = () => {
 
     return (
         <>
+            {(isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
+
             <TableLayout
                 title="Entry Types"
                 filterby="name"

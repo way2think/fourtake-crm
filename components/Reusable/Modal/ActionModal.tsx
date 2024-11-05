@@ -50,7 +50,7 @@ const ActionModal: React.FC<ActionModalProps> = ({ isOpen, setIsOpen, handleSave
                     <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
                         <div className="fixed inset-0 " />
                     </Transition.Child>
-                    <div className="fixed inset-0 z-[999] overflow-y-auto bg-[black]/60">
+                    <div className="fixed inset-0 z-[700] overflow-y-auto bg-[black]/60">
                         <div className="flex min-h-screen items-start justify-center px-4">
                             <Transition.Child
                                 as={Fragment}

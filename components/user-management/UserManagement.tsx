@@ -11,11 +11,13 @@ import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import { rolesObject } from '@/entities/role.entity';
 import { showMessage } from '@/utils/notification';
 import { User } from '@/entities/user.entity';
+import Loading from '../layouts/loading';
+import LoadingSpinner from '../Reusable/LoadingSpinner/LoadingSpinner';
 
 const UserManagement: React.FC = () => {
-    const [createUser, {}] = useCreateUserMutation();
-    const [updateUser, {}] = useUpdateUserMutation();
-    const [deleteUser, {}] = useDeleteUserMutation();
+    const [createUser, { isLoading: isCreateLoading }] = useCreateUserMutation();
+    const [updateUser, { isLoading: isUpdateLoading }] = useUpdateUserMutation();
+    const [deleteUser, { isLoading: isDeleteLoading }] = useDeleteUserMutation();
 
     const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
@@ -135,6 +137,7 @@ const UserManagement: React.FC = () => {
 
     return (
         <>
+            {(isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
             <ul className="flex space-x-2 rtl:space-x-reverse">
                 <li>
                     <Link href="/" className="text-primary hover:underline">

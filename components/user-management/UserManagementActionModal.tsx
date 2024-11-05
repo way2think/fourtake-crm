@@ -23,14 +23,10 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
 
     const currentUser = useSelector(selectUser);
 
-    // console.log('currentUser', currentUser);
-
     const handleCheckBoxChange = (e: any) => {
         const { id, checked } = e.target;
         setAddData((prev: any) => ({ ...prev, [id]: checked }));
     };
-
-    // console.log('centers', centers);
 
     return (
         <>

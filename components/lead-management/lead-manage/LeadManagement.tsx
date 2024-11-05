@@ -12,11 +12,12 @@ import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 import { useGetVisaChecklistQuery } from '@/services/api/cms/visaChecklistSlice';
 import { showMessage } from '@/utils/notification';
 import { isValidPhoneNumber } from '@/utils/validator';
+import LoadingSpinner from '@/components/Reusable/LoadingSpinner/LoadingSpinner';
 
 const LeadManagement: React.FC = () => {
-    const [createLead, {}] = useCreateLeadMutation();
-    const [updateLead, {}] = useUpdateLeadMutation();
-    const [deleteLead, {}] = useDeleteLeadMutation();
+    const [createLead, { isLoading: isCreateLoading }] = useCreateLeadMutation();
+    const [updateLead, { isLoading: isUpdateLoading }] = useUpdateLeadMutation();
+    const [deleteLead, { isLoading: isDeleteLoading }] = useDeleteLeadMutation();
 
     const { page, limit, sortField, sortOrder, search, filter, setFilter, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
@@ -24,7 +25,6 @@ const LeadManagement: React.FC = () => {
     const { items = [], meta = {} } = leads || {};
 
     const { data: visachecklist } = useGetVisaChecklistQuery({ page: 0, limit: 0 });
-    console.log("visaChecklist",visachecklist)
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
@@ -117,7 +117,7 @@ const LeadManagement: React.FC = () => {
         });
 
     const handleSubmit = async (value: Lead) => {
-        console.log('value', value);
+        // console.log('value', value);
         if (value.name == null || value.name == '') {
             showMessage('Enter Name', 'error');
             return false;
@@ -330,10 +330,10 @@ const LeadManagement: React.FC = () => {
 
     const exportColumns = ['id', 'leadname', 'email', 'contact', 'destination_country', 'visatype', 'stateofresidence', 'emailsentdate', 'lastfollowup', 'nextfollowup', 'status'];
 
-    console.log('leads:::::, ', leads);
-
     return (
         <>
+            {(isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
+
             <ul className="mb-3 flex space-x-2 rtl:space-x-reverse">
                 <li>
                     <Link href="/" className="text-primary hover:underline">
@@ -344,6 +344,7 @@ const LeadManagement: React.FC = () => {
                     <span>Lead List</span>
                 </li>
             </ul>
+
             <TableLayout
                 title="Lead List"
                 filterby="destination_country"

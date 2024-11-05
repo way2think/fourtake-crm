@@ -14,11 +14,12 @@ import { CountryVisaType } from '@/entities/country-visa-type.entity';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import { usePaginationOptions } from '@/hooks/usePaginationOptions';
 import CountryVisaTypeActionModal from './CountryVisaTypesActionModal';
+import LoadingSpinner from '@/components/Reusable/LoadingSpinner/LoadingSpinner';
 
 const CountryVisaTypes: React.FC = () => {
-    const [createCountryVisaType, {}] = useCreateCountryVisaTypeMutation();
-    const [updateCountryVisaType, {}] = useUpdateCountryVisaTypeMutation();
-    const [deleteCountryVisaType, {}] = useDeleteCountryVisaTypeMutation();
+    const [createCountryVisaType, { isLoading: isCreateLoading }] = useCreateCountryVisaTypeMutation();
+    const [updateCountryVisaType, { isLoading: isUpdateLoading }] = useUpdateCountryVisaTypeMutation();
+    const [deleteCountryVisaType, { isLoading: isDeleteLoading }] = useDeleteCountryVisaTypeMutation();
 
     const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
@@ -135,6 +136,8 @@ const CountryVisaTypes: React.FC = () => {
     // };
     return (
         <>
+            {(isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
+
             <TableLayout
                 title="Country Visa Types"
                 data={items || []}

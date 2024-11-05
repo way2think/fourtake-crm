@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const Sales = async () => {
     const session = await auth();
 
-    console.log('session: ', session);
+    // console.log('session: ', session);
 
     let data = [
         {

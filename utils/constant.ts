@@ -1,6 +1,3 @@
-
-
-
 interface StateCityData {
     [key: string]: string[];
 }

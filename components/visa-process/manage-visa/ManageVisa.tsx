@@ -801,7 +801,9 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                             </option>
 
                             {states.map((state) => (
-                                <option value={state}>{state}</option>
+                                <option key={state} value={state}>
+                                    {state}
+                                </option>
                             ))}
                         </select>
                     </div>
@@ -809,7 +811,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                         <label htmlFor="visa_duration">Visa Duration</label>
                         <select className="form-input" defaultValue="" id="visa_duration" value={addData?.visa_duration || ''} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
-                                Select VisaDuration
+                                -- Select Visa Duration --
                             </option>
                             <option value="72 hours">72 Hours</option>
                             <option value="15 days">15 Days </option>
@@ -832,7 +834,9 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                                 Select Entry Type
                             </option>
                             {entryTypes?.items.map((entrytype: any) => (
-                                <option value={entrytype.id}>{entrytype.name}</option>
+                                <option key={entrytype} value={entrytype.id}>
+                                    {entrytype.name}
+                                </option>
                             ))}
                         </select>
                     </div>
@@ -860,7 +864,9 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                             </option>
 
                             {assigneeList?.items?.map((item: any) => (
-                                <option value={item.id}>{item.username}</option>
+                                <option key={item.id} value={item.id}>
+                                    {item.username}
+                                </option>
                             ))}
                         </select>
                     </div>
@@ -1045,7 +1051,9 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                                     Select Agents
                                 </option>
                                 {agents?.items.map((agent: any) => (
-                                    <option value={agent.id}>{agent.username}</option>
+                                    <option key={agent.id} value={agent.id}>
+                                        {agent.username}
+                                    </option>
                                 ))}
                             </select>
                         </div>
@@ -1067,7 +1075,9 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                                     Select Corporate
                                 </option>
                                 {corporates?.items.map((corporate: any) => (
-                                    <option value={corporate.id}>{corporate.username}</option>
+                                    <option key={corporate.id} value={corporate.id}>
+                                        {corporate.username}
+                                    </option>
                                 ))}
                             </select>
                         </div>
