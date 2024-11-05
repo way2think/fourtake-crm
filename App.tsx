@@ -8,6 +8,8 @@ import { getTranslation } from '@/i18n';
 import { useSession } from 'next-auth/react';
 import { useLazyGetCurrentUserQuery } from './services/api/userSlice';
 import { setCurrentUser } from './store/user.store';
+import LoadingSpinner from './components/Reusable/LoadingSpinner/LoadingSpinner';
+import { selectIsLoading } from './store/app.store';
 
 function App({ children }: PropsWithChildren) {
     const dispatch = useDispatch();
@@ -50,12 +52,15 @@ function App({ children }: PropsWithChildren) {
 
     // const checkSessionToken = async () => {};
 
+    const isLoadingSpinner = useSelector(selectIsLoading);
+
     return (
         <div
             className={`${(themeConfig.sidebar && 'toggle-sidebar') || ''} ${themeConfig.menu} ${themeConfig.layout} ${
                 themeConfig.rtlClass
             } main-section relative font-nunito text-sm font-normal antialiased`}
         >
+            {isLoadingSpinner && <LoadingSpinner />}
             {isLoading ? <Loading /> : children}
         </div>
     );

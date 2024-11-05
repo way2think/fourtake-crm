@@ -233,23 +233,31 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.map((row: any, rowIndex: any) => (
-                            <tr key={rowIndex}>
-                                {columns.map((column, colIndex) => (
-                                    <td key={colIndex}>{column.render ? column.render(row) : row[column.accessor]}</td>
-                                ))}
+                        {data?.length > 0 ? (
+                            data?.map((row: any, rowIndex: any) => (
+                                <tr key={rowIndex}>
+                                    {columns.map((column, colIndex) => (
+                                        <td key={colIndex}>{column.render ? column.render(row) : row[column.accessor]}</td>
+                                    ))}
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={columns.length} className="py-5 text-center">
+                                    <p className="text-lg font-semibold text-gray-500">No Data Available</p>
+                                </td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
                 </table>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', paddingLeft: '10px' }}>
                 <select className="table-number-dropdwon" value={pageSize} onChange={(e) => handlePageSizeChange(Number(e.target.value))}>
                     <option value={10}>10</option>
-                    <option value={15} disabled={data?.length < 10}>
+                    <option value={15} disabled={meta && meta.totalItems < 10}>
                         15
                     </option>
-                    <option value={20} disabled={data?.length < 15}>
+                    <option value={20} disabled={meta && meta.totalItems < 15}>
                         20
                     </option>
                 </select>

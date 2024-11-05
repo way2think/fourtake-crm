@@ -9,6 +9,7 @@ import { mailSlice, useCreateMailMutation } from '@/services/api/mailSlice';
 import { handleCreate } from '@/utils/rtk-http';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { useGetVisaRequirementsQuery } from '@/services/api/dashboardSlice';
+import LoadingSpinner from '@/components/Reusable/LoadingSpinner/LoadingSpinner';
 
 interface LeadEmailSendModalProps {
     isOpen: any;
@@ -21,12 +22,11 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
     // console.log('CountryActionModal: ', addData);
     const [serviceCharge, setServiceCharge] = useState();
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-    const [createMail, {}] = useCreateMailMutation();
+
     const buttonRef = useRef<HTMLButtonElement>(null); // Define buttonRef here
     // const { data: visaChecklistData } = useGetVisaChecklistQuery({ page: 0, limit: 0 });
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
     const fileInputRef = useRef<HTMLInputElement>(null);
-    console.log('visaChecklist data', visaChecklistData);
 
     const { data: visaRequirements } = useGetVisaRequirementsQuery({
         countryId: String(addData?.destination_country?.id) || String(addData?.destination_country),
@@ -34,7 +34,7 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
         stateOfResidence: addData?.state_of_residence || String(addData?.stateOfResidence),
     });
 
-    console.log('visaRequirement1 ', visaRequirements, addData);
+    const [createMail, { isLoading }] = useCreateMailMutation();
 
     useEffect(() => {
         if (visaChecklistData) {
@@ -172,6 +172,7 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
 
     return (
         <>
+            {isLoading && <LoadingSpinner />}
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} width="max-w-5xl">
                 <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
                     <h5 className="text-lg font-bold">Share Information Via Email</h5>

@@ -73,7 +73,7 @@ const VisaTypes: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
 
     return (
         <>
-            {(isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
+            {(isFetching || isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
 
             <TableLayout
                 title="Visa Types"

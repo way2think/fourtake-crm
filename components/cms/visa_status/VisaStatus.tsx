@@ -79,7 +79,7 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
 
     return (
         <>
-            {(isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
+            {(isFetching || isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
 
             <TableLayout
                 title="Visa Status"

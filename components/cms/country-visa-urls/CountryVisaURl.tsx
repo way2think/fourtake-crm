@@ -98,7 +98,7 @@ const CountryVisaURl: React.FC = ({}) => {
 
     return (
         <>
-            {(isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
+            {(isFetching || isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
 
             <TableLayout
                 title="Country Visa Urls"

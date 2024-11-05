@@ -9,6 +9,7 @@ import { mailSlice, useCreateMailMutation } from '@/services/api/mailSlice';
 import { handleCreate } from '@/utils/rtk-http';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { useGetVisaRequirementsQuery } from '@/services/api/dashboardSlice';
+import LoadingSpinner from '@/components/Reusable/LoadingSpinner/LoadingSpinner';
 
 interface ManageVisaMailSendModalProps {
     isOpen: any;
@@ -21,12 +22,12 @@ const ManageVisaMailSendModal: React.FC<ManageVisaMailSendModalProps> = ({ isOpe
     // console.log('CountryActionModal: ', addData);
     const [serviceCharge, setServiceCharge] = useState();
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-    const [createMail, {}] = useCreateMailMutation();
+    const [createMail, { isLoading }] = useCreateMailMutation();
     const buttonRef = useRef<HTMLButtonElement>(null); // Define buttonRef here
     // const { data: visaChecklistData } = useGetVisaChecklistQuery({ page: 0, limit: 0 });
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
     const fileInputRef = useRef<HTMLInputElement>(null);
-    console.log('visaChecklist data', visaChecklistData?.items, addData);
+    // console.log('visaChecklist data', visaChecklistData?.items, addData);
 
     const { data: visaRequirements } = useGetVisaRequirementsQuery({
         countryId: String(addData?.destination_country?.id),
@@ -164,6 +165,7 @@ const ManageVisaMailSendModal: React.FC<ManageVisaMailSendModalProps> = ({ isOpe
 
     return (
         <>
+            {isLoading && <LoadingSpinner />}
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} width="max-w-5xl">
                 <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
                     <h5 className="text-lg font-bold">Share Information Via Email</h5>

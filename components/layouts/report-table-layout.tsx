@@ -21,6 +21,7 @@ import { useGetCentersQuery } from '@/services/api/centerSlice';
 import { Center } from '@/entities/center.entity';
 import { useGetDailyReportQuery, useLazyGetDailyReportQuery, useLazyGetInScanReportQuery, useLazyGetOutScanReportQuery } from '@/services/api/reportSlice';
 import { showMessage } from '@/utils/notification';
+import LoadingSpinner from '../Reusable/LoadingSpinner/LoadingSpinner';
 
 interface ReportTableLayoutProps {
     title: string;
@@ -66,19 +67,20 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
         }[]
     >([]);
 
-    const { data: assigneeList } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'employee, admin', filter: 'is_active' });
     const currentUser: any = useSelector(selectUser);
-    const [triggerGetDailyReport, { data: dailyReportData, isLoading }] = useLazyGetDailyReportQuery();
 
-    const [triggerGetOutScanReport, { data: outScanReportData }] = useLazyGetOutScanReportQuery();
+    const [triggerGetDailyReport, { data: dailyReportData, isLoading: isDailyLoading }] = useLazyGetDailyReportQuery();
 
-    const [triggerGetInScanReport, { data: inScanReportData }] = useLazyGetInScanReportQuery();
+    const [triggerGetOutScanReport, { data: outScanReportData, isLoading: isOutScanLoading }] = useLazyGetOutScanReportQuery();
 
-    console.log('inScanReportData', inScanReportData?.items);
+    const [triggerGetInScanReport, { data: inScanReportData, isLoading: isInScanLoading }] = useLazyGetInScanReportQuery();
 
-    const { data: centers, isError, error } = useGetCentersQuery({ page: 0, limit: 0 });
+    // console.log('inScanReportData', inScanReportData?.items);
 
-    console.log('addData in report table', addData);
+    const { data: assigneeList, isLoading: isAssigneeLoading, isFetching: isAssigneeFetching } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'employee, admin', filter: 'is_active' });
+    const { data: centers, isError, error, isLoading: isCentersLoading, isFetching: isCentersFetching } = useGetCentersQuery({ page: 0, limit: 0 });
+
+    // console.log('addData in report table', addData);
 
     // useEffect(() => {
     //     // console.log('datefi', dateFilter);
@@ -228,7 +230,9 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
     const handleFilter = () => {
         setShowCustomizer(true);
     };
-    console.log('filter item', filterItem, addData);
+
+    // console.log('filter item', filterItem, addData);
+
     const handleSubmitReport = async () => {
         let requiredFields: string[] = [];
         let dataFilter = data;
@@ -323,6 +327,7 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
 
     return (
         <>
+            {(isDailyLoading || isOutScanLoading || isInScanLoading || isCentersLoading || isAssigneeLoading || isAssigneeFetching || isCentersFetching) && <LoadingSpinner />}
             <div className="flex flex-wrap items-center justify-between gap-4">
                 <h2 className="text-xl">{title}</h2>
                 <div className="flex w-full  flex-col gap-4  sm:w-auto sm:flex-row sm:items-center sm:gap-3">
@@ -377,12 +382,12 @@ const ReportTableLayout: React.FC<ReportTableLayoutProps> = ({ title, data, tota
                                     <option value="" disabled={true}>
                                         Assign to
                                     </option>
-                                    <option value="all" >
-                                        All
-                                    </option>
+                                    <option value="all">All</option>
 
                                     {assigneeList?.items?.map((item: any) => (
-                                        <option value={item.id}>{item.username}</option>
+                                        <option key={item.username} value={item.id}>
+                                            {item.username}
+                                        </option>
                                     ))}
                                 </select>
                             </div>

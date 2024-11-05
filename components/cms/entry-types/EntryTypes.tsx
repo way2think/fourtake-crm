@@ -100,7 +100,7 @@ const EntryTypes: React.FC = () => {
 
     return (
         <>
-            {(isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
+            {(isFetching || isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
 
             <TableLayout
                 title="Entry Types"

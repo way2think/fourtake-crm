@@ -14,10 +14,11 @@ import CountryActionModal from '@/components/cms/countries/CountryActionModal';
 import TableLayout from '@/components/layouts/table-layout';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleDelete } from '@/utils/rtk-http';
+import LoadingSpinner from '@/components/Reusable/LoadingSpinner/LoadingSpinner';
 
 const ListVisaApplication = () => {
-    const [deleteApplicant, {}] = useDeleteApplicantMutation();
-    const [deleteGroup, {}] = useDeleteGroupMutation();
+    const [deleteApplicant, { isLoading: isDeleteLoading }] = useDeleteApplicantMutation();
+    const [deleteGroup, { isLoading: isDeleteGroupLoading }] = useDeleteGroupMutation();
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
@@ -25,7 +26,6 @@ const ListVisaApplication = () => {
 
     const { data: visaApplicants, isFetching, isLoading } = useGetVisaApplicantsQuery({ page, limit, sortField: 'updated_time', sortOrder: 'DESC', search, filter: 'all', showDeleted: false });
     const { items = [], meta = {} } = visaApplicants || {};
-    console.log('items', items);
 
     const [data, setData] = useState(visaApplicants);
     const exportColumns = ['id', 'applydate', 'refno', 'apptype', 'applname', 'cosultantname', 'destination', 'type', 'duration', 'entry'];
@@ -182,6 +182,7 @@ const ListVisaApplication = () => {
 
     return (
         <>
+            {(isLoading || isFetching || isDeleteLoading || isDeleteGroupLoading) && <LoadingSpinner />}
             <div className="mb-5">
                 {isMounted && (
                     <Tab.Group>

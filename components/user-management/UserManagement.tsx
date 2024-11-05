@@ -21,8 +21,8 @@ const UserManagement: React.FC = () => {
 
     const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
-    const { data: countries, isFetching, isLoading } = useGetUsersQuery({ page, limit, sortField, sortOrder, search });
-    const { items = [], meta = {} } = countries || {};
+    const { data: users, isFetching, isLoading } = useGetUsersQuery({ page, limit, sortField, sortOrder, search });
+    const { items = [], meta = {} } = users || {};
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
@@ -131,7 +131,6 @@ const UserManagement: React.FC = () => {
 
             const createUserData = { ...value, is_active: value.is_active ?? false };
 
-
             return handleCreate({
                 createMutation: createUser,
                 value: createUserData,
@@ -146,7 +145,7 @@ const UserManagement: React.FC = () => {
 
     return (
         <>
-            {(isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
+            {(isLoading || isFetching || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
             <ul className="flex space-x-2 rtl:space-x-reverse">
                 <li>
                     <Link href="/" className="text-primary hover:underline">

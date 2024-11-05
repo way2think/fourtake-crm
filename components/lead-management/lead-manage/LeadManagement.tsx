@@ -24,6 +24,8 @@ const LeadManagement: React.FC = () => {
     const { data: leads, isError, error, isFetching, isLoading } = useGetLeadsQuery({ page, limit, sortField: 'updated_time', sortOrder: 'DESC', search, filter });
     const { items = [], meta = {} } = leads || {};
 
+    console.log('leads: ', leads);
+
     const { data: visachecklist } = useGetVisaChecklistQuery({ page: 0, limit: 0 });
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
@@ -340,7 +342,7 @@ const LeadManagement: React.FC = () => {
 
     return (
         <>
-            {(isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
+            {(isFetching || isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
 
             <ul className="mb-3 flex space-x-2 rtl:space-x-reverse">
                 <li>
