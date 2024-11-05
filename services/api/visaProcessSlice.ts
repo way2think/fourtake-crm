@@ -61,7 +61,12 @@ export const visaProcessSlice = apiSlice.injectEndpoints({
                 },
                 body,
             }),
-            invalidatesTags: (result, error, { id }) => [{ type: 'visaProcess', id }],
+            invalidatesTags: (result, error, { id }) => {
+                console.log('result of applicant update', id);
+                const decodedId = decodeURIComponent(id);
+
+                return [{ type: 'visaProcess', id:decodedId }];
+            },
         }),
         deleteApplicant: build.mutation({
             query: (id) => ({

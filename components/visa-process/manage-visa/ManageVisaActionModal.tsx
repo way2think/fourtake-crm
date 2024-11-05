@@ -242,7 +242,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                             <label htmlFor="gender">Gender</label>
                             <select className="form-input" defaultValue="" id="gender" onChange={(e) => handleInputChange(e)} value={addUser?.gender}>
                                 <option value="" disabled={true}>
-                                    Select Gender
+                                    --- Select Gender ---
                                 </option>
                                 <option value="Female">Female</option>
                                 <option value="Male">Male</option>
@@ -282,7 +282,6 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                             <div className="mb-5">
                                 <ComponentsFormDateAndTimePicker label="Document pickup Date" id={'doc_pickup_date'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
 
-                                {/* <ComponentsFormDatePickerBasic label="Document pickup Date" id={'doc_pickup_date'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} /> */}
                             </div>
                             <div className="mb-5">
                                 <label htmlFor="doc_pickup_remark">Document PickUp Remarks</label>
@@ -298,7 +297,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                         </div>
                     )}
 
-                    {isEdit && (
+                    {isEdit && paramId && (
                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                             <>
                                 <div className="mb-5">

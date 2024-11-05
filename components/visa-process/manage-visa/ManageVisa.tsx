@@ -78,8 +78,6 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
 
     const user: any = useSelector(selectUser) as User;
 
-    console.log('user in manage visa', user);
-
     const role = user?.role || 'guest';
 
     const router = useRouter();
@@ -101,7 +99,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const { data: agents } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'agent' });
     const { data: corporates } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'corporate' });
     const { data: oneVisaApplicantsGroup, isError, error } = useGetOneVisaApplicantGroupQuery(paramId);
-    console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup, isError, error, paramId);
+    // console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup, isError, error, paramId);
 
     console.log('addData', addData);
 
@@ -368,14 +366,15 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
             showMessage('Invalid Email', 'error');
             return false;
         }
-        if (addUser.phone == '' || addUser.phone == null || !isValidPhoneNumber(addUser.phone)) {
-            showMessage('Invalid Phone No', 'error');
-            return false;
-        }
         if (addUser.passport_number == '' || addUser.passport_number == null) {
             showMessage('Enter Passport No', 'error');
             return false;
         }
+        if (addUser.phone == '' || addUser.phone == null || !isValidPhoneNumber(addUser.phone)) {
+            showMessage('Invalid Phone No', 'error');
+            return false;
+        }
+
         if (addUser.gender == '' || addUser.gender == null) {
             showMessage('Select Gender  ', 'error');
             return false;
@@ -478,8 +477,17 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
             showMessage('Select Visa Duration ', 'error');
             return false;
         }
+        if (addData.entry_type == '' || addData.entry_type == null) {
+            showMessage('Select Entry Type', 'error');
+            return false;
+        }
         if (addData.travel_date == '' || addData.travel_date == null) {
             showMessage('Select Travel Date ', 'error');
+            return false;
+        }
+
+        if (addData.assigned_to == '' || addData.assigned_to == null) {
+            showMessage('Select Assignee ', 'error');
             return false;
         }
 
@@ -531,8 +539,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
             });
 
             if (creationResponse) {
-                router.push(`/manage-visa/${encodeURIComponent(creationResponse.groupId)}`);
-                console.log('createionResponse', creationResponse);
+                router.push(`/manage-visa/${creationResponse.data.groupId}`);
             } else {
                 console.log('Creation was canceled or failed.');
             }
@@ -568,7 +575,13 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
             textAlign: 'left',
             title: 'status',
             render: (row: any) => {
-                return row.visa_status.name;
+                if (!row.visa_status.name) {
+                    const status = visaStatuses?.items?.find((status: any) => row.visa_status === status.id);
+                    console.log("status",status)
+                    return status ? status.name : null; // Return the name if found, otherwise return null or a default value
+                } else {
+                    return row.visa_status.name;
+                }
             },
         },
     ];
@@ -645,11 +658,9 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
 
         let updatedVisaApplicants = applicantDetails;
         let matchedApplicants: any[] = [];
-        console.log('Selected Visa Status ID:', selectedVisaStatus);
 
         if (addData?.status_apply_to) {
             const globalStatus = addData?.status_apply_to.split(',');
-            console.log('globalStatus', globalStatus);
 
             // Initialize an empty array to collect all matched applicants
             let allMatchedApplicants: any[] = [];
@@ -660,7 +671,6 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                 const matchedApplicantsList = applicantDetails.filter((applicant: any) => {
                     const fullName = `${applicant.first_name} ${applicant.last_name}`.trim().toLowerCase(); // Trim and convert to lowercase
                     const isMatch = fullName === trimmedStatusItem;
-                    console.log('Comparing', { statusItem: trimmedStatusItem, fullName, isMatch }); // Detailed logging
                     return isMatch;
                 });
 
@@ -684,8 +694,6 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
 
                 return matchedApplicantsList; // Return the list of matched applicants
             });
-
-            console.log('matchedApplicants', allMatchedApplicants, updatedVisaApplicants);
         }
 
         // Update state after gathering all matched and updated data
@@ -719,14 +727,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                                 Select Nationality
                             </option>
                             {countryVisaTypes?.items.map((countryVisaType: any) => (
-                                <option
-                                    key={countryVisaType.id}
-                                    value={countryVisaType.id}
-                                    // onClick={() => {
-                                    //     console.log('hi', countryVisaType);
-                                    //     setVisaTypes(countryVisaType.country_visa_types);
-                                    // }}
-                                >
+                                <option key={countryVisaType.id} value={countryVisaType.id}>
                                     {countryVisaType.name}
                                 </option>
                             ))}
@@ -797,11 +798,11 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                             // disabled={role == 'employee' ? true : false}
                         >
                             <option value="" disabled={true}>
-                                Select State
+                                --- Select State ---
                             </option>
 
-                            {states.map((state) => (
-                                <option key={state} value={state}>
+                            {states.map((state, i) => (
+                                <option key={i} value={state}>
                                     {state}
                                 </option>
                             ))}
@@ -831,10 +832,10 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                         <label htmlFor="entry_type">Entry Type</label>
                         <select className="form-input" defaultValue="" id="entry_type" value={addData?.entry_type?.id || addData?.entry_type || ''} onChange={(e) => handleInputChange(e)}>
                             <option value="" disabled={true}>
-                                Select Entry Type
+                                --- Select Entry Type ---
                             </option>
                             {entryTypes?.items.map((entrytype: any) => (
-                                <option key={entrytype} value={entrytype.id}>
+                                <option key={entrytype.id} value={entrytype.id}>
                                     {entrytype.name}
                                 </option>
                             ))}
@@ -854,7 +855,6 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                             id="assigned_to"
                             value={addData?.assigned_to?.id}
                             onChange={(e) => {
-                                // console.log('e.target', e.target.options[e.target.selectedIndex].innerText);
                                 handleInputChange(e);
                                 // setAddData((prev: any) => ({ ...prev, assigned_to: { id: e.target.value, username: e.target.options[e.target.selectedIndex].innerText } }));
                             }}
@@ -968,17 +968,33 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                     </div>
                 )}
 
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                    <>
-                        <div className="mb-5">
-                            <ComponentsFormDateAndTimePicker label="OutScan to Embassy" id={'outscan_to_embassy_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} updateUser={true} />
-                        </div>
+                {paramId && (
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+                        <>
+                            <div className="mb-5">
+                                <ComponentsFormDateAndTimePicker
+                                    label="OutScan to Embassy Date & Time"
+                                    id={'outscan_to_embassy_date'}
+                                    isEdit={isEdit}
+                                    setAddData={setAddData}
+                                    addData={addData}
+                                    updateUser={true}
+                                />
+                            </div>
 
-                        <div className="mb-5">
-                            <ComponentsFormDateAndTimePicker label="In Scan from Embassy" id={'inscan_from_embassy_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} updateUser={true} />
-                        </div>
-                    </>
-                </div>
+                            <div className="mb-5">
+                                <ComponentsFormDateAndTimePicker
+                                    label="In Scan from Embassy Date & Time"
+                                    id={'inscan_from_embassy_date'}
+                                    isEdit={isEdit}
+                                    setAddData={setAddData}
+                                    addData={addData}
+                                    updateUser={true}
+                                />
+                            </div>
+                        </>
+                    </div>
+                )}
 
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                     {isSubmit && (
@@ -1027,7 +1043,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                             }}
                         >
                             <option value="" disabled={true}>
-                                Select Customer Type
+                                --- Select Customer Type ---
                             </option>
                             <option value="walkin">Walkin</option>
                             <option value="postal">Postal</option>
