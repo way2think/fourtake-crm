@@ -120,7 +120,7 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
             attachments: addData?.attachments,
             cc: addData?.cc,
         };
-
+        setIsOpen(false);
         return handleCreate({
             createMutation: createMail,
             value,
@@ -130,7 +130,6 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
             apiObjectRef: mailSlice,
             endpoint: '',
         });
-        setIsOpen(false);
     };
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -230,6 +229,7 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1">
                         <div className="mb-2">
                             {/* <MarkdownEditor handleInputChange={handleInputChange} addData={addData} setAddData={setAddData} /> */}
+                            <label htmlFor="Checklist">Additional Information</label>
                             <VisafeeEditorJodit title={'additional_info'} handleInputChange={handleInputChange} setAddData={setAddData} addData={addData} />
                         </div>
 

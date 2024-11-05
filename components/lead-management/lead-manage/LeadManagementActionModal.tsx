@@ -1273,7 +1273,14 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         >
                             Cancel
                         </button>
-                        <button onClick={handleSave} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
+                        <button
+                            onClick={() => {
+                                handleSave();
+                                setIsEdit(false);
+                            }}
+                            type="button"
+                            className="btn btn-primary ltr:ml-4 rtl:mr-4"
+                        >
                             Save
                         </button>
                     </div>

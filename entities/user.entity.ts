@@ -12,7 +12,7 @@ export interface User {
     is_logged_in: boolean;
     role: Role;
     address: string;
-    center?: Center;
+    center: Center;
     created_at: string;
     password?: string;
     confirm_password?: string;

@@ -74,9 +74,13 @@ const LeadManagement: React.FC = () => {
                 return row?.visa_type?.name;
             },
         },
-        // { accessor: 'stateofresidence', textAlign: 'left', title: 'State Of Residence' },
+
         { accessor: 'email_sent_date', textAlign: 'left', title: 'Email Sent Date' },
-        // { accessor: 'lastfollowup', textAlign: 'left', title: 'Last Follow Up' },
+        {
+            accessor: 'service_type',
+            textAlign: 'left',
+            title: 'Service Type',
+        },
         {
             accessor: 'followups',
             textAlign: 'left',
@@ -117,7 +121,6 @@ const LeadManagement: React.FC = () => {
         });
 
     const handleSubmit = async (value: Lead) => {
-        // console.log('value', value);
         if (value.name == null || value.name == '') {
             showMessage('Enter Name', 'error');
             return false;
@@ -315,7 +318,12 @@ const LeadManagement: React.FC = () => {
                 endpoint: 'getLeads',
             });
         } else {
-            const updatedData = { ...value, updated_time: new Date(), stage: 'Fresh', status: 'Open', service_code };
+            const removeEmptyStringValue = Object.fromEntries(
+                // Convert object to entries and filter out those with empty string values
+                Object.entries(value).filter(([_, value]) => value !== '')
+            );
+
+            const updatedData = { ...removeEmptyStringValue, updated_time: new Date(), stage: 'Fresh', status: 'Open', service_code };
             return handleCreate({
                 createMutation: createLead,
                 value: updatedData,

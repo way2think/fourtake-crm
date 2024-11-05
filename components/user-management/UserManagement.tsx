@@ -28,11 +28,8 @@ const UserManagement: React.FC = () => {
 
     const tableColumns = [
         { accessor: 'username', textAlign: 'left', title: 'Username' },
-
         { accessor: 'first_name', textAlign: 'left', title: 'First Name' },
         { accessor: 'last_name', textAlign: 'left', title: 'Last Name' },
-        // { accessor: 'apptype', textAlign: 'left', title: 'Applicant Type' },
-        // { accessor: 'email', textAlign: 'left', title: 'Email' },
         {
             accessor: 'center',
             textAlign: 'left',
@@ -41,7 +38,6 @@ const UserManagement: React.FC = () => {
                 return center.name;
             },
         },
-        // { accessor: 'status', textAlign: 'left', title: 'status' },
         { accessor: 'phone', textAlign: 'left', title: 'phone' },
 
         {
@@ -84,6 +80,11 @@ const UserManagement: React.FC = () => {
         });
 
     const handleSubmit = (value: User) => {
+        if (value.username == '' || value.username == null) {
+            showMessage('Enter User Name', 'error');
+            return false;
+        }
+
         if (value.first_name == '' || value.first_name == null) {
             showMessage('Enter First name', 'error');
             return false;
@@ -92,12 +93,16 @@ const UserManagement: React.FC = () => {
             showMessage('Enter Last name', 'error');
             return false;
         }
-        if (value.username == '' || value.username == null) {
-            showMessage('Enter Email', 'error');
+
+        if (value.center == undefined || value.center == null) {
+            showMessage('Select Center', 'error');
             return false;
         }
 
-        console.log('value: ', value);
+        if (value.role == undefined || value.role == null) {
+            showMessage('Select Role', 'error');
+            return false;
+        }
 
         if (value.id) {
             return handleUpdate({
@@ -123,9 +128,13 @@ const UserManagement: React.FC = () => {
                 showMessage('Passwords should match ', 'error');
                 return false;
             }
+
+            const createUserData = { ...value, is_active: value.is_active ?? false };
+
+
             return handleCreate({
                 createMutation: createUser,
-                value,
+                value: createUserData,
                 items,
                 meta,
                 handleLocalUpdate: handleLocalRTKUpdate,
