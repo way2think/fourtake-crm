@@ -100,7 +100,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         visaTypeId: String(addData?.visa_type?.id),
         stateOfResidence: addData?.state_of_residence,
     });
-    console.log('addData', addData, visaRequirements);
+    // console.log('addData', addData, visaRequirements);
 
     const [updateVisaApplicant, {}] = useUpdateVisaApplicantGroupMutation();
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
@@ -249,7 +249,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
             setIsOpen(false);
             setAddData({ refno: '', status: '' });
 
-            console.log('isSuccess', isSuccess);
+            // console.log('isSuccess', isSuccess);
             //console.log(title)
 
             if (title == 'Lead List') {
@@ -307,7 +307,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         setAddData({ ...addData, ...track });
         setIsOpenTrack(false);
         setTrack({ url: '', other: '' });
-        console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup);
+        // console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup);
         if (oneVisaApplicantsGroup) {
             const updatedData = {
                 ...oneVisaApplicantsGroup,

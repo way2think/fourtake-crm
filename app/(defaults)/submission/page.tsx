@@ -11,6 +11,20 @@ const submission = async () => {
 
     console.log('session: ', session);
 
+    const tableColumns = [
+        { accessor: 'id', textAlign: 'left', title: 'Ref no' },
+        { accessor: 'apply_date', textAlign: 'left', title: 'Apply Date' },
+        { accessor: 'applicantname', textAlign: 'left', title: 'Applicant Name' },
+        { accessor: 'passport_number', textAlign: 'left', title: 'Passport Number' },
+        { accessor: 'visa_status', textAlign: 'left', title: 'Status' },
+        { accessor: 'submission_date', textAlign: 'left', title: 'Submission Date' },
+        { accessor: 'collection_date', textAlign: 'left', title: 'Collection Date' },
+        { accessor: 'travel_date', textAlign: 'left', title: 'Travel Date' },
+        { accessor: 'destination_country', textAlign: 'left', title: 'Destination Country' },
+        { accessor: 'visa_type', textAlign: 'left', title: 'Visa Type' },
+        { accessor: 'submission_date_time', textAlign: 'left', title: 'Submission Date & Time' },
+    ];
+
     let data = [
         {
             id: 1,
@@ -20,37 +34,11 @@ const submission = async () => {
         },
     ];
 
-    let passportsdata = [
-        {
-            id: 1,
-            applicantname: 'Jagadish',
-            destination: 'korea',
-        },
-    ];
-    let applicationdata = [
-        {
-            id: 1,
-            applicantname: 'Jagadish',
-            destination: 'korea',
-        },
-    ];
-    let leaddata = [
-        {
-            id: 1,
-            name: 'Jagadish',
-        },
-    ];
-    let dropdata = [
-        {
-            id: 1,
-            applicantname: 'Jagadish',
-            destination: 'korea',
-        },
-    ];
+ 
 
     return (
         <div>
-            <DashboardSubmission data={data} leaddata={leaddata} passportsdata={passportsdata} applicationdata={applicationdata} dropdata={dropdata} />
+            <DashboardSubmission data={data} tableColumns={tableColumns}  />
         </div>
     );
 };

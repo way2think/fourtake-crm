@@ -27,66 +27,28 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { useRouter } from 'next/navigation';
 import PaginationTable from '../../components/Reusable/Table/PaginationTable';
 
-
 interface DashboardProps {
     data: any;
-    leaddata: any;
-    passportsdata: any;
-    applicationdata: any;
-    dropdata: any;
+    tableColumns: any;
 }
 interface AddData {
     [key: string]: string;
 }
 
-const DashboardSubmission: React.FC<DashboardProps> = ({ data, leaddata, passportsdata, applicationdata, dropdata }) => {
+const DashboardSubmission: React.FC<DashboardProps> = ({ data, tableColumns }) => {
     const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const [isMounted, setIsMounted] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [addData, setAddData] = useState<AddData>({});
+
     // useEffect(() => {
     //     setIsMounted(true);
     // }, []);
 
     const [filterItem, setFilterItem] = useState(data);
     const router = useRouter();
-
-    const tableColumns = [
-        { accessor: 'id', textAlign: 'left', title: 'Ref no' },
-        { accessor: 'apply_date', textAlign: 'left', title: 'Apply Date' },
-        { accessor: 'applicantname', textAlign: 'left', title: 'Applicant Name' },
-        { accessor: 'passport_number', textAlign: 'left', title: 'Passport Number' },
-        // { accessor: 'visatype', textAlign: 'left', title: 'Type' },
-    ];
-
-    const tableColumnspassports = [
-        { accessor: 'id', textAlign: 'left', title: 'Ref no' },
-        { accessor: 'applicantname', textAlign: 'left', title: 'Applicant Name' },
-        { accessor: 'destination', textAlign: 'left', title: 'Destination' },
-        // { accessor: 'visatype', textAlign: 'left', title: 'Type' },
-    ];
-    const tableColumnsapplication = [
-        { accessor: 'id', textAlign: 'left', title: 'Ref no' },
-        { accessor: 'applicantname', textAlign: 'left', title: 'Applicant Name' },
-        { accessor: 'destination', textAlign: 'left', title: 'Destination' },
-        // { accessor: 'visatype', textAlign: 'left', title: 'Type' },
-    ];
-
-    const tableColumnsLead = [
-        { accessor: 'id', textAlign: 'left', title: 'Lead id' },
-        { accessor: 'name', textAlign: 'left', title: 'Name' },
-    ];
-
-    const tableColumnsdrop = [
-        { accessor: 'id', textAlign: 'left', title: 'Ref no' },
-        { accessor: 'applicantname', textAlign: 'left', title: 'Applicant Name' },
-        { accessor: 'destination', textAlign: 'left', title: 'Destination' },
-        // { accessor: 'visatype', textAlign: 'left', title: 'Type' },
-    ];
-
-
 
     const handleEdit = (object: any) => {
         setIsEdit(true);

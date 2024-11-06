@@ -8,18 +8,17 @@ import type { EmbassyVfs } from '@/entities/embassy-vfs.entity';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import { usePaginationOptions } from '@/hooks/usePaginationOptions';
+import LoadingSpinner from '@/components/Reusable/LoadingSpinner/LoadingSpinner';
 
 const EmbassyVfs: React.FC = () => {
-    const [createEmbassyVfs, {}] = useCreateEmbassyVfsMutation();
-    const [updateEmbassyVfs, {}] = useUpdateEmbassyVfsMutation();
-    const [deleteEmbassyVfs, {}] = useDeleteEmbassyVfsMutation();
+    const [createEmbassyVfs, { isLoading: isCreateLoading }] = useCreateEmbassyVfsMutation();
+    const [updateEmbassyVfs, { isLoading: isUpdateLoading }] = useUpdateEmbassyVfsMutation();
+    const [deleteEmbassyVfs, { isLoading: isDeleteLoading }] = useDeleteEmbassyVfsMutation();
 
     const { page, limit, sortField, sortOrder, search, filter, setFilter, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10, initialFilter: 'all' });
 
     const { data, isFetching, isLoading } = useGetEmbassyVfsQuery({ page, limit, sortField, sortOrder, search, filter });
     const { items = [], meta = {} } = data || {};
-
-    // console.log('data: ', data, isLoading, isFetching);
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
@@ -102,6 +101,8 @@ const EmbassyVfs: React.FC = () => {
 
     return (
         <>
+            {(isFetching || isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
+
             <TableLayout
                 title="Embassy/Vfs"
                 filterby="country.name"

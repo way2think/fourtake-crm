@@ -37,7 +37,7 @@ interface PaginationExpandProps {
     title?: string;
     getSubData?: any; // Function to fetch sub-table data
     handleRestoreGroup?: any;
-    handleDelete?: any;
+    handleDelete?:any;
 }
 
 const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns, handleEdit, handleDeleteApplicant, handleDeleteGroup, title, getSubData, handleRestoreGroup }) => {

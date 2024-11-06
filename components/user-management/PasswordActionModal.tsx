@@ -4,11 +4,13 @@ import IconX from '@/components/icon/icon-x';
 import { rolesObject } from '@/entities/role.entity';
 import { User } from '@/entities/user.entity';
 import { useGetUsersQuery, useUpdateUserPasswordMutation } from '@/services/api/userSlice';
+import { setIsLoading } from '@/store/app.store';
 import { showMessage } from '@/utils/notification';
 import { handleErrorResponse } from '@/utils/rtk-http';
 import { isValidEmail, isValidName, isValidPassword, isValidPhoneNumber } from '@/utils/validator';
 import { Transition, Dialog } from '@headlessui/react';
 import React, { Fragment, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 
 interface PasswordActionModalProps {
@@ -19,10 +21,12 @@ interface PasswordActionModalProps {
 }
 
 const PasswordActionModal: React.FC<PasswordActionModalProps> = ({ assignPassword, setAssignPassword, assignPasswordValue, setAssignPasswordValue }) => {
+    const dispatch = useDispatch();
+
     const { data: users, isFetching, isLoading, isError, error } = useGetUsersQuery({ page: 0, limit: 0 });
     const { items = [], meta = {} } = users || {};
 
-    const [updateUserPassword, {}] = useUpdateUserPasswordMutation();
+    const [updateUserPassword, { isLoading: isUpdateLoading }] = useUpdateUserPasswordMutation();
 
     const handlePasswordChange = (e: any) => {
         const { value, id } = e.target;
@@ -30,7 +34,7 @@ const PasswordActionModal: React.FC<PasswordActionModalProps> = ({ assignPasswor
     };
 
     const handleChangePassword = async () => {
-        console.log('assignPasswordValue', assignPasswordValue);
+        // console.log('assignPasswordValue', assignPasswordValue);
 
         if (assignPasswordValue.id === '') {
             showMessage('Select User', 'error');
@@ -70,6 +74,10 @@ const PasswordActionModal: React.FC<PasswordActionModalProps> = ({ assignPasswor
             setAssignPasswordValue({ id: '', password: '', confirmpassword: '' });
         }
     };
+
+    useEffect(() => {
+        dispatch(setIsLoading(isLoading));
+    }, [dispatch, isLoading, isUpdateLoading]);
 
     return (
         <Transition appear show={assignPassword} as={Fragment}>

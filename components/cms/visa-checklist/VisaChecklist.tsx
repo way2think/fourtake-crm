@@ -9,11 +9,12 @@ import type { VisaChecklist } from '@/entities/visa-checklist.entity';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { usePaginationOptions } from '@/hooks/usePaginationOptions';
+import LoadingSpinner from '@/components/Reusable/LoadingSpinner/LoadingSpinner';
 
 const VisaChecklist: React.FC = () => {
-    const [createVisaChecklist, {}] = useCreateVisaChecklistMutation();
-    const [updateVisaChecklist, {}] = useUpdateVisaChecklistMutation();
-    const [deleteVisaChecklist, {}] = useDeleteVisaChecklistMutation();
+    const [createVisaChecklist, { isLoading: isCreateLoading }] = useCreateVisaChecklistMutation();
+    const [updateVisaChecklist, { isLoading: isUpdateLoading }] = useUpdateVisaChecklistMutation();
+    const [deleteVisaChecklist, { isLoading: isDeleteLoading }] = useDeleteVisaChecklistMutation();
 
     const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
@@ -126,6 +127,8 @@ const VisaChecklist: React.FC = () => {
 
     return (
         <>
+            {(isFetching || isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
+
             <TableLayout
                 title="Visa Checklist"
                 data={items}

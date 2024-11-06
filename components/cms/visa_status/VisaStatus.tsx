@@ -8,11 +8,12 @@ import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import type { VisaStatus } from '@/entities/visa-status.entity';
 import { usePaginationOptions } from '@/hooks/usePaginationOptions';
+import LoadingSpinner from '@/components/Reusable/LoadingSpinner/LoadingSpinner';
 
 const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
-    const [createVisaStatus, {}] = useCreateVisaStatusMutation();
-    const [updateVisaStatus, {}] = useUpdateVisaStatusMutation();
-    const [deleteVisaStatus, {}] = useDeleteVisaStatusMutation();
+    const [createVisaStatus, { isLoading: isCreateLoading }] = useCreateVisaStatusMutation();
+    const [updateVisaStatus, { isLoading: isUpdateLoading }] = useUpdateVisaStatusMutation();
+    const [deleteVisaStatus, { isLoading: isDeleteLoading }] = useDeleteVisaStatusMutation();
 
     const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
@@ -78,6 +79,8 @@ const VisaStatus: React.FC<{ visastatusdata: any }> = ({ visastatusdata }) => {
 
     return (
         <>
+            {(isFetching || isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
+
             <TableLayout
                 title="Visa Status"
                 handleDelete={handleDeleteVisaStatus}

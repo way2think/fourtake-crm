@@ -43,7 +43,6 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
 
             const index = items.findIndex((cv: any) => cv.id == (addData?.destination_country?.id || addData?.destination_country));
             if (setVisaTypes !== undefined) {
-    
                 setVisaTypes(items[index].country_visa_types);
             }
         }
@@ -92,7 +91,6 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
     const handleOptionClick = (option: Option) => {
         const index = items.findIndex((cv: any) => cv.id == option.id);
         if (setVisaTypes !== undefined) {
-         
             setVisaTypes(items[index].country_visa_types);
         }
         setSearchTerm(option.name);
@@ -116,7 +114,7 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
     return (
         <div className="searchable-dropdown" ref={dropdownRef}>
             <label htmlFor="country">{heading}*</label>
-            <input type="text" className="form-input" value={searchTerm} onChange={handleSearchChange} onClick={handleInputClick} placeholder="Select Country" />
+            <input type="text" className="form-input" value={searchTerm} onChange={handleSearchChange} onClick={handleInputClick} placeholder="-- Select Destination Country --" />
             {isOpen && (
                 <ul className="options-list list-group m-3">
                     {filteredOptions?.map((option) => (

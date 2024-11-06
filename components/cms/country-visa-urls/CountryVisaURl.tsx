@@ -15,11 +15,12 @@ import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { CountryVisaUrl } from '@/entities/country-visa-url.entity';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import { usePaginationOptions } from '@/hooks/usePaginationOptions';
+import LoadingSpinner from '@/components/Reusable/LoadingSpinner/LoadingSpinner';
 
 const CountryVisaURl: React.FC = ({}) => {
-    const [createCountryVisaUrl, {}] = useCreateCountryVisaUrlMutation();
-    const [updateCountryVisaUrl, {}] = useUpdateCountryVisaUrlMutation();
-    const [deleteCountryVisaUrl, {}] = useDeleteCountryVisaUrlMutation();
+    const [createCountryVisaUrl, { isLoading: isCreateLoading }] = useCreateCountryVisaUrlMutation();
+    const [updateCountryVisaUrl, { isLoading: isUpdateLoading }] = useUpdateCountryVisaUrlMutation();
+    const [deleteCountryVisaUrl, { isLoading: isDeleteLoading }] = useDeleteCountryVisaUrlMutation();
 
     const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
@@ -97,6 +98,8 @@ const CountryVisaURl: React.FC = ({}) => {
 
     return (
         <>
+            {(isFetching || isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
+
             <TableLayout
                 title="Country Visa Urls"
                 filterby="country.name"

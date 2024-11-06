@@ -6,12 +6,6 @@ export const metadata: Metadata = {
     title: 'Fourtake CRM',
 };
 
-const Sales = () => {
-    return (
-        <div>
-            <UserManagement />
-        </div>
-    );
-};
+const Users = () => <UserManagement />;
 
-export default Sales;
+export default Users;

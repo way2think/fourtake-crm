@@ -9,6 +9,7 @@ import { mailSlice, useCreateMailMutation } from '@/services/api/mailSlice';
 import { handleCreate } from '@/utils/rtk-http';
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { useGetVisaRequirementsQuery } from '@/services/api/dashboardSlice';
+import LoadingSpinner from '@/components/Reusable/LoadingSpinner/LoadingSpinner';
 
 interface LeadEmailSendModalProps {
     isOpen: any;
@@ -21,20 +22,19 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
     // console.log('CountryActionModal: ', addData);
     const [serviceCharge, setServiceCharge] = useState();
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-    const [createMail, {}] = useCreateMailMutation();
+
     const buttonRef = useRef<HTMLButtonElement>(null); // Define buttonRef here
     // const { data: visaChecklistData } = useGetVisaChecklistQuery({ page: 0, limit: 0 });
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
     const fileInputRef = useRef<HTMLInputElement>(null);
-    // console.log('visaChecklist data', visaChecklistData?.items);
 
     const { data: visaRequirements } = useGetVisaRequirementsQuery({
-        countryId: String(addData?.country?.id) || String(addData?.countryId),
+        countryId: String(addData?.destination_country?.id) || String(addData?.destination_country),
         visaTypeId: String(addData?.visa_type?.id) || String(addData?.visaTypeId),
         stateOfResidence: addData?.state_of_residence || String(addData?.stateOfResidence),
     });
 
-    console.log('visaRequirement1 ', visaRequirements, addData);
+    const [createMail, { isLoading }] = useCreateMailMutation();
 
     useEffect(() => {
         if (visaChecklistData) {
@@ -120,7 +120,7 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
             attachments: addData?.attachments,
             cc: addData?.cc,
         };
-
+        setIsOpen(false);
         return handleCreate({
             createMutation: createMail,
             value,
@@ -130,7 +130,6 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
             apiObjectRef: mailSlice,
             endpoint: '',
         });
-        setIsOpen(false);
     };
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -173,6 +172,7 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
 
     return (
         <>
+            {isLoading && <LoadingSpinner />}
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} width="max-w-5xl">
                 <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
                     <h5 className="text-lg font-bold">Share Information Via Email</h5>
@@ -230,6 +230,7 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-1">
                         <div className="mb-2">
                             {/* <MarkdownEditor handleInputChange={handleInputChange} addData={addData} setAddData={setAddData} /> */}
+                            <label htmlFor="Checklist">Additional Information</label>
                             <VisafeeEditorJodit title={'additional_info'} handleInputChange={handleInputChange} setAddData={setAddData} addData={addData} />
                         </div>
 

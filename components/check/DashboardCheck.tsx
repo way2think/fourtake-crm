@@ -36,8 +36,6 @@ const DashboardCheck = () => {
         setIsMounted(true);
     }, []);
 
-    let countryId, visaTypeId, stateOfResidence, urlSearchParams;
-
     const [addData, setAddData] = useState<any>({
         destination_country: '',
         is_group: false,
@@ -53,20 +51,20 @@ const DashboardCheck = () => {
     const [states] = useState(Object.keys(stateCityData).sort());
     const [visaTypes, setVisaTypes] = useState([]);
     const [isOpenMail, setIsOpenMail] = useState(false);
-    const [mailDetails, setMailDetails] = useState({
-        name: '',
-        email: '',
-        cc: '',
-        visa_checklist: '',
-        additional_info: '',
-    });
+    // const [mailDetails, setMailDetails] = useState({
+    //     name: '',
+    //     email: '',
+    //     cc: '',
+    //     visa_checklist: '',
+    //     additional_info: '',
+    // });
 
     const { data: visaRequirements } = useGetVisaRequirementsQuery({
         countryId: queryParams.countryId,
         visaTypeId: queryParams.visaTypeId,
         stateOfResidence: queryParams.stateOfResidence,
     });
-    console.log('visaRequirement ', visaRequirements);
+    // console.log('visaRequirement ', visaRequirements);
     const { data: countryVisaTypes } = useGetCountryVisaTypesQuery({ page: 0, limit: 0 });
 
     const user = useSelector(selectUser);
@@ -95,6 +93,7 @@ const DashboardCheck = () => {
             });
         }
     }, [window.location.href]);
+
     useEffect(() => {
         if (visaRequirements) {
             const visaChecklist =
@@ -146,10 +145,6 @@ const DashboardCheck = () => {
             .replace(/\\"/g, '"'); // Unescape quotes
     };
 
-    // if (visaRequirements) {
-    //     console.log('parse(visaRequirements?.[0]?.fee)', visaRequirements?.[0]?.fee, '1', sanitizeHtmlString(visaRequirements?.[0]?.fee));
-    // }
-
     return (
         <>
             <div className="mb-5">
@@ -200,7 +195,9 @@ const DashboardCheck = () => {
                             </option>
 
                             {states.map((state) => (
-                                <option value={state}>{state}</option>
+                                <option key={state} value={state}>
+                                    {state}
+                                </option>
                             ))}
                         </select>
                     </div>
@@ -414,6 +411,7 @@ const DashboardCheck = () => {
                     </Tab.Group>
                 )}
             </div>
+
             <EmailSendModal isOpen={isOpenMail} setIsOpen={setIsOpenMail} addData={queryParams} setAddData={setQueryParams} visaChecklistData={visaRequirements} />
         </>
     );

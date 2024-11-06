@@ -11,26 +11,25 @@ import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import { rolesObject } from '@/entities/role.entity';
 import { showMessage } from '@/utils/notification';
 import { User } from '@/entities/user.entity';
+import Loading from '../layouts/loading';
+import LoadingSpinner from '../Reusable/LoadingSpinner/LoadingSpinner';
 
 const UserManagement: React.FC = () => {
-    const [createUser, {}] = useCreateUserMutation();
-    const [updateUser, {}] = useUpdateUserMutation();
-    const [deleteUser, {}] = useDeleteUserMutation();
+    const [createUser, { isLoading: isCreateLoading }] = useCreateUserMutation();
+    const [updateUser, { isLoading: isUpdateLoading }] = useUpdateUserMutation();
+    const [deleteUser, { isLoading: isDeleteLoading }] = useDeleteUserMutation();
 
     const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
-    const { data: countries, isFetching, isLoading } = useGetUsersQuery({ page, limit, sortField, sortOrder, search });
-    const { items = [], meta = {} } = countries || {};
+    const { data: users, isFetching, isLoading } = useGetUsersQuery({ page, limit, sortField, sortOrder, search });
+    const { items = [], meta = {} } = users || {};
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
     const tableColumns = [
         { accessor: 'username', textAlign: 'left', title: 'Username' },
-
         { accessor: 'first_name', textAlign: 'left', title: 'First Name' },
         { accessor: 'last_name', textAlign: 'left', title: 'Last Name' },
-        // { accessor: 'apptype', textAlign: 'left', title: 'Applicant Type' },
-        // { accessor: 'email', textAlign: 'left', title: 'Email' },
         {
             accessor: 'center',
             textAlign: 'left',
@@ -39,7 +38,6 @@ const UserManagement: React.FC = () => {
                 return center.name;
             },
         },
-        // { accessor: 'status', textAlign: 'left', title: 'status' },
         { accessor: 'phone', textAlign: 'left', title: 'phone' },
 
         {
@@ -82,6 +80,11 @@ const UserManagement: React.FC = () => {
         });
 
     const handleSubmit = (value: User) => {
+        if (value.username == '' || value.username == null) {
+            showMessage('Enter User Name', 'error');
+            return false;
+        }
+
         if (value.first_name == '' || value.first_name == null) {
             showMessage('Enter First name', 'error');
             return false;
@@ -90,12 +93,16 @@ const UserManagement: React.FC = () => {
             showMessage('Enter Last name', 'error');
             return false;
         }
-        if (value.username == '' || value.username == null) {
-            showMessage('Enter Email', 'error');
+
+        if (value.center == undefined || value.center == null) {
+            showMessage('Select Center', 'error');
             return false;
         }
 
-        console.log('value: ', value);
+        if (value.role == undefined || value.role == null) {
+            showMessage('Select Role', 'error');
+            return false;
+        }
 
         if (value.id) {
             return handleUpdate({
@@ -121,9 +128,12 @@ const UserManagement: React.FC = () => {
                 showMessage('Passwords should match ', 'error');
                 return false;
             }
+
+            const createUserData = { ...value, is_active: value.is_active ?? false };
+
             return handleCreate({
                 createMutation: createUser,
-                value,
+                value: createUserData,
                 items,
                 meta,
                 handleLocalUpdate: handleLocalRTKUpdate,
@@ -135,6 +145,7 @@ const UserManagement: React.FC = () => {
 
     return (
         <>
+            {(isLoading || isFetching || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
             <ul className="flex space-x-2 rtl:space-x-reverse">
                 <li>
                     <Link href="/" className="text-primary hover:underline">

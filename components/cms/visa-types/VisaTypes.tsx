@@ -10,11 +10,12 @@ import { VisaType } from '@/entities/visa-type.entity';
 import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import VisaTypesActionModal from '@/components/cms/visa-types/VisaTypesActionModal';
 import { usePaginationOptions } from '@/hooks/usePaginationOptions';
+import LoadingSpinner from '@/components/Reusable/LoadingSpinner/LoadingSpinner';
 
 const VisaTypes: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
-    const [createVisaType, {}] = useCreateVisaTypeMutation();
-    const [updateVisaType, {}] = useUpdateVisaTypeMutation();
-    const [deleteVisaType, {}] = useDeleteVisaTypeMutation();
+    const [createVisaType, { isLoading: isCreateLoading }] = useCreateVisaTypeMutation();
+    const [updateVisaType, { isLoading: isUpdateLoading }] = useUpdateVisaTypeMutation();
+    const [deleteVisaType, { isLoading: isDeleteLoading }] = useDeleteVisaTypeMutation();
 
     const { page, limit, sortField, sortOrder, search, setPage, setLimit, setSearch } = usePaginationOptions({ initialPage: 1, initialLimit: 10 });
 
@@ -72,6 +73,8 @@ const VisaTypes: React.FC<{ visatypedata: any }> = ({ visatypedata }) => {
 
     return (
         <>
+            {(isFetching || isLoading || isCreateLoading || isUpdateLoading || isDeleteLoading) && <LoadingSpinner />}
+
             <TableLayout
                 title="Visa Types"
                 filterby="name"
