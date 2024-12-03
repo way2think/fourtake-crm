@@ -89,8 +89,8 @@ const LeadManagement: React.FC = () => {
             title: 'Next Follow Up',
             render: (row: any) => {
                 if (row?.followups) {
-                    const dateOnly = row?.followups[row.followups.length - 1].next_followup;
-                    const time = row?.followups[row.followups.length - 1].followup_time;
+                    const dateOnly = row?.followups[row?.followups.length - 1]?.next_followup;
+                    const time = row?.followups[row?.followups.length - 1]?.followup_time;
                     return `${getDate(dateOnly)}, ${time}`;
                 }
             },
