@@ -64,7 +64,7 @@ const LeadManagement: React.FC = () => {
             textAlign: 'left',
             title: 'Country',
             render: (row: any) => {
-                return row.destination_country.name;
+                return row?.destination_country?.name;
             },
         },
         {
