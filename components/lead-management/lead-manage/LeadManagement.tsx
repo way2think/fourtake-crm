@@ -50,12 +50,12 @@ const LeadManagement: React.FC = () => {
             textAlign: 'left',
             title: 'Phone no',
             render: (row: any) => {
-                if (row.phone && row.other_phone) {
-                    return `+91 ${row.phone}, ${row.other_phone}`;
-                } else if (row.phone && !row.other_phone) {
+                if (row?.phone && row?.other_phone) {
+                    return `+91 ${row.phone}, ${row?.other_phone}`;
+                } else if (row?.phone && !row?.other_phone) {
                     return `+91 ${row.phone}`;
-                } else if (row.other_phone && !row.phone) {
-                    return `${row.other_phone}`;
+                } else if (row?.other_phone && !row?.phone) {
+                    return `${row?.other_phone}`;
                 }
             },
         },
@@ -88,9 +88,9 @@ const LeadManagement: React.FC = () => {
             textAlign: 'left',
             title: 'Next Follow Up',
             render: (row: any) => {
-                if (row.followups) {
-                    const dateOnly = row.followups[row.followups.length - 1].next_followup;
-                    const time = row.followups[row.followups.length - 1].followup_time;
+                if (row?.followups) {
+                    const dateOnly = row?.followups[row.followups.length - 1].next_followup;
+                    const time = row?.followups[row.followups.length - 1].followup_time;
                     return `${getDate(dateOnly)}, ${time}`;
                 }
             },
@@ -102,10 +102,10 @@ const LeadManagement: React.FC = () => {
             textAlign: 'left',
             title: 'Lead Type',
             render: (row: any) => {
-                if (row.lead_type == 'hot') {
+                if (row?.lead_type == 'hot') {
                     return <p style={{ color: 'red' }}>{row.lead_type}</p>;
                 } else {
-                    return row.lead_type;
+                    return row?.lead_type;
                 }
             },
         },
