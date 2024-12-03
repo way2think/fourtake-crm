@@ -6,6 +6,7 @@ import ComponentsFormDateAndTimePicker from '@/components/lead-management/lead-m
 import { User } from '@/entities/user.entity';
 import { useGetVisaStatusesQuery } from '@/services/api/cms/visaStatusSlice';
 import { selectUser } from '@/store/user.store';
+import { timeStampFormat } from '@/utils/constant';
 import { useEffect, useState, ChangeEvent } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -281,7 +282,6 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                             <div className="mb-5">
                                 <ComponentsFormDateAndTimePicker label="Document pickup Date" id={'doc_pickup_date'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
-
                             </div>
                             <div className="mb-5">
                                 <label htmlFor="doc_pickup_remark">Document PickUp Remarks</label>
@@ -388,7 +388,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                                         </div>
 
                                         <div className="mt-2 text-right font-mono text-sm text-blue-500">
-                                            Created By: {item.created_by} - Created Date: {item.created_time}
+                                            Created By: {item.created_by} - Created Date: {timeStampFormat(item.created_time)}
                                         </div>
                                     </div>
                                 ))}

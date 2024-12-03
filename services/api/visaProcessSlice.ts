@@ -15,8 +15,8 @@ export const visaProcessSlice = apiSlice.injectEndpoints({
             invalidatesTags: [{ type: 'visaProcess', id: 'LIST' }],
         }),
         getVisaApplicants: build.query({
-            providesTags: (result, error, arg) =>
-                result ? [{ type: 'visaProcess', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'visaProcess', id }))] : [{ type: 'visaProcess', id: 'LIST' }],
+            // providesTags: (result, error, arg) =>
+            //     result ? [{ type: 'visaProcess', id: 'LIST' }, ...result.items.map(({ id }: { id: any }) => ({ type: 'visaProcess', id }))] : [{ type: 'visaProcess', id: 'LIST' }],
             query: (args) => {
                 const url = generateURLWithPagination({
                     endpoint: '/visa-process',
@@ -40,6 +40,17 @@ export const visaProcessSlice = apiSlice.injectEndpoints({
                     },
                 };
             },
+            providesTags: (result, error, args) => {
+                console.log('result', result);
+                return result && result.success
+                    ? [
+                          ...result?.data?.map(({ id }: { id: any }) => ({
+                              type: 'visaProcess',
+                              id,
+                          })),
+                      ]
+                    : [{ type: 'visaProcess', id: 'LIST' }];
+            },
         }),
         getOneVisaApplicantGroup: build.query({
             query: (id) => ({
@@ -62,10 +73,10 @@ export const visaProcessSlice = apiSlice.injectEndpoints({
                 body,
             }),
             invalidatesTags: (result, error, { id }) => {
-                console.log('result of applicant update', id);
                 const decodedId = decodeURIComponent(id);
+                console.log('result of applicant update', id, decodedId);
 
-                return [{ type: 'visaProcess', id:decodedId }];
+                return [{ type: 'visaProcess', id: decodedId }];
             },
         }),
         deleteApplicant: build.mutation({

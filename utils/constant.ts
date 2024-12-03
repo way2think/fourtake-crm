@@ -1219,3 +1219,19 @@ export const stateCityData: StateCityData = {
         'Adra',
     ],
 };
+
+
+export const timeStampFormat = (time: any) => {
+    const timestamp = time * 1000;
+
+    // Create a new Date object
+    const date = new Date(timestamp);
+
+    // Extract day, month, and year
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Months are zero-based, so add 1
+    const year = date.getFullYear();
+
+    const formattedDate = `${day}/${month}/${year}`;
+    return formattedDate;
+};

@@ -14,7 +14,7 @@ import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import { useGetCountryVisaTypesQuery } from '@/services/api/cms/countryVisaTypeSlice';
 import { VisaType } from '@/entities/visa-type.entity';
 import CountrySearchDropdown from '@/components/Reusable/country-selector/CountrySearchDropdown';
-import { stateCityData } from '@/utils/constant';
+import { stateCityData, timeStampFormat } from '@/utils/constant';
 import { useGetEntryTypesQuery } from '@/services/api/cms/entryTypeSlice';
 import { update } from 'lodash';
 import {
@@ -1189,7 +1189,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                                     </div>
 
                                     <div className="mt-2 text-right font-mono text-sm text-blue-500">
-                                        Created By: {item.created_by} - Created Date: {item.created_time}
+                                        Created By: {item.created_by} - Created Date: {timeStampFormat(item.created_time)}
                                     </div>
                                 </div>
                             ))}

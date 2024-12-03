@@ -9,7 +9,7 @@ import { showMessage } from '@/utils/notification';
 import { useGetCountryVisaTypesQuery } from '@/services/api/cms/countryVisaTypeSlice';
 import { VisaType } from '@/entities/visa-type.entity';
 import EmailSendModal from './EmailSendModal';
-import { stateCityData } from '@/utils/constant';
+import { stateCityData, timeStampFormat } from '@/utils/constant';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/user.store';
 import { User } from '@/entities/user.entity';
@@ -158,17 +158,17 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
             textAlign: 'left',
             title: 'S.NO',
             render: (row: any) => {
-                return row.followup_id;
+                return row?.followup_id;
             },
         },
-        { accessor: '', textAlign: 'left', title: 'Next FollowUp Date & Time', render: (row: any) => `${row.next_followup}, ${row.followup_time}` },
+        { accessor: '', textAlign: 'left', title: 'Next FollowUp Date & Time', render: (row: any) => `${row?.next_followup}, ${row?.followup_time}` },
         // { accessor: 'followuptime', textAlign: 'left', title: 'Time' },
         {
             accessor: 'interaction',
             textAlign: 'left',
             title: 'Interaction Type',
             render: (row: any) => {
-                return row.interaction;
+                return row?.interaction;
             },
         },
         {
@@ -176,25 +176,12 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
             textAlign: 'left',
             title: 'Remark',
             render: (row: any) => {
-                return row.followup_remark;
+                return row?.followup_remark;
             },
         },
     ];
 
-    const timeStampFormat = (time: any) => {
-        const timestamp = time * 1000;
-
-        // Create a new Date object
-        const date = new Date(timestamp);
-
-        // Extract day, month, and year
-        const day = date.getDate();
-        const month = date.getMonth() + 1; // Months are zero-based, so add 1
-        const year = date.getFullYear();
-
-        const formattedDate = `${day}/${month}/${year}`;
-        return formattedDate;
-    };
+  
 
     const handleLeadNoteChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setLeadNote({ ...leadNote, note: event.target.value });
