@@ -14,13 +14,15 @@ interface SearchableDropdownProps {
     setVisaTypes?: any;
     title?: any;
     heading: string;
+    clearSearch?: boolean;
 }
 
-const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, setAddData, handleEmbassyChange, items, setVisaTypes, title, heading }) => {
+const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, setAddData, handleEmbassyChange, items, setVisaTypes, title, heading, clearSearch }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [filteredOptions, setFilteredOptions] = useState<Option[]>(items);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -34,6 +36,12 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+    useEffect(() => {
+        if (clearSearch) {
+            setSearchTerm('');
+        }
+    }, [clearSearch]);
 
     useEffect(() => {
         // Initialize searchTerm with the name of the selected country (if any)
@@ -89,6 +97,7 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
     };
 
     const handleOptionClick = (option: Option) => {
+        console.log('option', option);
         const index = items.findIndex((cv: any) => cv.id == option.id);
         if (setVisaTypes !== undefined) {
             setVisaTypes(items[index].country_visa_types);
@@ -111,10 +120,51 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
         setFilteredOptions(items); // Show all options when clicking input
     };
 
+    const handleBlur = () => {
+        console.log('false');
+        setIsOpen(false);
+    };
+
+    const handleOptionSelect = (option:any) => {
+        handleOptionClick(option);
+        setSearchTerm(option.name);
+        setIsOpen(false);
+    };
+
+    const handleKeyDown = (e:any) => {
+        if (!isOpen) return;
+
+        // Handle arrow key navigation
+        if (e.key === 'ArrowDown') {
+            setHighlightedIndex((prevIndex) => {
+                const nextIndex = Math.min(filteredOptions.length - 1, prevIndex + 1);
+                return nextIndex;
+            });
+        } else if (e.key === 'ArrowUp') {
+            setHighlightedIndex((prevIndex) => Math.max(0, prevIndex - 1));
+        }
+
+        // Handle selecting an option with Enter
+        if (e.key === 'Enter' && highlightedIndex !== -1) {
+            handleOptionSelect(filteredOptions[highlightedIndex]);
+        }
+    };
+    // console.log('filtered', filteredOptions);
+
     return (
         <div className="searchable-dropdown" ref={dropdownRef}>
             <label htmlFor="country">{heading}*</label>
-            <input type="text" className="form-input" value={searchTerm} onChange={handleSearchChange} onClick={handleInputClick} placeholder="-- Select Destination Country --" />
+            <input
+                type="text"
+                className="form-input"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                onFocus={handleInputClick}
+                // onBlur={handleBlur}
+                onClick={handleInputClick}
+                onKeyDown={handleKeyDown}
+                placeholder="-- Select Destination Country --"
+            />
             {isOpen && (
                 <ul className="options-list list-group m-3">
                     {filteredOptions?.map((option) => (
@@ -132,5 +182,6 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
         </div>
     );
 };
+
 
 export default CountrySearchDropdown;

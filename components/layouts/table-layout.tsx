@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import IconSearch from '../icon/icon-search';
 import IconUserPlus from '../icon/icon-user-plus';
 import * as XLSX from 'xlsx';
@@ -16,9 +16,6 @@ import { useGetOneVisaApplicantGroupQuery, useRestoreApplicantMutation, useUpdat
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleUpdate } from '@/utils/rtk-http';
 import { useGetVisaRequirementsQuery } from '@/services/api/dashboardSlice';
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
-import EmailSendModal from '../lead-management/lead-manage/EmailSendModal';
 
 interface TableLayoutProps {
     title: string;
@@ -247,7 +244,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
 
         if (isSuccess) {
             setIsOpen(false);
-            setAddData({ refno: '', status: '' });
+            setAddData({ refno: '', status: '', service_type: title === 'Lead List' ? 'visa service' : '' });
 
             // console.log('isSuccess', isSuccess);
             //console.log(title)

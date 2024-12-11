@@ -1,5 +1,4 @@
 'use client';
-
 import TableLayout from '@/components/layouts/table-layout';
 import React from 'react';
 import UserManagementActionModal from './UserManagementActionModal';
@@ -11,7 +10,6 @@ import { handleCreate, handleDelete, handleUpdate } from '@/utils/rtk-http';
 import { rolesObject } from '@/entities/role.entity';
 import { showMessage } from '@/utils/notification';
 import { User } from '@/entities/user.entity';
-import Loading from '../layouts/loading';
 import LoadingSpinner from '../Reusable/LoadingSpinner/LoadingSpinner';
 
 const UserManagement: React.FC = () => {
@@ -27,6 +25,14 @@ const UserManagement: React.FC = () => {
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
 
     const tableColumns = [
+        {
+            accessor: 'sno',
+            textAlign: 'center',
+            title: 'S.No',
+            render: (_: any, rowIndex: number) => {
+                return rowIndex + 1; // Adding 1 to make the serial number 1-based
+            },
+        },
         { accessor: 'username', textAlign: 'left', title: 'Username' },
         { accessor: 'first_name', textAlign: 'left', title: 'First Name' },
         { accessor: 'last_name', textAlign: 'left', title: 'Last Name' },
@@ -38,7 +44,7 @@ const UserManagement: React.FC = () => {
                 return center.name;
             },
         },
-        { accessor: 'phone', textAlign: 'left', title: 'phone' },
+        { accessor: 'phone', textAlign: 'left', title: 'Phone' },
 
         {
             accessor: 'role',
@@ -51,7 +57,7 @@ const UserManagement: React.FC = () => {
         {
             accessor: 'status',
             textAlign: 'left',
-            title: 'status',
+            title: 'Status',
             render: ({ is_active }: { is_active: boolean }) => {
                 return is_active == true ? 'Active' : 'InActive';
             },

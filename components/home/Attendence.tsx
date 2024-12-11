@@ -9,6 +9,8 @@ import CountrySearchDropdown from '../Reusable/country-selector/CountrySearchDro
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { setIsLoading } from '@/store/app.store';
+import IconRefresh from '../icon/icon-refresh';
+import IconTrash from '../icon/icon-trash';
 
 const Attendence = () => {
     const router = useRouter();
@@ -17,14 +19,14 @@ const Attendence = () => {
     const [states] = useState(Object.keys(stateCityData).sort());
     const [formData, setFormData] = useState({
         passport: 75,
-        state_of_residence: '',
+        state_of_residence: 'Karnataka',
         country: '',
         visa_type: '',
     });
-    const [visaTypes, setVisaTypes] = useState([]);
+    const [visaTypes, setVisaTypes] = useState<any>([]);
+    const [clearSearch, setClearSearch] = useState(false);
     const { data: countryVisaTypes } = useGetCountryVisaTypesQuery({ page: 0, limit: 0 });
-
-    // console.log('countryVisaTypes', countryVisaTypes);
+    const [isOpen, setIsOpen] = useState(false);
 
     const [errors, setErrors] = useState({
         passport: false,
@@ -86,6 +88,18 @@ const Attendence = () => {
         router.push(`/check-requirements?countryId=${formData.country}&visaTypeId=${formData.visa_type}&stateOfResidence=${formData.state_of_residence}`);
     };
 
+    const handleClear = () => {
+        setFormData((prev) => ({ ...prev, country: '', visa_type: '' }));
+        setClearSearch(true);
+    };
+
+    const handleFocus = () => setIsOpen(true);
+    const handleBlur = () => setIsOpen(false); // Close dropdown when focus is lost
+    const handleSelect = (e: any) => {
+        handleInputChangeAttendence(e);
+        setIsOpen(false); // Close dropdown after selection
+    };
+
     return (
         <>
             <section className="rounded-md bg-[#fff]  p-5 shadow-lg ">
@@ -141,17 +155,14 @@ const Attendence = () => {
                         setVisaTypes={setVisaTypes}
                         heading="I am going to"
                         title="country"
+                        clearSearch={clearSearch}
                     />
 
+                 
+
                     <div className="dropdown mb-5 mt-2">
-                        <label htmlFor="visa_type">My Purpose of visa_type is</label>
-                        <select
-                            className="form-input"
-                            defaultValue=""
-                            id="visa_type"
-                            // value={formData?.visa_type?.id}
-                            onChange={(e) => handleInputChangeAttendence(e)}
-                        >
+                        <label htmlFor="visa_type">My Purpose of Travel is</label>
+                        <select className="form-input" defaultValue="" id="visa_type" value={formData?.visa_type} onChange={(e) => handleInputChangeAttendence(e)}>
                             <option value="" disabled={true}>
                                 -- Visa Type --
                             </option>
@@ -164,10 +175,14 @@ const Attendence = () => {
                         </select>
                     </div>
                 </div>
-                <div className=" flex  items-center justify-center  ">
+                <div className=" m-auto  flex w-1/3 items-center justify-center">
                     <button type="button" className=" btn btn-primary w-2/4" onClick={handleSubmitAttendence}>
                         <IconLogout className="ltr:mr-2 rtl:ml-2" />
                         Check Requirements
+                    </button>
+                    <button type="button" className=" btn btn-primary ml-2 w-1/3" onClick={handleClear}>
+                        <IconTrash className="ltr:mr-2 rtl:ml-2" />
+                        Clear
                     </button>
                 </div>
             </section>
