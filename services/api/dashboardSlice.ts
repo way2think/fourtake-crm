@@ -14,6 +14,7 @@ export const dashboardSlice = apiSlice.injectEndpoints({
                 if (countryId) url.searchParams.append('countryId', countryId);
                 if (visaTypeId) url.searchParams.append('visaTypeId', visaTypeId);
                 if (stateOfResidence) url.searchParams.append('stateOfResidence', stateOfResidence);
+                console.log("api prop",countryId,visaTypeId,stateOfResidence)
 
                 return {
                     url: url.toString(),

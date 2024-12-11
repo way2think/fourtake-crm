@@ -7,11 +7,9 @@ import IconCaretDown from '@/components/icon/icon-caret-down';
 import IconRestore from '@/components/icon/icon-restore';
 import IconTxtFile from '@/components/icon/icon-txt-file';
 import IconVerify from '@/components/icon/menu/icon-verify';
-import IconCancel from '@/components/icon/icon-cancel';
 import IconUnVerified from '@/components/icon/icon-unverified';
 import IconList from '@/components/icon/icon-list';
 import IconTrendingUp from '@/components/icon/icon-trending-up';
-
 import './paginationtable.css';
 import { usePagination } from '@/hooks/usePagination';
 import { PaginationMeta } from '@/types/pagination';
@@ -82,7 +80,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                 accessor: 'actions',
                 title: <div style={{ marginRight: '6px' }}>Actions</div>,
                 textAlign: 'right',
-                render: (row: Row) => (
+                render: (row: Row, i: number) => (
                     <td style={{ display: 'flex', justifyContent: 'flex-end', gap: '3px' }}>
                         {title === 'Status Wise Report' ? (
                             <>
@@ -156,8 +154,12 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
             });
         }
 
+     
+
         return baseColumns;
     }, [title, tableColumns, handleEdit, handleDelete, ReuseActionModalShow, handleListLine]);
+
+
 
     const handlePageChange = (pageNum: number) => {
         setPage(pageNum);
@@ -237,7 +239,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                             data?.map((row: any, rowIndex: any) => (
                                 <tr key={rowIndex}>
                                     {columns.map((column, colIndex) => (
-                                        <td key={colIndex}>{column.render ? column.render(row) : row[column.accessor]}</td>
+                                        <td key={colIndex}>{column.render ? column.render(row, rowIndex) : row[column.accessor]}</td>
                                     ))}
                                 </tr>
                             ))

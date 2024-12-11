@@ -59,11 +59,19 @@ const DashboardCheck = () => {
     //     additional_info: '',
     // });
 
-    const { data: visaRequirements } = useGetVisaRequirementsQuery({
-        countryId: queryParams.countryId,
-        visaTypeId: queryParams.visaTypeId,
-        stateOfResidence: queryParams.stateOfResidence,
-    });
+    const { data: visaRequirements, refetch } = useGetVisaRequirementsQuery(
+        {
+            countryId: queryParams.countryId,
+            visaTypeId: queryParams.visaTypeId,
+            stateOfResidence: queryParams.stateOfResidence,
+        },
+        {
+            skip: !queryParams.countryId || !queryParams.visaTypeId || !queryParams.stateOfResidence,
+        }
+    );
+
+    console.log('queryParams', queryParams);
+
     // console.log('visaRequirement ', visaRequirements);
     const { data: countryVisaTypes } = useGetCountryVisaTypesQuery({ page: 0, limit: 0 });
 
@@ -73,6 +81,12 @@ const DashboardCheck = () => {
 
     const visaChecklistItems =
         visaRequirements && visaRequirements.length > 0 ? `${visaRequirements[0]?.checklist || ''} ${visaRequirements[0]?.fee == null || '' ? '' : visaRequirements[0]?.fee}` : '';
+
+    // useEffect(() => {
+    //     if (visaRequirements?.length <= 0) {
+    //         refetch();
+    //     }
+    // }, [visaRequirements]);
 
     useEffect(() => {
         // Ensure the code runs client-side
@@ -144,6 +158,8 @@ const DashboardCheck = () => {
             .replace(/\\r\\n/g, '') // Remove newlines
             .replace(/\\"/g, '"'); // Unescape quotes
     };
+
+    console.log('visaRequirements', visaRequirements);
 
     return (
         <>
@@ -226,7 +242,7 @@ const DashboardCheck = () => {
                 </div>
                 {isMounted && (
                     <Tab.Group>
-                        <Tab.List className="mt-3 flex flex-wrap border-b border-white-light bg-[#005fbe] dark:border-[#191e3a]">
+                        <Tab.List className="mt-3 flex flex-wrap border-b border-white-light bg-[#2eb9fe] dark:border-[#191e3a]">
                             <Tab as={Fragment}>
                                 {({ selected }) => (
                                     <button
@@ -280,26 +296,33 @@ const DashboardCheck = () => {
                         </Tab.List>
                         <Tab.Panels>
                             <Tab.Panel>
-                                <h4 className="mb-1 mt-5  pb-2 text-3xl font-bold text-[#005fbe]">{visaRequirements?.[0]?.visa_type?.name}</h4>
+                                <h4 className="mb-1 mt-5  pb-2 text-3xl font-bold text-[#005fbe]">
+                                    {visaRequirements?.[0]?.country?.name} {visaRequirements?.[0]?.visa_type?.name} Document Checklist
+                                </h4>
                                 <div className="active pb-3 pt-3">
                                     {/* <h4 className="mb-1 text-xl font-semibold">Document Checklist</h4> */}
-                                    <div>{typeof visaRequirements?.[0]?.checklist == 'string' && parse(visaRequirements?.[0]?.checklist)}</div>
+                                    <div>
+                                        {typeof visaRequirements?.[0]?.checklist == 'string' && parse(visaRequirements?.[0]?.checklist)}
+                                        {visaRequirements?.length <= 0 && 'No Data Found'}
+                                    </div>
                                     <h4 className="mb-4 mt-5 text-xl font-semibold">Judiciary</h4>
                                     <ul>
                                         <li className="mb-4 ">{visaRequirements?.[0]?.embassy_vfs?.[0]?.jurisdiction?.join()}</li>
                                     </ul>
                                     <h4 className="mb-4 text-xl font-semibold">Disclaimer</h4>
 
-                                    <ul>
+                                    <ul className="italic ">
                                         <li className="mb-4 ">
                                             {' '}
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                                            nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                            Disclaimer- Fourtake Visa Services doesn't have any involvement in the decision whether to issue or refuse a visa application and can't influence the
+                                            processing time. The visas are issued at the sole discretion of the Embassy / Consulate, and we cannot guarantee that. We don't have any affiliation with
+                                            any government agency.
                                         </li>
                                         <li className="mb-4">
                                             {' '}
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                                            nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                            Many times, Embassies/Consulates change the visa requirements without any notice or publications and we come across such changes only after we apply for the
+                                            respective visas. Hence, kindly cooperate. In case of any discrepancy in visa requirements on our website/documentation, we request you to please highlight
+                                            and oblige us. Customers like you are the most critical component of our success. Thank you.
                                         </li>
                                     </ul>
                                 </div>

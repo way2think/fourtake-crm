@@ -24,8 +24,6 @@ const LeadManagement: React.FC = () => {
     const { data: leads, isError, error, isFetching, isLoading } = useGetLeadsQuery({ page, limit, sortField: 'updated_time', sortOrder: 'DESC', search, filter });
     const { items = [], meta = {} } = leads || {};
 
-    console.log('leads: ', leads);
-
     const { data: visachecklist } = useGetVisaChecklistQuery({ page: 0, limit: 0 });
 
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
@@ -43,6 +41,17 @@ const LeadManagement: React.FC = () => {
 
     const tableColumns = [
         { accessor: 'id', textAlign: 'left', title: 'ID' },
+        {
+            accessor: 'create_date',
+            textAlign: 'left',
+            title: 'Created Date',
+            render: (row: any) => {
+                const date = new Date(row?.create_date);
+
+                const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+                return formattedDate;
+            },
+        },
         { accessor: 'name', textAlign: 'left', title: 'Lead Name' },
         { accessor: 'email', textAlign: 'left', title: 'Email' },
         {
