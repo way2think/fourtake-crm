@@ -181,8 +181,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         },
     ];
 
-  
-
     const handleLeadNoteChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setLeadNote({ ...leadNote, note: event.target.value });
     };
@@ -334,7 +332,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         onClick={() => {
                             setIsOpen(false);
                             setAddData(() => {
-                                return !isEdit && { service_type: 'visa service' };
+                                return { service_type: 'visa service' };
                             });
                             setIsEdit(false);
                         }}
@@ -414,7 +412,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             addData.service_type == 'attestation service' ||
                             addData.service_type == 'forex service') && (
                             <div className="dropdown mb-5">
-                                <label htmlFor="destination_country">{addData.service_type == 'forex service' ? ' Currency Required' : 'Destination Country'} </label>
+                                <label htmlFor="destination_country">{addData.service_type == 'forex service' ? ' Currency Required' : 'Destination Country*'} </label>
                                 <select
                                     // disabled={role == 'employee' ? true : false}
                                     className="form-input"
@@ -454,7 +452,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         )}
                         {(addData.service_type == 'visa service' || addData.service_type == 'appointment/slot booking service') && (
                             <div className="dropdown mb-5">
-                                <label htmlFor="visa_type">Visa Type</label>
+                                <label htmlFor="visa_type">Visa Type*</label>
                                 <select
                                     className="form-input"
                                     defaultValue=""
@@ -485,7 +483,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                     <label htmlFor="state_of_residence">State of Residence</label>
                                     <select
                                         className="form-input"
-                                        defaultValue=""
+                                        defaultValue="Karnataka"
                                         id="state_of_residence"
                                         value={addData?.state_of_residence}
                                         onChange={(e) => handleInputChange(e)}
@@ -1066,174 +1064,90 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                             </div>
                                         </div>
                                     </div>
-
-                                    <button
-                                        // onClick={handleSave}
-                                        type="button"
-                                        className="btn btn-primary mb-5 ltr:ml-4 rtl:mr-4"
-                                        onClick={() => setIsOpenNextFollowup(true)}
-                                    >
-                                        <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
-                                        Create Next Follow Up
-                                    </button>
-                                    <ActionModal isOpen={isOpenNextFollowup} setIsOpen={setIsOpenNextFollowup} handleSave={handleSave} width="max-w-2xl">
-                                        <div className="flex  items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                                            <h5 className="text-lg font-bold">Add Next FollowUp</h5>
-                                            <button
-                                                onClick={() => {
-                                                    setIsOpenNextFollowup(false);
-                                                    setAddNextFollowUpData({});
-                                                    // setIsEdit(false);
-                                                }}
-                                                type="button"
-                                                className="text-white-dark hover:text-dark"
-                                            >
-                                                <IconX />
-                                            </button>
-                                        </div>
-                                        <div className="m-5 grid grid-cols-1 gap-5  md:grid-cols-2 ">
-                                            <div className=" ">
-                                                <ComponentsFormDatePickerBasic
-                                                    label="Next Follow-up Date "
-                                                    id={'next_followup'}
-                                                    isEdit={isEdit}
-                                                    setAddData={setAddNextFollowUpData}
-                                                    addData={addNextFollowUpData}
-                                                />
-                                            </div>
-                                            <div className="">
-                                                <ComponentsFormDatePickerTime id={'followup_time'} isEdit={isEdit} setAddData={setAddNextFollowUpData} addData={addNextFollowUpData} />
-                                            </div>
-                                        </div>
-                                        <div className="m-5 grid grid-cols-1 gap-5 md:grid-cols-2">
-                                            <div className="dropdown mb-5">
-                                                <label htmlFor="interaction">Type of Interaction*</label>
-                                                <select className="form-input" defaultValue="" id="interaction" value={addNextFollowUpData?.interaction} onChange={(e) => handleNextFollowUpChange(e)}>
-                                                    <option value="" disabled={true}>
-                                                        Type of Interaction
-                                                    </option>
-                                                    <option value="SMS">SMS</option>
-                                                    <option value="Call">Call</option>
-                                                    <option value="Email">Email</option>
-                                                    <option value="Whatapp">Whatapp</option>
-                                                    <option value="Applicant visiting">Applicant visiting</option>
-                                                </select>
-                                            </div>
-                                            <div className="mb-5">
-                                                <label htmlFor="followupremark">Followup Remarks</label>
-                                                <textarea
-                                                    id="followup_remark"
-                                                    rows={1}
-                                                    value={addNextFollowUpData?.followup_remark}
-                                                    onChange={(e) => handleNextFollowUpChange(e)}
-                                                    placeholder="Enter FollowUp Remarks"
-                                                    className="form-textarea
-                                min-h-[10px] resize-none"
-                                                ></textarea>
-                                            </div>
-                                        </div>
-                                        <div className=" float-end m-3 flex items-center justify-end">
-                                            <button
-                                                onClick={() => {
-                                                    setIsOpenNextFollowup(false);
-                                                    setAddNextFollowUpData({});
-                                                    // setIsEdit(false);
-                                                }}
-                                                type="button"
-                                                className="btn btn-outline-danger"
-                                            >
-                                                Cancel
-                                            </button>
-                                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={handleFollowUpSave}>
-                                                Save
-                                            </button>
-                                        </div>
-                                    </ActionModal>
-                                    {followUps?.length !== 0 && (
-                                        <PaginationTable data={followUps} tableColumns={tableColumnsFollowUp} handleEdit={handleEdit} handleDelete={handleDeleteFollowUp} title="Customer Details" />
-                                    )}
                                 </>
                             )}
-                            <div className="mt-4 grid grid-cols-1 gap-5 md:grid-cols-1">
-                                <div className="mb-5">
-                                    <label htmlFor="leadnote" style={{ display: 'inline-block' }}>
-                                        Lead Note
-                                    </label>
-                                    <button className="btn btn-primary ml-5" style={{ marginLeft: '20px', display: 'inline-block' }} onClick={handleButtonClickShowAddNote}>
-                                        Add Note
-                                    </button>
+                        </>
+                    )}
+                    <div className="mt-4 grid grid-cols-1 gap-5 md:grid-cols-1">
+                        <div className="mb-5">
+                            <label htmlFor="leadnote" style={{ display: 'inline-block' }}>
+                                Lead Note
+                            </label>
+                            <button className="btn btn-primary ml-5" style={{ marginLeft: '20px', display: 'inline-block' }} onClick={handleButtonClickShowAddNote}>
+                                Add Note
+                            </button>
 
-                                    <div className="mt-3">
-                                        {leadNotes?.map((item: any, index: number) => (
-                                            // <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
-                                            //     <div>{item?.note}</div>
-                                            //     {(role === 'super_admin' || role === 'admin') && (
-                                            //         <div className="flex items-center">
-                                            //             <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
-                                            //                 Edit
-                                            //             </button>
-                                            //             <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
-                                            //                 Delete
-                                            //             </button>
-                                            //         </div>
-                                            //     )}
+                            <div className="mt-3">
+                                {leadNotes?.map((item: any, index: number) => (
+                                    // <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
+                                    //     <div>{item?.note}</div>
+                                    //     {(role === 'super_admin' || role === 'admin') && (
+                                    //         <div className="flex items-center">
+                                    //             <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
+                                    //                 Edit
+                                    //             </button>
+                                    //             <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
+                                    //                 Delete
+                                    //             </button>
+                                    //         </div>
+                                    //     )}
 
-                                            //     <div>Create Date: item.created_time, Created By: item.created_by</div>
-                                            // </div>
+                                    //     <div>Create Date: item.created_time, Created By: item.created_by</div>
+                                    // </div>
 
-                                            <div key={index} className="mt-2 flex flex-col rounded border p-2">
-                                                <div className="flex items-center justify-between">
-                                                    <div>{item?.note}</div>
-                                                    {(role === 'super_admin' || role === 'admin') && (
-                                                        <div className="flex items-center">
-                                                            <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
-                                                                Edit
-                                                            </button>
-                                                            <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
-                                                                Delete
-                                                            </button>
-                                                        </div>
-                                                    )}
-                                                </div>
-
-                                                <div className="mt-2 text-right font-mono text-sm text-blue-500">
-                                                    Created By: {item.created_by} - Created Date: {timeStampFormat(item.created_time)}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    <ActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} handleSave={handleNoteAction} width="max-w-2xl">
-                                        <div>
-                                            <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                                                <h5 className="text-lg font-bold">{modalTitle}</h5>
-                                                <button onClick={handleCloseModal} type="button" className="text-white-dark hover:text-dark">
-                                                    <IconX />
-                                                </button>
-                                            </div>
-                                            <div className="p-5">
-                                                {leadNote.created_time && <p>Created Time: {new Date(leadNote.created_time * 1000).toLocaleString()}</p>}
-                                                <br />
-
-                                                <textarea
-                                                    id="leadNote"
-                                                    onChange={handleLeadNoteChange}
-                                                    value={leadNote?.note}
-                                                    placeholder="Enter your note here"
-                                                    className="min-h-[150px] w-full rounded-lg border p-2 outline-none"
-                                                />
-
-                                                <div className="mt-3">
-                                                    <button onClick={handleNoteAction} className="btn btn-primary">
-                                                        {actionButtonText}
+                                    <div key={index} className="mt-2 flex flex-col rounded border p-2">
+                                        <div className="flex items-center justify-between">
+                                            <div>{item?.note}</div>
+                                            {(role === 'super_admin' || role === 'admin') && (
+                                                <div className="flex items-center">
+                                                    <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
+                                                        Edit
+                                                    </button>
+                                                    <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
+                                                        Delete
                                                     </button>
                                                 </div>
-                                            </div>
+                                            )}
                                         </div>
-                                    </ActionModal>
-                                </div>
 
-                                {/* <textarea
+                                        <div className="mt-2 text-right font-mono text-sm text-blue-500">
+                                            Created By: {item.created_by} - Created Date: {timeStampFormat(item.created_time)}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <ActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} handleSave={handleNoteAction} width="max-w-2xl">
+                                <div>
+                                    <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
+                                        <h5 className="text-lg font-bold">{modalTitle}</h5>
+                                        <button onClick={handleCloseModal} type="button" className="text-white-dark hover:text-dark">
+                                            <IconX />
+                                        </button>
+                                    </div>
+                                    <div className="p-5">
+                                        {leadNote.created_time && <p>Created Time: {new Date(leadNote.created_time * 1000).toLocaleString()}</p>}
+                                        <br />
+
+                                        <textarea
+                                            id="leadNote"
+                                            onChange={handleLeadNoteChange}
+                                            value={leadNote?.note}
+                                            placeholder="Enter your note here"
+                                            className="min-h-[150px] w-full rounded-lg border p-2 outline-none"
+                                        />
+
+                                        <div className="mt-3">
+                                            <button onClick={handleNoteAction} className="btn btn-primary">
+                                                {actionButtonText}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ActionModal>
+                        </div>
+
+                        {/* <textarea
                                         id="leadnote"
                                         rows={3}
                                         value={addData?.leadnote}
@@ -1242,16 +1156,97 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         className="form-textarea
                                 min-h-[80px] resize-none"
                                     ></textarea> */}
-                            </div>
+                    </div>
+
+                    {addData?.service_type == 'visa service' && (
+                        <>
+                            <button
+                                // onClick={handleSave}
+                                type="button"
+                                className="btn btn-primary mb-5 ltr:ml-4 rtl:mr-4"
+                                onClick={() => setIsOpenNextFollowup(true)}
+                            >
+                                <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
+                                Create Next Follow Up
+                            </button>
+                            {followUps?.length !== 0 && (
+                                <PaginationTable data={followUps} tableColumns={tableColumnsFollowUp} handleEdit={handleEdit} handleDelete={handleDeleteFollowUp} title="Customer Details" />
+                            )}
                         </>
                     )}
-
+                    <ActionModal isOpen={isOpenNextFollowup} setIsOpen={setIsOpenNextFollowup} handleSave={handleSave} width="max-w-2xl">
+                        <div className="flex  items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
+                            <h5 className="text-lg font-bold">Add Next FollowUp</h5>
+                            <button
+                                onClick={() => {
+                                    setIsOpenNextFollowup(false);
+                                    setAddNextFollowUpData({});
+                                    // setIsEdit(false);
+                                }}
+                                type="button"
+                                className="text-white-dark hover:text-dark"
+                            >
+                                <IconX />
+                            </button>
+                        </div>
+                        <div className="m-5 grid grid-cols-1 gap-5  md:grid-cols-2 ">
+                            <div className=" ">
+                                <ComponentsFormDatePickerBasic label="Next Follow-up Date " id={'next_followup'} isEdit={isEdit} setAddData={setAddNextFollowUpData} addData={addNextFollowUpData} />
+                            </div>
+                            <div className="">
+                                <ComponentsFormDatePickerTime id={'followup_time'} isEdit={isEdit} setAddData={setAddNextFollowUpData} addData={addNextFollowUpData} />
+                            </div>
+                        </div>
+                        <div className="m-5 grid grid-cols-1 gap-5 md:grid-cols-2">
+                            <div className="dropdown mb-5">
+                                <label htmlFor="interaction">Type of Interaction*</label>
+                                <select className="form-input" defaultValue="" id="interaction" value={addNextFollowUpData?.interaction} onChange={(e) => handleNextFollowUpChange(e)}>
+                                    <option value="" disabled={true}>
+                                        Type of Interaction
+                                    </option>
+                                    <option value="SMS">SMS</option>
+                                    <option value="Call">Call</option>
+                                    <option value="Email">Email</option>
+                                    <option value="Whatapp">Whatapp</option>
+                                    <option value="Applicant visiting">Applicant visiting</option>
+                                </select>
+                            </div>
+                            <div className="mb-5">
+                                <label htmlFor="followupremark">Followup Remarks</label>
+                                <textarea
+                                    id="followup_remark"
+                                    rows={1}
+                                    value={addNextFollowUpData?.followup_remark}
+                                    onChange={(e) => handleNextFollowUpChange(e)}
+                                    placeholder="Enter FollowUp Remarks"
+                                    className="form-textarea
+                                min-h-[10px] resize-none"
+                                ></textarea>
+                            </div>
+                        </div>
+                        <div className=" float-end m-3 flex items-center justify-end">
+                            <button
+                                onClick={() => {
+                                    setIsOpenNextFollowup(false);
+                                    setAddNextFollowUpData({});
+                                    // setIsEdit(false);
+                                }}
+                                type="button"
+                                className="btn btn-outline-danger"
+                            >
+                                Cancel
+                            </button>
+                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={handleFollowUpSave}>
+                                Save
+                            </button>
+                        </div>
+                    </ActionModal>
                     <div className="mt-8 flex items-center justify-end">
                         <button
                             onClick={() => {
                                 setIsOpen(false);
                                 setAddData(() => {
-                                    return !isEdit && { service_type: 'visa service' };
+                                    return { service_type: 'visa service' };
                                 });
                                 setIsEdit(false);
                             }}

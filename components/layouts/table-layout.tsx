@@ -72,7 +72,9 @@ const TableLayout: React.FC<TableLayoutProps> = ({
 
     const [search, setSearch] = useState<any>('');
     const [filterItem, setFilterItem] = useState(data);
-    const [addData, setAddData] = useState<AddDataProps | any>({});
+    const [addData, setAddData] = useState<AddDataProps | any>({state_of_residence:
+        "Karnataka"
+    });
     const [assignPasswordValue, setAssignPasswordValue] = useState<any>();
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);

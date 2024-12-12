@@ -40,6 +40,9 @@ const LeadManagement: React.FC = () => {
     };
 
     const tableColumns = [
+        {accessor:'s.no',textAlign:"left",title:"S.No",render:(row:any,rowIndex:number)=>{
+            return rowIndex +1
+        }},
         { accessor: 'id', textAlign: 'left', title: 'ID' },
         {
             accessor: 'create_date',
@@ -198,10 +201,10 @@ const LeadManagement: React.FC = () => {
                 return false;
             }
 
-            if (value.travel_date == null || value.travel_date == '') {
-                showMessage('Select Travel Date', 'error');
-                return false;
-            }
+            // if (value.travel_date == null || value.travel_date == '') {
+            //     showMessage('Select Travel Date', 'error');
+            //     return false;
+            // }
         }
 
         if (value.service_type == 'attestation service') {
