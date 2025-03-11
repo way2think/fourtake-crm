@@ -336,6 +336,21 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         }
     }, [addData, paramId]);
 
+    const timeStampFormat = (time: any) => {
+        const timestamp = time * 1000;
+
+        // Create a new Date object
+        const date = new Date(timestamp);
+
+        // Extract day, month, and year
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Months are zero-based, so add 1
+        const year = date.getFullYear();
+
+        const formattedDate = `${day}/${month}/${year}`;
+        return formattedDate;
+    };
+
     const statusApplyToOptions =
         applicantDetails?.map((item: any) => ({
             value: `${item.first_name} ${item.last_name}`,
@@ -1189,6 +1204,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                                     </div>
 
                                     <div className="mt-2 text-right font-mono text-sm text-blue-500">
+                                        {/* Created By: {item.created_by} - Created Date: {item.created_time} */}
                                         Created By: {item.created_by} - Created Date: {timeStampFormat(item.created_time)}
                                     </div>
                                 </div>
