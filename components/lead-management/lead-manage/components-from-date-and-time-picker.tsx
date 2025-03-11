@@ -52,7 +52,7 @@ const ComponentsFormDateAndTimePicker: React.FC<ComponentsFormDateAndTimePickerP
 
         if (updateUser) {
             //it will update status to all the applicants in the group
-            const updatedVisaApplicants = addData.visa_applicants.map((item: any) => ({
+            const updatedVisaApplicants = addData?.visa_applicants?.map((item: any) => ({
                 ...item,
                 [id]: formattedDateTime,
             }));
