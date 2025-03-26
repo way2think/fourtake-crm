@@ -24,7 +24,9 @@
 
 .table-paginationtable th {
     text-align: left;
-    color: #333;
+    color: #000;
+    font-weight: 900;
+    font-size: 15px;
     /* Dark color for the table heading */
     border-bottom: 1px solid #ddd;
     /* Slightly darker line for the heading */

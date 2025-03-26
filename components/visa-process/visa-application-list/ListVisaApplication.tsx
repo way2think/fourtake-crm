@@ -58,7 +58,7 @@ const ListVisaApplication = () => {
         {
             accessor: 'id',
             textAlign: 'left',
-            title: 'ReferenceNo',
+            title: 'Reference No',
             render: (row: any) => {
                 return row.id;
             },
@@ -190,7 +190,9 @@ const ListVisaApplication = () => {
                             <Tab as={Fragment}>
                                 {({ selected }) => (
                                     <button
-                                        className={`${selected ? 'bg-primary text-white !outline-none' : ''}' -mb-[1px] block rounded p-3.5 py-2 hover:bg-primary hover:text-white ltr:mr-2 rtl:ml-2`}
+                                        className={`${
+                                            selected ? 'bg-[#2eb9fe] text-white !outline-none' : ''
+                                        }' hover:bg-[#2eb9fe]hover:text-white -mb-[1px] block rounded p-3.5 py-2 ltr:mr-2 rtl:ml-2`}
                                     >
                                         All
                                     </button>
@@ -199,7 +201,7 @@ const ListVisaApplication = () => {
                             <Tab as={Fragment}>
                                 {({ selected }) => (
                                     <button
-                                        className={`${selected ? 'bg-primary text-white !outline-none' : ''} -mb-[1px] block rounded p-3.5 py-2 hover:bg-primary hover:text-white ltr:mr-2 rtl:ml-2`}
+                                        className={`${selected ? 'bg-[#2eb9fe] text-white !outline-none' : ''} -mb-[1px] block rounded p-3.5 py-2 hover:bg-[#2eb9fe]hover:text-white ltr:mr-2 rtl:ml-2`}
                                     >
                                         Group
                                     </button>

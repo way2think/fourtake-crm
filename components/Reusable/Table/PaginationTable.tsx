@@ -13,6 +13,8 @@ import IconTrendingUp from '@/components/icon/icon-trending-up';
 import './paginationtable.css';
 import { usePagination } from '@/hooks/usePagination';
 import { PaginationMeta } from '@/types/pagination';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
 
 interface PaginationTableProps {
     title?: string;
@@ -84,35 +86,52 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                     <td style={{ display: 'flex', justifyContent: 'flex-end', gap: '3px' }}>
                         {title === 'Status Wise Report' ? (
                             <>
-                                <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow?.(row)}>
+                                <ActionIcon
+                                    size="sm"
+                                    className="transition duration-200 hover:bg-blue-700 active:bg-blue-700"
+                                    variant="subtle"
+                                    color="green"
+                                    onClick={() => ReuseActionModalShow?.(row)}
+                                >
                                     <IconEye size={20} />
                                 </ActionIcon>
                             </>
                         ) : title === 'Deleted Application' ? (
                             <>
-                                <ActionIcon size="sm" variant="subtle" color="yellow" onClick={() => handleRestore?.(row)}>
+                                <ActionIcon size="sm" className="transition duration-200 hover:bg-blue-700 active:bg-blue-700" variant="subtle" color="yellow" onClick={() => handleRestore?.(row)}>
                                     <IconRestore size={20} />
                                 </ActionIcon>
                             </>
                         ) : (
                             <>
                                 {title !== 'Deleted Visa Application' && (
-                                    <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
-                                        <IconEdit size={16} />
-                                    </ActionIcon>
+                                    <Tippy content="Edit">
+                                        <ActionIcon size="sm" className="transition duration-200 hover:bg-blue-700 active:bg-blue-700" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
+                                            <IconEdit size={16} />
+                                        </ActionIcon>
+                                    </Tippy>
                                 )}
 
                                 {title === 'List Visa Application' && (
                                     <>
-                                        <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDocChecklist?.(row)}>
-                                            <IconTxtFile className={`size:"16"`} />
-                                        </ActionIcon>
+                                        <Tippy content="Text File">
+                                            <ActionIcon
+                                                size="sm"
+                                                variant="subtle"
+                                                className="transition duration-200 hover:bg-blue-700 active:bg-blue-700"
+                                                color="red"
+                                                onClick={() => handleDocChecklist?.(row)}
+                                            >
+                                                <IconTxtFile className={`size:"16"`} />
+                                            </ActionIcon>
+                                        </Tippy>
 
                                         {row.visa_status === 'verified' && (
                                             <ActionIcon
                                                 size="sm"
                                                 variant="subtle"
                                                 color="red"
+                                                className="transition duration-200 hover:bg-blue-700 active:bg-blue-700"
                                                 //  onClick={() => handleDelete?.(row)}
                                             >
                                                 <IconVerify />
@@ -123,27 +142,46 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                                 size="sm"
                                                 variant="subtle"
                                                 color="red"
+                                                className="transition duration-200 hover:bg-blue-700 active:bg-blue-700"
                                                 //  onClick={() => handleDelete?.(row)}
                                             >
                                                 <IconUnVerified />
                                             </ActionIcon>
                                         )}
-                                        <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleListLine?.(row)}>
-                                            <IconList title="Multiple Passport" />
-                                        </ActionIcon>
-                                        <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleTracking?.(row)}>
-                                            <IconTrendingUp title="Application Tracking" />
-                                        </ActionIcon>
+                                        <Tippy content="Multiple Passport">
+                                            <ActionIcon
+                                                size="sm"
+                                                className="transition duration-200 hover:bg-blue-700 active:bg-blue-700"
+                                                variant="subtle"
+                                                color="red"
+                                                onClick={() => handleListLine?.(row)}
+                                            >
+                                                <IconList />
+                                            </ActionIcon>
+                                        </Tippy>
+                                        <Tippy content="Application Tracking">
+                                            <ActionIcon
+                                                size="sm"
+                                                className="transition duration-200 hover:bg-blue-700 active:bg-blue-700"
+                                                variant="subtle"
+                                                color="red"
+                                                onClick={() => handleTracking?.(row)}
+                                            >
+                                                <IconTrendingUp />
+                                            </ActionIcon>
+                                        </Tippy>
                                     </>
                                 )}
                                 {title !== 'dashboard' && title !== 'Country Visa Types' && title !== 'Deleted Visa Application' && (
-                                    <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
-                                        <IconTrash size={16} />
-                                    </ActionIcon>
+                                    <Tippy content="Delete">
+                                        <ActionIcon size="sm" className="transition duration-200 hover:bg-blue-700 active:bg-blue-700" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
+                                            <IconTrash size={16} />
+                                        </ActionIcon>
+                                    </Tippy>
                                 )}
 
                                 {title === 'Deleted Visa Application' && (
-                                    <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleRestore?.(row)}>
+                                    <ActionIcon size="sm" className="transition duration-200 hover:bg-blue-700 active:bg-blue-700" variant="subtle" color="red" onClick={() => handleRestore?.(row)}>
                                         <IconRestore size={16} />
                                     </ActionIcon>
                                 )}
@@ -154,12 +192,8 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
             });
         }
 
-     
-
         return baseColumns;
     }, [title, tableColumns, handleEdit, handleDelete, ReuseActionModalShow, handleListLine]);
-
-
 
     const handlePageChange = (pageNum: number) => {
         setPage(pageNum);

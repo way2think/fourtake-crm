@@ -72,9 +72,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
 
     const [search, setSearch] = useState<any>('');
     const [filterItem, setFilterItem] = useState(data);
-    const [addData, setAddData] = useState<AddDataProps | any>({state_of_residence:
-        "Karnataka"
-    });
+    const [addData, setAddData] = useState<AddDataProps | any>({ state_of_residence: 'Karnataka' });
     const [assignPasswordValue, setAssignPasswordValue] = useState<any>();
     const [assignPassword, setAssignPassword] = useState<boolean>(false);
     const [showCustomizer, setShowCustomizer] = useState(false);
@@ -350,7 +348,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
     return (
         <>
             <div className="flex flex-wrap items-center justify-between gap-4">
-                <h2 className="text-xl">{title}</h2>
+                <h2 className="font-extrabold text-xl">{title}</h2>
                 <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
                         {title !== 'Country Visa Types' && title !== 'Deleted Application' && title !== 'List Visa Application' && title !== 'Deleted Visa Application' && (

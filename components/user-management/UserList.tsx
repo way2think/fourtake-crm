@@ -549,7 +549,7 @@ const UserList = () => {
                         <div>
                             <button type="button" className="btn btn-primary" onClick={() => editUser()}>
                                 <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
-                                Add User
+                                add User
                             </button>
                         </div>
                         <div>
