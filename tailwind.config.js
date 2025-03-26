@@ -62,8 +62,11 @@ module.exports = {
                     dark: '#888ea8',
                 },
             },
+            // fontFamily: {
+            //     nunito: ['var(--font-nunito)'],
+            // },
             fontFamily: {
-                nunito: ['var(--font-nunito)'],
+                times: ['"Times New Roman"', 'Times', 'serif'],
             },
             spacing: {
                 4.5: '18px',

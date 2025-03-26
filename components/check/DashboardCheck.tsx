@@ -339,13 +339,15 @@ const DashboardCheck = () => {
                                     <ul>
                                         <li className="mb-4 ">
                                             {' '}
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                                            nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                            Disclaimer- Fourtake Visa Services doesn't have any involvement in the decision whether to issue or refuse a visa application and can't influence the
+                                            processing time. The visas are issued at the sole discretion of the Embassy / Consulate, and we cannot guarantee that. We don't have any affiliation with
+                                            any government agency.
                                         </li>
                                         <li className="mb-4">
                                             {' '}
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                                            nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                            Many times, Embassies/Consulates change the visa requirements without any notice or publications and we come across such changes only after we apply for the
+                                            respective visas. Hence, kindly cooperate. In case of any discrepancy in visa requirements on our website/documentation, we request you to please highlight
+                                            and oblige us. Customers like you are the most critical component of our success. Thank you.
                                         </li>
                                     </ul>
                                 </div>
@@ -408,13 +410,15 @@ const DashboardCheck = () => {
                                     <ul>
                                         <li className="mb-4 ">
                                             {' '}
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                                            nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                            Disclaimer- Fourtake Visa Services doesn't have any involvement in the decision whether to issue or refuse a visa application and can't influence the
+                                            processing time. The visas are issued at the sole discretion of the Embassy / Consulate, and we cannot guarantee that. We don't have any affiliation with
+                                            any government agency.
                                         </li>
                                         <li className="mb-4">
                                             {' '}
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                                            nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                            Many times, Embassies/Consulates change the visa requirements without any notice or publications and we come across such changes only after we apply for the
+                                            respective visas. Hence, kindly cooperate. In case of any discrepancy in visa requirements on our website/documentation, we request you to please highlight
+                                            and oblige us. Customers like you are the most critical component of our success. Thank you.
                                         </li>
                                     </ul>
                                 </div>

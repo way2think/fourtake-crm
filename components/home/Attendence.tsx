@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { setIsLoading } from '@/store/app.store';
 import IconRefresh from '../icon/icon-refresh';
 import IconTrash from '../icon/icon-trash';
+import IconHome from '../icon/icon-home';
 
 const Attendence = () => {
     const router = useRouter();
@@ -181,7 +182,7 @@ const Attendence = () => {
                         Check Requirements
                     </button>
                     <button type="button" className=" btn btn-primary ml-2 w-1/3" onClick={handleClear}>
-                        <IconTrash className="ltr:mr-2 rtl:ml-2" />
+                        <IconHome className="ltr:mr-2 rtl:ml-2" />
                         Clear
                     </button>
                 </div>

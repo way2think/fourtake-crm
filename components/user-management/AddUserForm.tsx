@@ -4,11 +4,14 @@ import { Formik, Form, Field } from 'formik';
 import React from 'react';
 import Swal from 'sweetalert2';
 import * as Yup from 'yup';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
 
 interface AddUserFormProps {
     saveUser: (value: any) => void;
     setParams?: any;
 }
+const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 const AddUserForm: React.FC<AddUserFormProps> = ({ saveUser, setParams }) => {
     const submitForm = () => {
         const toast = Swal.mixin({
@@ -97,23 +100,24 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ saveUser, setParams }) => {
                                 {submitCount ? errors.email ? <div className="mt-1 text-danger">{errors.email}</div> : <div className="mt-1 text-success">Looks Good!</div> : ''}
                             </div>
                             <div className={submitCount ? (errors.center ? 'has-error' : 'has-success') : ''}>
-                                <label htmlFor="fullName">Select Center </label>
-                                <Field as="select" name="center" className="form-select">
-                                    <option value="" disabled={true}>
-                                        Open this select menu
-                                    </option>
-                                    <option value="One">One</option>
-                                    <option value="Two">Two</option>
-                                    <option value="Three">Three</option>
-                                </Field>
-                                {submitCount ? errors.center ? <div className=" mt-1 text-danger">{errors.center}</div> : <div className=" mt-1 text-[#1abc9c]">Please select</div> : ''}
+                                <label htmlFor="center">Select Center</label>
+                                <div className="relative">
+                                    <Field as="select" name="center" className="form-select appearance-none pr-10" onFocus={() => setIsDropdownOpen(true)} onBlur={() => setIsDropdownOpen(false)}>
+                                        <option value="" disabled>
+                                            Open this select menu
+                                        </option>
+                                        <option value="One">One</option>
+                                        <option value="Two">Two</option>
+                                        <option value="Three">Three</option>
+                                    </Field>
+                                    <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">{isDropdownOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}</div>
+                                </div>
+                                {submitCount ? errors.center ? <div className="mt-1 text-danger">{errors.center}</div> : <div className="mt-1 text-[#1abc9c]">Please select</div> : null}
                             </div>
 
                             <div className={submitCount ? (errors.status ? 'has-error' : 'has-success') : ''}>
                                 <label htmlFor="fullName">Select Status </label>
-                                <Field as="select" name="status" className="form-select">
-                                   
-                                </Field>
+                                <Field as="select" name="status" className="form-select"></Field>
                                 {submitCount ? (
                                     errors.status ? (
                                         <div className=" mt-1 text-danger">{errors.status}</div>
@@ -203,10 +207,9 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ saveUser, setParams }) => {
                             onClick={() => {
                                 if (Object.keys(touched).length !== 0 && Object.keys(errors).length === 0) {
                                     submitForm();
-                                    
+
                                     // setParams(values)
                                 } else {
-                                    
                                     // setParams(values)
                                     // saveUser(values);
                                 }

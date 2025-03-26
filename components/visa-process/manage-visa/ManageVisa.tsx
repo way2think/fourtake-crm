@@ -1,4 +1,6 @@
 'use client';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+
 import IconUserPlus from '@/components/icon/icon-user-plus';
 import IconX from '@/components/icon/icon-x';
 import ComponentsFormDatePickerBasic from '@/components/lead-management/lead-manage/components-form-date-picker-basic';
@@ -730,6 +732,8 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         }
     }
 
+    const [isArrowOpen, setArrowIsOpen] = useState(false);
+
     return (
         <>
             {(isCreateLoading ||
@@ -868,18 +872,30 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                 </div>
 
                 <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-2 ">
-                    <div className="dropdown mb-5">
-                        <label htmlFor="entry_type">Entry Type</label>
-                        <select className="form-input" defaultValue="" id="entry_type" value={addData?.entry_type?.id || addData?.entry_type || ''} onChange={(e) => handleInputChange(e)}>
-                            <option value="" disabled={true}>
-                                --- Select Entry Type ---
-                            </option>
-                            {entryTypes?.items.map((entrytype: any) => (
-                                <option key={entrytype.id} value={entrytype.id}>
-                                    {entrytype.name}
+                    <div className="dropdown relative mb-5">
+                        <label htmlFor="entry_type" className="block text-sm font-medium">
+                            Entry Type
+                        </label>
+                        <div className="relative">
+                            <select
+                                className="form-input w-full appearance-none rounded-md border px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                                id="entry_type"
+                                value={addData?.entry_type?.id || addData?.entry_type || ''}
+                                onChange={(e) => handleInputChange(e)}
+                                onFocus={() => setIsOpen(true)}
+                                onBlur={() => setIsOpen(false)}
+                            >
+                                <option value="" disabled>
+                                    --- Select Entry Type ---
                                 </option>
-                            ))}
-                        </select>
+                                {entryTypes?.items.map((entrytype: any) => (
+                                    <option key={entrytype.id} value={entrytype.id}>
+                                        {entrytype.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <span className="pointer-events-none absolute inset-y-0 right-2 flex items-center">{isArrowOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}</span>
+                        </div>
                     </div>
                     <div className="mb-5">
                         <ComponentsFormDatePickerBasic label="Travel Date" id="travel_date" isEdit={addData?.travel_date ? true : false} setAddData={setAddData} addData={addData} />
