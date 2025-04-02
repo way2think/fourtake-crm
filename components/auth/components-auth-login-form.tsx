@@ -91,7 +91,8 @@ const ComponentsAuthLoginForm = ({ type }: { type: string }) => {
                 </div> */}
                 <button
                     type="submit"
-                    disabled={false}
+                    // disabled={true} // for pre-prod login button should be enabled, for prod it should be disabled
+
                     className="btn !mt-6 w-full border-0 bg-gradient-to-r from-[#005fbe] to-[#2eb9ff] uppercase text-white shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]"
                 >
                     Sign in
