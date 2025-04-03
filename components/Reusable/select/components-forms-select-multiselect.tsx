@@ -39,6 +39,7 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
         if (Array.isArray(addData[id])) {
             const selectedValues = addData[id];
             const selected = options.filter((option: any) => selectedValues.includes(option.value));
+            console.log('use Effect', selectedValues, 'addDat', addData);
             setSelectedOptions(selected);
         } else {
             setSelectedOptions([]);
@@ -48,17 +49,24 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
     const handleChange = (selected: any) => {
         if (selected && selected.length === options.length) {
             const getValue = options.map((item: any) => item.value).join(', ');
+
             setSelectedOptions(options);
             setAddData((prev: any) => ({ ...prev, [id]: getValue }));
         } else if (selected && selected.length === 0) {
             setSelectedOptions([]);
             setAddData((prev: any) => ({ ...prev, [id]: [] }));
         } else {
-            const getValue = selected.map((item: any) => item.value).join(', ');
+            const getValue = selected
+                .map((item: any) => item.value)
+                .join(', ')
+                .split(', ');
+
             setSelectedOptions(selected as OptionType[]);
             setAddData((prev: any) => ({ ...prev, [id]: getValue }));
         }
     };
+
+   
 
     const handleSelectAll = () => {
         if (selectedOptions.length === options.length) {
@@ -66,7 +74,10 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
             setAddData((prev: any) => ({ ...prev, [id]: [] }));
         } else {
             setSelectedOptions(options);
-            const getValue = options.map((item: any) => item.value).join(', ');
+            const getValue = options
+                .map((item: any) => item.value)
+                .join(', ')
+                .split(', ');
             setAddData((prev: any) => ({ ...prev, [id]: getValue }));
         }
     };

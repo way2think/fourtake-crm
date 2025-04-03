@@ -9,7 +9,7 @@ import { showMessage } from '@/utils/notification';
 import { useGetCountryVisaTypesQuery } from '@/services/api/cms/countryVisaTypeSlice';
 import { VisaType } from '@/entities/visa-type.entity';
 import EmailSendModal from './EmailSendModal';
-import { stateCityData, timeStampFormat } from '@/utils/constant';
+import { stateCityData, timeFormat, timeStampFormat } from '@/utils/constant';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/user.store';
 import { User } from '@/entities/user.entity';
@@ -74,7 +74,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
 
     useEffect(() => {
         if (!isEdit) {
-            setAddData({ ...addData, service_type: 'visa service' });
+            setAddData({ ...addData, service_type: 'visa service', state_of_residence: 'Karnataka' });
         }
     }, []);
 
@@ -291,7 +291,13 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     }
 
     const handleNoteAction = () => {
-        const currentTimeInSeconds = Math.floor(Date.now() / 1000); // Convert milliseconds to seconds
+        console.log('leadNotes', leadNotes, 'note', leadNote);
+        if (leadNote?.note == '' || leadNote?.note == null || !leadNote || leadNote?.note.trim().length == 0) {
+            showMessage('Note cannot be empty', 'error');
+            return;
+        }
+        const currentTimeInSeconds = Math.floor(Date.now() / 1000); // Convert milliseconds
+        //  seconds
 
         if (modalTitle === 'Edit Note' && currentIndex !== null) {
             const updatedNotes = [...leadNotes];
@@ -332,7 +338,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         onClick={() => {
                             setIsOpen(false);
                             setAddData(() => {
-                                return { service_type: 'visa service' };
+                                return { service_type: 'visa service', state_of_residence: 'Karnataka' };
                             });
                             setIsEdit(false);
                         }}
@@ -1111,7 +1117,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         </div>
 
                                         <div className="mt-2 text-right font-mono text-sm text-blue-500">
-                                            Created By: {item.created_by} - Created Date: {timeStampFormat(item.created_time)}
+                                            Created By: {item.created_by} - Created Date: {timeStampFormat(item.created_time)} {timeFormat(item.created_time)}
                                         </div>
                                     </div>
                                 ))}
@@ -1246,7 +1252,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             onClick={() => {
                                 setIsOpen(false);
                                 setAddData(() => {
-                                    return { service_type: 'visa service' };
+                                    return { service_type: 'visa service', state_of_residence: 'Karnataka' };
                                 });
                                 setIsEdit(false);
                             }}

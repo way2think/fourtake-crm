@@ -45,16 +45,16 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
     }, [clearSearch]);
 
     useEffect(() => {
-        const selectedCountry = items?.find((option: Option) => option.id == (addData?.destination_country?.id || addData?.destination_country));
+        const selectedCountry = items?.find((option: Option) => option.id == (addData?.country?.id || addData?.country));
         if (selectedCountry) {
             setSearchTerm(selectedCountry.name);
 
-            const index = items.findIndex((cv: any) => cv.id == (addData?.destination_country?.id || addData?.destination_country));
+            const index = items.findIndex((cv: any) => cv.id == (addData?.country?.id || addData?.country));
             if (setVisaTypes !== undefined) {
                 setVisaTypes(items[index].country_visa_types);
             }
         }
-    }, [addData?.destination_country, items]);
+    }, [addData?.country, items]);
 
     useEffect(() => {
         const selectedCountry = items?.find((option: Option) => option.id === (addData?.[title]?.id || addData?.[title]));
@@ -74,12 +74,14 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
         if (title == 'destination_country') {
-            setAddData({ ...addData, destination_country: '' });
+            setAddData({ ...addData, country: '' });
         } else {
             setAddData({ ...addData, [title]: '' });
         }
         setIsOpen(true);
     };
+
+   
 
     const handleOptionClick = (option: Option) => {
         const index = items.findIndex((cv: any) => cv.id == option.id);
@@ -88,7 +90,7 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
         }
         setSearchTerm(option.name);
         if (title == 'destination_country') {
-            setAddData({ ...addData, destination_country: option.id });
+            setAddData({ ...addData, country: option.id });
         } else {
             setAddData({ ...addData, [title]: option.id });
         }

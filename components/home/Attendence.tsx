@@ -86,7 +86,10 @@ const Attendence = () => {
         //alert('Form submitted successfully');
         showMessage('Form submitted successfully.');
 
-        router.push(`/check-requirements?countryId=${formData.country}&visaTypeId=${formData.visa_type}&stateOfResidence=${formData.state_of_residence}`);
+        // router.push(`/check-requirements?countryId=${formData.country}&visaTypeId=${formData.visa_type}&stateOfResidence=${formData.state_of_residence}`);
+        const url = `/check-requirements?countryId=${formData.country}&visaTypeId=${formData.visa_type}&stateOfResidence=${formData.state_of_residence}`;
+
+        window.open(url, '_blank');
     };
 
     const handleClear = () => {
@@ -158,8 +161,6 @@ const Attendence = () => {
                         title="country"
                         clearSearch={clearSearch}
                     />
-
-                 
 
                     <div className="dropdown mb-5 mt-2">
                         <label htmlFor="visa_type">My Purpose of Travel is</label>

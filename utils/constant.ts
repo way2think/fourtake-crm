@@ -1220,7 +1220,6 @@ export const stateCityData: StateCityData = {
     ],
 };
 
-
 export const timeStampFormat = (time: any) => {
     const timestamp = time * 1000;
 
@@ -1234,4 +1233,18 @@ export const timeStampFormat = (time: any) => {
 
     const formattedDate = `${day}/${month}/${year}`;
     return formattedDate;
+};
+
+export const timeFormat = (time: any) => {
+    const timestamp = time * 1000;
+    const date = new Date(timestamp);
+
+    // Format time in 12-hour format with AM/PM
+    const formattedTime = date.toLocaleString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+    });
+
+    return formattedTime;
 };
