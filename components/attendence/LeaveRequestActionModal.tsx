@@ -146,8 +146,6 @@ const LeaveRequestActionModal: React.FC<LeaveRequestActionModalProps> = ({ isEdi
         }
     }, [addData.status, addData.id]);
 
-    console.log('addData1', addData);
-
     const tableColumnsFollowUp = [
         {
             accessor: 'followup_id',

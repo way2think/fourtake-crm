@@ -47,7 +47,7 @@ const ComponentsFormDatePickerBasic: React.FC<ComponentsFormDatePickerBasicProps
             setTypedValue(formattedDate);
             setAddData((prevData: any) => ({
                 ...prevData,
-                [id]: formattedDate,
+                [id]: currentDate,
             }));
         }
     }, [isEdit, addData, id, setAddData, currentDate]);
@@ -59,7 +59,8 @@ const ComponentsFormDatePickerBasic: React.FC<ComponentsFormDatePickerBasicProps
             setTypedValue(formattedDate);
             setAddData((prevData: any) => ({
                 ...prevData,
-                [id]: formattedDate,
+                [id]: selectedDates[0],
+                // [id]: formattedDate,
             }));
         }
     };
@@ -97,7 +98,7 @@ const ComponentsFormDatePickerBasic: React.FC<ComponentsFormDatePickerBasicProps
                 className="form-input"
                 onChange={handleDateChange}
                 onInput={(e: any) => handleInputChange(e)}
-                onClose={handleBlur} // Validate when losing focus
+                // onClose={handleBlur} // Validate when losing focus
             />
         </div>
     );
