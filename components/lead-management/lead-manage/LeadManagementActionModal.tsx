@@ -150,8 +150,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
         }
     }, [addData.status, addData.id]);
 
-    console.log('addData1', addData);
-
     const tableColumnsFollowUp = [
         {
             accessor: 'followup_id',
@@ -494,7 +492,9 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         </option>
 
                                         {states.map((state) => (
-                                            <option value={state}>{state}</option>
+                                            <option key={state} value={state}>
+                                                {state}
+                                            </option>
                                         ))}
                                     </select>
                                 </div>
@@ -537,7 +537,9 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             </option>
 
                             {assigneeList?.items?.map((item: any) => (
-                                <option value={item.id}>{item.username}</option>
+                                <option key={item.id} value={item.id}>
+                                    {item.username}
+                                </option>
                             ))}
                         </select>
                     </div>

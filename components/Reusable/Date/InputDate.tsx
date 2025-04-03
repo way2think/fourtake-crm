@@ -13,7 +13,7 @@ const InputDate = ({ id, label, disable, isEdit, addData, setAddData }: InputDat
     const [dateStrValue, setDateStrValue] = useState('');
 
     useEffect(() => {
-        console.log('addData: ', addData[id]);
+        // console.log('addData: ', addData[id]);
         if (isEdit) {
             setDateStrValue(addData[id]);
         }
@@ -22,7 +22,7 @@ const InputDate = ({ id, label, disable, isEdit, addData, setAddData }: InputDat
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
 
-        console.log('e', value);
+        // console.log('e', value);
 
         setDateStrValue(value);
         setAddData((prevData: any) => ({
