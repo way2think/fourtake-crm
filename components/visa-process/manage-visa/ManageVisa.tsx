@@ -39,6 +39,8 @@ import { useGetVisaStatusesQuery } from '@/services/api/cms/visaStatusSlice';
 import ComponentsFormsSelectMultiselect from '@/components/Reusable/select/components-forms-select-multiselect';
 import ComponentsFormDateAndTimePicker from '@/components/lead-management/lead-manage/components-from-date-and-time-picker';
 import LoadingSpinner from '@/components/Reusable/LoadingSpinner/LoadingSpinner';
+import { convertToIndianDate, convertToISODate } from '@/utils/helpers';
+import InputDate from '@/components/Reusable/Date/InputDate';
 
 const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const [addData, setAddData] = useState<any>({
@@ -76,6 +78,8 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const [isSubmit, setIsSubmit] = useState(false);
     const [showStatus, setShowStatus] = useState(true);
     const [resetTrigger, setResetTrigger] = useState(false);
+
+    const [isArrowOpen, setArrowIsOpen] = useState(false);
 
     const searchParams = useSearchParams();
 
@@ -165,6 +169,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                     //     await handleErrorResponse(errorData || 'Data Not Found');
                     // }
                 } else {
+                    console.log('oneVisaApplicantsGroup: ', oneVisaApplicantsGroup);
                     setAddData(oneVisaApplicantsGroup);
                     setIsEdit(true);
                 }
@@ -546,7 +551,14 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
             });
         } else {
             const updatedData = { ...rest, updated_time: new Date(), stage: 'Fresh', status: 'Open', is_deleted: false, center: user?.center.id };
-            // router.push('/list-visa-applications');
+
+            // convert date to ISO formats
+            // updatedData.apply_date = convertToISODate(updatedData.apply_date);
+            // updatedData.travel_date = convertToISODate(updatedData.travel_date);
+
+            // console.log('updatedData: ', updatedData.apply_date, updatedData.travel_date, updatedData.visa_applicants[0].dob);
+
+            // router.push('/list-visa-applications'); // dont use it
             const creationResponse = await handleCreate({
                 createMutation: createVisaApplicant,
                 value: updatedData,
@@ -587,7 +599,17 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
             textAlign: 'left',
             title: 'DOB',
             render: (row: any) => {
-                return new Date(row.dob)?.toISOString().split('T')[0];
+                console.log('row.dob: ', row.dob);
+                // row.dob - Date or String
+                // newly add - Date
+                // come from API - string
+                if (row.dob && typeof row.dob === 'string') {
+                    return new Date(row.dob).toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
+                }
+                return convertToIndianDate(row.dob);
+
+                // return convertToISODate(row.dob);
+                // return new Date(row.dob).toISOString().split('T')[0];
             },
         },
         { accessor: 'gender', textAlign: 'left', title: 'Gender' },
@@ -732,8 +754,6 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
         }
     }
 
-    const [isArrowOpen, setArrowIsOpen] = useState(false);
-
     return (
         <>
             {(isCreateLoading ||
@@ -779,7 +799,8 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                     </div>
 
                     <div className="mb-5">
-                        <ComponentsFormDatePickerBasic label="Apply Date" id={'apply_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} currentDate={new Date()} />
+                        <InputDate label="Apply Date" id={'apply_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} />
+                        {/* <ComponentsFormDatePickerBasic label="Apply Date" id={'apply_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} currentDate={new Date()} /> */}
                     </div>
 
                     <div className={`mt-7 ${disableIsGroup ? 'cursor-not-allowed opacity-50' : ''}`}>
@@ -898,7 +919,8 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                         </div>
                     </div>
                     <div className="mb-5">
-                        <ComponentsFormDatePickerBasic label="Travel Date" id="travel_date" isEdit={addData?.travel_date ? true : false} setAddData={setAddData} addData={addData} />
+                        <InputDate label="Travel Date" id="travel_date" isEdit={addData?.travel_date ? true : false} setAddData={setAddData} addData={addData} />
+                        {/* <ComponentsFormDatePickerBasic label="Travel Date" id="travel_date" isEdit={addData?.travel_date ? true : false} setAddData={setAddData} addData={addData} /> */}
                     </div>
                 </div>
 
