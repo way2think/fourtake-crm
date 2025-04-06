@@ -63,6 +63,8 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     const [buttonContent, setButtonContent] = useState('');
     const [visaApplicationId, setVisaApplicationId] = useState<string | any>();
 
+    console.log('leadNotes', leadNotes);
+
     // const { data: employeelist } = useGetAllEmployeesQuery({ page: 0, limit: 0 });
     const { data: assigneeList } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'employee, admin' });
     // console.log('employeelist', assigneeList?.items);
@@ -1086,43 +1088,37 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             </button>
 
                             <div className="mt-3">
-                                {leadNotes?.map((item: any, index: number) => (
-                                    // <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
-                                    //     <div>{item?.note}</div>
-                                    //     {(role === 'super_admin' || role === 'admin') && (
-                                    //         <div className="flex items-center">
-                                    //             <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
-                                    //                 Edit
-                                    //             </button>
-                                    //             <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
-                                    //                 Delete
-                                    //             </button>
-                                    //         </div>
-                                    //     )}
+                            {leadNotes
+    ?.slice() // clone to avoid mutating original
+    .sort((a: any, b: any) => b.created_time - a.created_time)
+    .map((item: any, index: number) => (
+        <div key={index} className="mt-2 flex flex-col rounded border p-2">
+            <div className="flex items-center justify-between">
+                <div>{item?.note}</div>
+                {(role === 'super_admin' || role === 'admin') && (
+                    <div className="flex items-center">
+                        <button
+                            className="btn btn-outline-primary btn-sm mr-2"
+                            onClick={() => handleEditNoteClick(index)}
+                        >
+                            Edit
+                        </button>
+                        <button
+                            className="btn btn-outline-danger btn-sm"
+                            onClick={() => handleDeleteNote(index)}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                )}
+            </div>
 
-                                    //     <div>Create Date: item.created_time, Created By: item.created_by</div>
-                                    // </div>
+            <div className="mt-2 text-right font-mono text-sm text-blue-500">
+                Created By: {item.created_by} - Created Date: {timeStampFormat(item.created_time)} {timeFormat(item.created_time)}
+            </div>
+        </div>
+    ))}
 
-                                    <div key={index} className="mt-2 flex flex-col rounded border p-2">
-                                        <div className="flex items-center justify-between">
-                                            <div>{item?.note}</div>
-                                            {(role === 'super_admin' || role === 'admin') && (
-                                                <div className="flex items-center">
-                                                    <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
-                                                        Edit
-                                                    </button>
-                                                    <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        <div className="mt-2 text-right font-mono text-sm text-blue-500">
-                                            Created By: {item.created_by} - Created Date: {timeStampFormat(item.created_time)} {timeFormat(item.created_time)}
-                                        </div>
-                                    </div>
-                                ))}
                             </div>
 
                             <ActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} handleSave={handleNoteAction} width="max-w-2xl">
