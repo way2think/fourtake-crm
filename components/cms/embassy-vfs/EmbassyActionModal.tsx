@@ -122,7 +122,7 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                                 <option value="vfs">VFS</option>
                             </select>
                         </div>
-                        <SearchableDropdown addData={addData} setAddData={setAddData} items={items} heading="Country" />
+                        <SearchableDropdown addData={addData} setAddData={setAddData} items={items} heading="Country" title={"country"} />
                         {/* <div className="dropdown">
                             <label htmlFor="visacountry"> Country</label>
                             <select className="form-input" defaultValue="" id="country" onChange={(e) => handleInputChange(e)} value={addData?.country?.id}>

@@ -28,7 +28,7 @@ const DashboardCheck = () => {
 
     const [checkData, setCheckData] = useState({
         state_of_residence: '',
-        destination_country: '',
+        country: '',
         visa_type: '',
     });
 
@@ -38,7 +38,7 @@ const DashboardCheck = () => {
     }, []);
 
     const [addData, setAddData] = useState<any>({
-        destination_country: '',
+        country: '',
         is_group: false,
         visa_type: '',
         nationality: '75',
@@ -106,7 +106,7 @@ const DashboardCheck = () => {
             });
 
             setCheckData({
-                destination_country: urlParams.get('countryId') || '',
+                country: urlParams.get('countryId') || '',
                 visa_type: urlParams.get('visaTypeId') || '',
                 state_of_residence: urlParams.get('stateOfResidence') || '',
             });
@@ -136,12 +136,12 @@ const DashboardCheck = () => {
         if (checkData.visa_type == '') {
             showMessage('Select Visa Type', 'error');
         }
-        if (checkData.destination_country == '') {
+        if (checkData.country == '') {
             showMessage('Select Country', 'error');
         }
 
         // Update the URLs
-        const newUrl = `/check-requirements?countryId=${checkData.destination_country}&visaTypeId=${checkData.visa_type}&stateOfResidence=${checkData.state_of_residence}`;
+        const newUrl = `/check-requirements?countryId=${checkData.country}&visaTypeId=${checkData.visa_type}&stateOfResidence=${checkData.state_of_residence}`;
         router.push(newUrl);
 
         // Force page reload with the new URL
@@ -182,7 +182,7 @@ const DashboardCheck = () => {
                             items={countryVisaTypes?.items}
                             setVisaTypes={setVisaTypes}
                             heading="I am going to"
-                            title="destination_country"
+                            title="country"
                         />
                     </div>
 

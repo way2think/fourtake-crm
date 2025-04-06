@@ -38,6 +38,8 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
         };
     }, []);
 
+    console.log('searchTerm', searchTerm,addData);
+
     useEffect(() => {
         if (clearSearch) {
             setSearchTerm('');
@@ -73,7 +75,7 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
-        if (title == 'destination_country') {
+        if (title == 'country') {
             setAddData({ ...addData, country: '' });
         } else {
             setAddData({ ...addData, [title]: '' });
@@ -81,15 +83,13 @@ const CountrySearchDropdown: React.FC<SearchableDropdownProps> = ({ addData, set
         setIsOpen(true);
     };
 
-   
-
     const handleOptionClick = (option: Option) => {
         const index = items.findIndex((cv: any) => cv.id == option.id);
         if (setVisaTypes !== undefined) {
             setVisaTypes(items[index].country_visa_types);
         }
         setSearchTerm(option.name);
-        if (title == 'destination_country') {
+        if (title == 'country') {
             setAddData({ ...addData, country: option.id });
         } else {
             setAddData({ ...addData, [title]: option.id });
