@@ -128,7 +128,7 @@ const CountryActionModal: React.FC<CountryActionModalProps> = ({ isOpen, setAddD
                                     checked={addData?.is_popular || false}
                                     className="form-checkbox  bg-white dark:bg-black"
                                 />
-                                <span className="text-white-dark">Is popular Country </span>
+                                <span>Is popular Country </span>
                             </label>
                         </div>
                         <div className="mb-5">
@@ -141,7 +141,7 @@ const CountryActionModal: React.FC<CountryActionModalProps> = ({ isOpen, setAddD
                                     onChange={(e) => handleCheckBoxChange(e)}
                                     className="form-checkbox bg-white dark:bg-black"
                                 />
-                                <span className="text-white-dark">Enable outsource application center</span>
+                                <span >Enable outsource application center</span>
                             </label>
                         </div>
                         <div className="mb-5">
@@ -154,7 +154,7 @@ const CountryActionModal: React.FC<CountryActionModalProps> = ({ isOpen, setAddD
                                     onChange={(e) => handleCheckBoxChange(e)}
                                     className="form-checkbox bg-white dark:bg-black"
                                 />
-                                <span className="text-white-dark">Enable Jurisdiction</span>
+                                <span >Enable Jurisdiction</span>
                             </label>
                         </div>
                     </div>
