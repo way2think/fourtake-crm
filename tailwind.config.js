@@ -66,7 +66,7 @@ module.exports = {
             //     nunito: ['var(--font-nunito)'],
             // },
             fontFamily: {
-                times: ['"Times New Roman"', 'Times', 'serif'],
+                times: ['"Helvetica"', 'Times', 'serif'],
             },
             spacing: {
                 4.5: '18px',

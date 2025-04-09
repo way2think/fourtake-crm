@@ -43,29 +43,29 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
         ...tableColumns,
         ...(!showActions
             ? [
-                {
-                    accessor: 'actions',
-                    title: <Box mr={6}>Actions</Box>,
-                    textAlign: 'right',
-                    render: (row: Row) => (
-                        <Group gap={4} justify="right" wrap="nowrap">
-                            {/* {title === 'Status Wise Report' && (
+                  {
+                      accessor: 'actions',
+                      title: <Box mr={6}>Actions</Box>,
+                      textAlign: 'right',
+                      render: (row: Row) => (
+                          <Group gap={4} justify="right" wrap="nowrap">
+                              {/* {title === 'Status Wise Report' && (
                                 <ActionIcon size="sm" variant="subtle" color="green" onClick={() => ReuseActionModalShow?.(row)}>
                                     <IconEye size={20} />
                                 </ActionIcon>
                             )} */}
-                            <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
-                                <IconEdit size={16} />
-                            </ActionIcon>
-                            {title !== 'dashboard' && (
-                                <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
-                                    <IconTrash size={16} />
-                                </ActionIcon>
-                            )}
-                        </Group>
-                    ),
-                },
-            ]
+                              <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
+                                  <IconEdit size={16} />
+                              </ActionIcon>
+                              {title !== 'dashboard' && (
+                                  <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
+                                      <IconTrash className="transition duration-200 hover:bg-blue-700 active:bg-blue-700 rounded-sm" size={16} />
+                                  </ActionIcon>
+                              )}
+                          </Group>
+                      ),
+                  },
+              ]
             : []),
     ];
 

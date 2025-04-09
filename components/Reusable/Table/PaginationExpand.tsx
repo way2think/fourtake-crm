@@ -37,7 +37,7 @@ interface PaginationExpandProps {
     title?: string;
     getSubData?: any; // Function to fetch sub-table data
     handleRestoreGroup?: any;
-    handleDelete?:any;
+    handleDelete?: any;
 }
 
 const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns, handleEdit, handleDeleteApplicant, handleDeleteGroup, title, getSubData, handleRestoreGroup }) => {
@@ -283,7 +283,7 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                                                 router.push(`/manage-visa/${row?.id}`);
                                             }}
                                         >
-                                            <IconEdit size={16} />
+                                            <IconEdit className={` rounded-sm hover:bg-blue-700 active:bg-blue-700`} size={16} />
                                         </ActionIcon>
                                     )}
                                     {title !== 'dashboard' && title !== 'Deleted Visa Application' && (
@@ -295,12 +295,12 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                                                 handleDeleteGroup && handleDeleteGroup(row);
                                             }}
                                         >
-                                            <IconTrash size={16} />
+                                            <IconTrash className={` rounded-sm hover:bg-blue-700 active:bg-blue-700`} size={16} />
                                         </ActionIcon>
                                     )}
                                     {title === 'Deleted Visa Application' && (
                                         <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleRestoreGroup?.(row)}>
-                                            <IconRestore size={16} />
+                                            <IconRestore className={` rounded-sm hover:bg-blue-700 active:bg-blue-700`} size={16} />
                                         </ActionIcon>
                                     )}
                                 </Group>
@@ -345,7 +345,7 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                                                             router.push(`/manage-visa/${record?.id}`);
                                                         }}
                                                     >
-                                                        <IconEdit size={16} />
+                                                        <IconEdit className={` rounded-sm hover:bg-blue-700 active:bg-blue-700`} size={16} />
                                                     </ActionIcon>
                                                     <>
                                                         <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDocChecklist?.(record)}>
@@ -388,7 +388,7 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                                                                 handleDeleteApplicant && handleDeleteApplicant(subRow);
                                                             }}
                                                         >
-                                                            <IconTrash size={16} />
+                                                            <IconTrash className={` rounded-xl hover:bg-blue-700 active:bg-blue-700`} size={16} />
                                                         </ActionIcon>
                                                     )}
                                                 </Group>
