@@ -429,7 +429,7 @@ const PaginationExpand: React.FC<PaginationExpandProps> = ({ data, tableColumns,
                         </div>
                         <div className="mb-5">
                             <label htmlFor="url">Tracking URL </label>
-                            <input id="url" value={track?.url} onChange={(e) => handleTrackInputChange(e)} type="text" placeholder="Enter Mobile Number" className="form-input" />
+                            <input id="url" value={track?.url} onChange={(e) => handleTrackInputChange(e)} type="text" placeholder="Enter Tracking URL" className="form-input" />
                         </div>
                     </div>
                 </div>

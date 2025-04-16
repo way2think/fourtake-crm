@@ -97,7 +97,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         visaTypeId: String(addData?.visa_type?.id),
         stateOfResidence: addData?.state_of_residence,
     });
- 
 
     const [updateVisaApplicant, {}] = useUpdateVisaApplicantGroupMutation();
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
@@ -232,9 +231,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         exportToExcel(data, exportColumns, fileName);
     };
 
-
-
-    const handleSave = async () => { 
+    const handleSave = async () => {
         // debugger;
         // this is to send only object with value, so null values are filtered out
         // const filteredObj = Object.fromEntries(Object.entries(addData).filter(([key, value]) => value !== null && value !== '' && value !== undefined));
@@ -247,10 +244,9 @@ const TableLayout: React.FC<TableLayoutProps> = ({
             setIsOpen(false);
             setAddData({ refno: '', status: '', service_type: title === 'Lead List' ? 'visa service' : '' });
 
-
             if (title == 'Lead List') {
                 //alert("Navigate")
-    
+
                 // if (addData?.status === 'Done') {
                 //     router.push({
                 //         pathname: '/manage-visa',
@@ -279,7 +275,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({
             const worksheet = workbook.Sheets[firstSheetName];
             const parsedData = XLSX.utils.sheet_to_json(worksheet);
             // setData(parsedData);
-         
         };
 
         reader.readAsArrayBuffer(file);
@@ -330,7 +325,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
 
     const handleListLine = (object: any) => {
         // Implement the logic to handle the deletion of the row
-   
+
         setIsOpenListLine(true);
         setAddData(object);
         // You can add your deletion logic here, e.g., updating the state, making an API call, etc.
@@ -344,10 +339,12 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         }
     };
 
+    console.log('AddData', addData);
+
     return (
         <>
             <div className="flex flex-wrap items-center justify-between gap-4">
-                <h2 className="font-extrabold text-xl">{title}</h2>
+                <h2 className="text-xl font-extrabold">{title}</h2>
                 <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
                         {title !== 'Country Visa Types' && title !== 'Deleted Application' && title !== 'List Visa Application' && title !== 'Deleted Visa Application' && (
@@ -400,7 +397,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                                     id="type"
                                     value={filter}
                                     onChange={(e) => {
-                                 
                                         if (updateFilter) {
                                             updateFilter(e.target.value);
                                         }
@@ -465,7 +461,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                 </div>
             </div>
             {title == 'Lead List' && <Filtersetting data={data} setFilterItem={setFilterItem} showCustomizer={showCustomizer} setFilterTitle={setFilterTitle} setShowCustomizer={setShowCustomizer} />}
-            
+
             <ActionModal
                 isOpen={isOpen}
                 setAddData={setAddData}
@@ -503,7 +499,11 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                         </div>
                         <div className="mb-5">
                             <label htmlFor="url">Tracking URL </label>
-                            <input id="url" value={track?.url} onChange={(e) => handleTrackInputChange(e)} type="text" placeholder="Enter Mobile Number" className="form-input" />
+                            {!addData?.tracking_detail?.url && (
+                                <input id="url" value={track?.url} onChange={(e) => handleTrackInputChange(e)} type="text" placeholder="Enter Tracking URL" className="form-input" />
+                            )}
+
+                          {addData?.tracking_detail?.url &&  <a href={addData?.tracking_detail?.url} target="_blank" className='text-primary' >{addData?.tracking_detail?.url}</a>}
                         </div>
                     </div>
                 </div>
