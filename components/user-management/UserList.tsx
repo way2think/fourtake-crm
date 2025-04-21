@@ -21,6 +21,7 @@ import IconLockDots from '../icon/icon-lock-dots';
 import './UserList.css';
 import { exportToExcel } from '../Reusable/ExportExcel/exportToExcel';
 import Link from 'next/link';
+import { RefreshCw } from 'lucide-react';
 //import Table from '../Reusable/Table/Table';
 
 const UserList = () => {
@@ -549,8 +550,9 @@ const UserList = () => {
                         <div>
                             <button type="button" className="btn btn-primary" onClick={() => editUser()}>
                                 <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
-                                add User
+                                Add User
                             </button>
+                            <RefreshCw />
                         </div>
                         <div>
                             <button type="button" className="btn btn-outline-primary" onClick={() => setAssignPassword(true)}>

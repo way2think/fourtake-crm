@@ -16,6 +16,8 @@ import { useGetOneVisaApplicantGroupQuery, useRestoreApplicantMutation, useUpdat
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleUpdate } from '@/utils/rtk-http';
 import { useGetVisaRequirementsQuery } from '@/services/api/dashboardSlice';
+import { RefreshCw } from 'lucide-react';
+import RefreshButton from '../Reusable/RefreshButton';
 
 interface TableLayoutProps {
     title: string;
@@ -347,6 +349,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                 <h2 className="text-xl font-extrabold">{title}</h2>
                 <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
+                        <RefreshButton />
                         {title !== 'Country Visa Types' && title !== 'Deleted Application' && title !== 'List Visa Application' && title !== 'Deleted Visa Application' && (
                             <div>
                                 <button type="button" className="btn btn-primary" onClick={() => setIsOpen(true)}>
@@ -503,7 +506,11 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                                 <input id="url" value={track?.url} onChange={(e) => handleTrackInputChange(e)} type="text" placeholder="Enter Tracking URL" className="form-input" />
                             )}
 
-                          {addData?.tracking_detail?.url &&  <a href={addData?.tracking_detail?.url} target="_blank" className='text-primary' >{addData?.tracking_detail?.url}</a>}
+                            {addData?.tracking_detail?.url && (
+                                <a href={addData?.tracking_detail?.url} target="_blank" className="text-primary">
+                                    {addData?.tracking_detail?.url}
+                                </a>
+                            )}
                         </div>
                     </div>
                 </div>
