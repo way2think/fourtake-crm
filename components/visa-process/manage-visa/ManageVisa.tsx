@@ -1282,6 +1282,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                         onClick={() => {
                             setIsOpen(false);
                             setAddData({});
+                            router.push('/list-visa-applications')
                         }}
                         type="button"
                         className="btn btn-outline-danger ml-3"
