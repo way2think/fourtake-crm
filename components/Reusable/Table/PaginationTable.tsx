@@ -15,6 +15,7 @@ import { usePagination } from '@/hooks/usePagination';
 import { PaginationMeta } from '@/types/pagination';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
+import Image from 'next/image';
 
 interface PaginationTableProps {
     title?: string;
@@ -149,7 +150,8 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                         </Tippy>
                                         <Tippy content="Application Tracking">
                                             <ActionIcon size="sm" className="transition duration-200 " variant="subtle" color="red" onClick={() => handleTracking?.(row)}>
-                                                <IconTrendingUp className="rounded-xl hover:bg-blue-700  active:bg-blue-700" />
+                                                {/* <IconTrendingUp className="rounded-xl hover:bg-blue-700  active:bg-blue-700" /> */}
+                                                <Image src="/assets/images/aticon.png" alt="" className='active:bg-blue-700" w-6  hover:bg-blue-700' width={100} height={100} />
                                             </ActionIcon>
                                         </Tippy>
                                     </>
@@ -157,7 +159,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                 {title !== 'dashboard' && title !== 'Country Visa Types' && title !== 'Deleted Visa Application' && (
                                     <Tippy content="Delete">
                                         <ActionIcon size="sm" className="" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
-                                            <IconTrash className="transition duration-200 hover:bg-blue-700 active:bg-blue-700 rounded-sm" size={16} />
+                                            <IconTrash className="rounded-sm transition duration-200 hover:bg-blue-700 active:bg-blue-700" size={16} />
                                         </ActionIcon>
                                     </Tippy>
                                 )}

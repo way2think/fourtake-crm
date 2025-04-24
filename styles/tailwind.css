@@ -477,7 +477,7 @@ hover:text-[#2eb9fe] hover:before:!bg-[#2eb9fe] dark:before:bg-gray-500 dark:hov
     }
     table thead tr,
     table tfoot tr {
-        @apply border-b-0 !bg-[#f6f8fa]  dark:!bg-[#1a2941];
+        @apply border-b-0 !bg-[#222d31] !text-[#fff]  dark:!bg-[#1a2941];
     }
     table thead tr th,
     table tfoot tr th,
@@ -486,7 +486,7 @@ hover:text-[#2eb9fe] hover:before:!bg-[#2eb9fe] dark:before:bg-gray-500 dark:hov
     }
     table thead tr th,
     table tfoot tr th {
-        @apply font-semibold;
+        @apply font-normal;
     }
     table tbody tr {
         @apply border-b !border-white-light/40 dark:!border-[#191e3a];
