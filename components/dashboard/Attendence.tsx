@@ -138,7 +138,7 @@ const Attendence = () => {
                         </div>
                     </div>
                     <div className=" flex  items-center justify-center  ">
-                        <button type="button" className=" btn btn-primary w-2/4" onClick={handleSubmitAttendence}>
+                        <button type="button" className=" btn btn-primary w-full" onClick={handleSubmitAttendence}>
                             <IconLogout className="ltr:mr-2 rtl:ml-2" />
                             Check Requirements
                         </button>
