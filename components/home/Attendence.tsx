@@ -177,6 +177,9 @@ const Attendence = () => {
                 <div className=" m-auto  flex w-1/3 items-center justify-center">
                     <button type="button" className=" btn btn-primary w-2/4" onClick={handleSubmitAttendence}>
                         <TextSearch className="ltr:mr-2 rtl:ml-2" />
+                    </button>
+                    <button type="button" className=" btn btn-primary w-3/4" onClick={handleSubmitAttendence}>
+                        <IconLogout className="ltr:mr-2 rtl:ml-2" />
                         Check Requirements
                     </button>
                     <button type="button" className=" btn btn-primary ml-2 w-1/3" onClick={handleClear}>

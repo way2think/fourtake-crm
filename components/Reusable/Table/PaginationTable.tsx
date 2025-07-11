@@ -15,6 +15,7 @@ import { usePagination } from '@/hooks/usePagination';
 import { PaginationMeta } from '@/types/pagination';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
+import Image from 'next/image';
 
 interface PaginationTableProps {
     title?: string;
@@ -88,28 +89,28 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                     <td style={{ display: 'flex', justifyContent: 'flex-end', gap: '3px' }}>
                         {title === 'Status Wise Report' ? (
                             <>
-                                <ActionIcon
-                                    size="sm"
-                                    className="transition duration-200 hover:bg-blue-700 active:bg-blue-700"
-                                    variant="subtle"
-                                    color="green"
-                                    onClick={() => ReuseActionModalShow?.(row)}
-                                >
-                                    <IconEye size={20} />
+                                <ActionIcon size="sm" className="transition duration-200 " variant="subtle" color="green" onClick={() => ReuseActionModalShow?.(row)}>
+                                    <IconEye className="rounded-xl hover:bg-blue-700  active:bg-blue-700" size={20} />
                                 </ActionIcon>
                             </>
                         ) : title === 'Deleted Application' ? (
                             <>
-                                <ActionIcon size="sm" className="transition duration-200 hover:bg-blue-700 active:bg-blue-700" variant="subtle" color="yellow" onClick={() => handleRestore?.(row)}>
-                                    <IconRestore size={20} />
+                                <ActionIcon
+                                    size="sm"
+                                    className="rounded-xl transition duration-200 hover:bg-blue-700 active:bg-blue-700"
+                                    variant="subtle"
+                                    color="yellow"
+                                    onClick={() => handleRestore?.(row)}
+                                >
+                                    <IconRestore className="rounded-xl hover:bg-blue-700  active:bg-blue-700" size={20} />
                                 </ActionIcon>
                             </>
                         ) : (
                             <>
                                 {title !== 'Deleted Visa Application' && (
                                     <Tippy content="Edit">
-                                        <ActionIcon size="sm" className="transition duration-200 hover:bg-blue-700 active:bg-blue-700" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
-                                            <IconEdit size={16} />
+                                        <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
+                                            <IconEdit className=" rounded-md transition duration-200 hover:bg-blue-700  active:bg-blue-700" size={16} />
                                         </ActionIcon>
                                     </Tippy>
                                 )}
@@ -117,14 +118,8 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                 {title === 'List Visa Application' && (
                                     <>
                                         <Tippy content="Text File">
-                                            <ActionIcon
-                                                size="sm"
-                                                variant="subtle"
-                                                className="transition duration-200 hover:bg-blue-700 active:bg-blue-700"
-                                                color="red"
-                                                onClick={() => handleDocChecklist?.(row)}
-                                            >
-                                                <IconTxtFile className={`size:"16"`} />
+                                            <ActionIcon size="sm" variant="subtle" className="transition duration-200 " color="red" onClick={() => handleDocChecklist?.(row)}>
+                                                <IconTxtFile className={`size:"16" rounded-xl hover:bg-blue-700 active:bg-blue-700`} />
                                             </ActionIcon>
                                         </Tippy>
 
@@ -136,7 +131,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                                 className="transition duration-200 hover:bg-blue-700 active:bg-blue-700"
                                                 //  onClick={() => handleDelete?.(row)}
                                             >
-                                                <IconVerify />
+                                                <IconVerify className={` rounded-xl hover:bg-blue-700 active:bg-blue-700`} />
                                             </ActionIcon>
                                         )}
                                         {row.visa_status === 'unverified' && (
@@ -147,38 +142,27 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                                 className="transition duration-200 hover:bg-blue-700 active:bg-blue-700"
                                                 //  onClick={() => handleDelete?.(row)}
                                             >
-                                                <IconUnVerified />
+                                                <IconUnVerified className="rounded-xl hover:bg-blue-700  active:bg-blue-700" />
                                             </ActionIcon>
                                         )}
                                         <Tippy content="Multiple Passport">
-                                            <ActionIcon
-                                                size="sm"
-                                                className="transition duration-200 hover:bg-blue-700 active:bg-blue-700"
-                                                variant="subtle"
-                                                color="red"
-                                                onClick={() => handleListLine?.(row)}
-                                            >
-                                                <IconList />
+                                            <ActionIcon size="sm" className="rounded-xl transition duration-200 " variant="subtle" color="red" onClick={() => handleListLine?.(row)}>
+                                                <IconList className="rounded-xl hover:bg-blue-700  active:bg-blue-700" />
                                             </ActionIcon>
                                         </Tippy>
                                         <span>({row?.multiple_passports?.length || 0})</span>
                                         <Tippy content="Application Tracking">
-                                            <ActionIcon
-                                                size="sm"
-                                                className="transition duration-200 hover:bg-blue-700 active:bg-blue-700"
-                                                variant="subtle"
-                                                color="red"
-                                                onClick={() => handleTracking?.(row)}
-                                            >
-                                                <IconTrendingUp />
+                                            <ActionIcon size="sm" className="transition duration-200 " variant="subtle" color="red" onClick={() => handleTracking?.(row)}>
+                                                {/* <IconTrendingUp className="rounded-xl hover:bg-blue-700  active:bg-blue-700" /> */}
+                                                <Image src="/assets/images/aticon.png" alt="" className='active:bg-blue-700" w-6  hover:bg-blue-700' width={100} height={100} />
                                             </ActionIcon>
                                         </Tippy>
                                     </>
                                 )}
                                 {title !== 'dashboard' && title !== 'Country Visa Types' && title !== 'Deleted Visa Application' && (
                                     <Tippy content="Delete">
-                                        <ActionIcon size="sm" className="transition duration-200 hover:bg-blue-700 active:bg-blue-700" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
-                                            <IconTrash size={16} />
+                                        <ActionIcon size="sm" className="" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
+                                            <IconTrash className="rounded-sm transition duration-200 hover:bg-blue-700 active:bg-blue-700" size={16} />
                                         </ActionIcon>
                                     </Tippy>
                                 )}

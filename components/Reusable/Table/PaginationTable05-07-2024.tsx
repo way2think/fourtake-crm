@@ -55,11 +55,11 @@ const PaginationTable: React.FC<PaginationTableProps> = ({ data, tableColumns, h
                                   </ActionIcon>
                               )}
                               <ActionIcon size="sm" variant="subtle" color="blue" onClick={() => handleEdit?.(row)}>
-                                  <IconEdit size={16} />
+                                  <IconEdit className={` rounded-sm hover:bg-blue-700 active:bg-blue-700`} size={16} />
                               </ActionIcon>
                               {title !== 'dashboard' && (
                                   <ActionIcon size="sm" variant="subtle" color="red" onClick={() => handleDelete?.(row)}>
-                                      <IconTrash size={16} />
+                                      <IconTrash className="transition rounded-sm duration-200 hover:bg-blue-700 active:bg-blue-700"  size={16} />
                                   </ActionIcon>
                               )}
                           </Group>
