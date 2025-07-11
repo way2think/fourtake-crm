@@ -17,9 +17,9 @@ interface LeadEmailSendModalProps {
     addData: any;
     setAddData: any;
     visaChecklistData?: any;
+    visaChecklistItems?: any;
 }
-const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData, setIsOpen, addData, visaChecklistData }) => {
-    // console.log('CountryActionModal: ', addData);
+const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, visaChecklistItems, setAddData, setIsOpen, addData, visaChecklistData }) => {
     const [serviceCharge, setServiceCharge] = useState();
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
@@ -180,8 +180,8 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
                         onClick={() => {
                             setIsOpen(false);
                             setAddData((prevData: any) => {
-                                const { cc, additional_info, attachments, visa_checklist, ...rest } = prevData;
-                                return rest;
+                                const { cc, additional_info, visa_checklist, attachments, ...rest } = prevData;
+                                return { ...rest, visa_checklist: visaChecklistItems };
                             });
                         }}
                         type="button"
@@ -280,7 +280,7 @@ const EmailSendModal: React.FC<LeadEmailSendModalProps> = ({ isOpen, setAddData,
                                 setIsOpen(false);
                                 setAddData((prevData: any) => {
                                     const { visa_checklist, cc, additional_info, attachments, ...rest } = prevData;
-                                    return rest;
+                                    return { ...rest, visa_checklist: visaChecklistItems };
                                 });
                             }}
                             type="button"

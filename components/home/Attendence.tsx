@@ -1,17 +1,14 @@
-import IconFile from '../icon/icon-file';
-import IconLogout from '../icon/icon-logout';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { TextSearch, X } from 'lucide-react';
+import IconLogout from '../icon/icon-logout';
 import { showMessage } from '@/utils/notification';
 import { stateCityData } from '@/utils/constant';
 import { useGetCountryVisaTypesQuery } from '@/services/api/cms/countryVisaTypeSlice';
 import { VisaType } from '@/entities/visa-type.entity';
 import CountrySearchDropdown from '../Reusable/country-selector/CountrySearchDropdown';
-import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
 import { setIsLoading } from '@/store/app.store';
-import IconRefresh from '../icon/icon-refresh';
-import IconTrash from '../icon/icon-trash';
-import IconHome from '../icon/icon-home';
 
 const Attendence = () => {
     const router = useRouter();
@@ -86,7 +83,10 @@ const Attendence = () => {
         //alert('Form submitted successfully');
         showMessage('Form submitted successfully.');
 
-        router.push(`/check-requirements?countryId=${formData.country}&visaTypeId=${formData.visa_type}&stateOfResidence=${formData.state_of_residence}`);
+        // router.push(`/check-requirements?countryId=${formData.country}&visaTypeId=${formData.visa_type}&stateOfResidence=${formData.state_of_residence}`);
+        const url = `/check-requirements?countryId=${formData.country}&visaTypeId=${formData.visa_type}&stateOfResidence=${formData.state_of_residence}`;
+
+        window.open(url, '_blank');
     };
 
     const handleClear = () => {
@@ -159,8 +159,6 @@ const Attendence = () => {
                         clearSearch={clearSearch}
                     />
 
-                 
-
                     <div className="dropdown mb-5 mt-2">
                         <label htmlFor="visa_type">My Purpose of Travel is</label>
                         <select className="form-input" defaultValue="" id="visa_type" value={formData?.visa_type} onChange={(e) => handleInputChangeAttendence(e)}>
@@ -177,12 +175,15 @@ const Attendence = () => {
                     </div>
                 </div>
                 <div className=" m-auto  flex w-1/3 items-center justify-center">
+                    <button type="button" className=" btn btn-primary w-2/4" onClick={handleSubmitAttendence}>
+                        <TextSearch className="ltr:mr-2 rtl:ml-2" />
+                    </button>
                     <button type="button" className=" btn btn-primary w-3/4" onClick={handleSubmitAttendence}>
                         <IconLogout className="ltr:mr-2 rtl:ml-2" />
                         Check Requirements
                     </button>
                     <button type="button" className=" btn btn-primary ml-2 w-1/3" onClick={handleClear}>
-                        <IconHome className="ltr:mr-2 rtl:ml-2" />
+                        <X className="size-5 ltr:mr-2 rtl:ml-2" />
                         Clear
                     </button>
                 </div>

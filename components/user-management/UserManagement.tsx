@@ -34,8 +34,10 @@ const UserManagement: React.FC = () => {
             },
         },
         { accessor: 'username', textAlign: 'left', title: 'Username' },
+
         { accessor: 'first_name', textAlign: 'left', title: 'First Name' },
         { accessor: 'last_name', textAlign: 'left', title: 'Last Name' },
+        { accessor: 'email', textAlign: 'left', title: 'Email' },
         {
             accessor: 'center',
             textAlign: 'left',

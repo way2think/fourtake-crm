@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Select, { components } from 'react-select';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { AnyARecord } from 'node:dns';
 
 interface OptionType {
     value: string;
@@ -38,7 +39,13 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
     useEffect(() => {
         if (Array.isArray(addData[id])) {
             const selectedValues = addData[id];
-            const selected = options.filter((option: any) => selectedValues.includes(option.value));
+            let selected;
+            if (id == 'country_visa_types') {
+                selected = options.filter((option: any) => selectedValues.some((selectedValue: any) => selectedValue.id === option.value));
+            } else {
+                selected = options.filter((option: any) => selectedValues.includes(option.value));
+            }
+
             setSelectedOptions(selected);
         } else {
             setSelectedOptions([]);
@@ -48,26 +55,59 @@ const ComponentsFormsSelectMultiselect: React.FC<ComponentsFormsSelectMultiselec
     const handleChange = (selected: any) => {
         if (selected && selected.length === options.length) {
             const getValue = options.map((item: any) => item.value).join(', ');
+
             setSelectedOptions(options);
-            setAddData((prev: any) => ({ ...prev, [id]: getValue }));
+            if (id == 'country_visa_types') {
+                setAddData((prev: any) => ({ ...prev, visa_type: getValue }));
+            } else {
+                setAddData((prev: any) => ({ ...prev, [id]: getValue }));
+            }
         } else if (selected && selected.length === 0) {
             setSelectedOptions([]);
+            console.log('1')
             setAddData((prev: any) => ({ ...prev, [id]: [] }));
         } else {
-            const getValue = selected.map((item: any) => item.value).join(', ');
+            let getValue: AnyARecord;
+            if (id == 'country_visa_types') {
+                getValue = selected.map((item: any) => item.value).join(', ');
+            } else {
+                getValue = selected
+                    .map((item: any) => item.value)
+                    .join(', ')
+                    .split(', ');
+            }
+
             setSelectedOptions(selected as OptionType[]);
-            setAddData((prev: any) => ({ ...prev, [id]: getValue }));
+            if (id == 'country_visa_types') {
+                setAddData((prev: any) => ({ ...prev, visa_type: getValue }));
+            } else {
+                setAddData((prev: any) => ({ ...prev, [id]: getValue }));
+            }
         }
     };
 
     const handleSelectAll = () => {
         if (selectedOptions.length === options.length) {
             setSelectedOptions([]);
+            console.log("2")
             setAddData((prev: any) => ({ ...prev, [id]: [] }));
         } else {
             setSelectedOptions(options);
-            const getValue = options.map((item: any) => item.value).join(', ');
-            setAddData((prev: any) => ({ ...prev, [id]: getValue }));
+            let getValue: any;
+            if (id == 'country_visa_types') {
+                getValue = options.map((item: any) => item.value).join(', ');
+            } else {
+                getValue = options
+                    .map((item: any) => item.value)
+                    .join(', ')
+                    .split(', ');
+            }
+
+            if (id == 'country_visa_types') {
+                setAddData((prev: any) => ({ ...prev, visa_type: getValue }));
+            } else {
+                setAddData((prev: any) => ({ ...prev, [id]: getValue }));
+            }
         }
     };
 

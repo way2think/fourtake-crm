@@ -16,6 +16,7 @@ import { useGetCountryVisaTypesQuery } from '@/services/api/cms/countryVisaTypeS
 import EmailSendModal from '../lead-management/lead-manage/EmailSendModal';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/user.store';
+import { useGetEmbassyVfsQuery } from '@/services/api/cms/embassyVfsSlice';
 
 const DashboardCheck = () => {
     const router = useRouter();
@@ -27,7 +28,7 @@ const DashboardCheck = () => {
 
     const [checkData, setCheckData] = useState({
         state_of_residence: '',
-        destination_country: '',
+        country: '',
         visa_type: '',
     });
 
@@ -37,7 +38,7 @@ const DashboardCheck = () => {
     }, []);
 
     const [addData, setAddData] = useState<any>({
-        destination_country: '',
+        country: '',
         is_group: false,
         visa_type: '',
         nationality: '75',
@@ -70,6 +71,10 @@ const DashboardCheck = () => {
         }
     );
 
+    const { data: embassyData } = useGetEmbassyVfsQuery({ search: visaRequirements?.[0]?.country?.name });
+
+    console.log('embassyData', embassyData);
+
     console.log('queryParams', queryParams);
 
     // console.log('visaRequirement ', visaRequirements);
@@ -101,7 +106,7 @@ const DashboardCheck = () => {
             });
 
             setCheckData({
-                destination_country: urlParams.get('countryId') || '',
+                country: urlParams.get('countryId') || '',
                 visa_type: urlParams.get('visaTypeId') || '',
                 state_of_residence: urlParams.get('stateOfResidence') || '',
             });
@@ -131,12 +136,12 @@ const DashboardCheck = () => {
         if (checkData.visa_type == '') {
             showMessage('Select Visa Type', 'error');
         }
-        if (checkData.destination_country == '') {
+        if (checkData.country == '') {
             showMessage('Select Country', 'error');
         }
 
         // Update the URLs
-        const newUrl = `/check-requirements?countryId=${checkData.destination_country}&visaTypeId=${checkData.visa_type}&stateOfResidence=${checkData.state_of_residence}`;
+        const newUrl = `/check-requirements?countryId=${checkData.country}&visaTypeId=${checkData.visa_type}&stateOfResidence=${checkData.state_of_residence}`;
         router.push(newUrl);
 
         // Force page reload with the new URL
@@ -144,7 +149,7 @@ const DashboardCheck = () => {
 
         // Form is valid, handle the form submission here
         //alert('Form submitted successfully');
-        showMessage('Form submitted successfully.');
+        // showMessage('Form submitted successfully.');
     };
 
     const sanitizeHtmlString = (htmlString: any) => {
@@ -159,7 +164,7 @@ const DashboardCheck = () => {
             .replace(/\\"/g, '"'); // Unescape quotes
     };
 
-    console.log('visaRequirements', visaRequirements);
+    console.log('visaRequirements', visaRequirements, addData);
 
     return (
         <>
@@ -177,7 +182,7 @@ const DashboardCheck = () => {
                             items={countryVisaTypes?.items}
                             setVisaTypes={setVisaTypes}
                             heading="I am going to"
-                            title="destination_country"
+                            title="country"
                         />
                     </div>
 
@@ -219,7 +224,7 @@ const DashboardCheck = () => {
                     </div>
 
                     <button type="button" className="btn btn-primary ltr:ml-2 rtl:mr-4" onClick={handleSubmitChecklist}>
-                        Submit
+                        Check
                     </button>
                     {role === 'super_admin' && (
                         <>
@@ -353,75 +358,78 @@ const DashboardCheck = () => {
                                 </div>
                             </Tab.Panel>
                             <Tab.Panel>
-                                <div className=" p-3 pt-5">
-                                    <h4 className="mb-4 text-xl font-semibold">{visaRequirements?.[0]?.embassy_vfs?.[0]?.name}</h4>
-                                    <div className="overflow-x-auto">
-                                        <table className="min-w-full table-auto rounded-lg border border-gray-300 bg-white">
-                                            {/* <caption className="p-4 text-left text-lg font-semibold">{visaRequirements?.[0]?.embassy_vfs?.[0]?.name}</caption> */}
-                                            <tbody>
-                                                <tr className="border-b">
-                                                    <th className="w-1/4 bg-gray-100 p-3 text-left font-semibold">Name</th>
-                                                    <td className="p-3">{visaRequirements?.[0]?.embassy_vfs?.[0]?.name}</td>
-                                                </tr>
-                                                <tr className="border-b">
-                                                    <th className="bg-gray-100 p-3 text-left font-semibold">Address</th>
-                                                    <td className="p-3"> {visaRequirements?.[0]?.embassy_vfs?.[0]?.address}</td>
-                                                </tr>
-                                                <tr className="border-b">
-                                                    <th className="bg-gray-100 p-3 text-left font-semibold">City</th>
-                                                    <td className="p-3">{visaRequirements?.[0]?.embassy_vfs?.[0]?.city}</td>
-                                                </tr>
-                                                <tr className="border-b">
-                                                    <th className="bg-gray-100 p-3 text-left font-semibold">Country</th>
-                                                    <td className="p-3">India</td>
-                                                </tr>
-                                                <tr className="border-b">
-                                                    <th className="bg-gray-100 p-3 text-left font-semibold">Telephone</th>
-                                                    <td className="p-3">{visaRequirements?.[0]?.embassy_vfs?.[0]?.phone}</td>
-                                                </tr>
-                                                <tr className="border-b">
-                                                    <th className="bg-gray-100 p-3 text-left font-semibold">Fax</th>
-                                                    <td className="p-3">{visaRequirements?.[0]?.embassy_vfs?.[0]?.fax}</td>
-                                                </tr>
-                                                <tr className="border-b">
-                                                    <th className="bg-gray-100 p-3 text-left font-semibold">Email</th>
-                                                    <td className="p-3">{visaRequirements?.[0]?.embassy_vfs?.[0]?.email}</td>
-                                                </tr>
-                                                <tr className="border-b">
-                                                    <th className="bg-gray-100 p-3 text-left font-semibold">Submission Details</th>
-                                                    <td className="p-3">{visaRequirements?.[0]?.embassy_vfs?.[0]?.submission_details}</td>
-                                                </tr>
-                                                <tr className="border-b">
-                                                    <th className="bg-gray-100 p-3 text-left font-semibold">Collection Details</th>
-                                                    <td className="p-3">{visaRequirements?.[0]?.embassy_vfs?.[0]?.collection_details}</td>
-                                                </tr>
-                                                <tr className="border-b">
-                                                    <th className="bg-gray-100 p-3 text-left font-semibold">Processing Time</th>
-                                                    <td className="p-3">{visaRequirements?.[0]?.embassy_vfs?.[0]?.processing_time}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th className="bg-gray-100 p-3 text-left font-semibold">Jurisdiction</th>
-                                                    <td className="p-3">{visaRequirements?.[0]?.embassy_vfs?.[0]?.jurisdiction?.join()}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                {embassyData?.items.map((item: any, index: number) => (
+                                    <div className=" p-3 pt-5">
+                                        <h4 className="mb-4 text-xl font-semibold">{item?.name}</h4>
+                                        <div className="overflow-x-auto">
+                                            <table className="min-w-full table-auto rounded-lg border border-gray-300 bg-white">
+                                                {/* <caption className="p-4 text-left text-lg font-semibold">{visaRequirements?.[0]?.embassy_vfs?.[0]?.name}</caption> */}
+                                                <tbody>
+                                                    <tr className="border-b">
+                                                        <th className="w-1/4 bg-gray-100 p-3 text-left font-semibold">Name</th>
+                                                        <td className="p-3">{item?.name}</td>
+                                                    </tr>
+                                                    <tr className="border-b">
+                                                        <th className="bg-gray-100 p-3 text-left font-semibold">Address</th>
+                                                        <td className="p-3"> {item?.address}</td>
+                                                    </tr>
+                                                    <tr className="border-b">
+                                                        <th className="bg-gray-100 p-3 text-left font-semibold">City</th>
+                                                        <td className="p-3">{item?.city}</td>
+                                                    </tr>
+                                                    <tr className="border-b">
+                                                        <th className="bg-gray-100 p-3 text-left font-semibold">Country</th>
+                                                        <td className="p-3">{item?.country?.name}</td>
+                                                    </tr>
+                                                    <tr className="border-b">
+                                                        <th className="bg-gray-100 p-3 text-left font-semibold">Telephone</th>
+                                                        <td className="p-3">{item?.phone}</td>
+                                                    </tr>
+                                                    <tr className="border-b">
+                                                        <th className="bg-gray-100 p-3 text-left font-semibold">Fax</th>
+                                                        <td className="p-3">{item?.fax}</td>
+                                                    </tr>
+                                                    <tr className="border-b">
+                                                        <th className="bg-gray-100 p-3 text-left font-semibold">Email</th>
+                                                        <td className="p-3">{item?.email}</td>
+                                                    </tr>
+                                                    <tr className="border-b">
+                                                        <th className="bg-gray-100 p-3 text-left font-semibold">Submission Details</th>
+                                                        <td className="p-3">{item?.submission_details}</td>
+                                                    </tr>
+                                                    <tr className="border-b">
+                                                        <th className="bg-gray-100 p-3 text-left font-semibold">Collection Details</th>
+                                                        <td className="p-3">{item?.collection_details}</td>
+                                                    </tr>
+                                                    <tr className="border-b">
+                                                        <th className="bg-gray-100 p-3 text-left font-semibold">Processing Time</th>
+                                                        <td className="p-3">{item?.processing_time}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th className="bg-gray-100 p-3 text-left font-semibold">Jurisdiction</th>
+                                                        <td className="p-3">{item?.jurisdiction?.join()}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                       
                                     </div>
-                                    <h4 className="mb-4 text-xl font-semibold">Disclaimer</h4>
-                                    <ul>
-                                        <li className="mb-4 ">
-                                            {' '}
-                                            Disclaimer- Fourtake Visa Services doesn't have any involvement in the decision whether to issue or refuse a visa application and can't influence the
-                                            processing time. The visas are issued at the sole discretion of the Embassy / Consulate, and we cannot guarantee that. We don't have any affiliation with
-                                            any government agency.
-                                        </li>
-                                        <li className="mb-4">
-                                            {' '}
-                                            Many times, Embassies/Consulates change the visa requirements without any notice or publications and we come across such changes only after we apply for the
-                                            respective visas. Hence, kindly cooperate. In case of any discrepancy in visa requirements on our website/documentation, we request you to please highlight
-                                            and oblige us. Customers like you are the most critical component of our success. Thank you.
-                                        </li>
-                                    </ul>
-                                </div>
+                                ))}
+                                 <h4 className="mb-4 text-xl font-semibold">Disclaimer</h4>
+                                        <ul>
+                                            <li className="mb-4 ">
+                                                {' '}
+                                                Disclaimer- Fourtake Visa Services doesn't have any involvement in the decision whether to issue or refuse a visa application and can't influence the
+                                                processing time. The visas are issued at the sole discretion of the Embassy / Consulate, and we cannot guarantee that. We don't have any affiliation
+                                                with any government agency.
+                                            </li>
+                                            <li className="mb-4">
+                                                {' '}
+                                                Many times, Embassies/Consulates change the visa requirements without any notice or publications and we come across such changes only after we apply for
+                                                the respective visas. Hence, kindly cooperate. In case of any discrepancy in visa requirements on our website/documentation, we request you to please
+                                                highlight and oblige us. Customers like you are the most critical component of our success. Thank you.
+                                            </li>
+                                        </ul>
                             </Tab.Panel>
                             <Tab.Panel>
                                 <div className="mt-3">
@@ -439,7 +447,14 @@ const DashboardCheck = () => {
                 )}
             </div>
 
-            <EmailSendModal isOpen={isOpenMail} setIsOpen={setIsOpenMail} addData={queryParams} setAddData={setQueryParams} visaChecklistData={visaRequirements} />
+            <EmailSendModal
+                isOpen={isOpenMail}
+                setIsOpen={setIsOpenMail}
+                addData={queryParams}
+                setAddData={setQueryParams}
+                visaChecklistData={visaRequirements}
+                visaChecklistItems={visaChecklistItems}
+            />
         </>
     );
 };

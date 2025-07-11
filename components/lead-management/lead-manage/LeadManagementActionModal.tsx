@@ -9,7 +9,7 @@ import { showMessage } from '@/utils/notification';
 import { useGetCountryVisaTypesQuery } from '@/services/api/cms/countryVisaTypeSlice';
 import { VisaType } from '@/entities/visa-type.entity';
 import EmailSendModal from './EmailSendModal';
-import { stateCityData, timeStampFormat } from '@/utils/constant';
+import { stateCityData, timeFormat, timeStampFormat } from '@/utils/constant';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/user.store';
 import { User } from '@/entities/user.entity';
@@ -63,6 +63,8 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     const [buttonContent, setButtonContent] = useState('');
     const [visaApplicationId, setVisaApplicationId] = useState<string | any>();
 
+    console.log('leadNotes', leadNotes);
+
     // const { data: employeelist } = useGetAllEmployeesQuery({ page: 0, limit: 0 });
     const { data: assigneeList } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'employee, admin' });
     // console.log('employeelist', assigneeList?.items);
@@ -74,7 +76,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
 
     useEffect(() => {
         if (!isEdit) {
-            setAddData({ ...addData, service_type: 'visa service' });
+            setAddData({ ...addData, service_type: 'visa service', state_of_residence: 'Karnataka' });
         }
     }, []);
 
@@ -149,8 +151,6 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                 });
         }
     }, [addData.status, addData.id]);
-
-    console.log('addData1', addData);
 
     const tableColumnsFollowUp = [
         {
@@ -291,7 +291,13 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
     }
 
     const handleNoteAction = () => {
-        const currentTimeInSeconds = Math.floor(Date.now() / 1000); // Convert milliseconds to seconds
+        console.log('leadNotes', leadNotes, 'note', leadNote);
+        if (leadNote?.note == '' || leadNote?.note == null || !leadNote || leadNote?.note.trim().length == 0) {
+            showMessage('Note cannot be empty', 'error');
+            return;
+        }
+        const currentTimeInSeconds = Math.floor(Date.now() / 1000); // Convert milliseconds
+        //  seconds
 
         if (modalTitle === 'Edit Note' && currentIndex !== null) {
             const updatedNotes = [...leadNotes];
@@ -332,7 +338,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                         onClick={() => {
                             setIsOpen(false);
                             setAddData(() => {
-                                return { service_type: 'visa service' };
+                                return { service_type: 'visa service', state_of_residence: 'Karnataka' };
                             });
                             setIsEdit(false);
                         }}
@@ -494,7 +500,9 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                                         </option>
 
                                         {states.map((state) => (
-                                            <option value={state}>{state}</option>
+                                            <option key={state} value={state}>
+                                                {state}
+                                            </option>
                                         ))}
                                     </select>
                                 </div>
@@ -537,7 +545,9 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             </option>
 
                             {assigneeList?.items?.map((item: any) => (
-                                <option value={item.id}>{item.username}</option>
+                                <option key={item.id} value={item.id}>
+                                    {item.username}
+                                </option>
                             ))}
                         </select>
                     </div>
@@ -1078,43 +1088,37 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             </button>
 
                             <div className="mt-3">
-                                {leadNotes?.map((item: any, index: number) => (
-                                    // <div key={index} className="mt-2 flex items-center justify-between rounded border p-2">
-                                    //     <div>{item?.note}</div>
-                                    //     {(role === 'super_admin' || role === 'admin') && (
-                                    //         <div className="flex items-center">
-                                    //             <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
-                                    //                 Edit
-                                    //             </button>
-                                    //             <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
-                                    //                 Delete
-                                    //             </button>
-                                    //         </div>
-                                    //     )}
+                            {leadNotes
+    ?.slice() // clone to avoid mutating original
+    .sort((a: any, b: any) => b.created_time - a.created_time)
+    .map((item: any, index: number) => (
+        <div key={index} className="mt-2 flex flex-col rounded border p-2">
+            <div className="flex items-center justify-between">
+                <div>{item?.note}</div>
+                {(role === 'super_admin' || role === 'admin') && (
+                    <div className="flex items-center">
+                        <button
+                            className="btn btn-outline-primary btn-sm mr-2"
+                            onClick={() => handleEditNoteClick(index)}
+                        >
+                            Edit
+                        </button>
+                        <button
+                            className="btn btn-outline-danger btn-sm"
+                            onClick={() => handleDeleteNote(index)}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                )}
+            </div>
 
-                                    //     <div>Create Date: item.created_time, Created By: item.created_by</div>
-                                    // </div>
+            <div className="mt-2 text-right font-mono text-sm text-blue-500">
+                Created By: {item.created_by} - Created Date: {timeStampFormat(item.created_time)} {timeFormat(item.created_time)}
+            </div>
+        </div>
+    ))}
 
-                                    <div key={index} className="mt-2 flex flex-col rounded border p-2">
-                                        <div className="flex items-center justify-between">
-                                            <div>{item?.note}</div>
-                                            {(role === 'super_admin' || role === 'admin') && (
-                                                <div className="flex items-center">
-                                                    <button className="btn btn-outline-primary btn-sm mr-2" onClick={() => handleEditNoteClick(index)}>
-                                                        Edit
-                                                    </button>
-                                                    <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteNote(index)}>
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        <div className="mt-2 text-right font-mono text-sm text-blue-500">
-                                            Created By: {item.created_by} - Created Date: {timeStampFormat(item.created_time)}
-                                        </div>
-                                    </div>
-                                ))}
                             </div>
 
                             <ActionModal isOpen={isOpenAddNote} setIsOpen={setIsOpenAddNote} handleSave={handleNoteAction} width="max-w-2xl">
@@ -1246,7 +1250,7 @@ const LeadManagementActionModal: React.FC<LeadManagementActionModalProps> = ({ i
                             onClick={() => {
                                 setIsOpen(false);
                                 setAddData(() => {
-                                    return { service_type: 'visa service' };
+                                    return { service_type: 'visa service', state_of_residence: 'Karnataka' };
                                 });
                                 setIsEdit(false);
                             }}

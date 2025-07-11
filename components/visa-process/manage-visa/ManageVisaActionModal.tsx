@@ -1,3 +1,4 @@
+import InputDate from '@/components/Reusable/Date/InputDate';
 import ActionModal from '@/components/Reusable/Modal/ActionModal';
 import PaginationTable from '@/components/Reusable/Table/PaginationTable';
 import IconX from '@/components/icon/icon-x';
@@ -51,7 +52,7 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
     const [isInScan, setIsInScan] = useState(false);
     const [isSubmit, setIsSubmit] = useState(false);
 
-    console.log('addUser', addUser);
+    // console.log('addUser', addUser);
 
     const user = useSelector(selectUser) as User;
 
@@ -258,7 +259,9 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
                                     </option>
 
                                     {visaStatuses?.items?.map((status: any) => (
-                                        <option value={status.id}>{status.name}</option>
+                                        <option key={status.id} value={status.id}>
+                                            {status.name}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
@@ -345,7 +348,8 @@ const ManageVisaActionModal: React.FC<ManageVisaActionModalProps> = ({
 
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                         <div className="mb-5">
-                            <ComponentsFormDatePickerBasic label="DOB" id={'dob'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
+                            {/* <ComponentsFormDatePickerBasic label="DOB" id={'dob'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} /> */}
+                            <InputDate label="DOB" id={'dob'} isEdit={isEdit} setAddData={setAddUser} addData={addUser} />
                         </div>
                         <div className="mt-7">
                             <label className="flex cursor-pointer items-center">

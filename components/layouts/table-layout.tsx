@@ -16,6 +16,8 @@ import { useGetOneVisaApplicantGroupQuery, useRestoreApplicantMutation, useUpdat
 import { useRTKLocalUpdate } from '@/hooks/useRTKLocalUpdate';
 import { handleUpdate } from '@/utils/rtk-http';
 import { useGetVisaRequirementsQuery } from '@/services/api/dashboardSlice';
+import { RefreshCw } from 'lucide-react';
+import RefreshButton from '../Reusable/RefreshButton';
 
 interface TableLayoutProps {
     title: string;
@@ -97,7 +99,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         visaTypeId: String(addData?.visa_type?.id),
         stateOfResidence: addData?.state_of_residence,
     });
-    // console.log('addData', addData, visaRequirements);
 
     const [updateVisaApplicant, {}] = useUpdateVisaApplicantGroupMutation();
     const [handleLocalRTKUpdate] = useRTKLocalUpdate();
@@ -163,7 +164,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
     };
 
     const handleDocChecklist = (row: any) => {
-        router.push(`/check-requirements?countryId=${row.destination_country.id}&visaTypeId=${row.visa_type.id}&stateOfResidence=${row.state_of_residence}`);
+        router.push(`/check-requirements?countryId=${row.country.id}&visaTypeId=${row.visa_type.id}&stateOfResidence=${row.state_of_residence}`);
 
         // if (visaRequirements && visaRequirements.length > 0) {
         //     const checklist = visaRequirements[0]?.checklist || [];
@@ -237,7 +238,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         // this is to send only object with value, so null values are filtered out
         // const filteredObj = Object.fromEntries(Object.entries(addData).filter(([key, value]) => value !== null && value !== '' && value !== undefined));
 
-        // console.log('fil: ', filteredObj);
         // passing addData, without removing null values, because during update we will be emptying some fields
 
         const isSuccess = await handleSubmit(addData);
@@ -246,12 +246,9 @@ const TableLayout: React.FC<TableLayoutProps> = ({
             setIsOpen(false);
             setAddData({ refno: '', status: '', service_type: title === 'Lead List' ? 'visa service' : '' });
 
-            // console.log('isSuccess', isSuccess);
-            //console.log(title)
-
             if (title == 'Lead List') {
                 //alert("Navigate")
-                //console.log(addData)
+
                 // if (addData?.status === 'Done') {
                 //     router.push({
                 //         pathname: '/manage-visa',
@@ -280,7 +277,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({
             const worksheet = workbook.Sheets[firstSheetName];
             const parsedData = XLSX.utils.sheet_to_json(worksheet);
             // setData(parsedData);
-            // console.log('import data', parsedData);
         };
 
         reader.readAsArrayBuffer(file);
@@ -304,7 +300,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         setAddData({ ...addData, ...track });
         setIsOpenTrack(false);
         setTrack({ url: '', other: '' });
-        // console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup);
+
         if (oneVisaApplicantsGroup) {
             const updatedData = {
                 ...oneVisaApplicantsGroup,
@@ -331,7 +327,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
 
     const handleListLine = (object: any) => {
         // Implement the logic to handle the deletion of the row
-        // console.log('Deleting row:', object);
+
         setIsOpenListLine(true);
         setAddData(object);
         // You can add your deletion logic here, e.g., updating the state, making an API call, etc.
@@ -345,12 +341,15 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         }
     };
 
+    console.log('AddData', addData);
+
     return (
         <>
             <div className="flex flex-wrap items-center justify-between gap-4">
-                <h2 className="font-extrabold text-xl">{title}</h2>
+                <h2 className="text-xl font-extrabold">{title}</h2>
                 <div className="flex w-full  flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                     <div className="flex gap-3">
+                        <RefreshButton />
                         {title !== 'Country Visa Types' && title !== 'Deleted Application' && title !== 'List Visa Application' && title !== 'Deleted Visa Application' && (
                             <div>
                                 <button type="button" className="btn btn-primary" onClick={() => setIsOpen(true)}>
@@ -401,7 +400,6 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                                     id="type"
                                     value={filter}
                                     onChange={(e) => {
-                                        // console.log('e.target', e.target.value);
                                         if (updateFilter) {
                                             updateFilter(e.target.value);
                                         }
@@ -466,6 +464,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                 </div>
             </div>
             {title == 'Lead List' && <Filtersetting data={data} setFilterItem={setFilterItem} showCustomizer={showCustomizer} setFilterTitle={setFilterTitle} setShowCustomizer={setShowCustomizer} />}
+
             <ActionModal
                 isOpen={isOpen}
                 setAddData={setAddData}
@@ -503,7 +502,15 @@ const TableLayout: React.FC<TableLayoutProps> = ({
                         </div>
                         <div className="mb-5">
                             <label htmlFor="url">Tracking URL </label>
-                            <input id="url" value={track?.url} onChange={(e) => handleTrackInputChange(e)} type="text" placeholder="Enter Mobile Number" className="form-input" />
+                            {!addData?.tracking_detail?.url && (
+                                <input id="url" value={track?.url} onChange={(e) => handleTrackInputChange(e)} type="text" placeholder="Enter Tracking URL" className="form-input" />
+                            )}
+
+                            {addData?.tracking_detail?.url && (
+                                <a href={addData?.tracking_detail?.url} target="_blank" className="text-primary">
+                                    {addData?.tracking_detail?.url}
+                                </a>
+                            )}
                         </div>
                     </div>
                 </div>
