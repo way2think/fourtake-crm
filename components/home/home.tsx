@@ -30,11 +30,11 @@ import LeadManagementActionModal from '../lead-management/lead-manage/LeadManage
 import { useRouter } from 'next/navigation';
 
 interface DashboardProps {
-    data: any;
-    leaddata: any;
-    passportsdata: any;
-    applicationdata: any;
-    dropdata: any;
+    // data: any;
+    // leaddata: any;
+    // passportsdata: any;
+    // applicationdata: any;
+    // dropdata: any;
     // totalPages: number;
     // tableColumns: object[];
     // ActionModal: any;
@@ -49,7 +49,7 @@ interface AddData {
     [key: string]: string;
 }
 
-const Home: React.FC<DashboardProps> = ({ data, leaddata, passportsdata, applicationdata, dropdata }) => {
+const Home: React.FC<DashboardProps> = () => {
     const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const [isMounted, setIsMounted] = useState(false);
@@ -60,7 +60,7 @@ const Home: React.FC<DashboardProps> = ({ data, leaddata, passportsdata, applica
     //     setIsMounted(true);
     // }, []);
 
-    const [filterItem, setFilterItem] = useState(data);
+    // const [filterItem, setFilterItem] = useState(data);
     const router = useRouter();
 
     const tableColumns = [

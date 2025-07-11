@@ -59,6 +59,8 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
 
     const paginationPages = usePagination(meta ? { currentPage: page, pageSize: meta?.itemsPerPage, totalCount: meta?.totalItems } : { currentPage: 1, pageSize: 10, totalCount: 1 }); // to generate page numbers
 
+    console.log('data', data);
+
     // console.log('paginationPages: ', paginationPages, meta?.totalItems);
 
     // const totalPages = useMemo(() => Math.ceil(data.length / pageSize), [data.length, pageSize]);
@@ -159,6 +161,7 @@ const PaginationTable: React.FC<PaginationTableProps> = ({
                                                 <IconList />
                                             </ActionIcon>
                                         </Tippy>
+                                        <span>({row?.multiple_passports?.length || 0})</span>
                                         <Tippy content="Application Tracking">
                                             <ActionIcon
                                                 size="sm"

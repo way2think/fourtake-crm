@@ -109,7 +109,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
     const { data: corporates, isLoading: isLoading6, isFetching: isFetching6 } = useGetUsersQuery({ page: 0, limit: 0, filterbyrole: 'corporate' });
     const { data: oneVisaApplicantsGroup, isError, error, isLoading: isLoading7, isFetching: isFetching7 } = useGetOneVisaApplicantGroupQuery(paramId);
 
-    // console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup, isError, error, paramId);
+    console.log('oneVisaApplicantsGroup', oneVisaApplicantsGroup, isError, error, paramId);
 
     // console.log('addData', addData);
 
@@ -803,17 +803,17 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                         {/* <ComponentsFormDatePickerBasic label="Apply Date" id={'apply_date'} isEdit={isEdit} setAddData={setAddData} addData={addData} currentDate={new Date()} /> */}
                     </div>
 
-                    <div className={`mt-7 ${disableIsGroup ? 'cursor-not-allowed opacity-50' : ''}`}>
-                        <label className={`flex cursor-pointer items-center ${disableIsGroup ? 'cursor-not-allowed' : ''}`}>
+                    <div className={`mt-7 ${oneVisaApplicantsGroup?.is_group ? 'cursor-not-allowed opacity-50' : ''}`}>
+                        <label className={`flex cursor-pointer items-center ${oneVisaApplicantsGroup?.is_group ? 'cursor-not-allowed' : ''}`}>
                             <input
                                 type="checkbox"
                                 id="is_group"
                                 checked={addData?.is_group || false}
                                 onChange={(e) => handleCheckBoxChange(e)}
-                                disabled={disableIsGroup}
-                                className={`form-checkbox bg-white dark:bg-black ${disableIsGroup ? 'cursor-not-allowed' : ''}`}
+                                disabled={oneVisaApplicantsGroup?.is_group}
+                                className={`form-checkbox bg-white dark:bg-black ${oneVisaApplicantsGroup?.is_group ? 'cursor-not-allowed' : ''}`}
                             />
-                            <span className={`text-black ${disableIsGroup ? 'text-gray-500' : ''}`}>Is Group?</span>
+                            <span className={`text-black ${oneVisaApplicantsGroup?.is_group ? 'text-gray-500' : ''}`}>Is Group?</span>
                         </label>
                     </div>
                 </div>
@@ -1203,7 +1203,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                     <button
                         // onClick={handleSave}
                         type="button"
-                        className="btn btn-primary mb-5 ltr:ml-4 rtl:mr-4"
+                        className="btn btn-primary mb-5 ltr:ml-4 rtl:mr-4 hover:bg-white hover:border hover:border-primary hover:text-primary"
                         onClick={() => setIsOpen(true)}
                     >
                         <IconUserPlus className="ltr:mr-2 rtl:ml-2" />
@@ -1220,7 +1220,7 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                         <label htmlFor="leadnote" style={{ display: 'inline-block' }}>
                             Note
                         </label>
-                        <button className="btn btn-primary ml-5" style={{ marginLeft: '20px', display: 'inline-block' }} onClick={handleButtonClickShowAddNote}>
+                        <button className="btn btn-primary ml-5 hover:bg-white hover:border hover:border-primary hover:text-primary" style={{ marginLeft: '20px', display: 'inline-block' }} onClick={handleButtonClickShowAddNote}>
                             Add Note
                         </button>
 
@@ -1275,13 +1275,14 @@ const ManageVisa: React.FC<{ paramId: any }> = ({ paramId }) => {
                 </div>
 
                 <div className="mt-8 flex items-center justify-end">
-                    <button onClick={handleSubmit} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
+                    <button onClick={handleSubmit} type="button" className="btn btn-primary ltr:ml-4  hover:bg-white hover:border hover:border-primary hover:text-primary rtl:mr-4">
                         Save
                     </button>
                     <button
                         onClick={() => {
                             setIsOpen(false);
                             setAddData({});
+                            router.push('/list-visa-applications')
                         }}
                         type="button"
                         className="btn btn-outline-danger ml-3"

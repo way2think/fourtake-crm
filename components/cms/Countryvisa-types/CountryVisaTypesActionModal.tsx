@@ -48,7 +48,7 @@ const CountryVisaTypeActionModal: React.FC<CountryVisaTypeActionModalProps> = ({
 
                 <div className="p-5">
                     <div className="mb-2 grid grid-cols-1 gap-5 md:grid-cols-1 ">
-                        <ComponentsFormsSelectMultiselect addData={addData} options={options} setAddData={setAddData} id={'visa_type'} />
+                        <ComponentsFormsSelectMultiselect addData={addData} options={options} setAddData={setAddData} id={'country_visa_types'} />
                     </div>
 
                     <div className="mt-8 flex items-center justify-end">

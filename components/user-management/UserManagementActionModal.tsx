@@ -32,7 +32,7 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
                 <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                    <h5 className="text-lg font-bold">Add User</h5>
+                    <h5 className="text-lg font-bold">{isEdit ? 'Edit User' : 'Add User'}</h5>
                     <button
                         onClick={() => {
                             setIsOpen(false);
@@ -131,7 +131,7 @@ const UserManagementActionModal: React.FC<UserManagementActionModalProps> = ({ i
                         </div>
                     </div>
                     {!isEdit && (
-                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mt-3 ">
+                        <div className="mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 ">
                             <div className="mb-5">
                                 <label htmlFor="password">Password*</label>
                                 <input id="password" value={addData?.password} onChange={(e) => handleInputChange(e)} type="password" placeholder="Enter Password" className="form-input" />

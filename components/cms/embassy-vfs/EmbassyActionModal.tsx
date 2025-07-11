@@ -29,9 +29,8 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
     const [selectedState, setSelectedState] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
 
-    const { data: countries, isLoading, isFetching } = useGetCountriesQuery(undefined);
+    const { data: countries, isLoading, isFetching } = useGetCountriesQuery({ page: 0, limit: 0 });
     const { items = [], meta = {} } = countries || {};
-    
 
     const options: OptionType[] = [
         { value: 'Andaman and Nicobar Islands', label: 'Andaman and Nicobar Islands' },
@@ -94,8 +93,6 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
         setAddData({ ...addData, city });
     };
 
-    //console.log(addData)
-
     return (
         <>
             <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} handleSave={handleSave} width="max-w-5xl">
@@ -125,7 +122,7 @@ const EmbassyActionModal: React.FC<EmbassyActionModalProps> = ({ isOpen, setAddD
                                 <option value="vfs">VFS</option>
                             </select>
                         </div>
-                        <SearchableDropdown addData={addData} setAddData={setAddData} items={items} heading ="Country"  />
+                        <SearchableDropdown addData={addData} setAddData={setAddData} items={items} heading="Country" title={"country"} />
                         {/* <div className="dropdown">
                             <label htmlFor="visacountry"> Country</label>
                             <select className="form-input" defaultValue="" id="country" onChange={(e) => handleInputChange(e)} value={addData?.country?.id}>
